@@ -4,6 +4,7 @@ namespace Sellvation\CCMV2\TargetGroups\Livewire;
 
 use Illuminate\Support\Arr;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
+use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelector;
 use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelectorFacade;
 use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
 use Livewire\Attributes\Computed;
@@ -92,62 +93,19 @@ class Form extends Component
     #[Computed]
     public function count()
     {
-        if ($data = $this->getQuery()) {
-            $data = $data->raw();
-
-            return Arr::only($data, ['found', 'out_of']);
-        }
-
-        return 0;
+        return TargetGroupSelectorFacade::count($this->elements);
     }
 
     #[computed]
     public function exampleResults()
     {
-        return $this->getQuery()->get();
-    }
-
-    private function getQuery($perPage = 10)
-    {
-        $filterBy = $this->getQueryFilters();
-
-        return CrmCard::search('*')
-            ->options([
-                'page' => 0,
-                'per_page' => $perPage,
-                'filter_by' => $filterBy,
-            ]);
+        return TargetGroupSelectorFacade::getQuery($this->elements, 10)->get();
     }
 
     #[Computed]
-    public function getQueryFilters($elements = null)
+    public function getQueryFilters()
     {
-        $root = ! $elements;
-        $elements = $elements ?: $this->elements;
-
-        $filters = [];
-        foreach ($elements as $row) {
-            if (Arr::get($row, 'type') == 'rule') {
-                if ($filter = TargetGroupSelectorFacade::getFilter($row)) {
-                    $filters[] = $filter;
-                }
-            } elseif ((Arr::get($row, 'type') == 'block') && (count(Arr::get($row, 'subelements')))) {
-                if ($filter = $this->getQueryFilters(Arr::get($row, 'subelements'))) {
-                    $filters[] = $filter;
-                }
-            }
-        }
-
-        if (count($filters)) {
-
-            if ($root) {
-                return '('.implode(' || ', $filters).')';
-            } else {
-                return '('.implode(' && ', $filters).')';
-            }
-        }
-
-        return null;
+        return TargetGroupSelectorFacade::getQueryFilters($this->elements);
     }
 
     public function render()

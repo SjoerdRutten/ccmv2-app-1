@@ -1,7 +1,7 @@
 <div wire:loading.remove class="p-5">
     <div class="mb-8">
         Aantal resultaten:
-        {{ Arr::get($this->count(), 'found') }}
+        {{ $this->count() }}
     </div>
 
     <div class="flex flex-col">

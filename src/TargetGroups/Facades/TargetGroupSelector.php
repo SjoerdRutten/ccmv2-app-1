@@ -4,16 +4,64 @@ namespace Sellvation\CCMV2\TargetGroups\Facades;
 
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 
 class TargetGroupSelector
 {
+    public function getQueryFilters($elements, $root = true)
+    {
+        $filters = [];
+        foreach ($elements as $row) {
+            if (Arr::get($row, 'type') == 'rule') {
+                if ($filter = TargetGroupSelectorFacade::getFilter($row)) {
+                    $filters[] = $filter;
+                }
+            } elseif ((Arr::get($row, 'type') == 'block') && (count(Arr::get($row, 'subelements')))) {
+                if ($filter = $this->getQueryFilters(Arr::get($row, 'subelements'), false)) {
+                    $filters[] = $filter;
+                }
+            }
+        }
+
+        if (count($filters)) {
+            if ($root) {
+                return '('.implode(' || ', $filters).')';
+            } else {
+                return '('.implode(' && ', $filters).')';
+            }
+        }
+
+        return null;
+    }
+
+    public function getQuery($elements, $perPage = 10)
+    {
+        return CrmCard::search('*')
+            ->options([
+                'page' => 0,
+                'per_page' => $perPage,
+                'filter_by' => $this->getQueryFilters($elements),
+            ]);
+    }
+
+    public function count($elements)
+    {
+        if ($data = $this->getQuery($elements, 1)) {
+            $data = $data->raw();
+
+            return Arr::get($data, 'found');
+        }
+
+        return 0;
+    }
+
     public function getFilter($filter): string|bool
     {
-        // TODO: text_array toevoegen, dat moeten meerdere waarden kunnen worden
-
         if (Arr::get($filter, 'columnType') === 'date') {
             if (is_array(Arr::get($filter, 'value'))) {
-                $value = \Arr::map(Arr::get($filter, 'value'), function ($date) {
+                $value = Arr::map(Arr::get($filter, 'value'), function ($date) {
                     return Carbon::parse($date)->timestamp;
                 });
             } else {
@@ -28,9 +76,9 @@ class TargetGroupSelector
 
         if (Arr::get($filter, 'column') && Arr::get($filter, 'operator') && ($value !== null) && ($value !== '')) {
 
-            if (\Str::contains(Arr::get($filter, 'column'), '.')) {
+            if (Str::contains(Arr::get($filter, 'column'), '.')) {
                 $columnCollection = explode('.', Arr::get($filter, 'column'));
-                $filter = '$'.$columnCollection[0].'_'.\Auth::user()->currentEnvironmentId.'('.$columnCollection[1].':'.$this->generateComparison(Arr::get($filter, 'operator'), $value, Arr::get($filter, 'columnType')).')';
+                $filter = '$'.$columnCollection[0].'_'.Auth::user()->currentEnvironmentId.'('.$columnCollection[1].':'.$this->generateComparison(Arr::get($filter, 'operator'), $value, Arr::get($filter, 'columnType')).')';
             } else {
                 $filter = Arr::get($filter, 'column').':'.$this->generateComparison(Arr::get($filter, 'operator'), $value, Arr::get($filter, 'columnType'));
             }

@@ -21,7 +21,7 @@
                         <x-ccm::tables.td :first="true">{{ $targetGroup->name }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $targetGroup->created_at->toDateTimeString() }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $targetGroup->updated_at->toDateTimeString() }}</x-ccm::tables.td>
-                        <x-ccm::tables.td>??</x-ccm::tables.td>
+                        <x-ccm::tables.td>{{ $targetGroup->numberOfResults }}</x-ccm::tables.td>
                         <x-ccm::tables.td :link="true">
                             <a href="{{ route('target-groups::form', $targetGroup) }}" class="text-indigo-600 hover:text-indigo-900">Bewerk<span class="sr-only">, {{ $targetGroup->name }}</span></a>
                         </x-ccm::tables.td>
