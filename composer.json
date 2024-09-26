@@ -1,0 +1,61 @@
+{
+  "name": "sellvation/ccmv2-app",
+  "description": "CCM v2 application",
+  "keywords": [
+    "laravel",
+    "sellvation",
+    "CCM"
+  ],
+  "homepage": "https://gitlab.sellvation.nl/ccm-professional/ccmv2-app",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Sjoerd Rutten",
+      "email": "sjoerd@sellvation.nl",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^8.2"
+  },
+  "require-dev": {
+    "laravel/laravel": "^10.2",
+    "laravel/pint": "^1.0",
+    "nunomaduro/collision": "^7.9"
+  },
+  "autoload": {
+    "psr-4": {
+      "Sellvation\\CCMV2\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+    }
+  },
+  "scripts": {
+    "format": "vendor/bin/pint"
+  },
+  "config": {
+    "sort-packages": true,
+    "allow-plugins": {
+      "pestphp/pest-plugin": true,
+      "phpstan/extension-installer": true,
+      "php-http/discovery": true
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Sellvation\\CCMV2\\CcmV1\\CcmV1ServiceProvider",
+        "Sellvation\\CCMV2\\CrmCards\\CrmCardServiceProvider",
+        "Sellvation\\CCMV2\\Environments\\EnvironmentServiceProvider",
+        "Sellvation\\CCMV2\\Orders\\OrderServiceProvider",
+        "Sellvation\\CCMV2\\TargetGroups\\TargetGroupServiceProvider"
+      ],
+      "aliases": {
+      }
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
