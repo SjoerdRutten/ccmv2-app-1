@@ -16,11 +16,11 @@
     }
   ],
   "require": {
-    "php": "^8.2"
+    "php": "^8.2",
+    "livewire/livewire": "^3.0"
   },
   "require-dev": {
     "laravel/laravel": "^10.2",
-    "livewire/livewire": "^3.0",
     "laravel/pint": "^1.0",
     "nunomaduro/collision": "^7.9"
   },
