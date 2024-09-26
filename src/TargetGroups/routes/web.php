@@ -11,6 +11,6 @@ Route::prefix('target-groups')
     ])
     ->name('target-groups::')
     ->group(function (): void {
-        Route::get('/form/{targetGroup?}', \Sellvation\CCMV2\TargetGroups\Controllers\TargetGroupFormController::class)->name('form');
-        Route::get('/', \Sellvation\CCMV2\TargetGroups\Controllers\TargetGroupOverviewController::class)->name('overview');
+        Route::get('/form/{targetGroup?}', \Sellvation\CCMV2\TargetGroups\Livewire\Form::class)->name('form');
+        Route::get('/', \Sellvation\CCMV2\TargetGroups\Livewire\Overview::class)->name('overview');
     });

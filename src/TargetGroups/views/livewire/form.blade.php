@@ -6,7 +6,7 @@
 
     <div class="flex flex-col">
         @foreach ($elements AS $key => $element)
-            <x-target-groups.block :elements="$elements" :element="$element" :index="$key"/>
+            <x-target-group::block :elements="$elements" :element="$element" :index="$key"/>
         @endforeach
     </div>
 

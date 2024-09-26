@@ -144,7 +144,7 @@ class Rule extends Component
 
     public function render()
     {
-        return view('target-group::rule')
+        return view('target-group::livewire.rule')
             ->with([
                 'columns' => $this->getColumns(),
             ]);

@@ -152,6 +152,6 @@ class Form extends Component
 
     public function render()
     {
-        return view('target-group::form');
+        return view('target-group::livewire.form');
     }
 }

@@ -16,6 +16,6 @@ class Overview extends Component
 
     public function render()
     {
-        return view('target-group::overview');
+        return view('target-group::livewire.overview');
     }
 }
