@@ -2,6 +2,7 @@
 
 namespace Sellvation\CCMV2\TargetGroups\Livewire;
 
+use Illuminate\Support\Arr;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelectorFacade;
 use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
@@ -31,7 +32,7 @@ class Form extends Component
     {
         $index = count($this->elements);
 
-        \Arr::set($this->elements, $index, [
+        Arr::set($this->elements, $index, [
             'type' => 'block',
             'index' => $index,
             'name' => uniqid(),
@@ -42,10 +43,10 @@ class Form extends Component
 
     public function addSubBlock($index)
     {
-        $keys = array_keys(\Arr::get($this->elements, $index.'.subelements'));
-        $count = \Arr::last($keys) + 1;
+        $keys = array_keys(Arr::get($this->elements, $index.'.subelements'));
+        $count = Arr::last($keys) + 1;
 
-        \Arr::set($this->elements, $index.'.subelements.'.$count,
+        Arr::set($this->elements, $index.'.subelements.'.$count,
             [
                 'type' => 'block',
                 'index' => $index.'.subelements.'.$count,
@@ -63,10 +64,10 @@ class Form extends Component
 
     public function addRule($index)
     {
-        $keys = array_keys(\Arr::get($this->elements, $index.'.subelements'));
-        $count = \Arr::last($keys) + 1;
+        $keys = array_keys(Arr::get($this->elements, $index.'.subelements'));
+        $count = Arr::last($keys) + 1;
 
-        \Arr::set($this->elements, $index.'.subelements.'.$count,
+        Arr::set($this->elements, $index.'.subelements.'.$count,
             [
                 'type' => 'rule',
                 'index' => $index.'.subelements.'.$count,
@@ -94,7 +95,7 @@ class Form extends Component
         if ($data = $this->getQuery()) {
             $data = $data->raw();
 
-            return \Arr::only($data, ['found', 'out_of']);
+            return Arr::only($data, ['found', 'out_of']);
         }
 
         return 0;
@@ -126,12 +127,12 @@ class Form extends Component
 
         $filters = [];
         foreach ($elements as $row) {
-            if (\Arr::get($row, 'type') == 'rule') {
+            if (Arr::get($row, 'type') == 'rule') {
                 if ($filter = TargetGroupSelectorFacade::getFilter($row)) {
                     $filters[] = $filter;
                 }
-            } elseif ((\Arr::get($row, 'type') == 'block') && (count(\Arr::get($row, 'subelements')))) {
-                if ($filter = $this->getQueryFilters(\Arr::get($row, 'subelements'))) {
+            } elseif ((Arr::get($row, 'type') == 'block') && (count(Arr::get($row, 'subelements')))) {
+                if ($filter = $this->getQueryFilters(Arr::get($row, 'subelements'))) {
                     $filters[] = $filter;
                 }
             }
@@ -151,6 +152,6 @@ class Form extends Component
 
     public function render()
     {
-        return view('target-group-selector.form');
+        return view('target-group::form');
     }
 }

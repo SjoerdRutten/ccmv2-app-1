@@ -16,6 +16,6 @@ class Overview extends Component
 
     public function render()
     {
-        return view('target-group-selector.overview');
+        return view('target-group::overview');
     }
 }

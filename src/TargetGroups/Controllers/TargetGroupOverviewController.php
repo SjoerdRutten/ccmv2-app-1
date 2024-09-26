@@ -8,6 +8,6 @@ class TargetGroupOverviewController extends Controller
 {
     public function __invoke()
     {
-        return view('target-group-selector.filter-overview');
+        return view('target-groups::overview');
     }
 }

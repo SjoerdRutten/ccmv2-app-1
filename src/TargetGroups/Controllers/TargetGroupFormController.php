@@ -9,7 +9,7 @@ class TargetGroupFormController extends Controller
 {
     public function __invoke(?TargetGroup $targetGroup = null)
     {
-        return view('target-group-selector.filter-form')
+        return view('target-group::filter-form')
             ->with([
                 'targetGroup' => $targetGroup ?: new TargetGroup,
             ]);

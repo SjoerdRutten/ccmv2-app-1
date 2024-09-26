@@ -24,6 +24,8 @@ class TargetGroupServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
+        $this->loadViewsFrom(__DIR__.'/views', 'target-group');
+
 
         if (! App::runningInConsole()) {
             $this->registerLivewireComponents();

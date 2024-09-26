@@ -2,6 +2,9 @@
 
 namespace Sellvation\CCMV2\TargetGroups\Livewire;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
 use Sellvation\CCMV2\Orders\Models\OrderType;
 use Sellvation\CCMV2\TargetGroups\Elements\Column;
@@ -15,7 +18,6 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Modelable;
 use Livewire\Component;
-use Str;
 
 class Rule extends Component
 {
@@ -74,7 +76,7 @@ class Rule extends Component
         $columns[] = new Column('orders.order_type_id', new ColumnTypeSelect(OrderType::pluck('name', 'id')->toArray()), 'Transactie type');
 
         // CRM Card columns
-        foreach (CrmField::whereEnvironmentId(\Auth::user()->currentEnvironmentId)
+        foreach (CrmField::whereEnvironmentId(Auth::user()->currentEnvironmentId)
             ->whereIsShownOnTargetGroupBuilder(1)
             ->orderBy('name')
             ->get() as $crmField
@@ -120,7 +122,7 @@ class Rule extends Component
 
         }
 
-        $columns = \Arr::sort($columns, fn ($column) => $column->label);
+        $columns = Arr::sort($columns, fn ($column) => $column->label);
 
         return $columns;
     }
@@ -135,14 +137,14 @@ class Rule extends Component
 
     private function getColumnByName($name)
     {
-        return \Arr::first($this->getColumns(), function ($row) use ($name) {
+        return Arr::first($this->getColumns(), function ($row) use ($name) {
             return $row->name === $name;
         });
     }
 
     public function render()
     {
-        return view('target-group-selector.rule')
+        return view('target-group::rule')
             ->with([
                 'columns' => $this->getColumns(),
             ]);
