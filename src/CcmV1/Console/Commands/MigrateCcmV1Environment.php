@@ -2,6 +2,7 @@
 
 namespace Sellvation\CCMV2\CcmV1\Console\Commands;
 
+use Sellvation\CCMV2\CrmCards\Models\CrmFieldType;
 use Sellvation\CCMV2\Environments\Models\Environment;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -15,6 +16,8 @@ class MigrateCcmV1Environment extends Command
     private $environmentId;
 
     private Environment $environment;
+
+    private $categoryIds = [];
 
     public function handle()
     {
@@ -39,8 +42,9 @@ class MigrateCcmV1Environment extends Command
             ->where('omgevingen_id', $this->environmentId)
             ->get();
 
+        $this->categoryIds = [];
         foreach ($rows as $row) {
-            $this->environment->crmFieldCategories()->firstOrCreate([
+            $crmFieldCategory = $this->environment->crmFieldCategories()->firstOrCreate([
                 'name' => $row->naamnl,
             ], [
                 'name' => $row->naamnl,
@@ -50,6 +54,8 @@ class MigrateCcmV1Environment extends Command
                 'is_visible' => $row->zichtbaar,
                 'position' => $row->positie,
             ]);
+
+            $this->categoryIds[$row->id] = $crmFieldCategory->id;
         }
 
         $this->info($this->environment->crmFieldCategories()->count().' categories imported');
@@ -61,6 +67,23 @@ class MigrateCcmV1Environment extends Command
 
         $rows = \DB::connection('mysqlv1')
             ->table('crm_velden')
+            ->select('veldtype')
+            ->distinct()
+            ->get();
+
+        $fieldTypes = [];
+        foreach ($rows AS $row) {
+            $crmField = CrmFieldType::firstOrCreate([
+                'name' => $row->veldtype,
+            ], [
+                'label' => $row->veldtype,
+            ]);
+
+            $fieldTypes[$row->veldtype] = $crmField->id;
+        }
+
+        $rows = \DB::connection('mysqlv1')
+            ->table('crm_velden')
             ->where('omgevingen_id', $this->environmentId)
             ->get();
 
@@ -68,13 +91,14 @@ class MigrateCcmV1Environment extends Command
             $this->environment->crmFields()->updateOrCreate([
                 'name' => $row->naam,
             ], [
-                'crm_field_category_id' => $this->getCrmFieldCategoryId($row->rubrieken_id),
+                'environment_id' => $this->environment->id,
+                'crm_field_type_id' => $fieldTypes[$row->veldtype],
+                'crm_field_category_id' => empty($row->rubrieken_id) ? null : $this->categoryIds[$row->rubrieken_id],
                 'name' => $row->naam,
                 'label' => $row->labelnl,
                 'label_en' => $row->labelen,
                 'label_de' => $row->labelde,
                 'label_fr' => $row->labelfr,
-                'type' => $row->veldtype,
                 'is_shown_on_overview' => $row->overzicht,
                 'is_hidden' => $row->verbergen,
                 'is_locked' => $row->vergrendelen,

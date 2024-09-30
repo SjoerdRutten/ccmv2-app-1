@@ -13,14 +13,6 @@ class CrmCardServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
-
-        if (! App::runningInConsole()) {
-            $this->registerLivewireComponents();
-        }
-    }
-
-    private function registerLivewireComponents(): void
-    {
-        //Livewire::component('target-group-selector::form', Form::class);
+        $this->loadViewsFrom(__DIR__.'/views', 'crm-cards');
     }
 }
