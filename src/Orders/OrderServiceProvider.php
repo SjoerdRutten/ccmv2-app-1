@@ -12,7 +12,6 @@ class OrderServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
-        //        $this->loadRoutesFrom(__DIR__.'/routes/web.php');
 
         if (! App::runningInConsole()) {
             $this->registerLivewireComponents();
@@ -21,6 +20,5 @@ class OrderServiceProvider extends ServiceProvider
 
     private function registerLivewireComponents(): void
     {
-        //Livewire::component('target-group-selector::form', Form::class);
     }
 }

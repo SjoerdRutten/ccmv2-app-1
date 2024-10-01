@@ -4,7 +4,7 @@
 ])
 
 @if ($first)
-    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8">
+    <th scope="col" {{ $attributes->class('py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8') }}>
         {{ $slot }}
     </th>
 @elseif ($link)
@@ -12,7 +12,7 @@
         <span class="sr-only">{{ $slot }}</span>
     </th>
 @else
-    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+    <th scope="col" {{ $attributes->class('px-3 py-3.5 text-left text-sm font-semibold text-gray-900') }}>
         {{ $slot }}
     </th>
 @endif

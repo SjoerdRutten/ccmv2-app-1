@@ -4,6 +4,7 @@ namespace Sellvation\CCMV2\CrmCards\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Sellvation\CCMV2\CrmCards\Events\CrmFieldSavedEvent;
+use Sellvation\CCMV2\CrmCards\Events\CrmFieldSavingEvent;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,6 +32,7 @@ class CrmField extends Model
 
     protected $dispatchesEvents = [
         'saved' => CrmFieldSavedEvent::class,
+        'saving' => CrmFieldSavingEvent::class,
     ];
 
     protected function casts()
