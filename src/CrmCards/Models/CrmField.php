@@ -3,6 +3,7 @@
 namespace Sellvation\CCMV2\CrmCards\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Sellvation\CCMV2\CrmCards\Events\CrmFieldSavedEvent;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,6 +21,7 @@ class CrmField extends Model
         'label_de',
         'label_fr',
         'is_shown_on_overview',
+        'is_shown_on_target_group_builder',
         'is_hidden',
         'is_locked',
         'position',
@@ -27,10 +29,15 @@ class CrmField extends Model
         'overview_index',
     ];
 
+    protected $dispatchesEvents = [
+        'saved' => CrmFieldSavedEvent::class,
+    ];
+
     protected function casts()
     {
         return [
             'is_shown_on_overview' => 'boolean',
+            'is_shown_on_target_group_builder' => 'boolean',
             'is_hidden' => 'boolean',
             'is_locked' => 'boolean',
             'is_visible' => 'boolean',

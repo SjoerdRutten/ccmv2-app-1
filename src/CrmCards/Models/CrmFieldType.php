@@ -10,5 +10,6 @@ class CrmFieldType extends Model
     protected $fillable = [
         'name',
         'label',
+        'description',
     ];
 }

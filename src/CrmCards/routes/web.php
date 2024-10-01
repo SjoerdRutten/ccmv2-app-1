@@ -11,10 +11,11 @@ Route::prefix('crm-cards')
     ])
     ->name('crm-cards::')
     ->group(function (): void {
-        Route::prefix('categories')
-            ->name('categories::')
+        Route::prefix('fields')
+            ->name('fields::')
             ->group(function () {
-                Route::get('/', \Sellvation\CCMV2\CrmCards\Livewire\Categories\Overview::class)->name('overview');
+                Route::get('/', \Sellvation\CCMV2\CrmCards\Livewire\Fields\Overview::class)->name('overview');
+                Route::get('/{crmField}', \Sellvation\CCMV2\CrmCards\Livewire\Fields\Edit::class)->name('edit');
             });
 
     });
