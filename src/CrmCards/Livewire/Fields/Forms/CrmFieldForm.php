@@ -2,8 +2,12 @@
 
 namespace Sellvation\CCMV2\CrmCards\Livewire\Fields\Forms;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
+use Livewire\Attributes\Validate;
 use Livewire\Form;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
 use Sellvation\CCMV2\CrmCards\Models\CrmFieldCategory;
@@ -13,20 +17,48 @@ class CrmFieldForm extends Form
 {
     public CrmField $crmField;
 
+    #[Locked]
     public ?int $id = null;
+
+    #[Validate]
     public ?int $crm_field_category_id = null;
+
+    #[Validate]
     public ?int $crm_field_type_id = null;
+
+    #[Validate]
     public string $name = '';
+
+    #[Validate]
     public string $label = '';
+    #[Validate]
     public ?string  $label_en = null;
+
+    #[Validate]
     public ?string $label_de = null;
+
+    #[Validate]
     public ?string $label_fr = null;
+
+    #[Validate]
     public bool $is_shown_on_overview = false;
+
+    #[Validate]
     public bool $is_shown_on_target_group_builder = false;
+
+    #[Validate]
     public bool $is_hidden = false;
+
+    #[Validate]
     public bool $is_locked = false;
+
+    #[Validate]
     public int $position = 0;
+
+    #[Validate]
     public ?string $log_file = null;
+
+    #[Validate]
     public int $overview_index = 0;
 
     public function rules(): array
@@ -84,16 +116,24 @@ class CrmFieldForm extends Form
         ];
     }
 
-    public function updated($property, $value)
-    {
-        dd($property, $value);
-    }
-
     public function setCrmField(CrmField $crmField)
     {
         $this->crmField = $crmField;
 
         $this->fill($crmField->toArray());
+    }
+
+    public function save()
+    {
+        $this->validate();
+
+        $this->name = Str::slug($this->name, '_');
+
+        if ($this->crmField->id) {
+            $this->crmField->update(Arr::except($this->all(), ['crmField', 'id']));
+        } else {
+            $this->crmField = CrmField::create(Arr::except($this->all(), ['crmField', 'id']));
+        }
     }
 
     public function crmFieldTypes()

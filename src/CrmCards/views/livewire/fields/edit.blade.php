@@ -2,6 +2,7 @@
     <div class="px-4 sm:px-6 lg:px-8">
         <x-ccm::pages.intro title="CRM Veld wijzigen">
             <x-slot:actions>
+                <x-ccm::buttons.back :href="route('crm-cards::fields::overview')">Terug</x-ccm::buttons.back>
                 <x-ccm::buttons.save wire:click="save"></x-ccm::buttons.save>
             </x-slot:actions>
         </x-ccm::pages.intro>
@@ -14,15 +15,17 @@
             </x-slot:tabs>
 
             <x-ccm::tabs.tab-content :index="0">
-                <x-ccm::forms.input name="name" wire:model.live="form.name">Naam</x-ccm::forms.input>
-                <x-ccm::forms.input name="name" wire:model="form.label">Omschrijving Nederlands</x-ccm::forms.input>
-                <x-ccm::forms.input name="name" wire:model="form.label_en">Omschrijving Engels</x-ccm::forms.input>
-                <x-ccm::forms.input name="name" wire:model="form.label_de">Omschrijving Duits</x-ccm::forms.input>
-                <x-ccm::forms.input name="name" wire:model="form.label_fr">Omschrijving Frans</x-ccm::forms.input>
+                <x-ccm::forms.input name="form.name" wire:model.live="form.name">Naam</x-ccm::forms.input>
+                <x-ccm::forms.input name="form.label" wire:model.live="form.label">Omschrijving Nederlands</x-ccm::forms.input>
+                <x-ccm::forms.input name="form.label_en" wire:model.live="form.label_en">Omschrijving Engels</x-ccm::forms.input>
+                <x-ccm::forms.input name="form.label_de" wire:model.live="form.label_de">Omschrijving Duits</x-ccm::forms.input>
+                <x-ccm::forms.input name="form.label_fr" wire:model.live="form.label_fr">Omschrijving Frans</x-ccm::forms.input>
                 <x-ccm::forms.select
-                        wire:model="form.crm_field_category_id"
+                        name="form.crm_field_category_id"
+                        wire:model.live="form.crm_field_category_id"
                         label="Rubriek"
                 >
+                    <option></option>
                     @foreach ($form->crmFieldCategories() AS $crmFieldCategory)
                         <option value="{{ $crmFieldCategory->id }}">
                             {{ $crmFieldCategory->name }}
@@ -30,7 +33,8 @@
                     @endforeach
                 </x-ccm::forms.select>
                 <x-ccm::forms.select
-                        wire:model="form.crm_field_type_id"
+                        name="form.crm_field_type_id"
+                        wire:model.live="form.crm_field_type_id"
                         label="Type"
                         :disabled="!!$form->id"
                 >
@@ -42,10 +46,15 @@
                 </x-ccm::forms.select>
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="1">
-                Kenmerken
+                <x-ccm::forms.checkbox name="form.is_shown_on_overview" wire:model.live="form.is_shown_on_overview">Overzicht</x-ccm::forms.checkbox>
+                <x-ccm::forms.checkbox name="form.is_shown_on_target_group_builder" wire:model.live="form.is_shown_on_target_group_builder">Doelgroep selectie</x-ccm::forms.checkbox>
+                <x-ccm::forms.checkbox name="form.is_hidden" wire:model.live="form.is_hidden">Verborgen</x-ccm::forms.checkbox>
+                <x-ccm::forms.checkbox name="form.is_locked" wire:model.live="form.is_locked">Vergrendeld</x-ccm::forms.checkbox>
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="2">
-                Validatie
+                <div>
+                    TODO: Wat wordt hiervan precies gebruikt, waar wordt het opgeslagen, hoe werkt het precies.
+                </div>
             </x-ccm::tabs.tab-content>
         </x-ccm::tabs.base>
     </div>

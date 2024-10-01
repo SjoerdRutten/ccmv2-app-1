@@ -26,7 +26,7 @@ class Edit extends Component
 
     public function save()
     {
-        dd($this->crmField);
+        $this->form->save();
     }
 
     public function render()
