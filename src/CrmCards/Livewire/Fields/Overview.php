@@ -29,15 +29,21 @@ class Overview extends Component
     {
         Arr::set($this->crmFields, $property, $value);
 
-        foreach ($this->crmFields as $row) {
+        foreach ($this->crmFields as $key => $row) {
             if ($crmField = CrmField::find(Arr::get($row, 'id'))) {
+
                 $data = Arr::only($row, [
                     'is_shown_on_overview',
                     'is_shown_on_target_group_builder',
                     'is_hidden',
                     'is_locked',
                 ]);
-                $crmField->update($data);
+
+                $crmField->fill($data);
+
+                if ($crmField->isDirty()) {
+                    $crmField->save();
+                }
             }
         }
 

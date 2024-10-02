@@ -25,8 +25,6 @@ class UpdateTypesenseSchemaListener
 
         $fields = [];
 
-
-        // TODO: Waarom wordt deze niet meer gezien als dirty ? Dat deed die wel. Maar het is 5 uur :-D
         if ($crmField->isDirty('is_shown_on_target_group_builder')) {
             if ($crmField->is_shown_on_target_group_builder) {
                 $fields = $this->addIndex($crmField);
