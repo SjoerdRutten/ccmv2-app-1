@@ -108,6 +108,7 @@ class UpdateTypesenseSchemaListener
                 break;
             case 'MEDIA':
                 $fields[] = ['name' => '_'.$crmField->name.'_optin', 'type' => 'bool', 'optional' => true];
+                $fields[] = ['name' => '_'.$crmField->name.'_optin_timestamp', 'type' => 'int64', 'optional' => true];
                 $fields[] = ['name' => '_'.$crmField->name.'_confirmed_optin', 'type' => 'bool', 'optional' => true];
                 $fields[] = ['name' => '_'.$crmField->name.'_confirmed_optin_timestamp', 'type' => 'int64', 'optional' => true];
                 $fields[] = ['name' => '_'.$crmField->name.'_confirmed_optout', 'type' => 'bool', 'optional' => true];
@@ -116,6 +117,7 @@ class UpdateTypesenseSchemaListener
                 $fieldType = false;
                 break;
             case 'EMAIL':
+                $fields[] = ['name' => $crmField->name, 'type' => 'string', 'optional' => true];
                 $fields[] = ['name' => '_'.$crmField->name.'_abuse', 'type' => 'bool', 'optional' => true];
                 $fields[] = ['name' => '_'.$crmField->name.'_abuse_timestamp', 'type' => 'int64', 'optional' => true];
                 $fields[] = ['name' => '_'.$crmField->name.'_bounce_reason', 'type' => 'string', 'optional' => true];

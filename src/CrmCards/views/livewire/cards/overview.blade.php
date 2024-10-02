@@ -21,13 +21,13 @@
             </x-slot:thead>
             <x-slot:tbody>
                 @foreach ($crmCards AS $key => $card)
-                    <tr>
+                    <tr x-on:dblclick="document.location.href = '{{ route('crm-cards::cards::edit', $card) }}'">
                         <x-ccm::tables.td :first="true">{{ $card->crm_id }}</x-ccm::tables.td>
                         @foreach ($crmFields AS $crmField)
                             <x-ccm::tables.td>{{ \Illuminate\Support\Arr::get($card->data, $crmField->name) }}</x-ccm::tables.td>
                         @endforeach
                         <x-ccm::tables.td :link="true">
-{{--                            <x-ccm::tables.edit-link :href="route('crm-cards::fields::edit', $crmField['id'])" />--}}
+                            <x-ccm::tables.edit-link :href="route('crm-cards::cards::edit', $card)" />
                         </x-ccm::tables.td>
                     </tr>
                 @endforeach

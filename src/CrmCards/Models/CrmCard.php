@@ -153,6 +153,7 @@ class CrmCard extends Model
                     break;
                 case 'MEDIA':
                     $data['_'.$crmField->name.'_optin'] = (bool) \Arr::get($this->data, $crmField->name.'_optin');
+                    $data['_'.$crmField->name.'_optin_timestamp'] = $this->makeTimestamp(\Arr::get($this->data, $crmField->name.'_optin_timestamp'));
                     $data['_'.$crmField->name.'_confirmed_optin'] = (bool) \Arr::get($this->data, $crmField->name.'_confirmed_optin');
                     $data['_'.$crmField->name.'_confirmed_optin_timestamp'] = $this->makeTimestamp(\Arr::get($this->data, $crmField->name.'_confirmed_optin_timestamp'));
                     $data['_'.$crmField->name.'_confirmed_optout'] = (bool) \Arr::get($this->data, $crmField->name.'_confirmed_optout');
@@ -274,6 +275,7 @@ class CrmCard extends Model
                     break;
                 case 'MEDIA':
                     $fields[] = ['name' => '_'.$crmField->name.'_optin', 'type' => 'bool', 'optional' => true];
+                    $fields[] = ['name' => '_'.$crmField->name.'_optin_timestamp', 'type' => 'int64', 'optional' => true];
                     $fields[] = ['name' => '_'.$crmField->name.'_confirmed_optin', 'type' => 'bool', 'optional' => true];
                     $fields[] = ['name' => '_'.$crmField->name.'_confirmed_optin_timestamp', 'type' => 'int64', 'optional' => true];
                     $fields[] = ['name' => '_'.$crmField->name.'_confirmed_optout', 'type' => 'bool', 'optional' => true];
@@ -282,6 +284,7 @@ class CrmCard extends Model
                     $fieldType = false;
                     break;
                 case 'EMAIL':
+                    $fields[] = ['name' => $crmField->name, 'type' => 'string', 'optional' => true];
                     $fields[] = ['name' => '_'.$crmField->name.'_abuse', 'type' => 'bool', 'optional' => true];
                     $fields[] = ['name' => '_'.$crmField->name.'_abuse_timestamp', 'type' => 'int64', 'optional' => true];
                     $fields[] = ['name' => '_'.$crmField->name.'_bounce_reason', 'type' => 'string', 'optional' => true];

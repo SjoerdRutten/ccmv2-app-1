@@ -28,6 +28,6 @@ class CrmFieldCategory extends Model
 
     public function crmFields() : HasMany
     {
-        return $this->hasMany(CrmField::class);
+        return $this->hasMany(CrmField::class)->orderBy('position');
     }
 }
