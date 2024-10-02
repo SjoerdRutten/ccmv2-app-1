@@ -2,12 +2,18 @@
     <div class="px-4 sm:px-6 lg:px-8">
         <x-ccm::pages.intro title="CRM kaarten">
             <div class="flex gap-4">
-                <div class="w-1/4">
-                <x-ccm::forms.input
-                        name="filterQ"
-                        wire:model.live.debounce="filter.q"
-                >Zoeken</x-ccm::forms.input>
-                </div>
+                    <x-ccm::forms.input
+                            name="filterQ"
+                            wire:model.live.debounce="filter.q"
+                    >Zoeken</x-ccm::forms.input>
+                    <x-ccm::forms.select label="Doelgroep selectie" wire:model.live="filter.target_group_id">
+                        <option></option>
+                        @foreach ($targetGroups AS $targetGroup)
+                            <option value="{{ $targetGroup->id }}">
+                                {{ $targetGroup->name }}
+                            </option>
+                        @endforeach
+                    </x-ccm::forms.select>
             </div>
         </x-ccm::pages.intro>
         <x-ccm::tables.table>

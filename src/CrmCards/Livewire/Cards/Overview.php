@@ -11,6 +11,8 @@ use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
 use Livewire\Component;
 use Sellvation\CCMV2\CrmCards\Models\CrmFieldCategory;
+use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelectorFacade;
+use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
 
 class Overview extends Component
 {
@@ -19,6 +21,7 @@ class Overview extends Component
     #[Url]
     public array $filter = [
         'q' => null,
+        'target_group_id' => null,
     ];
 
     public function updated($property, $value)
@@ -30,7 +33,11 @@ class Overview extends Component
 
     public function getCrmCards()
     {
-        if ($this->filter['q']) {
+        if ($this->filter['target_group_id']) {
+            $targetGroup = TargetGroup::find($this->filter['target_group_id']);
+
+            return TargetGroupSelectorFacade::getQuery($targetGroup->filters, 25)->paginate();
+        } elseif ($this->filter['q']) {
             return CrmCard::search($this->filter['q'])
                 ->options(['query_by' => '*'])
                 ->paginate(25);
@@ -45,6 +52,7 @@ class Overview extends Component
             ->with([
                 'crmCards' => $this->getCrmCards(),
                 'crmFields' => CrmField::where('is_shown_on_overview', 1)->orderBy('overview_index')->get(),
+                'targetGroups' => TargetGroup::orderBy('name')->get(),
             ]);
     }
 }
