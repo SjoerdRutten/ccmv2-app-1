@@ -3,6 +3,7 @@
 namespace Sellvation\CCMV2\CcmV1\Console\Commands;
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 use Sellvation\CCMV2\CrmCards\Models\CrmFieldType;
 use Sellvation\CCMV2\Environments\Models\Environment;
 use Carbon\Carbon;
@@ -22,6 +23,8 @@ class MigrateCcmV1Environment extends Command
 
     public function handle()
     {
+        Log::info('Import Environment Data From '.$this->option('exportId').' to '.$this->option('importId'));
+
         Config::set('database.connections.db02.database', 'ccmp');
 
         $this->environmentId = $this->option('exportId');
