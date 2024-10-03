@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
+use Sellvation\CCMV2\CrmCards\Models\CrmCard;
+use Sellvation\CCMV2\CrmCards\Models\CrmFieldCategory;
 use Sellvation\CCMV2\CrmCards\Models\CrmFieldType;
 use Sellvation\CCMV2\Environments\Models\Environment;
 
@@ -19,7 +21,9 @@ class MigrateCcmV1Environment extends Command
 
     private Environment $environment;
 
-    private $categoryIds = [];
+    private $crmFieldCategoryIds = [];
+
+    private $emailCategoryIds = [];
 
     public function handle()
     {
@@ -31,38 +35,56 @@ class MigrateCcmV1Environment extends Command
         $environmentId = $this->option('importId');
 
         if ($this->environment = Environment::find($environmentId)) {
-            $this->migrateCrmFieldCategories();
-            $this->migrateCrmFields();
-            $this->migrateCrmCards();
+            if ($this->confirm('CrmFields importeren ?', false)) {
+                $this->migrateCrmFieldCategories();
+                $this->migrateCrmFields();
+            }
+            if ($this->confirm('CrmCards importeren ?', false)) {
+                $this->migrateCrmCards();
+            }
+            if ($this->confirm('Emails importeren ?', true)) {
+                $this->migrateEmailCategories();
+            }
+
+            $this->cleanup();
+
         }
+    }
+
+    private function cleanup()
+    {
+        $this->info('Cleanup');
+
+        CrmFieldCategory::query()
+            ->whereDoesntHave('crmFields')
+            ->delete();
     }
 
     private function migrateCrmFieldCategories()
     {
-        $this->info('Import categories');
+        $this->info('Import crm field categories');
 
         $rows = \DB::connection('db02')
             ->table('rubrieken')
             ->where('omgevingen_id', $this->environmentId)
             ->get();
 
-        $this->categoryIds = [];
+        $this->crmFieldCategoryIds = [];
         foreach ($rows as $row) {
-            $crmFieldCategory = $this->environment->crmFieldCategories()->firstOrCreate([
-                'name' => $row->naamnl,
-            ], [
+            $data = [
                 'name' => $row->naamnl,
                 'name_en' => $row->naamen,
                 'name_de' => $row->naamde,
                 'name_fr' => $row->naamfr,
                 'is_visible' => $row->zichtbaar,
                 'position' => $row->positie,
-            ]);
+            ];
 
-            $this->categoryIds[$row->id] = $crmFieldCategory->id;
+            $crmFieldCategory = $this->environment->crmFieldCategories()->firstOrCreate(['name' => $row->naamnl, $data], $data);
+            $this->crmFieldCategoryIds[$row->id] = $crmFieldCategory->id;
         }
 
-        $this->info($this->environment->crmFieldCategories()->count().' categories imported');
+        $this->info($this->environment->crmFieldCategories()->count().' crm field categories imported');
     }
 
     private function migrateCrmFields()
@@ -97,7 +119,7 @@ class MigrateCcmV1Environment extends Command
             ], [
                 'environment_id' => $this->environment->id,
                 'crm_field_type_id' => $fieldTypes[$row->veldtype],
-                'crm_field_category_id' => empty($row->rubrieken_id) ? null : $this->categoryIds[$row->rubrieken_id],
+                'crm_field_category_id' => empty($row->rubrieken_id) ? null : $this->crmFieldCategoryIds[$row->rubrieken_id],
                 'name' => $row->naam,
                 'label' => $row->labelnl,
                 'label_en' => $row->labelen,
@@ -134,6 +156,8 @@ class MigrateCcmV1Environment extends Command
     {
         $this->info('Import CRM Cards');
 
+        $skip = CrmCard::count();
+
         $progressBar = $this->output->createProgressBar(
             \DB::connection('db02')
                 ->table('crm_'.$this->environmentId)
@@ -142,6 +166,7 @@ class MigrateCcmV1Environment extends Command
 
         \DB::connection('db02')
             ->table('crm_'.$this->environmentId)
+            ->skip($skip)
             ->orderBy('datummutatie')
             ->chunk(1000, function ($crmCards) use ($progressBar) {
                 foreach ($crmCards as $row) {
@@ -226,5 +251,32 @@ class MigrateCcmV1Environment extends Command
             });
 
         $progressBar->finish();
+    }
+
+    private function migrateEmailCategories()
+    {
+        $this->info('Import e-mail categories');
+
+        $rows = \DB::connection('db02')
+            ->table('rubrieken')
+            ->where('omgevingen_id', $this->environmentId)
+            ->get();
+
+        $this->emailCategoryIds = [];
+        foreach ($rows as $row) {
+            $data = [
+                'name' => $row->naamnl,
+                'name_en' => $row->naamen,
+                'name_de' => $row->naamde,
+                'name_fr' => $row->naamfr,
+                'is_visible' => $row->zichtbaar,
+                'position' => $row->positie,
+            ];
+
+            $emailCategory = $this->environment->emailCategories()->firstOrCreate(['name' => $row->naamnl, $data], $data);
+            $this->emailCategoryIds[$row->id] = $emailCategory->id;
+        }
+
+        $this->info($this->environment->emailCategories()->count().' e-mail categories imported');
     }
 }
