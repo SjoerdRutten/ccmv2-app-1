@@ -139,6 +139,7 @@ class MigrateCcmV1Environment extends Command
 
         \DB::connection('db02')
             ->table('crm_'.$this->environmentId)
+            ->orderBy('datummutatie')
             ->chunk(1000, function ($crmCards) use ($progressBar) {
                 foreach ($crmCards as $row) {
                     $progressBar->advance();
