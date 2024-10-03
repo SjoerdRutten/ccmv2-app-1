@@ -1,6 +1,6 @@
 <?php
 
-namespace Sellvation\CCMV2\Emails\Models;
+namespace Sellvation\CCMV2\Ems\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;

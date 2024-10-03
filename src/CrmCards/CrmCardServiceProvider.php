@@ -11,10 +11,7 @@ use Sellvation\CCMV2\CrmCards\Listeners\UpdateTypesenseSchemaListener;
 
 class CrmCardServiceProvider extends ServiceProvider
 {
-    public function register(): void
-    {
-        //        $this->app->register(CrmCardEventsServiceProvider::class);
-    }
+    public function register(): void {}
 
     public function boot(): void
     {
@@ -22,8 +19,11 @@ class CrmCardServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
         $this->loadViewsFrom(__DIR__.'/views', 'crm-cards');
 
-        $this->registerLivewireComponents();
         $this->registerEvents();
+
+        if (! App::runningInConsole()) {
+            $this->registerLivewireComponents();
+        }
     }
 
     private function registerLivewireComponents(): void
