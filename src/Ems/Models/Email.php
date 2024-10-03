@@ -12,6 +12,7 @@ class Email extends Model
 
     protected $fillable = [
         'email_category_id',
+        'recipient_crm_field_id',
         'name',
         'description',
         'sender_email',

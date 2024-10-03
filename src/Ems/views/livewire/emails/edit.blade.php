@@ -39,9 +39,23 @@
                     <x-ccm::forms.input name="form.sender_name" wire:model.live="form.sender_name">
                         Afzender naam
                     </x-ccm::forms.input>
-                    <x-ccm::forms.input name="form.recipient" wire:model.live="form.recipient">
-                        Ontvanger
-                    </x-ccm::forms.input>
+                    <div class="flex gap-4">
+                        <x-ccm::forms.select
+                                name="form.recipient_crm_field_id"
+                                wire:model.live="form.recipient_crm_field_id"
+                                label="CRM Veld"
+                        >
+                            <option></option>
+                            @foreach ($form->emailFields() AS $field)
+                                <option value="{{ $field->id }}">
+                                    {{ $field->name }}
+                                </option>
+                            @endforeach
+                        </x-ccm::forms.select>
+                        <x-ccm::forms.input name="form.recipient" wire:model.live="form.recipient">
+                            Ontvanger
+                        </x-ccm::forms.input>
+                    </div>
                     <x-ccm::forms.input name="form.reply_to" wire:model.live="form.reply_to">
                         Reply to
                     </x-ccm::forms.input>

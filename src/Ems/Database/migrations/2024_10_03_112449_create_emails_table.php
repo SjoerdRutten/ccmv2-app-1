@@ -13,11 +13,13 @@ return new class extends Migration
             $table->foreignId('environment_id')->constrained('environments')->cascadeOnDelete();
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('email_category_id')->nullable()->constrained('email_categories')->nullOnDelete();
+            $table->foreignId('recipient_crm_field_id')->nullable()->constrained('crm_fields')->nullOnDelete();
             $table->string('name');
             $table->string('description', 80)->nullable();
             $table->string('sender_email', 80);
             $table->string('sender_name', 80)->nullable();
-            $table->string('recipient');
+            $table->string('recipient_type', 80);
+            $table->string('recipient')->nullable();
             $table->string('reply_to')->nullable();
             $table->string('subject');
             $table->string('optout_url')->nullable();

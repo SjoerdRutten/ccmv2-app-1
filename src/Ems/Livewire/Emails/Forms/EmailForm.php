@@ -4,6 +4,7 @@ namespace Sellvation\CCMV2\Ems\Livewire\Emails\Forms;
 
 use Livewire\Attributes\Locked;
 use Livewire\Form;
+use Sellvation\CCMV2\CrmCards\Models\CrmField;
 use Sellvation\CCMV2\Ems\Models\Email;
 use Sellvation\CCMV2\Ems\Models\EmailCategory;
 
@@ -18,6 +19,8 @@ class EmailForm extends Form
     public string $name = '';
 
     public ?int $email_category_id = null;
+
+    public ?int $recipient_crm_field_id = null;
 
     public ?string $description = null;
 
@@ -73,6 +76,16 @@ class EmailForm extends Form
     public function categories()
     {
         return EmailCategory::query()
+            ->orderBy('name')
+            ->get();
+    }
+
+    public function emailFields()
+    {
+        return CrmField::query()
+            ->whereHas('crmFieldType', function ($query) {
+                $query->whereName('EMAIL');
+            })
             ->orderBy('name')
             ->get();
     }
