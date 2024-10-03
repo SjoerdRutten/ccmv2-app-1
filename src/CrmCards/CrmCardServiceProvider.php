@@ -7,20 +7,13 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Sellvation\CCMV2\CrmCards\Events\CrmFieldSavedEvent;
-use Sellvation\CCMV2\CrmCards\Events\CrmFieldSavingEvent;
 use Sellvation\CCMV2\CrmCards\Listeners\UpdateTypesenseSchemaListener;
-use Sellvation\CCMV2\CrmCards\Models\CrmCard;
-use Sellvation\CCMV2\TargetGroups\Livewire\Form;
-use Sellvation\CCMV2\TargetGroups\Livewire\Overview;
-use Sellvation\CCMV2\TargetGroups\Livewire\Rule;
 
 class CrmCardServiceProvider extends ServiceProvider
 {
-
-
     public function register(): void
     {
-//        $this->app->register(CrmCardEventsServiceProvider::class);
+        //        $this->app->register(CrmCardEventsServiceProvider::class);
     }
 
     public function boot(): void

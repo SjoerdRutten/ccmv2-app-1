@@ -2,17 +2,10 @@
 
 namespace Sellvation\CCMV2\CrmCards\Livewire\Cards\Forms;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
-use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
-use Sellvation\CCMV2\CrmCards\Models\CrmField;
 use Sellvation\CCMV2\CrmCards\Models\CrmFieldCategory;
-use Sellvation\CCMV2\CrmCards\Models\CrmFieldType;
 
 class CrmCardForm extends Form
 {

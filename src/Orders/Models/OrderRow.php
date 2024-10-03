@@ -2,8 +2,8 @@
 
 namespace Sellvation\CCMV2\Orders\Models;
 
-use Sellvation\CCMV2\Orders\Events\OrderRowSavedEvent;
 use Illuminate\Database\Eloquent\Model;
+use Sellvation\CCMV2\Orders\Events\OrderRowSavedEvent;
 
 class OrderRow extends Model
 {

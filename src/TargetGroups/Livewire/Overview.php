@@ -2,9 +2,9 @@
 
 namespace Sellvation\CCMV2\TargetGroups\Livewire;
 
-use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
 
 class Overview extends Component
 {

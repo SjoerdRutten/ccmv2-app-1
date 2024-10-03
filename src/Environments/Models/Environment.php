@@ -2,13 +2,13 @@
 
 namespace Sellvation\CCMV2\Environments\Models;
 
-use Sellvation\CCMV2\CrmCards\Models\CrmCard;
-use Sellvation\CCMV2\CrmCards\Models\CrmField;
-use Sellvation\CCMV2\CrmCards\Models\CrmFieldCategory;
 use App\Models\Team;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Sellvation\CCMV2\CrmCards\Models\CrmCard;
+use Sellvation\CCMV2\CrmCards\Models\CrmField;
+use Sellvation\CCMV2\CrmCards\Models\CrmFieldCategory;
 
 class Environment extends Model
 {

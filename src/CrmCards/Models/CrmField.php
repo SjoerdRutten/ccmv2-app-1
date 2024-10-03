@@ -3,10 +3,10 @@
 namespace Sellvation\CCMV2\CrmCards\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Model;
 use Sellvation\CCMV2\CrmCards\Events\CrmFieldSavedEvent;
 use Sellvation\CCMV2\CrmCards\Events\CrmFieldSavingEvent;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
-use Illuminate\Database\Eloquent\Model;
 
 class CrmField extends Model
 {
@@ -50,12 +50,13 @@ class CrmField extends Model
     {
         return $this->belongsTo(CrmFieldType::class);
     }
+
     public function crmFieldCategory()
     {
         return $this->belongsTo(CrmFieldCategory::class);
     }
 
-    protected function type() : Attribute
+    protected function type(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->crmFieldType->name

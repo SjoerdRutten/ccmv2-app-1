@@ -2,20 +2,12 @@
 
 namespace Sellvation\CCMV2\CrmCards\Livewire\Cards;
 
-use Illuminate\Support\Arr;
-use Livewire\Attributes\Computed;
-use Livewire\Attributes\Reactive;
-use Livewire\Attributes\Url;
-use Sellvation\CCMV2\CrmCards\Livewire\Cards\Forms\CrmCardForm;
-use Sellvation\CCMV2\CrmCards\Livewire\Fields\Forms\CrmFieldForm;
-use Sellvation\CCMV2\CrmCards\Models\CrmCard;
-use Sellvation\CCMV2\CrmCards\Models\CrmField;
 use Livewire\Component;
-use Sellvation\CCMV2\CrmCards\Models\CrmFieldCategory;
+use Sellvation\CCMV2\CrmCards\Livewire\Cards\Forms\CrmCardForm;
+use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 
 class Edit extends Component
 {
-
     public CrmCard $crmCard;
 
     public CrmCardForm $form;
@@ -24,7 +16,6 @@ class Edit extends Component
     {
         $this->form->setCrmCard($this->crmCard);
     }
-
 
     public function save()
     {

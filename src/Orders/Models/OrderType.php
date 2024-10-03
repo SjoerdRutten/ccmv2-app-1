@@ -2,8 +2,8 @@
 
 namespace Sellvation\CCMV2\Orders\Models;
 
-use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 use Illuminate\Database\Eloquent\Model;
+use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 
 class OrderType extends Model
 {

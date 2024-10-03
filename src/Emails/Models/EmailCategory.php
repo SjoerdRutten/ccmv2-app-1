@@ -1,12 +1,12 @@
 <?php
 
-namespace Sellvation\CCMV2\CrmCards\Models;
+namespace Sellvation\CCMV2\Emails\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 
-class CrmFieldCategory extends Model
+class EmailCategory extends Model
 {
     use HasEnvironment;
 
@@ -26,8 +26,8 @@ class CrmFieldCategory extends Model
         ];
     }
 
-    public function crmFields(): HasMany
+    public function emails(): HasMany
     {
-        return $this->hasMany(CrmField::class)->orderBy('position');
+        return $this->hasMany(Email::class);
     }
 }

@@ -2,9 +2,9 @@
 
 namespace Sellvation\CCMV2\Orders\Listeners;
 
-use Sellvation\CCMV2\Orders\Events\OrderRowSavedEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Sellvation\CCMV2\Orders\Events\OrderRowSavedEvent;
 
 class UpdateOrderTotalsListener implements ShouldQueue
 {

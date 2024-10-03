@@ -3,13 +3,11 @@
 namespace Sellvation\CCMV2\TargetGroups\Livewire;
 
 use Illuminate\Support\Arr;
-use Sellvation\CCMV2\CrmCards\Models\CrmCard;
-use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelector;
-use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelectorFacade;
-use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
+use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelectorFacade;
+use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
 
 class Form extends Component
 {

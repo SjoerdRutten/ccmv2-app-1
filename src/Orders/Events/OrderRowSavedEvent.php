@@ -2,8 +2,8 @@
 
 namespace Sellvation\CCMV2\Orders\Events;
 
-use Sellvation\CCMV2\Orders\Models\OrderRow;
 use Illuminate\Foundation\Events\Dispatchable;
+use Sellvation\CCMV2\Orders\Models\OrderRow;
 
 class OrderRowSavedEvent
 {

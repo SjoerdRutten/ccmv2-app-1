@@ -2,10 +2,10 @@
 
 namespace Sellvation\CCMV2\Orders\Models;
 
-use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Scout\Searchable;
+use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 
 class Order extends Model
 {

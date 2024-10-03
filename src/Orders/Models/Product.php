@@ -2,10 +2,10 @@
 
 namespace Sellvation\CCMV2\Orders\Models;
 
-use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 use App\Models\Team;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 
 class Product extends Model
 {

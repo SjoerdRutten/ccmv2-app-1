@@ -5,6 +5,10 @@ namespace Sellvation\CCMV2\TargetGroups\Livewire;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
+use Livewire\Attributes\Modelable;
+use Livewire\Component;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
 use Sellvation\CCMV2\Orders\Models\OrderType;
 use Sellvation\CCMV2\TargetGroups\Elements\Column;
@@ -14,10 +18,6 @@ use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeInteger;
 use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeSelect;
 use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeText;
 use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeTextArray;
-use Livewire\Attributes\Computed;
-use Livewire\Attributes\Locked;
-use Livewire\Attributes\Modelable;
-use Livewire\Component;
 
 class Rule extends Component
 {

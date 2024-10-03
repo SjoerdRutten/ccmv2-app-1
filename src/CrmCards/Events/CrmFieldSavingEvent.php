@@ -9,7 +9,5 @@ class CrmFieldSavingEvent
 {
     use Dispatchable;
 
-    public function __construct(public readonly CrmField $crmField)
-    {
-    }
+    public function __construct(public readonly CrmField $crmField) {}
 }

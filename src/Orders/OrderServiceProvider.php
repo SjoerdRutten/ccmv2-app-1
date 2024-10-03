@@ -18,7 +18,5 @@ class OrderServiceProvider extends ServiceProvider
         }
     }
 
-    private function registerLivewireComponents(): void
-    {
-    }
+    private function registerLivewireComponents(): void {}
 }

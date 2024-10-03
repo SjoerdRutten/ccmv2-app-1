@@ -5,7 +5,6 @@ namespace Sellvation\CCMV2\CrmCards\Livewire\Fields\Forms;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
@@ -31,8 +30,9 @@ class CrmFieldForm extends Form
 
     #[Validate]
     public string $label = '';
+
     #[Validate]
-    public ?string  $label_en = null;
+    public ?string $label_en = null;
 
     #[Validate]
     public ?string $label_de = null;
@@ -108,7 +108,7 @@ class CrmFieldForm extends Form
             ],
             'log_file' => [
                 'nullable',
-                'string'
+                'string',
             ],
             'overview_index' => [
                 'integer',

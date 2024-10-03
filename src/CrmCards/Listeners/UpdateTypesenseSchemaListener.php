@@ -13,9 +13,7 @@ class UpdateTypesenseSchemaListener
 {
     use Queueable;
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function handle(CrmFieldSavedEvent $event): void
     {
@@ -47,7 +45,7 @@ class UpdateTypesenseSchemaListener
                             'protocol' => 'http',
                         ],
                     ],
-                    'client' => new HttplugClient(),
+                    'client' => new HttplugClient,
                 ]
             );
 

@@ -3,11 +3,9 @@
 namespace Sellvation\CCMV2\CrmCards\Livewire\Fields;
 
 use Illuminate\Support\Arr;
-use Livewire\Attributes\Computed;
-use Livewire\Attributes\Reactive;
 use Livewire\Attributes\Url;
-use Sellvation\CCMV2\CrmCards\Models\CrmField;
 use Livewire\Component;
+use Sellvation\CCMV2\CrmCards\Models\CrmField;
 use Sellvation\CCMV2\CrmCards\Models\CrmFieldCategory;
 
 class Overview extends Component
@@ -53,7 +51,7 @@ class Overview extends Component
     public function getCrmFields(): void
     {
         $this->crmFields = CrmField::with(['crmFieldType', 'crmFieldCategory'])
-            ->when(!empty($this->filter['crm_field_category_id']), function ($query) {
+            ->when(! empty($this->filter['crm_field_category_id']), function ($query) {
                 $query->where(
                     function ($query) {
                         $query->whereHas('crmFieldCategory', function ($query) {
@@ -62,11 +60,11 @@ class Overview extends Component
                     }
                 );
             })
-            ->when(!empty($this->filter['q']), function ($query) {
+            ->when(! empty($this->filter['q']), function ($query) {
                 $query->where(
                     function ($query) {
-                        $query->where('name', 'like', '%' . $this->filter['q'] . '%')
-                            ->orWhere('label', 'like', '%' . $this->filter['q'] . '%');
+                        $query->where('name', 'like', '%'.$this->filter['q'].'%')
+                            ->orWhere('label', 'like', '%'.$this->filter['q'].'%');
                     }
                 );
             })

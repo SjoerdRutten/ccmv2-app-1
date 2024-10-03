@@ -2,9 +2,9 @@
 
 namespace Sellvation\CCMV2\TargetGroups\Policies;
 
-use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
 
 class TargetGroupPolicy
 {

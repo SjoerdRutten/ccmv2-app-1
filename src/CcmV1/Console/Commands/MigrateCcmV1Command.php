@@ -2,12 +2,12 @@
 
 namespace Sellvation\CCMV2\CcmV1\Console\Commands;
 
-use Sellvation\CCMV2\Environments\Models\Environment;
-use Sellvation\CCMV2\Environments\Models\Timezone;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
+use Sellvation\CCMV2\Environments\Models\Environment;
+use Sellvation\CCMV2\Environments\Models\Timezone;
 
 class MigrateCcmV1Command extends Command
 {

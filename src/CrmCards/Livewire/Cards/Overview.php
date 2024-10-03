@@ -2,15 +2,11 @@
 
 namespace Sellvation\CCMV2\CrmCards\Livewire\Cards;
 
-use Illuminate\Support\Arr;
-use Livewire\Attributes\Computed;
-use Livewire\Attributes\Reactive;
 use Livewire\Attributes\Url;
+use Livewire\Component;
 use Livewire\WithPagination;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
-use Livewire\Component;
-use Sellvation\CCMV2\CrmCards\Models\CrmFieldCategory;
 use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelectorFacade;
 use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
 
@@ -42,6 +38,7 @@ class Overview extends Component
                 ->options(['query_by' => '*'])
                 ->paginate(25);
         }
+
         return CrmCard::orderBy('id')
             ->paginate(25);
     }

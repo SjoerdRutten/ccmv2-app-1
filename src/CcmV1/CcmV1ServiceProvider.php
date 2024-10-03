@@ -2,10 +2,9 @@
 
 namespace Sellvation\CCMV2\CcmV1;
 
-use Illuminate\Support\Facades\Config;
+use Illuminate\Support\ServiceProvider;
 use Sellvation\CCMV2\CcmV1\Console\Commands\MigrateCcmV1Command;
 use Sellvation\CCMV2\CcmV1\Console\Commands\MigrateCcmV1Environment;
-use Illuminate\Support\ServiceProvider;
 
 class CcmV1ServiceProvider extends ServiceProvider
 {

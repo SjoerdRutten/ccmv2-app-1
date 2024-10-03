@@ -2,14 +2,14 @@
 
 namespace Sellvation\CCMV2\TargetGroups;
 
-use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelector;
-use Sellvation\CCMV2\TargetGroups\Livewire\Form;
-use Sellvation\CCMV2\TargetGroups\Livewire\Overview;
-use Sellvation\CCMV2\TargetGroups\Livewire\Rule;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
+use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelector;
+use Sellvation\CCMV2\TargetGroups\Livewire\Form;
+use Sellvation\CCMV2\TargetGroups\Livewire\Overview;
+use Sellvation\CCMV2\TargetGroups\Livewire\Rule;
 
 class TargetGroupServiceProvider extends ServiceProvider
 {
@@ -25,7 +25,6 @@ class TargetGroupServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
         $this->loadViewsFrom(__DIR__.'/views', 'target-group');
-
 
         if (! App::runningInConsole()) {
             $this->registerLivewireComponents();

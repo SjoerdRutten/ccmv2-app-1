@@ -2,12 +2,12 @@
 
 namespace Sellvation\CCMV2\CcmV1\Console\Commands;
 
+use Carbon\Carbon;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Sellvation\CCMV2\CrmCards\Models\CrmFieldType;
 use Sellvation\CCMV2\Environments\Models\Environment;
-use Carbon\Carbon;
-use Illuminate\Console\Command;
 
 class MigrateCcmV1Environment extends Command
 {
@@ -76,7 +76,7 @@ class MigrateCcmV1Environment extends Command
             ->get();
 
         $fieldTypes = [];
-        foreach ($rows AS $row) {
+        foreach ($rows as $row) {
             $crmField = CrmFieldType::firstOrCreate([
                 'name' => $row->veldtype,
             ], [

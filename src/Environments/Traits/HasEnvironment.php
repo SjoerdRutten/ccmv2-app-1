@@ -2,10 +2,10 @@
 
 namespace Sellvation\CCMV2\Environments\Traits;
 
-use Sellvation\CCMV2\Environments\Models\Environment;
-use Sellvation\CCMV2\Environments\Scopes\EnvironmentScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Sellvation\CCMV2\Environments\Models\Environment;
+use Sellvation\CCMV2\Environments\Scopes\EnvironmentScope;
 
 trait HasEnvironment
 {
