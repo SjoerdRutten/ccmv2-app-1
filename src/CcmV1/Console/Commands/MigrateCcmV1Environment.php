@@ -39,7 +39,7 @@ class MigrateCcmV1Environment extends Command
                 $this->migrateCrmFieldCategories();
                 $this->migrateCrmFields();
             }
-            if ($this->confirm('CrmCards importeren ?', false)) {
+            if ($this->confirm('CrmCards importeren ?', true)) {
                 $this->migrateCrmCards();
             }
             if ($this->confirm('Emails importeren ?', true)) {
@@ -161,7 +161,7 @@ class MigrateCcmV1Environment extends Command
         $progressBar = $this->output->createProgressBar(
             \DB::connection('db02')
                 ->table('crm_'.$this->environmentId)
-                ->count()
+                ->count() - $skip
         );
 
         \DB::connection('db02')
