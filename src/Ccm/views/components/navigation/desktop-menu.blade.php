@@ -7,6 +7,7 @@
             </x-ccm::navigation.desktop-link>
             <x-ccm::navigation.desktop-link route="ems::emails::overview" label="EMS">
                 <x-ccm::navigation.desktop-link route="ems::emails::overview" label="E-mails" :sub="true"/>
+                <x-ccm::navigation.desktop-link route="ems::emailcontents::overview" label="Content" :sub="true"/>
             </x-ccm::navigation.desktop-link>
             <x-ccm::navigation.desktop-link route="target-groups::overview" label="Doelgroep selectie"/>
         </ul>

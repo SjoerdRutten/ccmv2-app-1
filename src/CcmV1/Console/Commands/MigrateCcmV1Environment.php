@@ -295,13 +295,13 @@ class MigrateCcmV1Environment extends Command
             ->orderBy('id')
             ->chunk(10, function ($rows) {
                 foreach ($rows as $row) {
+                    $recipientCrmFieldId = null;
                     if (preg_match('/\\[crmdata:[A-Za-z]+\\]/i', $row->ontvanger)) {
                         $recipientType = 'CRMFIELD';
                         $recipient = null;
 
                         preg_match('/\\[crmdata:(?<column>[^:]+)+\\]/i', $row->ontvanger, $matches);
 
-                        $recipientCrmFieldId = null;
                         if ($crmField = $this->environment
                             ->crmFields()
                             ->whereName($matches['column'])
@@ -335,10 +335,10 @@ class MigrateCcmV1Environment extends Command
                         'stripo_html' => $row->stripo_html,
                         'stripo_css' => $row->stripo_css,
                         'is_template' => (bool) $row->is_template,
-                        'updated_at' => 'datum',
+                        'updated_at' => $row->datum,
                     ];
 
-                    $email = $this->environment->emails()->firstOrCreate([
+                    $email = $this->environment->emails()->updateOrCreate([
                         'name' => $row->naam,
                     ], $data);
                 }

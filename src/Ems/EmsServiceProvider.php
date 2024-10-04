@@ -6,8 +6,6 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
-use Sellvation\CCMV2\Ems\Livewire\Emails\Edit;
-use Sellvation\CCMV2\Ems\Livewire\Emails\Overview;
 
 class EmsServiceProvider extends ServiceProvider
 {
@@ -28,8 +26,10 @@ class EmsServiceProvider extends ServiceProvider
 
     private function registerLivewireComponents(): void
     {
-        Livewire::component('ems::emails::overview', Overview::class);
-        Livewire::component('ems::emails::edit', Edit::class);
+        Livewire::component('ems::emails::overview', \Sellvation\CCMV2\Ems\Livewire\Emails\Overview::class);
+        Livewire::component('ems::emails::edit', \Sellvation\CCMV2\Ems\Livewire\Emails\Edit::class);
+
+        Livewire::component('ems::emailcontents::overview', \Sellvation\CCMV2\Ems\Livewire\EmailContents\Overview::class);
     }
 
     private function registerEvents()
