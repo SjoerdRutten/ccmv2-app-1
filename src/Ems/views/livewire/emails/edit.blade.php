@@ -87,7 +87,7 @@
                             :disabled="$this->form->id > 0"
                     >
                         <option value="STRIPO">Stripo</option>
-                        <option value="WYSIWYG EDITOR">TinyMce</option>
+                        <option value="WYSIWYG EDITOR">Wysiwyg editor</option>
                         <option value="HTML">Tekstveld</option>
                     </x-ccm::forms.select>
                 </div>
