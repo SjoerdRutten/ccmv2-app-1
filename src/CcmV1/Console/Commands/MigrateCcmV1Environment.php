@@ -39,11 +39,12 @@ class MigrateCcmV1Environment extends Command
                 $this->migrateCrmFieldCategories();
                 $this->migrateCrmFields();
             }
-            if ($this->confirm('CrmCards importeren ?', true)) {
+            if ($this->confirm('CrmCards importeren ?', false)) {
                 $this->migrateCrmCards();
             }
             if ($this->confirm('Emails importeren ?', true)) {
                 $this->migrateEmailCategories();
+                $this->migrateEmails();
             }
 
             $this->cleanup();
@@ -273,10 +274,76 @@ class MigrateCcmV1Environment extends Command
                 'position' => $row->positie,
             ];
 
-            $emailCategory = $this->environment->emailCategories()->firstOrCreate(['name' => $row->naamnl, $data], $data);
+            $emailCategory = $this->environment
+                ->emailCategories()
+                ->firstOrCreate([
+                    'name' => $row->naamnl,
+                ], $data);
             $this->emailCategoryIds[$row->id] = $emailCategory->id;
         }
 
         $this->info($this->environment->emailCategories()->count().' e-mail categories imported');
+    }
+
+    private function migrateEmails()
+    {
+        $this->info('Import e-mails');
+
+        $rows = \DB::connection('db02')
+            ->table('emails')
+            ->where('omgevingen_id', $this->environmentId)
+            ->orderBy('id')
+            ->chunk(10, function ($rows) {
+                foreach ($rows as $row) {
+                    if (preg_match('/\\[crmdata:[A-Za-z]+\\]/i', $row->ontvanger)) {
+                        $recipientType = 'CRMFIELD';
+                        $recipient = null;
+
+                        preg_match('/\\[crmdata:(?<column>[^:]+)+\\]/i', $row->ontvanger, $matches);
+
+                        $recipientCrmFieldId = null;
+                        if ($crmField = $this->environment
+                            ->crmFields()
+                            ->whereName($matches['column'])
+                            ->first()) {
+                            $recipientCrmFieldId = $crmField->id;
+                        }
+
+                    } else {
+                        $recipientType = 'TEXT';
+                        $recipient = $row->ontvanger;
+                    }
+
+                    $data = [
+                        'environment_id' => $this->environment->id,
+                        'email_category_id' => $row->rubrieken_id ? $this->emailCategoryIds[$row->rubrieken_id] : null,
+                        'recipient_crm_field_id' => $recipientCrmFieldId,
+                        'name' => $row->naam,
+                        'description' => $row->omschrijving,
+                        'sender_email' => $row->afzender,
+                        'sender_name' => $row->afzenderomschrijving,
+                        'recipient_type' => $recipientType,
+                        'recipient' => $recipient,
+                        'reply_to' => $row->antwoorden,
+                        'subject' => $row->onderwerp,
+                        'optout_url' => $row->afmeldurl,
+                        'html' => $row->html,
+                        'html_type' => $row->html_type,
+                        'text' => $row->text,
+                        'utm_code' => $row->code,
+                        'is_locked' => (bool) $row->is_vergrendeld,
+                        'stripo_html' => $row->stripo_html,
+                        'stripo_css' => $row->stripo_css,
+                        'is_template' => (bool) $row->is_template,
+                        'updated_at' => 'datum',
+                    ];
+
+                    $email = $this->environment->emails()->firstOrCreate([
+                        'name' => $row->naam,
+                    ], $data);
+                }
+            });
+
+        $this->info($this->environment->emails()->count().' e-mail imported');
     }
 }

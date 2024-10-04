@@ -28,17 +28,36 @@ class EmailForm extends Form
 
     public ?string $sender_name = null;
 
+    public string $recipient_type = 'CRMFIELD';
+
     public ?string $recipient = null;
 
     public ?string $reply_to = null;
 
     public string $subject = '';
 
+    public ?string $text = null;
+
+    public ?string $html_type = null;
+
+    public ?string $html = null;
+
     public function rules(): array
     {
         return [
             'id' => [
                 'nullable',
+            ],
+            'sender_email' => [
+                'required',
+                'email:rfc,dns',
+            ],
+            'subject' => [
+                'required',
+                'string',
+            ],
+            'html_type' => [
+                'required',
             ],
         ];
     }
@@ -62,10 +81,15 @@ class EmailForm extends Form
             'description',
             'sender_email',
             'sender_name',
+            'recipient_type',
+            'recipient_crm_field_id',
             'recipient',
             'reply_to',
             'subject',
             'optout_url',
+            'html',
+            'html_type',
+            'text',
         ]);
 
         $this->email->fill($data);

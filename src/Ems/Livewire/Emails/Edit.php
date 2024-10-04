@@ -17,6 +17,16 @@ class Edit extends Component
         $this->form->setEmail($this->email);
     }
 
+    public function updated($property, $value)
+    {
+        switch ($property) {
+            case 'form.recipient_type':
+                $this->form->recipient = null;
+                $this->form->recipient_crm_field_id = null;
+                break;
+        }
+    }
+
     public function save()
     {
         $this->form->save();

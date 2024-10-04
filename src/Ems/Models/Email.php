@@ -17,6 +17,7 @@ class Email extends Model
         'description',
         'sender_email',
         'sender_name',
+        'recipient_type',
         'recipient',
         'reply_to',
         'subject',

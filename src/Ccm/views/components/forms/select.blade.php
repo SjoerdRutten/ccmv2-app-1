@@ -3,9 +3,10 @@
     'label' => '',
     'name' => '',
     'disabled' => false,
+    'grow' => false,
 ])
 
-<div>
+<div class="{{ $grow ? 'grow' : '' }}">
     <label for="{{ $id }}" class="block text-sm font-medium leading-6 text-gray-900">{{ $label }}</label>
     <select id="{{ $id }}"
             name="{{ $name }}"
