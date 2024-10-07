@@ -31,7 +31,7 @@
                     <tr x-on:dblclick="document.location.href = '{{ route('ems::emailcontents::edit', $content) }}'">
                         <x-ccm::tables.td :first="true">{{ $content->id }}</x-ccm::tables.td>
                         <x-ccm::tables.td>
-                            {{ $content->isActive ? 'Ja' : 'Nee' }}
+                            <x-ccm::is-active :is-active="$content->isActive"/>
                         </x-ccm::tables.td>
                         <x-ccm::tables.td>
                             {{ $content->name }}

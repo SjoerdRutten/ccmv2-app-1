@@ -17,6 +17,7 @@
   ],
   "require": {
     "php": "^8.2",
+    "blade-ui-kit/blade-heroicons": "^2.4",
     "laravel/scout": "^10.11",
     "livewire/livewire": "^3.0",
     "symfony/http-client": "^7.1",
