@@ -30,4 +30,9 @@ class EmailCategory extends Model
     {
         return $this->hasMany(Email::class);
     }
+
+    public function emailContents(): HasMany
+    {
+        return $this->hasMany(EmailContent::class);
+    }
 }

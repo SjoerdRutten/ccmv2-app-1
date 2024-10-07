@@ -30,6 +30,7 @@ class EmsServiceProvider extends ServiceProvider
         Livewire::component('ems::emails::edit', \Sellvation\CCMV2\Ems\Livewire\Emails\Edit::class);
 
         Livewire::component('ems::emailcontents::overview', \Sellvation\CCMV2\Ems\Livewire\EmailContents\Overview::class);
+        Livewire::component('ems::emailcontents::edit', \Sellvation\CCMV2\Ems\Livewire\EmailContents\Edit::class);
     }
 
     private function registerEvents()

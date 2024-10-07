@@ -6,6 +6,7 @@ use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Sellvation\CCMV2\Ems\Models\Email;
+use Sellvation\CCMV2\Ems\Models\EmailCategory;
 
 class Overview extends Component
 {
@@ -14,6 +15,7 @@ class Overview extends Component
     #[Url]
     public array $filter = [
         'q' => null,
+        'email_category_id' => null,
     ];
 
     public function updated($property, $value)
@@ -31,6 +33,9 @@ class Overview extends Component
                     ->orWhere('subject', 'like', '%'.$this->filter['q'].'%')
                     ->orWhere('description', 'like', '%'.$this->filter['q'].'%');
             })
+            ->when($this->filter['email_category_id'], function ($query, $filter) {
+                $query->where('email_category_id', $filter);
+            })
             ->paginate();
     }
 
@@ -39,6 +44,10 @@ class Overview extends Component
         return view('ems::livewire.emails.overview')
             ->with([
                 'emails' => $this->getEmails(),
+                'emailCategories' => EmailCategory::query()
+                    ->whereHas('emails')
+                    ->orderBy('name')
+                    ->get(),
             ]);
     }
 }

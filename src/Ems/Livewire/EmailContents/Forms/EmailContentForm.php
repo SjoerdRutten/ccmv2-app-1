@@ -49,6 +49,8 @@ class EmailContentForm extends Form
         $this->emailContent = $emailContent;
 
         $this->fill($emailContent->toArray());
+        $this->start_at = $emailContent->start_at->toDateTimeString();
+        $this->end_at = $emailContent->end_at->toDateTimeString();
     }
 
     public function save()

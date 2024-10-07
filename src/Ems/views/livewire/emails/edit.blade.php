@@ -93,7 +93,7 @@
                 </div>
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="1">
-                @if ($this->form->html_type !== 'HTML')
+                @if ($this->form->html_type === 'HTML')
                     <x-ccm::forms.html-editor wire-name="form.html"/>
                 @elseif ($this->form->html_type === 'STRIPO')
                     <x-ccm::forms.textarea name="text" wire:model="form.html" rows="30"></x-ccm::forms.textarea>
