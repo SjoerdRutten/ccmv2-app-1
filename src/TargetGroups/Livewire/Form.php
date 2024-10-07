@@ -27,6 +27,13 @@ class Form extends Component
         }
     }
 
+    public function rules(): array
+    {
+        return [
+            'name' => 'required',
+        ];
+    }
+
     public function addBlock()
     {
         $index = count($this->elements);
@@ -78,6 +85,8 @@ class Form extends Component
 
     public function save()
     {
+        $this->validate();
+
         $targetGroup = TargetGroup::updateOrCreate([
             'id' => $this->id,
         ], [

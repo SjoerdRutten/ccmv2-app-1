@@ -9,7 +9,8 @@
         </x-ccm::pages.intro>
         <x-ccm::tables.table>
             <x-slot:thead>
-                <x-ccm::tables.th :first="true">Naam</x-ccm::tables.th>
+                <x-ccm::tables.th :first="true">ID</x-ccm::tables.th>
+                <x-ccm::tables.th>Naam</x-ccm::tables.th>
                 <x-ccm::tables.th>Creatietijd</x-ccm::tables.th>
                 <x-ccm::tables.th>Updatetijd</x-ccm::tables.th>
                 <x-ccm::tables.th>Aantal resultaten</x-ccm::tables.th>
@@ -17,15 +18,16 @@
             </x-slot:thead>
             <x-slot:tbody>
                 @foreach ($this->targetGroups AS $targetGroup)
-                    <tr>
-                        <x-ccm::tables.td :first="true">{{ $targetGroup->name }}</x-ccm::tables.td>
+                    <x-ccm::tables.tr :route="route('target-groups::form', $targetGroup)">
+                        <x-ccm::tables.td :first="true">{{ $targetGroup->id }}</x-ccm::tables.td>
+                        <x-ccm::tables.td>{{ $targetGroup->name }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $targetGroup->created_at->toDateTimeString() }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $targetGroup->updated_at->toDateTimeString() }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $targetGroup->numberOfResults }}</x-ccm::tables.td>
                         <x-ccm::tables.td :link="true">
-                            <a href="{{ route('target-groups::form', $targetGroup) }}" class="text-indigo-600 hover:text-indigo-900">Bewerk<span class="sr-only">, {{ $targetGroup->name }}</span></a>
+                            <x-ccm::tables.edit-link :href="route('target-groups::form', $targetGroup)"/>
                         </x-ccm::tables.td>
-                    </tr>
+                    </x-ccm::tables.tr>
                 @endforeach
             </x-slot:tbody>
         </x-ccm::tables.table>

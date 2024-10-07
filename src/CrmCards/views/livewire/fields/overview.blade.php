@@ -13,7 +13,8 @@
                 <x-ccm::forms.input
                         name="filterQ"
                         wire:model.live.debounce="filter.q"
-                >Zoek op naam of omschrijving</x-ccm::forms.input>
+                >Zoek op naam of omschrijving
+                </x-ccm::forms.input>
             </div>
         </x-ccm::pages.intro>
         <x-ccm::tables.table>
@@ -29,7 +30,7 @@
             </x-slot:thead>
             <x-slot:tbody>
                 @foreach ($crmFields AS $key => $crmField)
-                    <tr>
+                    <x-ccm::tables.tr :route="route('crm-cards::fields::edit', $crmField['id'])">
                         <x-ccm::tables.td :first="true">
                             {{ $crmField['id'] }}
                         </x-ccm::tables.td>
@@ -39,7 +40,8 @@
                                 {{ \Illuminate\Support\Arr::get($crmField, 'crm_field_category.name') }}
                             </x-slot:sub>
                         </x-ccm::tables.td>
-                        <x-ccm::tables.td class="max-w-[150px] truncate ..." title="{{ $crmField['label'] }}">{{ $crmField['label'] }}</x-ccm::tables.td>
+                        <x-ccm::tables.td class="max-w-[150px] truncate ..."
+                                          title="{{ $crmField['label'] }}">{{ $crmField['label'] }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $crmField['crm_field_type']['name'] }}</x-ccm::tables.td>
                         <x-ccm::tables.td :link="true">
                             <x-ccm::forms.checkbox
@@ -74,9 +76,9 @@
                             />
                         </x-ccm::tables.td>
                         <x-ccm::tables.td :link="true">
-                            <x-ccm::tables.edit-link :href="route('crm-cards::fields::edit', $crmField['id'])" />
+                            <x-ccm::tables.edit-link :href="route('crm-cards::fields::edit', $crmField['id'])"/>
                         </x-ccm::tables.td>
-                    </tr>
+                    </x-ccm::tables.tr>
                 @endforeach
             </x-slot:tbody>
         </x-ccm::tables.table>

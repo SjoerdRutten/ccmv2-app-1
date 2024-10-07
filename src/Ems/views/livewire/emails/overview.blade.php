@@ -28,7 +28,7 @@
             </x-slot:thead>
             <x-slot:tbody>
                 @foreach ($emails AS $key => $email)
-                    <tr x-on:dblclick="document.location.href = '{{ route('ems::emails::edit', $email) }}'">
+                    <x-ccm::tables.tr :route="route('ems::emails::edit', $email)">
                         <x-ccm::tables.td :first="true">{{ $email->id }}</x-ccm::tables.td>
                         <x-ccm::tables.td>
                             {{ $email->name }}
@@ -42,7 +42,7 @@
                         <x-ccm::tables.td :link="true">
                             <x-ccm::tables.edit-link :href="route('ems::emails::edit', $email)"/>
                         </x-ccm::tables.td>
-                    </tr>
+                    </x-ccm::tables.tr>
                 @endforeach
             </x-slot:tbody>
         </x-ccm::tables.table>
