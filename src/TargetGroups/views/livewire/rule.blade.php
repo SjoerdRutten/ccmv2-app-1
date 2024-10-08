@@ -3,8 +3,7 @@
         <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                 wire:click="$parent.removeElement('{{ $filter['index'] }}')"
         >
-
-            X
+            <x-heroicon-s-x-circle class="text-white h-4 w-4"/>
         </button>
         <select name="column" wire:model.live="filter.column" class="max-w-[25%]">
             <option>Kies kolom</option>
@@ -19,7 +18,20 @@
             @endforeach
         </select>
 
-        @if (Arr::get($filter, 'columnType') === 'text')
+        @if (Arr::get($filter, 'columnType') === 'target_group')
+            {{--            <select name="operator" wire:model.live="filter.operator">--}}
+            {{--                <option value="eq">Gelijk aan</option>--}}
+            {{--                <option value="neq">Niet gelijk aan</option>--}}
+            {{--            </select>--}}
+            <select name="value" wire:model.live="filter.value">
+                <option value="">Selecteer doelgroep</option>
+                @foreach ($targetGroup AS $targetGroup)
+                    <option value="{{ $targetGroup->id }}">
+                        {{ $targetGroup->name }}
+                    </option>
+                @endforeach
+            </select>
+        @elseif (Arr::get($filter, 'columnType') === 'text')
             <select name="operator" wire:model.live="filter.operator">
                 <option value="">Kies operator</option>
                 <option value="con">Bevat</option>
@@ -76,10 +88,10 @@
 
             @if (Arr::get($filter, 'operator'))
                 @if (Arr::get($filter, 'operator') === 'between')
-                    <input type="number" step="1" wire:model.blur="filter.value.from"/>
-                    <input type="number" step="1" wire:model.blur="filter.value.to"/>
+                    <input type="number" step="1" wire:model="filter.from"/>
+                    <input type="number" step="1" wire:model="filter.to"/>
                 @else
-                    <input type="number" step="1" wire:model.blur="filter.value"/>
+                    <input type="number" step="1" wire:model="filter.value"/>
                 @endif
             @endif
         @elseif (Arr::get($filter, 'columnType') === 'date')

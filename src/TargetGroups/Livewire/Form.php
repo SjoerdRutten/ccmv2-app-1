@@ -80,6 +80,10 @@ class Form extends Component
                 'name' => uniqid(),
                 'column' => '',
                 'operator' => '',
+                'value' => null,
+                'from' => null,
+                'to' => null,
+                'columnType' => null,
             ]);
     }
 

@@ -16,8 +16,10 @@ use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeBoolean;
 use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeDate;
 use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeInteger;
 use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeSelect;
+use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeTargetGroup;
 use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeText;
 use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeTextArray;
+use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
 
 class Rule extends Component
 {
@@ -42,6 +44,7 @@ class Rule extends Component
                 $this->filter['value'] = null;
 
                 switch ($this->filter['columnType']) {
+                    case 'target_group':
                     case 'text':
                         $this->filter['operator'] = 'eq';
                         break;
@@ -51,13 +54,6 @@ class Rule extends Component
                     default:
                         $this->filter['operator'] = null;
                 }
-
-            } elseif ($property === 'filter.operator') {
-                if ($value === 'between') {
-                    $this->filter['value'] = ['from' => null, 'to' => null];
-                } else {
-                    $this->filter['value'] = '';
-                }
             }
         }
     }
@@ -66,6 +62,7 @@ class Rule extends Component
     {
         $columns = [];
         // First the order columns
+        $columns[] = new Column('target_group_id', new ColumnTypeTargetGroup, '- Doelgroep selectie');
         $columns[] = new Column('orders.store', new ColumnTypeInteger, 'Transactie winkelnummer');
         $columns[] = new Column('orders.order_time', new ColumnTypeDate, 'Transactie transactie datum');
         $columns[] = new Column('orders.payment_method', new ColumnTypeText, 'Transactie betaalmethode');
@@ -117,12 +114,12 @@ class Rule extends Component
             }
 
             if ($columnType) {
-                $columns[] = new Column($crmField->name, $columnType, $crmField->label);
+                $columns[] = new Column($crmField->name, $columnType, empty($crmField->label) ? $crmField->name : $crmField->label);
             }
 
         }
 
-        $columns = Arr::sort($columns, fn ($column) => $column->label);
+        $columns = Arr::sort($columns, fn ($column) => Str::lower($column->label));
 
         return $columns;
     }
@@ -147,6 +144,7 @@ class Rule extends Component
         return view('target-group::livewire.rule')
             ->with([
                 'columns' => $this->getColumns(),
+                'targetGroup' => TargetGroup::orderBy('name')->get(),
             ]);
     }
 }

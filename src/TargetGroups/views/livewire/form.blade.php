@@ -32,6 +32,13 @@
                     Blok toevoegen
                 </button>
             </x-ccm::tabs.tab-content>
+
+            <div class="text-xs italic">
+                Gegenereerde query:
+                {{ $this->getQueryFilters() }}
+            </div>
+
+
         </x-ccm::tabs.base>
     </div>
 </div>
@@ -41,12 +48,6 @@
 {{--    <div class="mb-8">--}}
 {{--        Aantal resultaten:--}}
 {{--        {{ $this->count() }}--}}
-{{--    </div>--}}
-
-
-{{--    <div class="text-xs italic">--}}
-{{--        Gegenereerde query:--}}
-{{--        {{ $this->getQueryFilters() }}--}}
 {{--    </div>--}}
 
 

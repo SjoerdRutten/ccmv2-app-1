@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
+use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
 
 class TargetGroupSelector
 {
@@ -27,10 +28,16 @@ class TargetGroupSelector
 
         if (count($filters)) {
             if ($root) {
-                return '('.implode(' || ', $filters).')';
+                $filterString = implode(' || ', $filters);
             } else {
-                return '('.implode(' && ', $filters).')';
+                $filterString = implode(' && ', $filters);
             }
+
+            if (count($filters) > 1) {
+                $filterString = '('.$filterString.')';
+            }
+
+            return $filterString;
         }
 
         return null;
@@ -70,20 +77,36 @@ class TargetGroupSelector
         } elseif (Arr::get($filter, 'columnType') === 'boolean') {
             $filter['operator'] = 'eq';
             $value = Arr::get($filter, 'value') ? 'true' : 'false';
+        } elseif (Arr::get($filter, 'columnType') === 'target_group') {
+            $value = Arr::get($filter, 'value');
         } else {
             $value = Arr::get($filter, 'value');
         }
 
-        if (Arr::get($filter, 'column') && Arr::get($filter, 'operator') && ($value !== null) && ($value !== '')) {
+        if (Arr::get($filter, 'column') && ($operator = Arr::get($filter, 'operator'))) {
+            if ($operator === 'between') {
+                if (filled(Arr::get($filter, 'from')) && filled(Arr::get($filter, 'to'))) {
+                    if (Str::contains(Arr::get($filter, 'column'), '.')) {
+                        $columnCollection = explode('.', Arr::get($filter, 'column'));
 
-            if (Str::contains(Arr::get($filter, 'column'), '.')) {
-                $columnCollection = explode('.', Arr::get($filter, 'column'));
-                $filter = '$'.$columnCollection[0].'_'.Auth::user()->currentEnvironmentId.'('.$columnCollection[1].':'.$this->generateComparison(Arr::get($filter, 'operator'), $value, Arr::get($filter, 'columnType')).')';
-            } else {
-                $filter = Arr::get($filter, 'column').':'.$this->generateComparison(Arr::get($filter, 'operator'), $value, Arr::get($filter, 'columnType'));
+                        return '$'.$columnCollection[0].'_'.Auth::user()->currentEnvironmentId.'('.$columnCollection[1].':['.(int) Arr::get($filter, 'from').'..'.(int) Arr::get($filter, 'to').'])';
+                    } else {
+                        return Arr::get($filter, 'column').':['.(int) Arr::get($filter, 'from').'..'.(int) Arr::get($filter, 'to').']';
+                    }
+                }
+            } elseif (filled($value)) {
+                if (Arr::get($filter, 'columnType') == 'target_group') {
+                    $targetGroup = TargetGroup::find(Arr::get($filter, 'value'));
+
+                    return $this->getQueryFilters($targetGroup->filters);
+                } elseif (Str::contains(Arr::get($filter, 'column'), '.')) {
+                    $columnCollection = explode('.', Arr::get($filter, 'column'));
+
+                    return '$'.$columnCollection[0].'_'.Auth::user()->currentEnvironmentId.'('.$columnCollection[1].':'.$this->generateComparison(Arr::get($filter, 'operator'), $value, Arr::get($filter, 'columnType')).')';
+                } else {
+                    return Arr::get($filter, 'column').':'.$this->generateComparison(Arr::get($filter, 'operator'), $value, Arr::get($filter, 'columnType'));
+                }
             }
-
-            return $filter;
         }
 
         return false;
@@ -121,7 +144,7 @@ class TargetGroupSelector
             case 'ne':
                 return '!='.$value;
             case 'between':
-                return '['.(int) $value['from'].'..'.(int) $value['to'].']';
+                return '['.(int) Arr::get($value, 'from').'..'.(int) Arr::get($value, 'to').']';
             case 'con':
                 return '*'.$value.'*';
             case 'dnc':
