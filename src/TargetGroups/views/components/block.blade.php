@@ -10,7 +10,7 @@
     }
 @endphp
 
-<div class="border border-gray-500 bg-gray-200 p-2 my-1 flex flex-col relative gap-2 rounded">
+<div class="border border-gray-300 bg-gray-200 p-2 my-1 flex flex-col relative gap-2 rounded">
     @if ($index !== 0)
         <div class="absolute -top-[18px] bg-white border border-gray-500 px-2 rounded">
             OF
