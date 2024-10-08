@@ -25,9 +25,11 @@
                         <x-ccm::tables.td>{{ $targetGroup->updated_at->toDateTimeString() }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $targetGroup->numberOfResults }}</x-ccm::tables.td>
                         <x-ccm::tables.td :link="true">
-                            <x-ccm::tables.edit-link :href="route('target-groups::form', $targetGroup)"/>
-                            <x-ccm::tables.delete-link wire:click="delete({{ $targetGroup->id }})"
-                                                       wire:confirm="Weet je zeker dat je deze doelgroep wilt verwijderen ?"/>
+                            <div class="flex flex-row-reverse gap-4">
+                                <x-ccm::tables.edit-link :href="route('target-groups::form', $targetGroup)"/>
+                                <x-ccm::tables.delete-link wire:click="delete({{ $targetGroup->id }})"
+                                                           wire:confirm="Weet je zeker dat je deze doelgroep wilt verwijderen ?"/>
+                            </div>
                         </x-ccm::tables.td>
                     </x-ccm::tables.tr>
                 @endforeach

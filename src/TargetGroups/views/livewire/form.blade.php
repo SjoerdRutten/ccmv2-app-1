@@ -11,7 +11,7 @@
                 <x-ccm::tabs.nav-tab :index="0" :badge="$this->count()">
                     Query builder
                 </x-ccm::tabs.nav-tab>
-                {{--                <x-ccm::tabs.nav-tab :index="1">Resultaten</x-ccm::tabs.nav-tab>--}}
+                <x-ccm::tabs.nav-tab :index="1">Debug</x-ccm::tabs.nav-tab>
             </x-slot:tabs>
 
             <x-ccm::tabs.tab-content :index="0">
@@ -31,11 +31,9 @@
                     Blok toevoegen
                 </x-ccm::buttons.primary>
             </x-ccm::tabs.tab-content>
-
-            <div class="text-xs italic">
-                Gegenereerde query:
+            <x-ccm::tabs.tab-content :index="1">
                 {{ $this->getQueryFilters() }}
-            </div>
+            </x-ccm::tabs.tab-content>
 
 
         </x-ccm::tabs.base>

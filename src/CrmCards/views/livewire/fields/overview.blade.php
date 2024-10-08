@@ -27,6 +27,7 @@
                 <x-ccm::tables.th>Doelgroep selector</x-ccm::tables.th>
                 <x-ccm::tables.th>CRM-Kaart</x-ccm::tables.th>
                 <x-ccm::tables.th>Vergrendelen</x-ccm::tables.th>
+                <x-ccm::tables.th></x-ccm::tables.th>
             </x-slot:thead>
             <x-slot:tbody>
                 @foreach ($crmFields AS $key => $crmField)

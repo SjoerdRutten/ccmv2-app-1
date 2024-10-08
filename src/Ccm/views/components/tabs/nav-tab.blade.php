@@ -4,9 +4,9 @@
 ])
 
 <a href="#"
-   class="group inline-flex items-center border-b-2 px-1 py-4 text-sm font-medium"
+   class="group inline-flex items-center border-b-2 px-4 py-3 text-sm font-medium"
    x-on:click="currentTab = {{ $index }}"
-   x-bind:class="currentTab === {{ $index }} ? 'border-pink-500 text-pink-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'"
+   x-bind:class="currentTab === {{ $index }} ? 'rounded-t bg-pink-100 border-pink-500 text-pink-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'"
 >
     {{ $slot }}
 

@@ -1,6 +1,6 @@
 <ul role="list" class="flex flex-1 flex-col gap-y-7">
     <li>
-        <ul role="list" class="-mx-2 space-y-1">
+        <ul role="list" class="-mx-2 space-y-1" x-data="{ open: $persist(null) }">
             <x-ccm::navigation.desktop-link route="crm-cards::fields::overview" label="CRM">
                 <x-ccm::navigation.desktop-link route="crm-cards::cards::overview" label="Kaarten" :sub="true"/>
                 <x-ccm::navigation.desktop-link route="crm-cards::fields::overview" label="Velden" :sub="true"/>

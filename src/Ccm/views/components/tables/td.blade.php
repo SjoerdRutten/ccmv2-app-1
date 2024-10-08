@@ -8,7 +8,7 @@
         {{ $slot }}
     </td>
 @elseif ($link)
-    <td {{ $attributes->class('relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-3 flex flex-row-reverse gap-4') }}>
+    <td {{ $attributes->class('relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-3') }}>
         {{ $slot }}
     </td>
 @else
