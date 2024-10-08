@@ -20,7 +20,7 @@
                     class="flex w-full items-center gap-x-3 rounded-md p-2 text-left text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50"
                     aria-controls="sub-menu-1"
                     aria-expanded="false"
-                    x-on:click="open = '{{ $label }}'"
+                    x-on:click="open = (open === '{{ $label }}' ? null : '{{ $label }}')"
             >
                 <svg class="h-5 w-5 shrink-0 text-gray-400"
                      :class="open === '{{ $label }}' ? 'rotate-90 text-gray-500' : 'text-gray-400'"
