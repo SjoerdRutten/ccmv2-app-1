@@ -14,6 +14,11 @@ class Overview extends Component
         return TargetGroup::orderBy('name')->get();
     }
 
+    public function delete(TargetGroup $targetGroup)
+    {
+        $targetGroup->delete();
+    }
+
     public function render()
     {
         return view('target-group::livewire.overview');

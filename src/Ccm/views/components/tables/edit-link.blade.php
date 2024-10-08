@@ -1,3 +1,4 @@
-<a href="{{ $href }}">
-    <x-heroicon-s-pencil class="w-4 h-4 inline"/>
-</a>
+<x-ccm::buttons._icon_button href="{{ $href ?? '#' }}"
+                             icon="heroicon-s-pencil"
+                             class="text-pink-500"
+></x-ccm::buttons._icon_button>

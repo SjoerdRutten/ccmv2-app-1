@@ -16,6 +16,14 @@
             OF
         </div>
     @endif
+    <a href="#"
+       class="absolute top-2 right-2 bg-red-500 text-white hover:text-gray-200 border border-gray-500 p-2 rounded"
+       wire:confirm="Weet je zeker dat je dit blok wilt verwijderen ?"
+       wire:click.prevent="removeElement('{{ Arr::get($element, 'index') }}')"
+    >
+        <x-heroicon-s-trash class="w-5 h-5"/>
+    </a>
+
     <div class="flex flex-col gap-2">
         @foreach (Arr::get($element, 'subelements') AS $key => $sub)
             @if (Arr::get($sub, 'type') === 'block')
@@ -30,16 +38,10 @@
         @endforeach
     </div>
 
-    <div class="flex flex-row gap-4">
-        <x-ccm::buttons.success wire:click="addRule('{{ Arr::get($element, 'index') }}')"
-                                icon="heroicon-s-plus"
-        >
-            Filter toevoegen
-        </x-ccm::buttons.success>
-        <x-ccm::buttons.warning wire:click="removeElement('{{ Arr::get($element, 'index') }}')"
-                                icon="heroicon-s-x-circle"
-        >
-            Blok verwijderen
-        </x-ccm::buttons.warning>
+    <div class="flex flex-row gap-4 mt-4">
+        <a href="#" wire:click.prevent="addRule('{{ Arr::get($element, 'index') }}')">
+            <x-heroicon-s-plus-circle class="w-5 h-5 inline"/>
+            Criterium toevoegen
+        </a>
     </div>
 </div>

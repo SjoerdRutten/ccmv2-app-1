@@ -1,3 +1,3 @@
-<x-ccm::buttons.success {{ $attributes->merge(['icon' => 'heroicon-s-check']) }}>
+<x-ccm::buttons.primary {{ $attributes->merge(['icon' => 'heroicon-s-check']) }}>
     Opslaan
-</x-ccm::buttons.success>
+</x-ccm::buttons.primary>

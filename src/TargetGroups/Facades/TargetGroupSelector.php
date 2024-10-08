@@ -96,9 +96,11 @@ class TargetGroupSelector
                 }
             } elseif (filled($value)) {
                 if (Arr::get($filter, 'columnType') == 'target_group') {
-                    $targetGroup = TargetGroup::find(Arr::get($filter, 'value'));
+                    if ($targetGroup = TargetGroup::find(Arr::get($filter, 'value'))) {
+                        return $this->getQueryFilters($targetGroup->filters);
+                    }
 
-                    return $this->getQueryFilters($targetGroup->filters);
+                    return false;
                 } elseif (Str::contains(Arr::get($filter, 'column'), '.')) {
                     $columnCollection = explode('.', Arr::get($filter, 'column'));
 
