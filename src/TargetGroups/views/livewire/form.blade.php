@@ -25,12 +25,11 @@
                     @endforeach
                 </div>
 
-
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                        wire:click="addBlock"
+                <x-ccm::buttons.primary wire:click="addBlock"
+                                        icon="heroicon-s-plus"
                 >
                     Blok toevoegen
-                </button>
+                </x-ccm::buttons.primary>
             </x-ccm::tabs.tab-content>
 
             <div class="text-xs italic">

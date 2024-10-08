@@ -4,10 +4,13 @@
     'name' => '',
     'disabled' => false,
     'grow' => false,
+    'divClass' => ''
 ])
 
-<div class="{{ $grow ? 'grow' : '' }}">
-    <label for="{{ $id }}" class="block text-sm font-medium leading-6 text-gray-900">{{ $label }}</label>
+<div class="{{ $grow ? 'grow' : '' }} {{ $divClass }}">
+    @if (filled($label))
+        <label for="{{ $id }}" class="block text-sm font-medium leading-6 text-gray-900">{{ $label }}</label>
+    @endif
     <select id="{{ $id }}"
             name="{{ $name }}"
             {{ $attributes->merge([
