@@ -6,12 +6,16 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Scout\Searchable;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
+use Sellvation\CCMV2\Orders\Models\Order;
+use Spatie\Tags\HasTags;
 
 class CrmCard extends Model
 {
     use HasEnvironment;
+    use HasTags;
     use Searchable;
 
     protected $fillable = [
@@ -61,6 +65,11 @@ class CrmCard extends Model
             'latest_visit_at' => 'datetime',
             'data' => 'json',
         ];
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasmany(Order::class);
     }
 
     public function updatedByUser(): BelongsTo
@@ -121,6 +130,7 @@ class CrmCard extends Model
             'mailclient_device_type' => $this->mailclient_device_type,
             'mailclient_device' => $this->mailclient_device,
             'mailclient_os' => $this->mailclient_os,
+            'tags' => $this->tags()->pluck('name')->toArray(),
         ];
 
         foreach (
@@ -251,6 +261,9 @@ class CrmCard extends Model
             ], [
                 'name' => 'mailclient_os',
                 'type' => 'string',
+            ], [
+                'name' => 'tags',
+                'type' => 'string[]',
             ],
         ];
 

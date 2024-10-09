@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
+use Spatie\Tags\Tag;
 
 class TargetGroupSelector
 {
@@ -79,6 +80,13 @@ class TargetGroupSelector
             $value = Arr::get($filter, 'value') ? 'true' : 'false';
         } elseif (Arr::get($filter, 'columnType') === 'target_group') {
             $value = Arr::get($filter, 'value');
+        } elseif (Arr::get($filter, 'columnType') === 'tag') {
+            $tags = Tag::whereIn('id', Arr::get($filter, 'value'))->pluck('name')->toArray();
+
+            $value = null;
+            if (count($tags)) {
+                $value = '['.implode(',', $tags).']';
+            }
         } else {
             $value = Arr::get($filter, 'value');
         }

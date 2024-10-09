@@ -18,10 +18,11 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('environment_id')->constrained('environments')->cascadeOnDelete();
+            $table->foreignId('crm_card_id')->nullable()->constrained('crm_cards')->cascadeOnDelete();
             $table->foreignId('order_type_id')->constrained('order_types')->cascadeOnDelete();
+            $table->string('crm_id', 20)->index()->nullable();
             $table->string('order_number', 80)->index();
             $table->string('store', 20)->index();
-            $table->string('crm_id', 20)->index()->nullable();
             $table->datetime('order_time')->nullable()->index();
             $table->bigInteger('loyalty_card')->nullable()->index();
             $table->string('payment_method', 20)->nullable()->index();

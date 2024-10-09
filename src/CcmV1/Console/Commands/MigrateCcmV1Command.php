@@ -83,8 +83,9 @@ class MigrateCcmV1Command extends Command
             $progressBar->advance();
 
             User::updateOrCreate([
-                'name' => $user->naam,
+                'id' => $user->id,
             ], [
+                'name' => $user->naam,
                 'gender' => $user->sekse,
                 'first_name' => $user->voornaam,
                 'suffix' => $user->tussenvoegsel,
@@ -163,29 +164,27 @@ class MigrateCcmV1Command extends Command
         $this->info('Associate users to teams');
 
         $users = \DB::connection('mysqlv1')
-            ->select('select * from gebruikers');
+            ->select('select id, klanten_id from gebruikers');
 
         foreach ($users as $oldUser) {
-            $user = User::where('name', $oldUser->naam)->first();
-            $team = Team::find($oldUser->klanten_id);
-
-            $user->teams()->sync([$team->id]);
-            $user->current_team_id = $team->id;
-            $user->save();
+            if ($user = User::find($oldUser->id)) {
+                $user->teams()->sync([$oldUser->klanten_id]);
+                $user->current_team_id = $oldUser->klanten_id;
+                $user->save();
+            }
         }
 
         $customers = \DB::connection('mysqlv1')
-            ->select('select * from klanten');
+            ->table('klanten')
+            ->where('helpdesk_gebruikers_id', '<>', '')
+            ->select(['id', 'helpdesk_gebruikers_id'])
+            ->get();
 
         foreach ($customers as $customer) {
-            if ($user = \DB::connection('mysqlv1')
-                ->selectOne('select * from gebruikers where id = '.$customer->helpdesk_gebruikers_id)) {
-
-                if ($user = User::whereName($user->naam)->first()) {
-                    $team = Team::find($customer->id);
-                    $team->helpdeskUser()->associate($user);
-                    $team->save();
-                }
+            if ($user = User::find($customer->helpdesk_gebruikers_id)) {
+                $team = Team::find($customer->id);
+                $team->helpdeskUser()->associate($user);
+                $team->save();
             }
         }
     }
@@ -198,21 +197,11 @@ class MigrateCcmV1Command extends Command
             ->select('select * from omgevingen');
 
         foreach ($environments as $environment) {
-            $customer = \DB::connection('mysqlv1')
-                ->selectOne('select naam from klanten where id = '.$environment->klanten_id);
-
-            $team = Team::whereName($customer->naam)->first();
-
-            $timeZone = \DB::connection('mysqlv1')
-                ->selectOne('select naam from tijdzones where id = '.$environment->tijdzones_id);
-
-            $timeZone = TimeZone::whereName($timeZone->naam)->first();
-
             Environment::createOrFirst([
-                'name' => $environment->naam,
+                'id' => $environment->id,
             ], [
-                'team_id' => $team->id,
-                'timezone_id' => $timeZone->id,
+                'team_id' => $environment->klanten_id,
+                'timezone_id' => $environment->tijdzones_id,
                 'name' => $environment->naam,
                 'description' => $environment->omschrijving,
                 'email_credits' => $environment->emailtegoed,

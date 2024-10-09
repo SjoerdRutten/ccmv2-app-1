@@ -13,7 +13,7 @@ use Sellvation\CCMV2\Environments\Models\Environment;
 
 class MigrateCcmV1Environment extends Command
 {
-    protected $signature = 'ccmv1:migrate-environment-data {--exportId=} {--importId=}';
+    protected $signature = 'ccmv1:migrate-environment-data {--exportId=105} {--importId=105}';
 
     protected $description = 'Stap 2: Migrate CCM V1 environment data, execute per environment';
 
@@ -81,7 +81,7 @@ class MigrateCcmV1Environment extends Command
                 'position' => $row->positie,
             ];
 
-            $crmFieldCategory = $this->environment->crmFieldCategories()->firstOrCreate(['name' => $row->naamnl, $data], $data);
+            $crmFieldCategory = $this->environment->crmFieldCategories()->firstOrCreate(['id' => $row->id], $data);
             $this->crmFieldCategoryIds[$row->id] = $crmFieldCategory->id;
         }
 
@@ -115,12 +115,11 @@ class MigrateCcmV1Environment extends Command
             ->get();
 
         foreach ($rows as $row) {
-            $this->environment->crmFields()->updateOrCreate([
-                'name' => $row->naam,
+            $field = $this->environment->crmFields()->updateOrCreate([
+                'id' => $row->id,
             ], [
                 'environment_id' => $this->environment->id,
                 'crm_field_type_id' => $fieldTypes[$row->veldtype],
-                'crm_field_category_id' => empty($row->rubrieken_id) ? null : $this->crmFieldCategoryIds[$row->rubrieken_id],
                 'name' => $row->naam,
                 'label' => $row->labelnl,
                 'label_en' => $row->labelen,
@@ -133,6 +132,12 @@ class MigrateCcmV1Environment extends Command
                 'log_file' => $row->logbestand,
                 'overview_index' => $row->overzichtindex,
             ]);
+
+            try {
+                $field->crmFieldCategory()->associate($row->rubrieken_id);
+                $field->save();
+            } catch (\Exception $e) {
+            }
         }
 
         $this->info($this->environment->crmFields()->count().' fields imported');

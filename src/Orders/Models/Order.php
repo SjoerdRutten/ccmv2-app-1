@@ -3,8 +3,10 @@
 namespace Sellvation\CCMV2\Orders\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Scout\Searchable;
+use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 
 class Order extends Model
@@ -31,6 +33,11 @@ class Order extends Model
         ];
     }
 
+    public function crmCard(): BelongsTo
+    {
+        return $this->belongsTo(CrmCard::class);
+    }
+
     public function orderRows(): HasMany
     {
         return $this->hasmany(OrderRow::class);
@@ -38,12 +45,12 @@ class Order extends Model
 
     public function searchableAs()
     {
-        return $this->getTable().'_'.(\Auth::check() ? \Auth::user()->currentEnvironmentId : $this->environment_id);
+        return $this->getTable().'_'.$this->environment_id;
     }
 
     public function indexableAs()
     {
-        return $this->getTable().'_'.(\Auth::check() ? \Auth::user()->currentEnvironmentId : $this->environment_id);
+        return $this->getTable().'_'.$this->environment_id;
     }
 
     public function toSearchableArray()
@@ -56,7 +63,7 @@ class Order extends Model
 
         $data = [
             'id' => (string) $this->id,
-            'crm_id' => $this->crm_id,
+            'crm_card_id' => $this->crm_card_id,
             'order_type_id' => $this->order_type_id,
             'order_number' => $this->order_number,
             'loyalty_card' => $this->loyalty_card,
@@ -120,9 +127,9 @@ class Order extends Model
                     'type' => 'string[]',
                     'optional' => true,
                 ], [
-                    'name' => 'crm_id',
+                    'name' => 'crm_card_id',
                     'type' => 'string',
-                    'reference' => 'crm_cards_'.$this->environment_id.'.crm_id',
+                    'reference' => 'crm_cards_'.$this->environment_id.'.id',
                 ],
             ],
         ];

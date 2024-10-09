@@ -49,7 +49,10 @@ class UpdateTypesenseSchemaListener
                 ]
             );
 
-            $client->collections[$crmCard->searchableAs()]->update(['fields' => $fields]);
+            try {
+                $client->collections[$crmCard->searchableAs()]->update(['fields' => $fields]);
+            } catch (\Exception $e) {
+            }
         }
 
     }

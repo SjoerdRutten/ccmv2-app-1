@@ -16,10 +16,12 @@ use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeBoolean;
 use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeDate;
 use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeInteger;
 use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeSelect;
+use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeTag;
 use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeTargetGroup;
 use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeText;
 use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeTextArray;
 use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
+use Spatie\Tags\Tag;
 
 class Rule extends Component
 {
@@ -45,6 +47,7 @@ class Rule extends Component
 
                 switch ($this->filter['columnType']) {
                     case 'target_group':
+                    case 'tag':
                     case 'text':
                         $this->filter['operator'] = 'eq';
                         break;
@@ -63,6 +66,7 @@ class Rule extends Component
         $columns = [];
         // First the order columns
         $columns[] = new Column('target_group_id', new ColumnTypeTargetGroup, '- Doelgroep selectie');
+        $columns[] = new Column('tags', new ColumnTypeTag, '- Kenmerk');
         $columns[] = new Column('orders.store', new ColumnTypeInteger, 'Transactie winkelnummer');
         $columns[] = new Column('orders.order_time', new ColumnTypeDate, 'Transactie transactie datum');
         $columns[] = new Column('orders.payment_method', new ColumnTypeText, 'Transactie betaalmethode');
@@ -145,6 +149,7 @@ class Rule extends Component
             ->with([
                 'columns' => $this->getColumns(),
                 'targetGroup' => TargetGroup::orderBy('name')->get(),
+                'tags' => Tag::withType('crm-card-'.\Context::get('environment_id'))->orderBy('name')->get(),
             ]);
     }
 }

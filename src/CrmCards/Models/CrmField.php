@@ -13,6 +13,7 @@ class CrmField extends Model
     use HasEnvironment;
 
     protected $fillable = [
+        'id',
         'environment_id',
         'crm_field_type_id',
         'crm_field_category_id',

@@ -29,6 +29,15 @@
                     </option>
                 @endforeach
             </x-ccm::forms.select>
+        @elseif (Arr::get($filter, 'columnType') === 'tag')
+            <x-ccm::forms.multiple-select name="value" wire:model.live="filter.value">
+                <option value="">Selecteer kenmerk</option>
+                @foreach ($tags AS $tag)
+                    <option value="{{ $tag->id }}">
+                        {{ $tag->name }}
+                    </option>
+                @endforeach
+            </x-ccm::forms.multiple-select>
         @elseif (Arr::get($filter, 'columnType') === 'text')
             <x-ccm::forms.select name="operator" wire:model.live="filter.operator">
                 <option value="">Kies operator</option>

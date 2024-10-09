@@ -6,7 +6,7 @@ use Illuminate\Support\Arr;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
-use Sellvation\CCMV2\CcmV1\Jobs\AddTagToCrmCardJob;
+use Sellvation\CCMV2\CrmCards\Jobs\AddTagToCrmCardJob;
 use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelectorFacade;
 use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
 
@@ -124,7 +124,7 @@ class Form extends Component
             $rows = TargetGroupSelectorFacade::getQuery($this->elements, 100, $page)->get();
 
             foreach ($rows as $row) {
-                $batch->add(new AddTagToCrmCardJob($row->crm_id, $this->tag, $this->fieldName, $this->seperator));
+                $batch->add(new AddTagToCrmCardJob($row, $this->tag, $this->fieldName, $this->seperator));
             }
 
             $page++;

@@ -15,6 +15,7 @@ use Sellvation\CCMV2\Ems\Models\EmailCategory;
 class Environment extends Model
 {
     protected $fillable = [
+        'id',
         'team_id',
         'timezone_id',
         'name',
