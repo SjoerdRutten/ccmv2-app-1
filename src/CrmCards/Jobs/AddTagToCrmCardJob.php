@@ -21,11 +21,11 @@ class AddTagToCrmCardJob
 
     public function handle(): void
     {
-        if ($this->batch()->cancelled()) {
+        if ($this->batch() && $this->batch()->cancelled()) {
             return;
         }
 
-        //        $this->addToVersion1();
+        $this->addToVersion1();
         $this->addToVersion2();
     }
 
@@ -50,11 +50,15 @@ class AddTagToCrmCardJob
                 'crmid',
                 $this->fieldName,
             ])
-            ->where('crmid', $this->crmCard->crmId)
+            ->where('crmid', $this->crmCard->crm_id)
             ->first()) {
 
             $tags = explode($this->seperator, $row->{$this->fieldName});
             $tags[] = $this->tag;
+
+            $tags = array_unique($tags);
+
+            $tags = \Arr::where($tags, fn ($value) => filled($value));
 
             \DB::connection('db01')
                 ->table('crm_'.$environmentId)
