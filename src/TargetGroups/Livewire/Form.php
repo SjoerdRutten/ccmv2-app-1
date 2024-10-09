@@ -19,9 +19,9 @@ class Form extends Component
 
     public array $elements = [];
 
-    public string $tag = 'test';
+    public string $tag = '';
 
-    public string $fieldName = 'algemeen_veld_5';
+    public string $fieldName = 'v23_0091_doelgroepen_kenmerk';
 
     public string $seperator = ',';
 
