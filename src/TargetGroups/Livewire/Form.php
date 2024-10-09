@@ -6,6 +6,7 @@ use Illuminate\Support\Arr;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
+use Sellvation\CCMV2\CcmV1\Jobs\AddTagToCrmCardJob;
 use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelectorFacade;
 use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
 
@@ -17,6 +18,12 @@ class Form extends Component
     public ?string $name = null;
 
     public array $elements = [];
+
+    public string $tag = 'test';
+
+    public string $fieldName = 'algemeen_veld_5';
+
+    public string $seperator = ',';
 
     public function mount(TargetGroup $targetGroup)
     {
@@ -99,6 +106,31 @@ class Form extends Component
         ]);
 
         $this->redirectRoute('target-groups::form', $targetGroup);
+    }
+
+    public function addTag()
+    {
+        $this->validate([
+            'tag' => 'required',
+            'fieldName' => 'required',
+            'seperator' => 'required',
+        ]);
+
+        $batch = \Bus::batch([])
+            ->name('AddTagToCrmCardJob - '.$this->id);
+
+        $page = 0;
+        do {
+            $rows = TargetGroupSelectorFacade::getQuery($this->elements, 100, $page)->get();
+
+            foreach ($rows as $row) {
+                $batch->add(new AddTagToCrmCardJob($row->crm_id, $this->tag, $this->fieldName, $this->seperator));
+            }
+
+            $page++;
+        } while (count($rows) > 0);
+
+        $batch->dispatch();
     }
 
     #[Computed]

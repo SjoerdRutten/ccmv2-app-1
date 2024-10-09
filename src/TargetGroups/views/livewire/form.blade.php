@@ -30,6 +30,18 @@
                 >
                     Blok toevoegen
                 </x-ccm::buttons.primary>
+
+
+                <x-ccm::forms.form class="w-1/2 bg-gray-200 mt-10 p-4">
+                    <x-ccm::forms.input name="tag" wire:model="tag">Kenmerk</x-ccm::forms.input>
+                    <x-ccm::forms.input name="fieldName" wire:model="fieldName">Veld</x-ccm::forms.input>
+                    <x-ccm::forms.input name="seperator" wire:model="seperator">Schijdingsteken</x-ccm::forms.input>
+                    <x-ccm::buttons.primary wire:click.prevent="addTag" icon="heroicon-s-plus">
+                        Tag toevoegen aan CRM kaarten
+                    </x-ccm::buttons.primary>
+                </x-ccm::forms.form>
+
+
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="1">
                 {{ $this->getQueryFilters() }}

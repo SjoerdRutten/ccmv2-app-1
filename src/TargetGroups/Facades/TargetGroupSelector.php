@@ -43,11 +43,11 @@ class TargetGroupSelector
         return null;
     }
 
-    public function getQuery($elements, $perPage = 10)
+    public function getQuery($elements, $perPage = 10, $page = 0)
     {
         return CrmCard::search('*')
             ->options([
-                'page' => 0,
+                'page' => $page,
                 'per_page' => $perPage,
                 'filter_by' => $this->getQueryFilters($elements),
             ]);
