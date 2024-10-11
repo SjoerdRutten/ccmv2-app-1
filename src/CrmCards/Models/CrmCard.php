@@ -19,6 +19,7 @@ class CrmCard extends Model
     use Searchable;
 
     protected $fillable = [
+        'id',
         'updated_by_user_id',
         'created_by_user_id',
         'updated_by_api_id',

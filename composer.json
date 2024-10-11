@@ -61,6 +61,7 @@
         "Sellvation\\CCMV2\\TargetGroups\\TargetGroupServiceProvider"
       ],
       "aliases": {
+        "TargetGroupSelector": "Sellvation\\CCMV2\\TargetGroups\\Facades\\TargetGroupSelectorFacade"
       }
     }
   },

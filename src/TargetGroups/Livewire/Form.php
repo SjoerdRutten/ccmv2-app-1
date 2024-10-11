@@ -94,7 +94,7 @@ class Form extends Component
             ]);
     }
 
-    public function save()
+    public function save($redirect = true)
     {
         $this->validate();
 
@@ -105,11 +105,15 @@ class Form extends Component
             'filters' => $this->elements,
         ]);
 
-        $this->redirectRoute('target-groups::form', $targetGroup);
+        if ($redirect) {
+            $this->redirectRoute('target-groups::form', $targetGroup);
+        }
     }
 
     public function addTag()
     {
+        $this->save(false);
+
         $this->validate([
             'tag' => 'required',
             'fieldName' => 'required',

@@ -25,6 +25,7 @@
                         {{ $crmField->name }}
                     </x-ccm::tables.th>
                 @endforeach
+                <x-ccm::tables.th></x-ccm::tables.th>
             </x-slot:thead>
             <x-slot:tbody>
                 @foreach ($crmCards AS $key => $card)

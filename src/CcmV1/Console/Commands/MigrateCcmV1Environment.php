@@ -162,25 +162,25 @@ class MigrateCcmV1Environment extends Command
     {
         $this->info('Import CRM Cards');
 
-        $skip = CrmCard::count();
+        $max = (int) CrmCard::max('id');
 
         $progressBar = $this->output->createProgressBar(
             \DB::connection('db02')
                 ->table('crm_'.$this->environmentId)
-                ->count() - $skip
+                ->where('id', '>', $max)
+                ->count()
         );
 
         \DB::connection('db02')
             ->table('crm_'.$this->environmentId)
-            ->skip($skip)
-            ->orderBy('datummutatie')
+            ->where('id', '>', $max)
+            ->orderBy('id')
             ->chunk(1000, function ($crmCards) use ($progressBar) {
                 foreach ($crmCards as $row) {
                     $progressBar->advance();
 
                     $data = json_decode(json_encode($row), true);
                     $data = \Arr::except($data, [
-                        'id',
                         'crmid',
                         'systeemgebruiker',
                         'systeemwachtwoord',
@@ -216,8 +216,7 @@ class MigrateCcmV1Environment extends Command
                     ]);
 
                     $this->environment->crmCards()->updateOrCreate([
-                        'environment_id' => $this->environment->id,
-                        'crm_id' => $row->crmid,
+                        'id' => $row->id,
                     ], [
                         'crm_id' => $row->crmid,
                         'environment_id' => $this->environment->id,
@@ -229,14 +228,14 @@ class MigrateCcmV1Environment extends Command
                         'first_ipv6' => $row->eersteipv6,
                         'latest_ipv6' => $row->laatsteipv6,
                         'browser_ua' => $row->browser_ua,
-                        'first_email_send_at' => Carbon::parse($row->eerste_email),
-                        'latest_email_send_at' => Carbon::parse($row->laatste_email),
-                        'first_email_opened_at' => Carbon::parse($row->eerste_email_geopend),
-                        'latest_email_opened_at' => Carbon::parse($row->laatste_email_geopend),
-                        'first_email_clicked_at' => Carbon::parse($row->eerste_email_geklikt),
-                        'latest_email_clicked_at' => Carbon::parse($row->laatste_email_geklikt),
-                        'first_visit_at' => Carbon::parse($row->eerste_bezoek),
-                        'latest_visit_at' => Carbon::parse($row->laatste_bezoek),
+                        'first_email_send_at' => Carbon::parse($row->eerste_email)->timezone('Europe/Amsterdam'),
+                        'latest_email_send_at' => Carbon::parse($row->laatste_email)->timezone('Europe/Amsterdam'),
+                        'first_email_opened_at' => Carbon::parse($row->eerste_email_geopend)->timezone('Europe/Amsterdam'),
+                        'latest_email_opened_at' => Carbon::parse($row->laatste_email_geopend)->timezone('Europe/Amsterdam'),
+                        'first_email_clicked_at' => Carbon::parse($row->eerste_email_geklikt)->timezone('Europe/Amsterdam'),
+                        'latest_email_clicked_at' => Carbon::parse($row->laatste_email_geklikt)->timezone('Europe/Amsterdam'),
+                        'first_visit_at' => Carbon::parse($row->eerste_bezoek)->timezone('Europe/Amsterdam'),
+                        'latest_visit_at' => Carbon::parse($row->laatste_bezoek)->timezone('Europe/Amsterdam'),
                         'browser' => $row->browser,
                         'browser_device_type' => $row->browser_devicetype,
                         'browser_device' => $row->browser_device,
@@ -249,8 +248,8 @@ class MigrateCcmV1Environment extends Command
                         'latitude' => $row->latitude,
                         'longitude' => $row->longitude,
                         'data' => $data,
-                        'created_at' => $row->datumcreatie,
-                        'updated_at' => $row->datummutatie,
+                        'created_at' => Carbon::parse($row->datumcreatie)->timezone('Europe/Amsterdam'),
+                        'updated_at' => Carbon::parse($row->datummutatie)->timezone('Europe/Amsterdam'),
                     ]);
 
                 }

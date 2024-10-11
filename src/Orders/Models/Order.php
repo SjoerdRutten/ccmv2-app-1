@@ -50,7 +50,7 @@ class Order extends Model
 
     public function indexableAs()
     {
-        return $this->getTable().'_'.$this->environment_id;
+        return $this->searchableAs();
     }
 
     public function toSearchableArray()
@@ -63,7 +63,7 @@ class Order extends Model
 
         $data = [
             'id' => (string) $this->id,
-            'crm_card_id' => $this->crm_card_id,
+            'crm_card_id' => (string) $this->crm_card_id,
             'order_type_id' => $this->order_type_id,
             'order_number' => $this->order_number,
             'loyalty_card' => $this->loyalty_card,
@@ -81,7 +81,7 @@ class Order extends Model
 
     public function shouldBeSearchable()
     {
-        return (bool) $this->crm_id;
+        return (bool) $this->crmCard;
     }
 
     public function typesenseCollectionSchema()

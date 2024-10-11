@@ -5,6 +5,7 @@ namespace Sellvation\CCMV2\CrmCards\Livewire\Cards\Forms;
 use Livewire\Attributes\Locked;
 use Livewire\Form;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
+use Sellvation\CCMV2\CrmCards\Models\CrmField;
 use Sellvation\CCMV2\CrmCards\Models\CrmFieldCategory;
 
 class CrmCardForm extends Form
@@ -38,6 +39,13 @@ class CrmCardForm extends Form
 
         $this->crmCard->data = $this->data;
         $this->crmCard->save();
+    }
+
+    public function noCategoryFields()
+    {
+        return CrmField::whereNull('crm_field_category_id')
+            ->orderBy('position')
+            ->get();
     }
 
     public function categories()
