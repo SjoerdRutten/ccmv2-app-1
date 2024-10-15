@@ -57,28 +57,23 @@
                         </svg>
                       </span>
                 </button>
-
-                <!--
-                  Dropdown menu, show/hide based on menu state.
-
-                  Entering: "transition ease-out duration-100"
-                    From: "transform opacity-0 scale-95"
-                    To: "transform opacity-100 scale-100"
-                  Leaving: "transition ease-in duration-75"
-                    From: "transform opacity-100 scale-100"
-                    To: "transform opacity-0 scale-95"
-                -->
                 <div class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none"
                      x-show="open"
                      x-cloak
                      x-on:click.outside="open = false"
+                     x-transition:enter="transition ease-out duration-100"
+                     x-transition:enter-start="transform opacity-0 scale-95"
+                     x-transition:enter-end="transform opacity-100 scale-100"
+                     x-transition:leave="transition ease-in duration-75"
+                     x-transition:leave-start="transform opacity-100 scale-100"
+                     x-transition:leave-end="transform opacity-0 scale-95"
                      role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                    <!-- Active: "bg-gray-50", Not Active: "" -->
+
                     <a href="#" class="block px-3 py-1 text-sm leading-6 text-gray-900" role="menuitem" tabindex="-1"
-                       id="user-menu-item-0">Your profile</a>
-                    <a href="#" class="block px-3 py-1 text-sm leading-6 text-gray-900"
+                       id="user-menu-item-0">Mijn CCM</a>
+                    <a href="{{ route('logout') }}" class="block px-3 py-1 text-sm leading-6 text-gray-900"
                        role="menuitem" tabindex="-1"
-                       id="user-menu-item-1">Sign out</a>
+                       id="user-menu-item-1">Uitloggen</a>
                 </div>
             </div>
         </div>
