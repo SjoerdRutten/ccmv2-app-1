@@ -59,6 +59,8 @@ class Rule extends Component
                 }
             }
         }
+
+        $this->dispatch('update-count')->to(Form::class);
     }
 
     private function getColumns()

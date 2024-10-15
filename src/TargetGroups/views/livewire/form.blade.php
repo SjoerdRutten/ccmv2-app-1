@@ -1,4 +1,4 @@
-<div wire:loading.remove>
+<div>
     <div class="px-4 sm:px-6 lg:px-8">
         <x-ccm::pages.intro title="Doelgroep selector">
             <x-slot:actions>
@@ -8,7 +8,7 @@
         </x-ccm::pages.intro>
         <x-ccm::tabs.base>
             <x-slot:tabs>
-                <x-ccm::tabs.nav-tab :index="0" :badge="$this->count()">
+                <x-ccm::tabs.nav-tab :index="0" :badge="$count">
                     Query builder
                 </x-ccm::tabs.nav-tab>
                 <x-ccm::tabs.nav-tab :index="1">Debug</x-ccm::tabs.nav-tab>
@@ -31,16 +31,11 @@
                     Blok toevoegen
                 </x-ccm::buttons.primary>
 
-
-                <x-ccm::forms.form class="w-1/2 bg-gray-200 mt-10 p-4">
-                    <x-ccm::forms.input name="tag" wire:model="tag">Kenmerk</x-ccm::forms.input>
-                    <x-ccm::forms.input name="fieldName" wire:model="fieldName">Veld</x-ccm::forms.input>
-                    <x-ccm::forms.input name="seperator" wire:model="seperator">Schijdingsteken</x-ccm::forms.input>
-                    <x-ccm::buttons.primary wire:click.prevent="addTag" icon="heroicon-s-plus">
-                        Tag toevoegen aan CRM kaarten
+                <x-slot:buttons>
+                    <x-ccm::buttons.primary wire:click="showTagModal = true">
+                        Kenmerk toevoegen aan selectie
                     </x-ccm::buttons.primary>
-                </x-ccm::forms.form>
-
+                </x-slot:buttons>
 
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="1">
@@ -49,22 +44,23 @@
 
 
         </x-ccm::tabs.base>
+
+        <div x-data="{ show: @entangle('showTagModal') }">
+            <x-ccm::layouts.modal
+                    title="Kenmerk toevoegen"
+            >
+                <x-ccm::forms.form class="w-full">
+                    <x-ccm::forms.input name="tag" wire:model="tag">Kenmerk</x-ccm::forms.input>
+                    <x-ccm::forms.input name="fieldName" wire:model="fieldName">Veld</x-ccm::forms.input>
+                    <x-ccm::forms.input name="seperator" wire:model="seperator">Schijdingsteken</x-ccm::forms.input>
+                </x-ccm::forms.form>
+
+                <x-slot:buttons>
+                    <x-ccm::buttons.primary wire:click.prevent="addTag" icon="heroicon-s-plus">
+                        Tag toevoegen aan CRM kaarten
+                    </x-ccm::buttons.primary>
+                </x-slot:buttons>
+            </x-ccm::layouts.modal>
+        </div>
     </div>
 </div>
-
-
-{{--<div wire:loading.remove class="p-5">--}}
-{{--    <div class="mb-8">--}}
-{{--        Aantal resultaten:--}}
-{{--        {{ $this->count() }}--}}
-{{--    </div>--}}
-
-
-{{--    <div class="mt-10">--}}
-{{--        <h1 class="text-2xl font-bold">Eerste 10 CRM ID's</h1>--}}
-{{--        <h3 class="italic">Bij klikken op een ID, CRM kaart openen in popup?</h3>--}}
-{{--        @foreach ($this->exampleResults AS $row)--}}
-{{--            <div>{{ $row->crm_id }}</div>--}}
-{{--        @endforeach--}}
-{{--    </div>--}}
-{{--</div>--}}

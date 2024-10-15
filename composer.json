@@ -26,7 +26,7 @@
   },
   "require-dev": {
     "laravel/laravel": "^10.2",
-    "laravel/pint": "^1.0",
+    "laravel/pint": "^1.18",
     "nunomaduro/collision": "^7.9"
   },
   "autoload": {

@@ -17,7 +17,7 @@ class TargetGroupSelector
         $filters = [];
         foreach ($elements as $row) {
             if (Arr::get($row, 'type') == 'rule') {
-                if ($filter = TargetGroupSelectorFacade::getFilter($row)) {
+                if ($filter = $this->getFilter($row)) {
                     $filters[] = $filter;
                 }
             } elseif ((Arr::get($row, 'type') == 'block') && (count(Arr::get($row, 'subelements')))) {

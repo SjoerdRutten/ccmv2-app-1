@@ -5,6 +5,7 @@ namespace Sellvation\CCMV2\TargetGroups\Livewire;
 use Illuminate\Support\Arr;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Sellvation\CCMV2\CrmCards\Jobs\AddTagToCrmCardJob;
 use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelectorFacade;
@@ -25,6 +26,10 @@ class Form extends Component
 
     public string $seperator = ',';
 
+    public int $count = 0;
+
+    public bool $showTagModal = false;
+
     public function mount(TargetGroup $targetGroup)
     {
         if ($targetGroup->id) {
@@ -32,6 +37,8 @@ class Form extends Component
             $this->name = $targetGroup->name;
             $this->elements = $targetGroup->filters;
         }
+
+        $this->updateCount();
     }
 
     public function rules(): array
@@ -106,7 +113,7 @@ class Form extends Component
         ]);
 
         if ($redirect) {
-            $this->redirectRoute('target-groups::form', $targetGroup);
+            $this->dispatch('show-modal-success', title: 'Selectie opgeslagen', href: route('target-groups::form', $targetGroup));
         }
     }
 
@@ -137,10 +144,10 @@ class Form extends Component
         $batch->dispatch();
     }
 
-    #[Computed]
-    public function count()
+    #[On('update-count')]
+    public function updateCount()
     {
-        return TargetGroupSelectorFacade::count($this->elements);
+        $this->count = TargetGroupSelectorFacade::count($this->elements);
     }
 
     #[computed]

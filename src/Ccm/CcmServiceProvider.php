@@ -3,9 +3,12 @@
 namespace Sellvation\CCMV2\Ccm;
 
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire;
 use Sellvation\CCMV2\Ccm\Http\Middelware\CcmContextMiddleware;
+use Sellvation\CCMV2\Ccm\Livewire\ModalSuccess;
 
 class CcmServiceProvider extends ServiceProvider
 {
@@ -18,5 +21,13 @@ class CcmServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/views', 'ccm');
 
         $router->pushMiddlewareToGroup('web', CcmContextMiddleware::class);
+        if (! App::runningInConsole()) {
+            $this->registerLivewireComponents();
+        }
+    }
+
+    private function registerLivewireComponents(): void
+    {
+        Livewire::component('ccm::modal-success', ModalSuccess::class);
     }
 }
