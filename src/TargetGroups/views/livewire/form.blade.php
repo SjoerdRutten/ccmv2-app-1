@@ -56,9 +56,12 @@
                 </x-ccm::forms.form>
 
                 <x-slot:buttons>
-                    <x-ccm::buttons.primary wire:click.prevent="addTag" icon="heroicon-s-plus">
+                    <x-ccm::buttons.primary wire:click.prevent="addTag">
                         Tag toevoegen aan CRM kaarten
                     </x-ccm::buttons.primary>
+                    <x-ccm::buttons.secundary wire:click="showTagModal = false">
+                        Annuleren
+                    </x-ccm::buttons.secundary>
                 </x-slot:buttons>
             </x-ccm::layouts.modal>
         </div>

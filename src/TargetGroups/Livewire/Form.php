@@ -142,6 +142,9 @@ class Form extends Component
         } while (count($rows) > 0);
 
         $batch->dispatch();
+
+        $this->showTagModal = false;
+        $this->dispatch('show-modal-success', title: 'Kenmerken worden toegevoegd', content: 'Kenmerken worden toegevoegd op de achtergrond, dit kan enkele minuten duren');
     }
 
     #[On('update-count')]

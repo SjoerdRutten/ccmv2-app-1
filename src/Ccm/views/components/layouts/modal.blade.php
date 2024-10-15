@@ -34,7 +34,7 @@
                 <div class="bg-white px-6 py-4">
                     {{ $slot }}
                 </div>
-                <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-2">
                     {{ $buttons }}
                 </div>
             </div>
