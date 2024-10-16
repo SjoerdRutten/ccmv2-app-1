@@ -8,7 +8,7 @@ class LoginForm extends Component
 {
     public function render()
     {
-        return view('user::auth.login-form')
+        return view('user::livewire.login-form')
             ->layout('ccm::layouts.guest');
     }
 }

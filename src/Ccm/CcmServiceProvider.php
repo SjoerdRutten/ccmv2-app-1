@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Sellvation\CCMV2\Ccm\Http\Middelware\CcmContextMiddleware;
+use Sellvation\CCMV2\Ccm\Livewire\ModalError;
 use Sellvation\CCMV2\Ccm\Livewire\ModalSuccess;
 
 class CcmServiceProvider extends ServiceProvider
@@ -29,5 +30,6 @@ class CcmServiceProvider extends ServiceProvider
     private function registerLivewireComponents(): void
     {
         Livewire::component('ccm::modal-success', ModalSuccess::class);
+        Livewire::component('ccm::modal-error', ModalError::class);
     }
 }

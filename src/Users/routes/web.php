@@ -8,6 +8,8 @@ Route::middleware([
     'web',
 ])->group(function () {
     Route::get('/login', \Sellvation\CCMV2\Users\Livewire\LoginForm::class)->name('login-form');
+    Route::get('/forgot-password', \Sellvation\CCMV2\Users\Livewire\ForgotPasswordForm::class)->name('forgot-password-form');
+    Route::get('/reset-password/{token}', \Sellvation\CCMV2\Users\Livewire\ResetPasswordForm::class)->name('reset-password-form');
     Route::post('/login', LoginController::class)->name('login');
 
     Route::middleware([

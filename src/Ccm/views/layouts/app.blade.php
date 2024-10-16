@@ -48,6 +48,7 @@
 </div>
 
 <livewire:ccm::modal-success/>
+<livewire:ccm::modal-error/>
 @stack('modals')
 
 </body>

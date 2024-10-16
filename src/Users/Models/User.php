@@ -11,6 +11,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
+use Sellvation\CCMV2\Users\Notifications\ResetPasswordNotification;
 
 class User extends Authenticatable
 {
@@ -105,5 +106,10 @@ class User extends Authenticatable
         return Attribute::make(
             get: fn () => 105
         );
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 }
