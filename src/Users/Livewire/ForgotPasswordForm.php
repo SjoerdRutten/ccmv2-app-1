@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class ForgotPasswordForm extends Component
 {
-    public string $name = 'sellvation.sjoerdrutten';
+    public string $name = '';
 
     public function store()
     {

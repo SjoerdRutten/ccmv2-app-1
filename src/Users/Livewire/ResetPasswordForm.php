@@ -15,9 +15,9 @@ class ResetPasswordForm extends Component
     #[Url]
     public string $name;
 
-    public string $password = 'VDsku4s03!';
+    public string $password = '';
 
-    public string $password_confirmation = 'VDsku4s03!';
+    public string $password_confirmation = '';
 
     public function store()
     {
