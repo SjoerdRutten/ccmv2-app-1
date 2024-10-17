@@ -1,6 +1,6 @@
 <?php
 
-namespace Sellvation\CCMV2\Orders\Listeners;
+namespace Sellvation\CCMV2\Orders\Events\Listeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;

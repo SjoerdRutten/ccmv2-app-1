@@ -18,6 +18,7 @@ class UserServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__.'/views', 'user');
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
+        $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
 
         if (! app()->runningInConsole()) {
             $this->registerLivewireComponents();

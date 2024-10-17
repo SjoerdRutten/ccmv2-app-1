@@ -5,6 +5,7 @@ namespace Sellvation\CCMV2\Users\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -30,6 +31,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'id',
+        'role_id',
+        'customer_id',
         'name',
         'gender',
         'first_name',
@@ -101,11 +104,20 @@ class User extends Authenticatable
         ];
     }
 
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class);
+    }
+
     protected function currentEnvironmentId(): Attribute
     {
-        // TODO: return current environment
         return Attribute::make(
-            get: fn () => 105
+            get: fn () => \Session::has('environment_id') ? \Session::get('environment_id') : $this->customer->environments()->first()->id
         );
     }
 

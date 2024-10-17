@@ -17,15 +17,8 @@ return new class extends Migration
 
         Schema::create('environments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('team_id')
-                ->references('id')
-                ->on('teams')
-                ->onDelete('cascade');
-            $table->foreignId('timezone_id')
-                ->nullable()
-                ->references('id')
-                ->on('timezones')
-                ->nullOnDelete();
+            $table->foreignId('customer_id')->references('id')->on('customers')->cascadeOnDelete();
+            $table->foreignId('timezone_id')->nullable()->references('id')->on('timezones')->nullOnDelete();
             $table->string('name', 40);
             $table->string('description', 80)->nullable();
             $table->integer('email_credits')->nullable();

@@ -22,7 +22,7 @@ class LoginController extends Controller
             'name' => $credentials['name'],
             'password' => $credentials['password'],
             function (Builder $query) {
-                $query->where('is_active', 1)
+                $query->where('is_active', '>', 0)
                     ->where('is_system', 0)
                     ->where(fn (Builder $query) => $query->whereNull('expiration_date')
                         ->orWhereDate('expiration_date', '>', now())
@@ -53,6 +53,9 @@ class LoginController extends Controller
             $user->first_login = $user->first_login ?: now();
             $user->last_login = now();
             $user->save();
+
+            $environment = $user->customer->environments()->first();
+            \Session::put('environment_id', $environment->id);
 
             return redirect()->intended('dashboard');
         }

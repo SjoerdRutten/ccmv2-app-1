@@ -5,7 +5,6 @@ namespace Sellvation\CCMV2\CcmV1\Console\Commands;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Log;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\CrmCards\Models\CrmFieldCategory;
 use Sellvation\CCMV2\CrmCards\Models\CrmFieldType;
@@ -13,7 +12,7 @@ use Sellvation\CCMV2\Environments\Models\Environment;
 
 class MigrateCcmV1Environment extends Command
 {
-    protected $signature = 'ccmv1:migrate-environment-data {--exportId=105} {--importId=105}';
+    protected $signature = 'ccmv1:migrate-environment-data';
 
     protected $description = 'Stap 2: Migrate CCM V1 environment data, execute per environment';
 
@@ -21,34 +20,28 @@ class MigrateCcmV1Environment extends Command
 
     private Environment $environment;
 
-    private $crmFieldCategoryIds = [];
-
     private $emailCategoryIds = [];
 
     public function handle()
     {
-        Log::info('Import Environment Data From '.$this->option('exportId').' to '.$this->option('importId'));
-
         Config::set('database.connections.db02.database', 'ccmp');
 
-        $this->environmentId = $this->option('exportId');
-        $environmentId = $this->option('importId');
+        foreach (Environment::get() as $environment) {
 
-        if ($this->environment = Environment::find($environmentId)) {
-            if ($this->confirm('CrmFields importeren ?', false)) {
+            if ($this->confirm($environment->name.' importeren ?')) {
+                $this->output->title('Import environment '.$environment->name);
+
+                $this->environmentId = $environment->id;
+                $this->environment = $environment;
+
                 $this->migrateCrmFieldCategories();
                 $this->migrateCrmFields();
-            }
-            if ($this->confirm('CrmCards importeren ?', false)) {
                 $this->migrateCrmCards();
-            }
-            if ($this->confirm('Emails importeren ?', true)) {
                 $this->migrateEmailCategories();
                 $this->migrateEmails();
+
+                $this->cleanup();
             }
-
-            $this->cleanup();
-
         }
     }
 
@@ -57,6 +50,7 @@ class MigrateCcmV1Environment extends Command
         $this->info('Cleanup');
 
         CrmFieldCategory::query()
+            ->whereEnvironmentId($this->environmentId)
             ->whereDoesntHave('crmFields')
             ->delete();
     }
@@ -70,7 +64,6 @@ class MigrateCcmV1Environment extends Command
             ->where('omgevingen_id', $this->environmentId)
             ->get();
 
-        $this->crmFieldCategoryIds = [];
         foreach ($rows as $row) {
             $data = [
                 'name' => $row->naamnl,
@@ -82,7 +75,6 @@ class MigrateCcmV1Environment extends Command
             ];
 
             $crmFieldCategory = $this->environment->crmFieldCategories()->firstOrCreate(['id' => $row->id], $data);
-            $this->crmFieldCategoryIds[$row->id] = $crmFieldCategory->id;
         }
 
         $this->info($this->environment->crmFieldCategories()->count().' crm field categories imported');

@@ -2,7 +2,6 @@
 
 namespace Sellvation\CCMV2\Environments\Models;
 
-use App\Models\Team;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,12 +10,13 @@ use Sellvation\CCMV2\CrmCards\Models\CrmField;
 use Sellvation\CCMV2\CrmCards\Models\CrmFieldCategory;
 use Sellvation\CCMV2\Ems\Models\Email;
 use Sellvation\CCMV2\Ems\Models\EmailCategory;
+use Sellvation\CCMV2\Users\Models\Customer;
 
 class Environment extends Model
 {
     protected $fillable = [
         'id',
-        'team_id',
+        'customer_id',
         'timezone_id',
         'name',
         'description',
@@ -24,9 +24,9 @@ class Environment extends Model
         'notified',
     ];
 
-    public function team(): BelongsTo
+    public function customer(): BelongsTo
     {
-        return $this->belongsTo(Team::class);
+        return $this->belongsTo(Customer::class);
     }
 
     public function timezone(): BelongsTo
@@ -67,5 +67,15 @@ class Environment extends Model
     public function hasFeature($feature): bool
     {
         return $this->environmentFeatures()->where('feature', $feature)->exists();
+    }
+
+    public function addFeature($feature): bool
+    {
+        return (bool) $this->environmentFeatures()->create(['feature' => $feature]);
+    }
+
+    public function removeFeature($feature): bool
+    {
+        return (bool) $this->environmentFeatures()->where('feature', $feature)->delete();
     }
 }

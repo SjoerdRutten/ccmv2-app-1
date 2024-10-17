@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use Laravel\Pennant\Middleware\EnsureFeaturesAreActive;
-use Sellvation\CCMV2\CrmCards\Features\CrmCardFeature;
 
 Route::prefix('crm-cards')
     ->middleware([
@@ -10,7 +9,7 @@ Route::prefix('crm-cards')
         config('jetstream.auth_session'),
         'verified',
         'web',
-        EnsureFeaturesAreActive::using(CrmCardFeature::class),
+        EnsureFeaturesAreActive::using('crm'),
     ])
     ->name('crm-cards::')
     ->group(function (): void {

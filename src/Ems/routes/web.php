@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use Laravel\Pennant\Middleware\EnsureFeaturesAreActive;
-use Sellvation\CCMV2\Ems\Features\EmsFeature;
 
 Route::prefix('ems')
     ->middleware([
@@ -10,7 +9,7 @@ Route::prefix('ems')
         config('jetstream.auth_session'),
         'verified',
         'web',
-        EnsureFeaturesAreActive::using(EmsFeature::class),
+        EnsureFeaturesAreActive::using('ems'),
     ])
     ->name('ems::')
     ->group(function (): void {

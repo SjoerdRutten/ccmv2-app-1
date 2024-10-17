@@ -2,35 +2,37 @@
 
 namespace Sellvation\CCMV2\CcmV1\Console\Commands;
 
-use App\Models\Team;
-use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Sellvation\CCMV2\Environments\Models\Environment;
 use Sellvation\CCMV2\Environments\Models\Timezone;
+use Sellvation\CCMV2\Users\Models\Customer;
+use Sellvation\CCMV2\Users\Models\Role;
+use Sellvation\CCMV2\Users\Models\User;
 
-class MigrateCcmV1Command extends Command
+class MigrateCcmV1GlobalCommand extends Command
 {
     protected $signature = 'ccmv1:migrate-global';
 
     protected $description = 'Stap 1: Migrate CCM V1, only need to be executed once';
 
+    private Customer $customer;
+
     public function handle()
     {
-        if ($this->confirm('Timezones migration')) {
-            $this->migrateTimezones();
-        }
-        if ($this->confirm('Users migration')) {
-            $this->migrateUsers();
-        }
-        if ($this->confirm('Customers migration')) {
-            $this->migrateCustomers();
-            $this->associateUsersToTeams();
+        //        $this->migrateTimezones();
+        //
+        $customers = \DB::connection('mysqlv1')
+            ->table('klanten')
+            ->select(['id', 'naam'])
+            ->orderBy('naam', 'asc')
+            ->pluck('naam', 'id');
 
+        if ($customerName = $this->choice('Select a customer', $customers->toArray(), 167)) {
+            $this->migrateCustomers($customerName);
         }
-        if ($this->confirm('Environments migration', true)) {
-            $this->migrateEnvironments();
-        }
+        //        $this->migrateUsers();
+        $this->migrateEnvironments();
     }
 
     private function splitAllowedIps($ips): array
@@ -75,7 +77,9 @@ class MigrateCcmV1Command extends Command
         $this->info('Migrate users');
 
         $users = \DB::connection('mysqlv1')
-            ->select('select * from gebruikers');
+            ->table('gebruikers')
+            ->whereIn('klanten_id', [$this->customer->id, 1])
+            ->get();
 
         $progressBar = $this->output->createProgressBar(count($users));
 
@@ -85,6 +89,8 @@ class MigrateCcmV1Command extends Command
             User::updateOrCreate([
                 'id' => $user->id,
             ], [
+                'role_id' => $user->klanten_id === 1 ? Role::whereName('admin')->first()->id : Role::whereName('user')->first()->id,
+                'customer_id' => $this->customer->id,
                 'name' => $user->naam,
                 'gender' => $user->sekse,
                 'first_name' => $user->voornaam,
@@ -123,70 +129,39 @@ class MigrateCcmV1Command extends Command
         $this->info(User::count().' users migrated');
     }
 
-    private function migrateCustomers(): void
+    private function migrateCustomers($name): void
     {
         $this->info('Migrate customers');
 
-        $customers = \DB::connection('mysqlv1')
-            ->select('select * from klanten');
-
-        foreach ($customers as $customer) {
-            Team::updateOrCreate([
-                'id' => $customer->id,
-            ], [
-                'user_id' => 0,
-                'personal_team' => 0,
-                'name' => $customer->naam,
-                'visiting_address' => $customer->bezoekadresadres,
-                'visiting_address_postcode' => $customer->bezoekadrespostcode,
-                'visiting_address_city' => $customer->bezoekadresplaats,
-                'visiting_address_state' => $customer->bezoekadresprovincie,
-                'visiting_address_country' => 'NL',
-                'postal_address' => $customer->postadresadres,
-                'postal_address_postcode' => $customer->postadrespostcode,
-                'postal_address_city' => $customer->postadresplaats,
-                'postal_address_state' => $customer->postadresprovincie,
-                'postal_address_country' => 'NL',
-                'telephone' => $customer->telefoon,
-                'fax' => $customer->faxnummer,
-                'email' => $customer->emailadres,
-                'url' => $customer->website,
-                'logo' => $customer->logo,
-                'allowed_ips' => $this->splitAllowedIps($customer->allowed_ips),
-            ]);
-        }
-
-        $this->info(Team::count().' teams migrated');
-    }
-
-    private function associateUsersToTeams(): void
-    {
-        $this->info('Associate users to teams');
-
-        $users = \DB::connection('mysqlv1')
-            ->select('select id, klanten_id from gebruikers');
-
-        foreach ($users as $oldUser) {
-            if ($user = User::find($oldUser->id)) {
-                $user->teams()->sync([$oldUser->klanten_id]);
-                $user->current_team_id = $oldUser->klanten_id;
-                $user->save();
-            }
-        }
-
-        $customers = \DB::connection('mysqlv1')
+        $customer = \DB::connection('mysqlv1')
             ->table('klanten')
-            ->where('helpdesk_gebruikers_id', '<>', '')
-            ->select(['id', 'helpdesk_gebruikers_id'])
-            ->get();
+            ->where('naam', '=', $name)
+            ->select('*')
+            ->first();
 
-        foreach ($customers as $customer) {
-            if ($user = User::find($customer->helpdesk_gebruikers_id)) {
-                $team = Team::find($customer->id);
-                $team->helpdeskUser()->associate($user);
-                $team->save();
-            }
-        }
+        $customer = Customer::updateOrCreate([
+            'id' => $customer->id,
+        ], [
+            'name' => $customer->naam,
+            'visiting_address' => $customer->bezoekadresadres,
+            'visiting_address_postcode' => $customer->bezoekadrespostcode,
+            'visiting_address_city' => $customer->bezoekadresplaats,
+            'visiting_address_state' => $customer->bezoekadresprovincie,
+            'visiting_address_country' => 'NL',
+            'postal_address' => $customer->postadresadres,
+            'postal_address_postcode' => $customer->postadrespostcode,
+            'postal_address_city' => $customer->postadresplaats,
+            'postal_address_state' => $customer->postadresprovincie,
+            'postal_address_country' => 'NL',
+            'telephone' => $customer->telefoon,
+            'fax' => $customer->faxnummer,
+            'email' => $customer->emailadres,
+            'url' => $customer->website,
+            'logo' => $customer->logo,
+            'allowed_ips' => $this->splitAllowedIps($customer->allowed_ips),
+        ]);
+
+        $this->customer = $customer;
     }
 
     private function migrateEnvironments()
@@ -194,13 +169,15 @@ class MigrateCcmV1Command extends Command
         $this->info('Migrate environments');
 
         $environments = \DB::connection('mysqlv1')
-            ->select('select * from omgevingen');
+            ->table('omgevingen')
+            ->where('klanten_id', $this->customer->id)
+            ->get();
 
         foreach ($environments as $environment) {
             Environment::createOrFirst([
                 'id' => $environment->id,
             ], [
-                'team_id' => $environment->klanten_id,
+                'customer_id' => $this->customer->id,
                 'timezone_id' => $environment->tijdzones_id,
                 'name' => $environment->naam,
                 'description' => $environment->omschrijving,
