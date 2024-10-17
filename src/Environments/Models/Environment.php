@@ -58,4 +58,14 @@ class Environment extends Model
     {
         return $this->hasMany(Email::class);
     }
+
+    public function environmentFeatures(): HasMany
+    {
+        return $this->hasMany(EnvironmentFeature::class);
+    }
+
+    public function hasFeature($feature): bool
+    {
+        return $this->environmentFeatures()->where('feature', $feature)->exists();
+    }
 }

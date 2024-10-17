@@ -11,6 +11,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
+use Sellvation\CCMV2\Environments\Models\Environment;
 use Sellvation\CCMV2\Users\Notifications\ResetPasswordNotification;
 
 class User extends Authenticatable
@@ -105,6 +106,13 @@ class User extends Authenticatable
         // TODO: return current environment
         return Attribute::make(
             get: fn () => 105
+        );
+    }
+
+    protected function currentEnvironment(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => Environment::find($this->currentEnvironmentId)
         );
     }
 
