@@ -2,7 +2,10 @@
     <x-ccm::definition-list.row title="Disk usage">
         {{ ReadableSize($metrics['typesense_memory_resident_bytes']) }}
     </x-ccm::definition-list.row>
-    <x-ccm::definition-list.row title="Mapped data">
+    <x-ccm::definition-list.row title="Memory available">
+        {{ ReadableSize($metrics['system_memory_total_bytes']) }}
+    </x-ccm::definition-list.row>
+    <x-ccm::definition-list.row title="Memory used">
         {{ ReadableSize($metrics['typesense_memory_active_bytes']) }}
     </x-ccm::definition-list.row>
 </x-ccm::cards.card>
