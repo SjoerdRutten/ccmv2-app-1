@@ -21,6 +21,7 @@
     "laravel/pennant": "^1.12",
     "laravel/scout": "^10.11",
     "livewire/livewire": "^3.0",
+    "pharaonic/laravel-readable": "^1.0",
     "spatie/laravel-tags": "^4.7",
     "symfony/http-client": "^7.1",
     "typesense/typesense-php": "^4.9"
@@ -61,6 +62,7 @@
         "Sellvation\\CCMV2\\Environments\\EnvironmentServiceProvider",
         "Sellvation\\CCMV2\\Orders\\OrderServiceProvider",
         "Sellvation\\CCMV2\\TargetGroups\\TargetGroupServiceProvider",
+        "Sellvation\\CCMV2\\Typesense\\TypesenseServiceProvider",
         "Sellvation\\CCMV2\\Users\\UserServiceProvider"
       ]
     }

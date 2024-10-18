@@ -18,7 +18,7 @@ class EnvironmentSelector extends Component
         $this->environmentId = $value;
         \Session::put('environment_id', $this->environmentId);
 
-        $this->redirect('/dashboard');
+        $this->redirect(request()->header('referer'));
     }
 
     public function render()

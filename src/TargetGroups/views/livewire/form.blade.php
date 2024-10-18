@@ -8,7 +8,7 @@
         </x-ccm::pages.intro>
         <x-ccm::tabs.base>
             <x-slot:tabs>
-                <x-ccm::tabs.nav-tab :index="0" :badge="$count">
+                <x-ccm::tabs.nav-tab :index="0" :badge="ReadableNumber($count, '.')">
                     Query builder
                 </x-ccm::tabs.nav-tab>
                 <x-ccm::tabs.nav-tab :index="1">Debug</x-ccm::tabs.nav-tab>

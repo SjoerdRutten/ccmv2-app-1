@@ -6,7 +6,7 @@ use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
-use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelector;
+use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelectorFacade;
 use Sellvation\CCMV2\TargetGroups\Livewire\Form;
 use Sellvation\CCMV2\TargetGroups\Livewire\Overview;
 use Sellvation\CCMV2\TargetGroups\Livewire\Rule;
@@ -17,7 +17,7 @@ class TargetGroupServiceProvider extends ServiceProvider
     {
         $loader = AliasLoader::getInstance();
 
-        $loader->alias('TargetGroupSelector', TargetGroupSelector::class);
+        $loader->alias('TargetGroupSelector', TargetGroupSelectorFacade::class);
     }
 
     public function boot(): void

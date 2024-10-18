@@ -23,7 +23,7 @@
                         <x-ccm::tables.td>{{ $targetGroup->name }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $targetGroup->created_at->toDateTimeString() }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $targetGroup->updated_at->toDateTimeString() }}</x-ccm::tables.td>
-                        <x-ccm::tables.td>{{ $targetGroup->numberOfResults }}</x-ccm::tables.td>
+                        <x-ccm::tables.td>{{ ReadableNumber($targetGroup->numberOfResults) }}</x-ccm::tables.td>
                         <x-ccm::tables.td :link="true">
                             <div class="flex flex-row-reverse gap-4">
                                 <x-ccm::tables.edit-link :href="route('target-groups::form', $targetGroup)"/>
