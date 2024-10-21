@@ -38,7 +38,8 @@ class Product extends Model
     public function toSearchableArray()
     {
         $data = $this->toArray();
-        $data['brand'] = $this->brand?->name;
+        $data['id'] = (string) $data['id'];
+        $data['brand'] = (string) $this->brand?->name;
 
         return $data;
     }
@@ -53,17 +54,25 @@ class Product extends Model
                 ], [
                     'name' => 'ean',
                     'type' => 'string',
+                    'optional' => true,
                 ], [
                     'name' => 'sku',
                     'type' => 'string',
+                    'optional' => true,
                 ], [
                     'name' => 'name',
                     'type' => 'string',
                 ], [
                     'name' => 'brand',
                     'type' => 'string',
+                    'optional' => true,
                 ],
             ],
         ];
+    }
+
+    public function shouldBeSearchable()
+    {
+        return true;
     }
 }
