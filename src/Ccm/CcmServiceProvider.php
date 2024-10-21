@@ -12,7 +12,9 @@ use Laravel\Pennant\Feature;
 use Livewire\Livewire;
 use Sellvation\CCMV2\Ccm\Components\dashboard\TypesenseCard;
 use Sellvation\CCMV2\Ccm\Http\Middelware\CcmContextMiddleware;
-use Sellvation\CCMV2\Ccm\Livewire\admin\Features;
+use Sellvation\CCMV2\Ccm\Livewire\Admin\Customers\Edit;
+use Sellvation\CCMV2\Ccm\Livewire\Admin\Customers\Overview;
+use Sellvation\CCMV2\Ccm\Livewire\Admin\Features;
 use Sellvation\CCMV2\Ccm\Livewire\EnvironmentSelector;
 use Sellvation\CCMV2\Ccm\Livewire\ModalError;
 use Sellvation\CCMV2\Ccm\Livewire\ModalSuccess;
@@ -47,6 +49,8 @@ class CcmServiceProvider extends ServiceProvider
         Livewire::component('ccm::environment-selector', EnvironmentSelector::class);
 
         Livewire::component('ccm::admin::features', Features::class);
+        Livewire::component('ccm::admin::customers', Overview::class);
+        Livewire::component('ccm::admin::customers.edit', Edit::class);
 
         Livewire::component('ccm::dashboard::typesense-card', TypesenseCard::class);
     }

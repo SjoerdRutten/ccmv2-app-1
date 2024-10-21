@@ -1,6 +1,6 @@
 <?php
 
-namespace Sellvation\CCMV2\Ccm\Livewire\admin;
+namespace Sellvation\CCMV2\Ccm\Livewire\Admin;
 
 use Laravel\Pennant\Feature;
 use Livewire\Component;

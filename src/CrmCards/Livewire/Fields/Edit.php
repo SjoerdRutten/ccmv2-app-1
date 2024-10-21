@@ -3,11 +3,14 @@
 namespace Sellvation\CCMV2\CrmCards\Livewire\Fields;
 
 use Livewire\Component;
+use Sellvation\CCMV2\Ccm\Livewire\Traits\HasModals;
 use Sellvation\CCMV2\CrmCards\Livewire\Fields\Forms\CrmFieldForm;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
 
 class Edit extends Component
 {
+    use HasModals;
+
     public CrmField $crmField;
 
     public CrmFieldForm $form;
@@ -20,6 +23,8 @@ class Edit extends Component
     public function save()
     {
         $this->form->save();
+
+        $this->showSuccessModal('Veld is opgeslagen');
     }
 
     public function render()

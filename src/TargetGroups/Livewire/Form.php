@@ -7,12 +7,15 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Sellvation\CCMV2\Ccm\Livewire\Traits\HasModals;
 use Sellvation\CCMV2\CrmCards\Jobs\AddTagToCrmCardJob;
 use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelectorFacade;
 use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
 
 class Form extends Component
 {
+    use HasModals;
+
     #[Locked]
     public ?int $id = null;
 
@@ -113,7 +116,7 @@ class Form extends Component
         ]);
 
         if ($redirect) {
-            $this->dispatch('show-modal-success', title: 'Selectie opgeslagen', href: route('target-groups::form', $targetGroup));
+            $this->showSuccessModal(title: 'Selectie opgeslagen', href: route('target-groups::form', $targetGroup));
         }
     }
 
@@ -144,7 +147,8 @@ class Form extends Component
         $batch->dispatch();
 
         $this->showTagModal = false;
-        $this->dispatch('show-modal-success', title: 'Kenmerken worden toegevoegd', content: 'Kenmerken worden toegevoegd op de achtergrond, dit kan enkele minuten duren');
+
+        $this->showSuccessModal(title: 'Kenmerken worden toegevoegd', message: 'Kenmerken worden toegevoegd op de achtergrond, dit kan enkele minuten duren');
     }
 
     #[On('update-count')]

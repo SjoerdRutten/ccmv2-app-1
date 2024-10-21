@@ -18,7 +18,9 @@ Route::middleware([
         Route::prefix('admin')
             ->name('admin::')
             ->group(function (): void {
-                Route::get('/features', \Sellvation\CCMV2\Ccm\Livewire\admin\Features::class)->name('features');
+                Route::get('/features', \Sellvation\CCMV2\Ccm\Livewire\Admin\Features::class)->name('features');
+                Route::get('/customers/{customer}', \Sellvation\CCMV2\Ccm\Livewire\Admin\Customers\Edit::class)->name('customers.edit');
+                Route::get('/customers', \Sellvation\CCMV2\Ccm\Livewire\Admin\Customers\Overview::class)->name('customers');
             });
     });
 

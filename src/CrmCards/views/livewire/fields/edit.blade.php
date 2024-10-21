@@ -15,41 +15,55 @@
             </x-slot:tabs>
 
             <x-ccm::tabs.tab-content :index="0">
-                <x-ccm::forms.input name="form.name" wire:model.live="form.name">Naam</x-ccm::forms.input>
-                <x-ccm::forms.input name="form.label" wire:model.live="form.label">Omschrijving Nederlands</x-ccm::forms.input>
-                <x-ccm::forms.input name="form.label_en" wire:model.live="form.label_en">Omschrijving Engels</x-ccm::forms.input>
-                <x-ccm::forms.input name="form.label_de" wire:model.live="form.label_de">Omschrijving Duits</x-ccm::forms.input>
-                <x-ccm::forms.input name="form.label_fr" wire:model.live="form.label_fr">Omschrijving Frans</x-ccm::forms.input>
-                <x-ccm::forms.select
-                        name="form.crm_field_category_id"
-                        wire:model.live="form.crm_field_category_id"
-                        label="Rubriek"
-                >
-                    <option></option>
-                    @foreach ($form->crmFieldCategories() AS $crmFieldCategory)
-                        <option value="{{ $crmFieldCategory->id }}">
-                            {{ $crmFieldCategory->name }}
-                        </option>
-                    @endforeach
-                </x-ccm::forms.select>
-                <x-ccm::forms.select
-                        name="form.crm_field_type_id"
-                        wire:model.live="form.crm_field_type_id"
-                        label="Type"
-                        :disabled="!!$form->id"
-                >
-                    @foreach ($form->crmFieldTypes() AS $crmFieldType)
-                        <option value="{{ $crmFieldType->id }}">
-                            {{ $crmFieldType->name }}
-                        </option>
-                    @endforeach
-                </x-ccm::forms.select>
+                <x-ccm::forms.form>
+                    <x-ccm::forms.input name="form.name" wire:model.live="form.name">Naam</x-ccm::forms.input>
+                    <x-ccm::forms.input name="form.label" wire:model.live="form.label">Omschrijving Nederlands
+                    </x-ccm::forms.input>
+                    <x-ccm::forms.input name="form.label_en" wire:model.live="form.label_en">Omschrijving Engels
+                    </x-ccm::forms.input>
+                    <x-ccm::forms.input name="form.label_de" wire:model.live="form.label_de">Omschrijving Duits
+                    </x-ccm::forms.input>
+                    <x-ccm::forms.input name="form.label_fr" wire:model.live="form.label_fr">Omschrijving Frans
+                    </x-ccm::forms.input>
+                    <x-ccm::forms.select
+                            name="form.crm_field_category_id"
+                            wire:model.live="form.crm_field_category_id"
+                            label="Rubriek"
+                    >
+                        <option></option>
+                        @foreach ($form->crmFieldCategories() AS $crmFieldCategory)
+                            <option value="{{ $crmFieldCategory->id }}">
+                                {{ $crmFieldCategory->name }}
+                            </option>
+                        @endforeach
+                    </x-ccm::forms.select>
+                    <x-ccm::forms.select
+                            name="form.crm_field_type_id"
+                            wire:model.live="form.crm_field_type_id"
+                            label="Type"
+                            :disabled="!!$form->id"
+                    >
+                        @foreach ($form->crmFieldTypes() AS $crmFieldType)
+                            <option value="{{ $crmFieldType->id }}">
+                                {{ $crmFieldType->name }}
+                            </option>
+                        @endforeach
+                    </x-ccm::forms.select>
+                </x-ccm::forms.form>
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="1">
-                <x-ccm::forms.checkbox name="form.is_shown_on_overview" wire:model.live="form.is_shown_on_overview">Overzicht</x-ccm::forms.checkbox>
-                <x-ccm::forms.checkbox name="form.is_shown_on_target_group_builder" wire:model.live="form.is_shown_on_target_group_builder">Doelgroep selectie</x-ccm::forms.checkbox>
-                <x-ccm::forms.checkbox name="form.is_hidden" wire:model.live="form.is_hidden">Verborgen</x-ccm::forms.checkbox>
-                <x-ccm::forms.checkbox name="form.is_locked" wire:model.live="form.is_locked">Vergrendeld</x-ccm::forms.checkbox>
+                <x-ccm::forms.form>
+                    <x-ccm::forms.checkbox name="form.is_shown_on_overview" wire:model.live="form.is_shown_on_overview">
+                        Overzicht
+                    </x-ccm::forms.checkbox>
+                    <x-ccm::forms.checkbox name="form.is_shown_on_target_group_builder"
+                                           wire:model.live="form.is_shown_on_target_group_builder">Doelgroep selectie
+                    </x-ccm::forms.checkbox>
+                    <x-ccm::forms.checkbox name="form.is_hidden" wire:model.live="form.is_hidden">Verborgen
+                    </x-ccm::forms.checkbox>
+                    <x-ccm::forms.checkbox name="form.is_locked" wire:model.live="form.is_locked">Vergrendeld
+                    </x-ccm::forms.checkbox>
+                </x-ccm::forms.form>
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="2">
                 <div>

@@ -23,6 +23,7 @@
 
             @feature('admin')
             <x-ccm::navigation.desktop-link route="admin::features" label="Beheer">
+                <x-ccm::navigation.desktop-link route="admin::customers" label="Klanten" :sub="true"/>
                 <x-ccm::navigation.desktop-link route="admin::features" label="Features" :sub="true"/>
             </x-ccm::navigation.desktop-link>
             @endfeature
