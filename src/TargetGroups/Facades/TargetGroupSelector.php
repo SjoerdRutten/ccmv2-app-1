@@ -131,9 +131,9 @@ class TargetGroupSelector
 
             switch ($operator) {
                 case 'con':
-                    return '['.$value.']';
+                    return '=['.$value.']';
                 case 'dnc':
-                    return '!['.$value.']';
+                    return '!=['.$value.']';
                 default:
                     throw new \Exception('Unknown operator: '.$operator);
             }
