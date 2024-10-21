@@ -8,7 +8,7 @@
 
 <div class="{{ $grow ? 'grow' : '' }}">
     <label for="{{ $id }}" class="block text-sm font-medium leading-6 text-gray-900">{{ $slot }}</label>
-    <div class="mt-2">
+    <div class="mt-1">
         <input type="{{ $type }}"
                name="{{ $name }}"
                id="{{ $id }}"

@@ -6,13 +6,13 @@
 <div class="relative flex items-start">
     <div class="flex items-center">
         <input type="checkbox"
-            {{
-                $attributes->merge([
-                    'name' => $name,
-                    'id' => $id,
-                    'class' => 'h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600'
-                ])
-            }}
+                {{
+                    $attributes->merge([
+                        'name' => $name,
+                        'id' => $id,
+                        'class' => 'h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600'
+                    ])
+                }}
         >
     </div>
     @if ($slot->isNotEmpty())
@@ -24,7 +24,7 @@
     @endif
 
     @if ($errors->has($name))
-        <p class="mt-2 text-sm text-red-600" id="email-error">
+        <p class="mt-1 text-sm text-red-600" id="email-error">
             {{ $errors->first($name) }}
         </p>
     @endif

@@ -3,7 +3,7 @@
 namespace Sellvation\CCMV2\Ccm\Livewire\Admin\Customers;
 
 use Livewire\Component;
-use Sellvation\CCMV2\Ccm\Livewire\Admin\Customers\Form\CustomerForm;
+use Sellvation\CCMV2\Ccm\Livewire\Admin\Customers\Forms\CustomerForm;
 use Sellvation\CCMV2\Ccm\Livewire\Traits\HasModals;
 use Sellvation\CCMV2\Users\Models\Customer;
 

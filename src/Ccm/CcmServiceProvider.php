@@ -51,6 +51,8 @@ class CcmServiceProvider extends ServiceProvider
         Livewire::component('ccm::admin::features', Features::class);
         Livewire::component('ccm::admin::customers', Overview::class);
         Livewire::component('ccm::admin::customers.edit', Edit::class);
+        Livewire::component('ccm::admin::environments', \Sellvation\CCMV2\Ccm\Livewire\Admin\Environments\Overview::class);
+        Livewire::component('ccm::admin::environments.edit', \Sellvation\CCMV2\Ccm\Livewire\Admin\Environments\Edit::class);
 
         Livewire::component('ccm::dashboard::typesense-card', TypesenseCard::class);
     }

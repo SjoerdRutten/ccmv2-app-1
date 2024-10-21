@@ -10,7 +10,7 @@
             </x-slot:thead>
             <x-slot:tbody>
                 @foreach ($customers AS $key => $customer)
-                    <tr>
+                    <x-ccm::tables.tr :route="route('admin::customers.edit', $customer)">
                         <x-ccm::tables.td :first="true">{{ $customer->name }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $customer->email }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $customer->telephone }}</x-ccm::tables.td>
@@ -18,7 +18,7 @@
                             <x-ccm::tables.edit-link
                                     :href="route('admin::customers.edit', $customer)"></x-ccm::tables.edit-link>
                         </x-ccm::tables.td>
-                    </tr>
+                    </x-ccm::tables.tr>
                 @endforeach
             </x-slot:tbody>
         </x-ccm::tables.table>

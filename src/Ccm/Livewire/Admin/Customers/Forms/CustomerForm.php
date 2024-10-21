@@ -1,6 +1,6 @@
 <?php
 
-namespace Sellvation\CCMV2\Ccm\Livewire\Admin\Customers\Form;
+namespace Sellvation\CCMV2\Ccm\Livewire\Admin\Customers\Forms;
 
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
