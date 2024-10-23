@@ -29,10 +29,11 @@ class MigrateCcmV1GlobalCommand extends Command
             ->orderBy('naam', 'asc')
             ->pluck('naam', 'id');
 
+        $this->migrateTimezones();
         if ($customerName = $this->choice('Select a customer', $customers->toArray(), 167)) {
             $this->migrateCustomers($customerName);
         }
-        //        $this->migrateUsers();
+        $this->migrateUsers();
         $this->migrateEnvironments();
     }
 
