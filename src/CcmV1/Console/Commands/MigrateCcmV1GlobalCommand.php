@@ -4,6 +4,7 @@ namespace Sellvation\CCMV2\CcmV1\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Config;
 use Sellvation\CCMV2\Environments\Models\Environment;
 use Sellvation\CCMV2\Environments\Models\Timezone;
 use Sellvation\CCMV2\Users\Models\Customer;
@@ -20,9 +21,9 @@ class MigrateCcmV1GlobalCommand extends Command
 
     public function handle()
     {
-        //        $this->migrateTimezones();
-        //
-        $customers = \DB::connection('mysqlv1')
+        Config::set('database.connections.db02.database', 'ccmp');
+
+        $customers = \DB::connection('db02')
             ->table('klanten')
             ->select(['id', 'naam'])
             ->orderBy('naam', 'asc')
@@ -57,7 +58,7 @@ class MigrateCcmV1GlobalCommand extends Command
     {
         $this->info('Migrate timezones');
 
-        $timezones = \DB::connection('mysqlv1')
+        $timezones = \DB::connection('db02')
             ->select('select * from tijdzones');
 
         foreach ($timezones as $timezone) {
@@ -76,7 +77,7 @@ class MigrateCcmV1GlobalCommand extends Command
     {
         $this->info('Migrate users');
 
-        $users = \DB::connection('mysqlv1')
+        $users = \DB::connection('db02')
             ->table('gebruikers')
             ->whereIn('klanten_id', [$this->customer->id, 1])
             ->get();
@@ -133,7 +134,7 @@ class MigrateCcmV1GlobalCommand extends Command
     {
         $this->info('Migrate customers');
 
-        $customer = \DB::connection('mysqlv1')
+        $customer = \DB::connection('db02')
             ->table('klanten')
             ->where('naam', '=', $name)
             ->select('*')
@@ -168,7 +169,7 @@ class MigrateCcmV1GlobalCommand extends Command
     {
         $this->info('Migrate environments');
 
-        $environments = \DB::connection('mysqlv1')
+        $environments = \DB::connection('db02')
             ->table('omgevingen')
             ->where('klanten_id', $this->customer->id)
             ->get();
