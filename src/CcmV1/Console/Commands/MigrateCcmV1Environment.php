@@ -167,7 +167,7 @@ class MigrateCcmV1Environment extends Command
             ->table('crm_'.$this->environmentId)
             ->where('id', '>', $max)
             ->orderBy('id')
-            ->chunk(1000, function ($crmCards) use ($progressBar) {
+            ->chunk(500, function ($crmCards) use ($progressBar) {
                 foreach ($crmCards as $row) {
                     $progressBar->advance();
 
@@ -208,7 +208,7 @@ class MigrateCcmV1Environment extends Command
                     ]);
 
                     $this->environment->crmCards()->updateOrCreate([
-                        'id' => $row->id,
+                        'crm_id' => $row->crmid,
                     ], [
                         'crm_id' => $row->crmid,
                         'environment_id' => $this->environment->id,
