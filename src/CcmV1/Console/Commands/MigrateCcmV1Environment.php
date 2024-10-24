@@ -28,7 +28,7 @@ class MigrateCcmV1Environment extends Command
 
         foreach (Environment::get() as $environment) {
 
-            if ($this->confirm($environment->name.' importeren ?')) {
+            if ($this->confirm($environment->name.' importeren ?', true)) {
                 $this->output->title('Import environment '.$environment->name);
 
                 $this->environmentId = $environment->id;
