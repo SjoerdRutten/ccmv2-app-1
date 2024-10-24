@@ -7,14 +7,17 @@
                         wire:model.live.debounce="filter.q"
                 >Zoeken
                 </x-ccm::forms.input>
-                <x-ccm::forms.select label="Doelgroep selectie" wire:model.live="filter.target_group_id">
-                    <option></option>
-                    @foreach ($targetGroups AS $targetGroup)
-                        <option value="{{ $targetGroup->id }}">
-                            {{ $targetGroup->name }}
-                        </option>
-                    @endforeach
-                </x-ccm::forms.select>
+
+                @if (count($targetGroups) > 0)
+                    <x-ccm::forms.select label="Doelgroep selectie" wire:model.live="filter.target_group_id">
+                        <option></option>
+                        @foreach ($targetGroups AS $targetGroup)
+                            <option value="{{ $targetGroup->id }}">
+                                {{ $targetGroup->name }}
+                            </option>
+                        @endforeach
+                    </x-ccm::forms.select>
+                @endif
             </div>
         </x-ccm::pages.intro>
         <x-ccm::tables.table>

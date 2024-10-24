@@ -4,6 +4,7 @@ namespace Sellvation\CCMV2\Orders\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Scout\Searchable;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 
@@ -16,13 +17,17 @@ class Product extends Model
         'environment_id',
         'brand_id',
         'sku',
-        'ean',
         'name',
     ];
 
     public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class);
+    }
+
+    public function eans(): HasMany
+    {
+        return $this->hasMany(ProductEan::class);
     }
 
     public function searchableAs()
@@ -40,6 +45,7 @@ class Product extends Model
         $data = $this->toArray();
         $data['id'] = (string) $data['id'];
         $data['brand'] = (string) $this->brand?->name;
+        $data['ean'] = $this->eans()->pluck('ean')->toArray();
 
         return $data;
     }
@@ -53,7 +59,7 @@ class Product extends Model
                     'type' => 'string',
                 ], [
                     'name' => 'ean',
-                    'type' => 'string',
+                    'type' => '[int64]',
                     'optional' => true,
                 ], [
                     'name' => 'sku',

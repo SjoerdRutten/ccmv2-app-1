@@ -10,6 +10,7 @@ use Sellvation\CCMV2\CrmCards\Models\CrmField;
 use Sellvation\CCMV2\CrmCards\Models\CrmFieldCategory;
 use Sellvation\CCMV2\Ems\Models\Email;
 use Sellvation\CCMV2\Ems\Models\EmailCategory;
+use Sellvation\CCMV2\Orders\Models\Product;
 use Sellvation\CCMV2\Users\Models\Customer;
 
 class Environment extends Model
@@ -57,6 +58,11 @@ class Environment extends Model
     public function emails(): HasMany
     {
         return $this->hasMany(Email::class);
+    }
+
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
     }
 
     public function environmentFeatures(): HasMany
