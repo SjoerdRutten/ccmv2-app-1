@@ -17,9 +17,10 @@ class Order extends Model
     protected $fillable = [
         'environment_id',
         'order_type_id',
+        'crm_card_id',
         'order_number',
-        'store',
         'crm_id',
+        'store',
         'order_time',
         'loyalty_card',
         'paymeny_method',
@@ -81,7 +82,7 @@ class Order extends Model
 
     public function shouldBeSearchable()
     {
-        return (bool) $this->crmCard;
+        return (bool) $this->crm_card_id;
     }
 
     public function typesenseCollectionSchema()
@@ -100,6 +101,7 @@ class Order extends Model
                 ], [
                     'name' => 'loyalty_card',
                     'type' => 'int64',
+                    'optional' => true,
                 ], [
                     'name' => 'payment_method',
                     'type' => 'string',

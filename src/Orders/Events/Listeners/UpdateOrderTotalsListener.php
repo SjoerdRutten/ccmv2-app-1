@@ -2,21 +2,17 @@
 
 namespace Sellvation\CCMV2\Orders\Events\Listeners;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-use Sellvation\CCMV2\Orders\Events\OrderRowSavedEvent;
+use Sellvation\CCMV2\Orders\Events\OrderRowCreatedEvent;
 
-class UpdateOrderTotalsListener implements ShouldQueue
+class UpdateOrderTotalsListener
 {
-    use InteractsWithQueue;
-
     public function __construct() {}
 
-    public function handle(OrderRowSavedEvent $event): void
+    public function handle(OrderRowCreatedEvent $event): void
     {
         $order = $event->orderRow->order;
 
-        $order->total_price = $order->orderRows()->sum('price');
+        $order->total_price = $order->orderRows()->sum('total_price');
         $order->number_of_products = $order->orderRows()->sum('amount');
         $order->save();
     }

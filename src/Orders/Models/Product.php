@@ -59,7 +59,7 @@ class Product extends Model
                     'type' => 'string',
                 ], [
                     'name' => 'ean',
-                    'type' => '[int64]',
+                    'type' => 'int64[]',
                     'optional' => true,
                 ], [
                     'name' => 'sku',
