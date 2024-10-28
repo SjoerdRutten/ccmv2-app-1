@@ -11,7 +11,9 @@
                 <x-ccm::tabs.nav-tab :index="0" :badge="ReadableNumber($count, '.')">
                     Query builder
                 </x-ccm::tabs.nav-tab>
-                <x-ccm::tabs.nav-tab :index="1">Debug</x-ccm::tabs.nav-tab>
+                @if (Auth::user()->isAdmin)
+                    <x-ccm::tabs.nav-tab :index="1">Debug</x-ccm::tabs.nav-tab>
+                @endif
             </x-slot:tabs>
 
             <x-ccm::tabs.tab-content :index="0">
