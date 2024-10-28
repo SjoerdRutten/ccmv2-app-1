@@ -1,4 +1,4 @@
-<x-ccm::cards.card title="Typesense">
+<x-ccm::cards.card title="Typesense geheugengebruik">
     <x-ccm::definition-list.row title="Disk usage">
         {{ ReadableSize($metrics['typesense_memory_resident_bytes']) }}
     </x-ccm::definition-list.row>

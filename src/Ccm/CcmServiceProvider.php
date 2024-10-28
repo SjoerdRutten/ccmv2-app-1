@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
-use Sellvation\CCMV2\Ccm\Components\dashboard\TypesenseCard;
+use Sellvation\CCMV2\Ccm\Components\dashboard\TypesenseCollectionsCard;
+use Sellvation\CCMV2\Ccm\Components\dashboard\TypesenseMemoryCard;
 use Sellvation\CCMV2\Ccm\Http\Middelware\CcmContextMiddleware;
 use Sellvation\CCMV2\Ccm\Livewire\Admin\Customers\Edit;
 use Sellvation\CCMV2\Ccm\Livewire\Admin\Customers\Overview;
@@ -34,7 +35,8 @@ class CcmServiceProvider extends ServiceProvider
         if (! App::runningInConsole()) {
             $this->registerLivewireComponents();
 
-            Blade::component('ccm::dashboard.typesense-card', TypesenseCard::class);
+            Blade::component('ccm::dashboard.typesense-memory-card', TypesenseMemoryCard::class);
+            Blade::component('ccm::dashboard.typesense-collections-card', TypesenseCollectionsCard::class);
         }
     }
 
@@ -50,6 +52,6 @@ class CcmServiceProvider extends ServiceProvider
         Livewire::component('ccm::admin::environments', \Sellvation\CCMV2\Ccm\Livewire\Admin\Environments\Overview::class);
         Livewire::component('ccm::admin::environments.edit', \Sellvation\CCMV2\Ccm\Livewire\Admin\Environments\Edit::class);
 
-        Livewire::component('ccm::dashboard::typesense-card', TypesenseCard::class);
+        Livewire::component('ccm::dashboard::typesense-card', TypesenseMemoryCard::class);
     }
 }

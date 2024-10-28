@@ -30,4 +30,11 @@ class Typesense
 
         return $client->getMetrics()->retrieve();
     }
+
+    public function getCollections()
+    {
+        $client = $this->getClient();
+
+        return $client->getCollections()->retrieve();
+    }
 }
