@@ -10,7 +10,6 @@ return new class extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             $table->index(['sku']);
-            $table->index(['ean']);
         });
 
         Schema::table('order_rows', function (Blueprint $table) {
