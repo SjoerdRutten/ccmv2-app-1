@@ -18,7 +18,7 @@ class UpdateOrderRowTotalListener
             if ($totalPrice < 2147483647) {
                 $orderRow->total_price = $totalPrice;
             } else {
-                $orderRow->total_price = null;
+                $orderRow->total_price = 0;
             }
         }
     }
