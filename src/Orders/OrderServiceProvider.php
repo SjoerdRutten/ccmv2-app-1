@@ -6,8 +6,6 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Sellvation\CCMV2\Orders\Events\Listeners\UpdateOrderRowTotalListener;
-use Sellvation\CCMV2\Orders\Events\Listeners\UpdateOrderTotalsListener;
-use Sellvation\CCMV2\Orders\Events\OrderRowCreatedEvent;
 use Sellvation\CCMV2\Orders\Events\OrderRowCreatingEvent;
 
 class OrderServiceProvider extends ServiceProvider
@@ -32,6 +30,5 @@ class OrderServiceProvider extends ServiceProvider
         $events = $this->app->make(Dispatcher::class);
 
         $events->listen(OrderRowCreatingEvent::class, UpdateOrderRowTotalListener::class);
-        $events->listen(OrderRowCreatedEvent::class, UpdateOrderTotalsListener::class);
     }
 }
