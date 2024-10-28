@@ -13,7 +13,13 @@ class UpdateOrderRowTotalListener
         $orderRow = $event->orderRow;
 
         if (! $orderRow->total_price) {
-            $orderRow->total_price = $orderRow->amount * $orderRow->unit_price;
+            $totalPrice = $orderRow->amount * $orderRow->unit_price;
+
+            if ($totalPrice < 2147483647) {
+                $orderRow->total_price = $totalPrice;
+            } else {
+                $orderRow->total_price = null;
+            }
         }
     }
 }
