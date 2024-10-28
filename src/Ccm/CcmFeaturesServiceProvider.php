@@ -27,10 +27,10 @@ class CcmFeaturesServiceProvider extends ServiceProvider
         ];
 
         foreach ($environmentFeatures as $feature) {
-            Feature::define($feature, fn (Environment $environment) => $environment->hasFeature($feature));
+            Feature::define($feature, fn (Environment $environment) => Auth::user()->isAdmin || $environment->hasFeature($feature));
         }
         foreach ($userFeatures as $feature) {
-            Feature::define($feature, fn (Environment $environment) => \Str::startsWith(Auth::user()->name, 'sellvation'));
+            Feature::define($feature, fn (Environment $environment) => Auth::user()->isAdmin);
         }
     }
 }

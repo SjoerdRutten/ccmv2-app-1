@@ -1,5 +1,5 @@
-@if (count($environments) > 1)
-    <div class="mb-4">
+<div class="mb-4">
+    @if (count($environments) > 1)
         <x-ccm::forms.select wire:model.live="environmentId">
             @foreach ($environments AS $environment)
                 <option value="{{ $environment->id }}">
@@ -7,5 +7,5 @@
                 </option>
             @endforeach
         </x-ccm::forms.select>
-    </div>
-@endif
+    @endif
+</div>

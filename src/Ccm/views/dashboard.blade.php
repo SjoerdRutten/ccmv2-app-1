@@ -2,6 +2,8 @@
 
 @section('content')
     <x-ccm::cards.cards cols="4">
-        <x-ccm::dashboard.typesense-card/>
+        @if (Auth::user()->isAdmin)
+            <x-ccm::dashboard.typesense-card/>
+        @endif
     </x-ccm::cards.cards>
 @endsection

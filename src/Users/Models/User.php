@@ -110,6 +110,13 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    protected function isAdmin(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->role->name === 'admin'
+        );
+    }
+
     protected function currentEnvironmentId(): Attribute
     {
         return Attribute::make(

@@ -2,6 +2,7 @@
 
 namespace Sellvation\CCMV2\Environments\Models;
 
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -10,9 +11,11 @@ use Sellvation\CCMV2\CrmCards\Models\CrmField;
 use Sellvation\CCMV2\CrmCards\Models\CrmFieldCategory;
 use Sellvation\CCMV2\Ems\Models\Email;
 use Sellvation\CCMV2\Ems\Models\EmailCategory;
+use Sellvation\CCMV2\Environments\Scopes\IsActiveScope;
 use Sellvation\CCMV2\Orders\Models\Product;
 use Sellvation\CCMV2\Users\Models\Customer;
 
+#[ScopedBy([IsActiveScope::class])]
 class Environment extends Model
 {
     protected $fillable = [
@@ -23,6 +26,11 @@ class Environment extends Model
         'description',
         'email_credits',
         'notified',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
     ];
 
     public function customer(): BelongsTo
