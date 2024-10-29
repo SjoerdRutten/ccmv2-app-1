@@ -8,6 +8,15 @@ use Illuminate\View\Component;
 
 class TypesenseCollectionsCard extends Component
 {
+    private function getCollections()
+    {
+        $collections = new Collection(\Typesense::getCollections());
+
+        return $collections->filter(function ($item) {
+            return \Str::endsWith($item['name'], '_'.\Auth::user()->currentEnvironmentId);
+        });
+    }
+
     public function render(): View
     {
         $this->getCollections();
@@ -16,14 +25,5 @@ class TypesenseCollectionsCard extends Component
             ->with([
                 'collections' => $this->getCollections(),
             ]);
-    }
-
-    private function getCollections()
-    {
-        $collections = new Collection(\Typesense::getCollections());
-
-        return $collections->filter(function ($item) {
-            return \Str::endsWith($item['name'], '_'.\Auth::user()->currentEnvironmentId);
-        });
     }
 }

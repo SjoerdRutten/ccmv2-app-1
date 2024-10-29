@@ -35,4 +35,5 @@ Route::middleware([
     ->name('ccm::')
     ->group(function (): void {
         Route::get('/dashboard', \Sellvation\CCMV2\Ccm\Http\Controllers\DashboardController::class)->name('dashboard');
+        Route::get('/typesense/collection/{collectionName}', \Sellvation\CCMV2\Ccm\Livewire\Typesense\Collection::class)->name('typesense.collection');
     });

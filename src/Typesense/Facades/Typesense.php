@@ -37,4 +37,11 @@ class Typesense
 
         return $client->getCollections()->retrieve();
     }
+
+    public function getCollection($collectionName)
+    {
+        $client = $this->getClient();
+
+        return $client->collections[$collectionName]->retrieve();
+    }
 }

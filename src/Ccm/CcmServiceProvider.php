@@ -17,6 +17,7 @@ use Sellvation\CCMV2\Ccm\Livewire\Admin\Features;
 use Sellvation\CCMV2\Ccm\Livewire\EnvironmentSelector;
 use Sellvation\CCMV2\Ccm\Livewire\ModalError;
 use Sellvation\CCMV2\Ccm\Livewire\ModalSuccess;
+use Sellvation\CCMV2\Ccm\Livewire\Typesense\Collection;
 
 class CcmServiceProvider extends ServiceProvider
 {
@@ -52,6 +53,6 @@ class CcmServiceProvider extends ServiceProvider
         Livewire::component('ccm::admin::environments', \Sellvation\CCMV2\Ccm\Livewire\Admin\Environments\Overview::class);
         Livewire::component('ccm::admin::environments.edit', \Sellvation\CCMV2\Ccm\Livewire\Admin\Environments\Edit::class);
 
-        Livewire::component('ccm::dashboard::typesense-card', TypesenseMemoryCard::class);
+        Livewire::component('ccm::typesense::collection', Collection::class);
     }
 }
