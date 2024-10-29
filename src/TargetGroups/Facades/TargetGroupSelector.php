@@ -114,7 +114,18 @@ class TargetGroupSelector
 
                     return '$'.$columnCollection[0].'_'.Auth::user()->currentEnvironmentId.'('.$columnCollection[1].':'.$this->generateComparison(Arr::get($filter, 'operator'), $value, Arr::get($filter, 'columnType')).')';
                 } else {
-                    return Arr::get($filter, 'column').':'.$this->generateComparison(Arr::get($filter, 'operator'), $value, Arr::get($filter, 'columnType'));
+                    $column = Arr::get($filter, 'column');
+
+                    switch ($operator) {
+                        case 'con':
+                        case 'dnc':
+                        case 'ew':
+                        case 'enw':
+                            $column .= '_infix';
+                            break;
+                    }
+
+                    return $column.':'.$this->generateComparison(Arr::get($filter, 'operator'), $value, Arr::get($filter, 'columnType'));
                 }
             }
         }
@@ -160,17 +171,15 @@ class TargetGroupSelector
             case 'between':
                 return '['.(int) Arr::get($value, 'from').'..'.(int) Arr::get($value, 'to').']';
             case 'con':
-                return '*'.$value.'*';
-            case 'dnc':
-                return '!*'.$value.'*';
             case 'sw':
                 return $value.'*';
+            case 'dnc':
             case 'snw':
                 return '!'.$value.'*';
             case 'ew':
-                return '*'.$value;
+                return $value;
             case 'enw':
-                return '!*'.$value;
+                return '!'.$value;
             default:
                 throw new \Exception('Unknown operator: '.$operator);
         }

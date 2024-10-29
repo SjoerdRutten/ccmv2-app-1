@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 use Sellvation\CCMV2\Orders\Models\Order;
@@ -156,6 +157,7 @@ class CrmCard extends Model
                     break;
                 case 'EMAIL':
                     $data[$crmField->name] = \Arr::get($this->data, $crmField->name);
+                    $data[$crmField->name.'_infix'] = $this->makeStringArray(\Arr::get($this->data, $crmField->name));
                     $data['_'.$crmField->name.'_abuse'] = (bool) \Arr::get($this->data, $crmField->name.'_abuse');
                     $data['_'.$crmField->name.'_abuse_timestamp'] = $this->makeTimestamp(\Arr::get($this->data, $crmField->name.'_abuse_timestamp'));
                     $data['_'.$crmField->name.'_bounce_reason'] = \Arr::get($this->data, $crmField->name.'_bounce_reason');
@@ -171,10 +173,29 @@ class CrmCard extends Model
                     $data['_'.$crmField->name.'_confirmed_optout'] = (bool) \Arr::get($this->data, $crmField->name.'_confirmed_optout');
                     $data['_'.$crmField->name.'_optout_timestamp'] = $this->makeTimestamp(\Arr::get($this->data, $crmField->name.'_optout_timestamp'));
                     break;
+                case 'TEXTBIG':
+                case 'TEXTMICRO':
+                case 'TEXTMIDDLE':
+                case 'TEXTMINI':
+                case 'TEXTSMALL':
                 default:
                     $data[$crmField->name] = \Arr::get($this->data, $crmField->name);
+                    $data[$crmField->name.'_infix'] = $this->makeStringArray(\Arr::get($this->data, $crmField->name));
 
             }
+        }
+
+        return $data;
+    }
+
+    private function makeStringArray($string)
+    {
+        $data = [];
+        foreach (explode(' ', $string) as $elm) {
+            do {
+                $data[] = $elm;
+                $elm = Str::substr($elm, 1);
+            } while (strlen($elm) > 3);
         }
 
         return $data;
@@ -300,6 +321,7 @@ class CrmCard extends Model
                     break;
                 case 'EMAIL':
                     $fields[] = ['name' => $crmField->name, 'type' => 'string', 'optional' => true];
+                    $fields[] = ['name' => $crmField->name.'_infix', 'type' => 'string[]', 'optional' => true];
                     $fields[] = ['name' => '_'.$crmField->name.'_abuse', 'type' => 'bool', 'optional' => true];
                     $fields[] = ['name' => '_'.$crmField->name.'_abuse_timestamp', 'type' => 'int64', 'optional' => true];
                     $fields[] = ['name' => '_'.$crmField->name.'_bounce_reason', 'type' => 'string', 'optional' => true];
@@ -315,8 +337,10 @@ class CrmCard extends Model
                 case 'TEXTMINI':
                 case 'TEXTSMALL':
                 default:
-                    $fieldType = 'string';
+                    $fields[] = ['name' => $crmField->name, 'type' => 'string', 'optional' => true];
+                    $fields[] = ['name' => $crmField->name.'_infix', 'type' => 'string[]', 'optional' => true];
 
+                    $fieldType = false;
             }
 
             if ($fieldType) {
