@@ -107,6 +107,7 @@ class Rule extends Component
                     $columnType = false;
                     break;
                 case 'EMAIL':
+                    $columns[] = new Column($crmField->name, new ColumnTypeText, $crmField->label);
                     $columns[] = new Column('_'.$crmField->name.'_abuse', new ColumnTypeBoolean, $crmField->label.' Abuse');
                     $columns[] = new Column('_'.$crmField->name.'_abuse_timestamp', new ColumnTypeDate, $crmField->label.' Abuse timestamp');
                     $columns[] = new Column('_'.$crmField->name.'_bounce_reason', new ColumnTypeText, $crmField->label.' Bounce reason');

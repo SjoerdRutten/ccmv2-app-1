@@ -155,6 +155,7 @@ class CrmCard extends Model
                     $data[$crmField->name] = (int) \Arr::get($this->data, $crmField->name);
                     break;
                 case 'EMAIL':
+                    $data[$crmField->name] = \Arr::get($this->data, $crmField->name);
                     $data['_'.$crmField->name.'_abuse'] = (bool) \Arr::get($this->data, $crmField->name.'_abuse');
                     $data['_'.$crmField->name.'_abuse_timestamp'] = $this->makeTimestamp(\Arr::get($this->data, $crmField->name.'_abuse_timestamp'));
                     $data['_'.$crmField->name.'_bounce_reason'] = \Arr::get($this->data, $crmField->name.'_bounce_reason');
