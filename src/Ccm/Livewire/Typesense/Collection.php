@@ -13,6 +13,7 @@ class Collection extends Component
         $collection = \Typesense::getCollection($this->collectionName);
 
         $fields = new \Illuminate\Support\Collection($collection['fields']);
+
         $fields = $fields->sortBy(fn ($field) => $field['name']);
 
         return view('ccm::livewire.typesense.collection')
