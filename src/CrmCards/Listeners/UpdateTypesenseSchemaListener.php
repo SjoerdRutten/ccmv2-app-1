@@ -14,9 +14,10 @@ class UpdateTypesenseSchemaListener implements ShouldQueue
 {
     use Queueable;
 
-    public $queue = 'typesense';
-
-    public function __construct() {}
+    public function __construct()
+    {
+        $this->queue = 'typesense';
+    }
 
     public function handle(CrmFieldSavedEvent $event): void
     {
