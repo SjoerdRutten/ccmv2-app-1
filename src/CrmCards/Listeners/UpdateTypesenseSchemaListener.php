@@ -3,15 +3,18 @@
 namespace Sellvation\CCMV2\CrmCards\Listeners;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Sellvation\CCMV2\CrmCards\Events\CrmFieldSavedEvent;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
 use Symfony\Component\HttpClient\HttplugClient;
 use Typesense\Client;
 
-class UpdateTypesenseSchemaListener
+class UpdateTypesenseSchemaListener implements ShouldQueue
 {
     use Queueable;
+
+    public $queue = 'typesense';
 
     public function __construct() {}
 
