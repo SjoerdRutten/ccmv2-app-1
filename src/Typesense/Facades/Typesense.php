@@ -38,10 +38,24 @@ class Typesense
         return $client->getCollections()->retrieve();
     }
 
-    public function getCollection($collectionName)
+    public function getCollection(string $collectionName)
     {
         $client = $this->getClient();
 
         return $client->collections[$collectionName]->retrieve();
+    }
+
+    public function updateCollectionSchema(string $collectionName, array $schema)
+    {
+        $client = $this->getClient();
+
+        return $client->collections[$collectionName]->update($schema);
+    }
+
+    public function removeCollection(string $collectionName)
+    {
+        $client = $this->getClient();
+
+        return $client->collections[$collectionName]->delete();
     }
 }
