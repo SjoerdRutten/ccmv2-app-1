@@ -16,13 +16,6 @@
             OF
         </div>
     @endif
-    <a href="#"
-       class="absolute top-2 right-2 bg-red-500 text-white hover:text-gray-200 border border-gray-500 p-2 rounded"
-       wire:confirm="Weet je zeker dat je dit blok wilt verwijderen ?"
-       wire:click.prevent="removeElement('{{ Arr::get($element, 'index') }}')"
-    >
-        <x-heroicon-s-trash class="w-5 h-5"/>
-    </a>
 
     <div class="flex flex-col gap-2">
         @foreach (Arr::get($element, 'subelements') AS $key => $sub)
@@ -42,6 +35,14 @@
         <a href="#" wire:click.prevent="addRule('{{ Arr::get($element, 'index') }}')">
             <x-heroicon-s-plus-circle class="w-5 h-5 inline"/>
             Criterium toevoegen
+        </a>
+        <a href="#"
+           class="text-red-500"
+           wire:confirm="Weet je zeker dat je dit blok wilt verwijderen ?"
+           wire:click.prevent="removeElement('{{ Arr::get($element, 'index') }}')"
+        >
+            <x-heroicon-s-trash class="w-5 h-5 inline"/>
+            Blok verwijderen
         </a>
     </div>
 </div>

@@ -153,6 +153,8 @@ class TargetGroupSelector
                 return '='.$value;
             case 'eqm':
                 return '=['.$value.']';
+            case 'neqm':
+                return '!=['.$value.']';
             case 'ne':
                 return '!='.$value;
             case 'between':
