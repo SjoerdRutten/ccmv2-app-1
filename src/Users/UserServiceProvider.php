@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Sellvation\CCMV2\Users\Livewire\ForgotPasswordForm;
 use Sellvation\CCMV2\Users\Livewire\ResetPasswordForm;
+use Sellvation\CCMV2\Users\Livewire\Roles\Edit;
+use Sellvation\CCMV2\Users\Livewire\Roles\Overview;
 use Sellvation\CCMV2\Users\Models\User;
 
 class UserServiceProvider extends ServiceProvider
@@ -29,5 +31,7 @@ class UserServiceProvider extends ServiceProvider
     {
         Livewire::component('user::forgot-password-form', ForgotPasswordForm::class);
         Livewire::component('user::reset-password-form', ResetPasswordForm::class);
+        Livewire::component('roles::overview', Overview::class);
+        Livewire::component('roles::edit', Edit::class);
     }
 }

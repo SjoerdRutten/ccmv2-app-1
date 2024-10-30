@@ -15,6 +15,11 @@ class Role extends Model
     protected $fillable = [
         'id',
         'name',
+        'is_admin',
+    ];
+
+    protected $casts = [
+        'is_admin' => 'boolean',
     ];
 
     public function users(): HasMany

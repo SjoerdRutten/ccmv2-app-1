@@ -1,8 +1,6 @@
 <div wire:loading.remove>
     <div class="px-4 sm:px-6 lg:px-8">
         <x-ccm::pages.intro title="Doelgroep selecties">
-            Introductietekst over doelgroep selecties
-
             <x-slot:actions>
                 <x-ccm::buttons.add route="target-groups::form">Doelgroep selectie toevoegen</x-ccm::buttons.add>
             </x-slot:actions>

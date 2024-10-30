@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('target-groups')
     ->middleware([
         'auth:sanctum',
-        config('jetstream.auth_session'),
         'verified',
         'web',
         \Laravel\Pennant\Middleware\EnsureFeaturesAreActive::using('targetGroups'),

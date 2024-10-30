@@ -17,6 +17,6 @@ class LogoutController extends Controller
             $request->session()->regenerateToken();
         }
 
-        return redirect()->route('dashboard');
+        return redirect()->route('ccm::dashboard');
     }
 }

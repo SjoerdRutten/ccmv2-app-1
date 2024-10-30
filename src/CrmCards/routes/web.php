@@ -6,7 +6,6 @@ use Laravel\Pennant\Middleware\EnsureFeaturesAreActive;
 Route::prefix('crm-cards')
     ->middleware([
         'auth:sanctum',
-        config('jetstream.auth_session'),
         'verified',
         'web',
         EnsureFeaturesAreActive::using('crm'),

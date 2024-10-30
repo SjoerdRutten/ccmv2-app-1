@@ -6,7 +6,6 @@ use Laravel\Pennant\Middleware\EnsureFeaturesAreActive;
 Route::prefix('ems')
     ->middleware([
         'auth:sanctum',
-        config('jetstream.auth_session'),
         'verified',
         'web',
         EnsureFeaturesAreActive::using('ems'),

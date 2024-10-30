@@ -113,7 +113,7 @@ class User extends Authenticatable
     protected function isAdmin(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->role->name === 'admin'
+            get: fn () => $this->role->is_admin
         );
     }
 

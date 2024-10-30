@@ -14,9 +14,15 @@ Route::middleware([
 
     Route::middleware([
         'auth:sanctum',
-        config('jetstream.auth_session'),
         'verified',
     ])->group(function (): void {
         Route::get('/logout', LogoutController::class)->name('logout');
     });
+
+    Route::prefix('roles')
+        ->name('roles::')
+        ->group(function () {
+            Route::get('/', \Sellvation\CCMV2\Users\Livewire\Roles\Overview::class)->name('overview');
+            Route::get('/edit/{role?}', \Sellvation\CCMV2\Users\Livewire\Roles\Edit::class)->name('edit');
+        });
 });
