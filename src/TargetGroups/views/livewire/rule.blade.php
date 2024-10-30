@@ -103,7 +103,11 @@
                     <x-ccm::forms.input type="text" step="1" name="filter.from" wire:model.blur="filter.from"/>
                     <x-ccm::forms.input type="text" step="1" name="filter.to" wire:model.blur="filter.to"/>
                 @else
-                    <x-ccm::forms.input type="text" step="1" name="filter.value" wire:model.blur="filter.value"/>
+                    <x-ccm::forms.input type="text"
+                                        step="1"
+                                        name="filter.value"
+                                        wire:model.blur="filter.value"
+                                        :grow="true"/>
                 @endif
             @endif
         @elseif (Arr::get($filter, 'columnType') === 'date')
