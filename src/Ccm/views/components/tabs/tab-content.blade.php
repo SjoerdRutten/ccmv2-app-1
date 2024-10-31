@@ -1,5 +1,5 @@
 <div x-show="currentTab === {{ $index }}">
-    <div class="px-6 py-6 bg-white border-l border-r border-gray-300
+    <div class="{{ ($noMargin ?? false) ?: 'px-6 py-6' }} bg-white border-l border-r border-gray-300
         @if (!($buttons ?? false))
             rounded-b-lg border-b
         @endif

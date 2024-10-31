@@ -18,8 +18,8 @@
                     <x-ccm::forms.input name="form.name" wire:model.live="form.name">Naam</x-ccm::forms.input>
                 </x-ccm::forms.form>
             </x-ccm::tabs.tab-content>
-            <x-ccm::tabs.tab-content :index="1">
-                <x-ccm::tables.table>
+            <x-ccm::tabs.tab-content :index="1" :no-margin="true">
+                <x-ccm::tables.table :no-margin="true">
                     <x-slot:thead>
                         <x-ccm::tables.th :first="true">ID</x-ccm::tables.th>
                         <x-ccm::tables.th>Naam</x-ccm::tables.th>
