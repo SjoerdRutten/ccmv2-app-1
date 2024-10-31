@@ -139,17 +139,6 @@ class User extends Authenticatable
 
     public function hasPermissionTo($group, $permission)
     {
-        dd(
-            $this->roles()
-                ->where('is_admin', 1)
-                ->orWhereHas('permissions', function ($query) use ($group, $permission) {
-                    $query
-                        ->where('model_has_permissions.environment_id', $this->currentEnvironmentId)
-                        ->whereGroup($group)
-                        ->whereName($permission);
-                })->toRawSql()
-        );
-
         return $this->roles()
             ->where('is_admin', 1)
             ->orWhereHas('permissions', function ($query) use ($group, $permission) {
