@@ -91,7 +91,7 @@ class MigrateCcmV1GlobalCommand extends Command
         foreach ($users as $user) {
             $progressBar->advance();
 
-            User::updateOrCreate([
+            $newUser = User::updateOrCreate([
                 'id' => $user->id,
             ], [
                 'customer_id' => $this->customer->id,
@@ -133,7 +133,7 @@ class MigrateCcmV1GlobalCommand extends Command
                 } else {
                     $role = $userRole;
                 }
-                $user->roles()->attach($role->id, ['environment_id' => $environment->id]);
+                $newUser->roles()->attach($role->id, ['environment_id' => $environment->id]);
             }
         }
 
