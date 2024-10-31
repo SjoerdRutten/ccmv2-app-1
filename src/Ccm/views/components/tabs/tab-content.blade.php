@@ -4,6 +4,12 @@
             rounded-b-lg border-b
         @endif
     ">
+        @if ($intro ?? false)
+            <div class="{{ (!($noMargin ?? false)) ?: 'px-6 py-6' }}">
+                {{ $intro }}
+            </div>
+        @endif
+
         {{ $slot }}
     </div>
 

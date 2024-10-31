@@ -1,14 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Laravel\Pennant\Middleware\EnsureFeaturesAreActive;
 
 Route::prefix('crm-cards')
     ->middleware([
         'auth:sanctum',
         'verified',
         'web',
-        EnsureFeaturesAreActive::using('crm'),
     ])
     ->name('crm-cards::')
     ->group(function (): void {

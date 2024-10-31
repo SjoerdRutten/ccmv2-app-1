@@ -18,7 +18,6 @@
   "require": {
     "php": "^8.2",
     "blade-ui-kit/blade-heroicons": "^2.4",
-    "laravel/pennant": "^1.12",
     "laravel/scout": "^10.11",
     "livewire/livewire": "^3.0",
     "pharaonic/laravel-readable": "^1.0",
@@ -55,7 +54,6 @@
     "laravel": {
       "providers": [
         "Sellvation\\CCMV2\\Ccm\\CcmServiceProvider",
-        "Sellvation\\CCMV2\\Ccm\\CcmFeaturesServiceProvider",
         "Sellvation\\CCMV2\\CcmV1\\CcmV1ServiceProvider",
         "Sellvation\\CCMV2\\CrmCards\\CrmCardServiceProvider",
         "Sellvation\\CCMV2\\Ems\\EmsServiceProvider",

@@ -1,14 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Laravel\Pennant\Middleware\EnsureFeaturesAreActive;
 
 Route::prefix('ems')
     ->middleware([
         'auth:sanctum',
         'verified',
         'web',
-        EnsureFeaturesAreActive::using('ems'),
     ])
     ->name('ems::')
     ->group(function (): void {

@@ -17,6 +17,8 @@ class RoleForm extends Form
     #[Validate]
     public $name;
 
+    public array $permissions = [];
+
     public function rules(): array
     {
         return [
@@ -34,6 +36,7 @@ class RoleForm extends Form
         $this->role = $role;
 
         $this->fill($role->toArray());
+        $this->permissions = $role->permissions()->pluck('id')->toArray();
     }
 
     public function save()
@@ -48,7 +51,8 @@ class RoleForm extends Form
             $this->role = Role::create($data);
         }
 
-        return $this->role;
+        $this->role->permissions()->sync($this->permissions);
 
+        return $this->role;
     }
 }

@@ -7,7 +7,6 @@ Route::prefix('target-groups')
         'auth:sanctum',
         'verified',
         'web',
-        \Laravel\Pennant\Middleware\EnsureFeaturesAreActive::using('targetGroups'),
     ])
     ->name('target-groups::')
     ->group(function (): void {

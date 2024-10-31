@@ -16,9 +16,25 @@
             <x-ccm::tabs.tab-content :index="0">
                 <x-ccm::forms.form>
                     <x-ccm::forms.input name="form.name" wire:model.live="form.name">Naam</x-ccm::forms.input>
+
+                    @if (!$role->is_admin)
+                        <x-ccm::typography.h2 class="mt-5">Rechten</x-ccm::typography.h2>
+                        @foreach ($permissions AS $permission)
+                            <x-ccm::forms.checkbox name="form.permissions[]"
+                                                   value="{{ $permission->id }}"
+                                                   wire:model.live="form.permissions">
+                                {{ $permission->description ?? $permission->name }}
+                            </x-ccm::forms.checkbox>
+                        @endforeach
+                    @endif
                 </x-ccm::forms.form>
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="1" :no-margin="true">
+                <x-slot:intro>
+                    <x-ccm::forms.form>
+                        <x-ccm::forms.input name="q" wire:model.live="q">Zoeken</x-ccm::forms.input>
+                    </x-ccm::forms.form>
+                </x-slot:intro>
                 <x-ccm::tables.table :no-margin="true">
                     <x-slot:thead>
                         <x-ccm::tables.th :first="true">ID</x-ccm::tables.th>
@@ -28,7 +44,7 @@
                         <x-ccm::tables.th :link="true"></x-ccm::tables.th>
                     </x-slot:thead>
                     <x-slot:tbody>
-                        @foreach ($role->users()->orderBy('name')->get() AS $key => $user)
+                        @foreach ($this->getUsers() AS $key => $user)
                             <x-ccm::tables.tr>
                                 <x-ccm::tables.td :first="true">{{ $user->id }}</x-ccm::tables.td>
                                 <x-ccm::tables.td>{{ $user->name }}</x-ccm::tables.td>
