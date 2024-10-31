@@ -187,16 +187,18 @@ class MigrateCcmV1GlobalCommand extends Command
             ->get();
 
         foreach ($environments as $environment) {
-            Environment::firstOrCreate([
-                'id' => $environment->id,
-            ], [
-                'customer_id' => $this->customer->id,
-                'timezone_id' => $environment->tijdzones_id,
-                'name' => $environment->naam,
-                'description' => $environment->omschrijving,
-                'email_credits' => $environment->emailtegoed,
-                'notified' => $environment->notified,
-            ]);
+            if (! Environment::where('id', $environment->id)->exists()) {
+                Environment::firstOrCreate([
+                    'id' => $environment->id,
+                ], [
+                    'customer_id' => $this->customer->id,
+                    'timezone_id' => $environment->tijdzones_id,
+                    'name' => $environment->naam,
+                    'description' => $environment->omschrijving,
+                    'email_credits' => $environment->emailtegoed,
+                    'notified' => $environment->notified,
+                ]);
+            }
         }
 
         $this->info(Environment::count().' environments migrated');
