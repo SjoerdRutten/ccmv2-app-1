@@ -114,7 +114,7 @@ class User extends Authenticatable
     protected function isAdmin(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->roles()->where('is_admin')->exists()
+            get: fn () => $this->roles()->where('is_admin', 1)->exists()
         );
     }
 
@@ -136,4 +136,6 @@ class User extends Authenticatable
     {
         $this->notify(new ResetPasswordNotification($token));
     }
+
+    public function hasPermission($permission) {}
 }

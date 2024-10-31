@@ -23,7 +23,10 @@
                             <x-ccm::forms.checkbox name="form.permissions[]"
                                                    value="{{ $permission->id }}"
                                                    wire:model.live="form.permissions">
-                                {{ $permission->description ?? $permission->name }}
+                                {{ $permission->group }}.{{ $permission->name }}
+                                @if ($permission->description)
+                                    ({{ $permission->description }})
+                                @endif
                             </x-ccm::forms.checkbox>
                         @endforeach
                     @endif
