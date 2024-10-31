@@ -127,14 +127,12 @@ class MigrateCcmV1GlobalCommand extends Command
                 'allowed_ips' => $this->splitAllowedIps($user->allowed_ips),
             ]);
 
-            foreach (Environment::get() as $environment) {
-                if ($user->klanten_id === 1) {
-                    $role = $adminRole;
-                } else {
-                    $role = $userRole;
-                }
-                $newUser->roles()->attach($role->id);
+            if ($user->klanten_id === 1) {
+                $role = $adminRole;
+            } else {
+                $role = $userRole;
             }
+            $newUser->roles()->sync([$role->id]);
         }
 
         $progressBar->finish();
