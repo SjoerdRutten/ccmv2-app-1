@@ -187,7 +187,7 @@ class MigrateCcmV1GlobalCommand extends Command
             ->get();
 
         foreach ($environments as $environment) {
-            Environment::createOrFirst([
+            Environment::firstOrCreate([
                 'id' => $environment->id,
             ], [
                 'customer_id' => $this->customer->id,
