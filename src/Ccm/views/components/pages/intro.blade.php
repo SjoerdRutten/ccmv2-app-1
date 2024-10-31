@@ -1,6 +1,9 @@
 <div class="sm:flex sm:items-center">
     <div class="sm:flex-auto">
-        <h1 class="text-xl font-semibold leading-6 text-gray-900">{{ $title }}</h1>
+        <h1 class="text-xl font-semibold leading-6 text-gray-900">
+            {{ $title }}
+            {{ $title_tags ?? null }}
+        </h1>
         <p class="mt-2 text-sm text-gray-700">{{ $slot }}</p>
     </div>
     @if ($actions ?? false)

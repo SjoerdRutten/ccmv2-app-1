@@ -2,6 +2,7 @@
 
 namespace Sellvation\CCMV2\Users;
 
+use Blade;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Sellvation\CCMV2\Users\Livewire\ForgotPasswordForm;
@@ -24,7 +25,9 @@ class UserServiceProvider extends ServiceProvider
 
         if (! app()->runningInConsole()) {
             $this->registerLivewireComponents();
+            $this->registerBladeDirectives();
         }
+
     }
 
     private function registerLivewireComponents()
@@ -33,5 +36,17 @@ class UserServiceProvider extends ServiceProvider
         Livewire::component('user::reset-password-form', ResetPasswordForm::class);
         Livewire::component('roles::overview', Overview::class);
         Livewire::component('roles::edit', Edit::class);
+        Livewire::component('users::overview', \Sellvation\CCMV2\Users\Livewire\Users\Overview::class);
+        Livewire::component('users::edit', \Sellvation\CCMV2\Users\Livewire\Users\Edit::class);
+    }
+
+    private function registerBladeDirectives()
+    {
+        Blade::if('permission', function (string $group, string $permission) {
+            return \Auth::check() && \Auth::user()->hasPermissionTo($group, $permission);
+        });
+        Blade::if('isadmin', function () {
+            return \Auth::check() && \Auth::user()->is_admin;
+        });
     }
 }

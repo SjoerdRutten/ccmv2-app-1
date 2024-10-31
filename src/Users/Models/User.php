@@ -77,15 +77,6 @@ class User extends Authenticatable
     ];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array<int, string>
-     */
-    protected $appends = [
-        'profile_photo_url',
-    ];
-
-    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -94,6 +85,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'expiration_date' => 'date',
             'password' => 'hashed',
             'is_active' => 'boolean',
             'is_system' => 'boolean',
@@ -109,6 +101,13 @@ class User extends Authenticatable
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class);
+    }
+
+    protected function active(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->is_active && (! $this->expiration_date || $this->expiration_date->isAfter(now()))
+        );
     }
 
     protected function isAdmin(): Attribute

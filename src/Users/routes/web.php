@@ -25,4 +25,10 @@ Route::middleware([
             Route::get('/', \Sellvation\CCMV2\Users\Livewire\Roles\Overview::class)->name('overview');
             Route::get('/edit/{role?}', \Sellvation\CCMV2\Users\Livewire\Roles\Edit::class)->name('edit');
         });
+    Route::prefix('users')
+        ->name('users::')
+        ->group(function () {
+            Route::get('/', \Sellvation\CCMV2\Users\Livewire\Users\Overview::class)->name('overview');
+            Route::get('/edit/{user?}', \Sellvation\CCMV2\Users\Livewire\Users\Edit::class)->name('edit');
+        });
 });
