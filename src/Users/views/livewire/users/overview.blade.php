@@ -46,9 +46,7 @@
                         <x-ccm::tables.td>{{ $user->last_login }}</x-ccm::tables.td>
                         <x-ccm::tables.td>
                             @foreach ($user->roles AS $role)
-                                <span class="relative z-10 rounded-full bg-pink-100 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">
-                                    {{ $role->name }}
-                                </span>
+                                <x-ccm::tags.ccm>{{ $role->name }}</x-ccm::tags.ccm>
                             @endforeach
                         </x-ccm::tables.td>
                         <x-ccm::tables.td :link="true">
