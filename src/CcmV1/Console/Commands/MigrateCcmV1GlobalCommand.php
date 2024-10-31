@@ -133,7 +133,7 @@ class MigrateCcmV1GlobalCommand extends Command
                 } else {
                     $role = $userRole;
                 }
-                $newUser->roles()->attach($role->id, ['environment_id' => $environment->id]);
+                $newUser->roles()->attach($role->id);
             }
         }
 
