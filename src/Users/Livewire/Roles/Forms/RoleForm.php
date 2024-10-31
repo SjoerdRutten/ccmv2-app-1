@@ -36,7 +36,9 @@ class RoleForm extends Form
         $this->role = $role;
 
         $this->fill($role->toArray());
-        $this->permissions = $role->permissions()->pluck('id')->toArray();
+        $this->permissions = $role->permissions()
+            ->wherePivot('environment_id', \Auth::user()->currentEnvironmentId)
+            ->pluck('id')->toArray();
     }
 
     public function save()
@@ -51,7 +53,12 @@ class RoleForm extends Form
             $this->role = Role::create($data);
         }
 
-        $this->role->permissions()->sync($this->permissions);
+        $permissions = [];
+        foreach ($this->permissions as $permission) {
+            $permissions[$permission] = ['environment_id' => \Auth::user()->currentEnvironmentId];
+        }
+
+        $this->role->permissions()->sync($permissions);
 
         return $this->role;
     }

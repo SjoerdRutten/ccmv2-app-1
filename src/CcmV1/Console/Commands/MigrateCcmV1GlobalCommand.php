@@ -33,8 +33,8 @@ class MigrateCcmV1GlobalCommand extends Command
         if ($customerName = $this->choice('Select a customer', $customers->toArray(), 167)) {
             $this->migrateCustomers($customerName);
         }
-        $this->migrateUsers();
         $this->migrateEnvironments();
+        $this->migrateUsers();
     }
 
     private function splitAllowedIps($ips): array
@@ -83,6 +83,9 @@ class MigrateCcmV1GlobalCommand extends Command
             ->whereIn('klanten_id', [$this->customer->id, 1])
             ->get();
 
+        $adminRole = Role::whereName('admin')->first();
+        $userRole = Role::whereName('user')->first();
+
         $progressBar = $this->output->createProgressBar(count($users));
 
         foreach ($users as $user) {
@@ -91,7 +94,6 @@ class MigrateCcmV1GlobalCommand extends Command
             User::updateOrCreate([
                 'id' => $user->id,
             ], [
-                'role_id' => $user->klanten_id === 1 ? Role::whereName('admin')->first()->id : Role::whereName('user')->first()->id,
                 'customer_id' => $this->customer->id,
                 'name' => $user->naam,
                 'gender' => $user->sekse,
@@ -124,6 +126,15 @@ class MigrateCcmV1GlobalCommand extends Command
                 'is_system' => $user->systeem,
                 'allowed_ips' => $this->splitAllowedIps($user->allowed_ips),
             ]);
+
+            foreach (Environment::get() as $environment) {
+                if ($user->klanten_id === 1) {
+                    $role = $adminRole;
+                } else {
+                    $role = $userRole;
+                }
+                $user->roles()->attach($role->id, ['environment_id' => $environment->id]);
+            }
         }
 
         $progressBar->finish();

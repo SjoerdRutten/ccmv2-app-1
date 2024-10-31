@@ -3,7 +3,7 @@
 namespace Sellvation\CCMV2\Users\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Role extends Model
@@ -23,13 +23,14 @@ class Role extends Model
         'is_admin' => 'boolean',
     ];
 
-    public function users(): HasMany
+    public function users(): BelongsToMany
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(User::class);
     }
 
     public function permissions(): MorphToMany
     {
-        return $this->morphToMany(Permission::class, 'model', 'model_has_permissions', 'model_id', 'permission_id');
+        return $this->morphToMany(Permission::class, 'model', 'model_has_permissions', 'model_id', 'permission_id')
+            ->withPivot('environment_id');
     }
 }

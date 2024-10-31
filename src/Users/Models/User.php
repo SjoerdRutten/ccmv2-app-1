@@ -6,6 +6,7 @@ namespace Sellvation\CCMV2\Users\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -105,15 +106,15 @@ class User extends Authenticatable
         return $this->belongsTo(Customer::class);
     }
 
-    public function role(): BelongsTo
+    public function roles(): BelongsToMany
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsToMany(Role::class);
     }
 
     protected function isAdmin(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->role->is_admin
+            get: fn () => $this->roles()->where('is_admin')->exists()
         );
     }
 
