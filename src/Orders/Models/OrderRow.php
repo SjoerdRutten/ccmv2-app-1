@@ -60,6 +60,9 @@ class OrderRow extends Model
         $data['id'] = (string) $this->id;
         $data['order_id'] = (string) $this->order_id;
         $data['product_id'] = (string) $this->product_id;
+        $data['amount'] = (int) $data['amount'];
+        $data['unit_price'] = (int) $data['unit_price'];
+        $data['total_price'] = (int) $data['total_price'];
 
         return $data;
     }
