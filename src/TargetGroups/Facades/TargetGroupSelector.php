@@ -96,8 +96,9 @@ class TargetGroupSelector
                 if (filled(Arr::get($filter, 'from')) && filled(Arr::get($filter, 'to'))) {
                     if (Str::contains(Arr::get($filter, 'column'), '.')) {
                         $columnCollection = explode('.', Arr::get($filter, 'column'));
+                        $comparison = '['.(int) Arr::get($filter, 'from').'..'.(int) Arr::get($filter, 'to').']';
 
-                        return '$'.$columnCollection[0].'_'.Auth::user()->currentEnvironmentId.'('.$columnCollection[1].':['.(int) Arr::get($filter, 'from').'..'.(int) Arr::get($filter, 'to').'])';
+                        return $this->makeReferenceColumn($columnCollection, $comparison, $operator);
                     } else {
                         return Arr::get($filter, 'column').':['.(int) Arr::get($filter, 'from').'..'.(int) Arr::get($filter, 'to').']';
                     }
@@ -111,8 +112,9 @@ class TargetGroupSelector
                     return false;
                 } elseif (Str::contains(Arr::get($filter, 'column'), '.')) {
                     $columnCollection = explode('.', Arr::get($filter, 'column'));
+                    $comparison = $this->generateComparison(Arr::get($filter, 'operator'), $value, Arr::get($filter, 'columnType'));
 
-                    return '$'.$columnCollection[0].'_'.Auth::user()->currentEnvironmentId.'('.$columnCollection[1].':'.$this->generateComparison(Arr::get($filter, 'operator'), $value, Arr::get($filter, 'columnType')).')';
+                    return $this->makeReferenceColumn($columnCollection, $comparison, $operator);
                 } else {
                     $column = Arr::get($filter, 'column');
 
@@ -133,9 +135,52 @@ class TargetGroupSelector
         return false;
     }
 
+    private function makeReferenceColumn($references, $comparison, $operator)
+    {
+        if (count($references) === 1) {
+            $column = Arr::first($references);
+
+            switch ($operator) {
+                case 'con':
+                case 'dnc':
+                    $column .= '_infix';
+                    break;
+            }
+
+            return $column.':'.$comparison;
+        } else {
+            $name = Arr::first($references);
+            $references = array_values(Arr::except($references, 0));
+
+            return '$'.$name.'_'.Auth::user()->currentEnvironmentId.'('.$this->makeReferenceColumn($references, $comparison, $operator).')';
+        }
+    }
+
     private function generateComparison($operator, $value, $columnType): string
     {
-        if (in_array($columnType, ['text_array', 'select'])) {
+        if ($columnType === 'text_array') {
+            if (! is_array($value)) {
+                $value = explode(',', $value);
+            }
+            $value = Arr::where($value, fn ($value) => ! empty($value));
+            $valueWildcard = implode(',', Arr::map($value, fn ($value) => $value.'*'));
+            $value = implode(',', $value);
+
+            switch ($operator) {
+                case 'con':
+                    return '['.$valueWildcard.']';
+                case 'dnc':
+                    return '!['.$valueWildcard.']';
+                case 'eq':
+                    return '='.$value;
+                case 'eqm':
+                    return '=['.$value.']';
+                case 'neqm':
+                    return '!=['.$value.']';
+                default:
+                    throw new \Exception('Unknown operator: '.$operator);
+            }
+        } elseif ($columnType === 'select') {
             if (is_array($value)) {
                 $value = implode(',', $value);
             }
@@ -148,7 +193,6 @@ class TargetGroupSelector
                 default:
                     throw new \Exception('Unknown operator: '.$operator);
             }
-
         }
 
         switch ($operator) {

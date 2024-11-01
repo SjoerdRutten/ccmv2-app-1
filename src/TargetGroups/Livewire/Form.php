@@ -88,7 +88,6 @@ class Form extends Component
     public function removeElement($index)
     {
         data_forget($this->elements, $index);
-        $this->save();
     }
 
     public function addRule($index)
@@ -99,6 +98,7 @@ class Form extends Component
         Arr::set($this->elements, $index.'.subelements.'.$count,
             [
                 'type' => 'rule',
+                'id' => uniqid(),
                 'index' => $index.'.subelements.'.$count,
                 'name' => uniqid(),
                 'column' => '',

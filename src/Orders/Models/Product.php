@@ -5,6 +5,8 @@ namespace Sellvation\CCMV2\Orders\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 
@@ -45,7 +47,10 @@ class Product extends Model
         $data = $this->toArray();
         $data['id'] = (string) $data['id'];
         $data['brand'] = (string) $this->brand?->name;
-        $data['ean'] = $this->eans()->pluck('ean')->toArray();
+        $data['ean'] = Arr::map($this->eans()->pluck('ean')->toArray(), function ($item) {
+            return (int) $item;
+        });
+        $data['name_infix'] = $this->makeStringArray($data['name']);
 
         return $data;
     }
@@ -69,6 +74,9 @@ class Product extends Model
                     'name' => 'name',
                     'type' => 'string',
                 ], [
+                    'name' => 'name_infix',
+                    'type' => 'string[]',
+                ], [
                     'name' => 'brand',
                     'type' => 'string',
                     'optional' => true,
@@ -80,5 +88,18 @@ class Product extends Model
     public function shouldBeSearchable()
     {
         return true;
+    }
+
+    private function makeStringArray($string)
+    {
+        $data = [];
+        do {
+            if (! empty($string[0])) {
+                $data[] = $string;
+            }
+            $string = Str::substr($string, 1);
+        } while (strlen($string) > 2);
+
+        return $data;
     }
 }

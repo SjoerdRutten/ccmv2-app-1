@@ -56,12 +56,6 @@ class Order extends Model
 
     public function toSearchableArray()
     {
-        $eans = $this->orderRows()->with('product')->get()->pluck('product.ean')->toArray();
-        $eans = \Arr::whereNotNull($eans);
-
-        $skus = $this->orderRows()->with('product')->get()->pluck('product.sku')->toArray();
-        $skus = \Arr::whereNotNull($skus);
-
         $data = [
             'id' => (string) $this->id,
             'crm_card_id' => (string) $this->crm_card_id,
@@ -73,8 +67,6 @@ class Order extends Model
             'order_time' => $this->order_time->timestamp,
             'total_price' => (int) $this->total_price,
             'number_of_products' => (int) $this->number_of_products,
-            'eans' => $eans,
-            'skus' => $skus,
         ];
 
         return $data;
@@ -119,14 +111,6 @@ class Order extends Model
                 ], [
                     'name' => 'number_of_products',
                     'type' => 'int32',
-                    'optional' => true,
-                ], [
-                    'name' => 'skus',
-                    'type' => 'string[]',
-                    'optional' => true,
-                ], [
-                    'name' => 'eans',
-                    'type' => 'string[]',
                     'optional' => true,
                 ], [
                     'name' => 'crm_card_id',

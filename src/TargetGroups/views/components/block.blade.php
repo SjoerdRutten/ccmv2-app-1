@@ -24,7 +24,7 @@
             @elseif (Arr::get($sub, 'type') === 'rule')
                 <livewire:target-group-selector::rule
                         wire:model.live="elements.{{ $baseIndex }}.{{ $key }}"
-                        :key="'elements.'.$baseIndex.'.'.$key"
+                        :key="Arr::get($sub, 'name')"
                         :index="$baseIndex.'.'.$key"
                 />
             @endif

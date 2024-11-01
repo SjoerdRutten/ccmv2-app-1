@@ -195,7 +195,7 @@ class CrmCard extends Model
             do {
                 $data[] = $elm;
                 $elm = Str::substr($elm, 1);
-            } while (strlen($elm) > 3);
+            } while (strlen($elm) > 2);
         }
 
         return $data;
