@@ -99,4 +99,9 @@ class OrderRow extends Model
             ],
         ];
     }
+
+    public function shouldBeSearchable()
+    {
+        return $this->order->shouldBeSearchable();
+    }
 }
