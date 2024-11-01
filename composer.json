@@ -21,6 +21,7 @@
     "laravel/scout": "^10.11",
     "livewire/livewire": "^3.0",
     "pharaonic/laravel-readable": "^1.0",
+    "spatie/laravel-activitylog": "^4.9",
     "spatie/laravel-tags": "^4.7",
     "symfony/http-client": "^7.1",
     "typesense/typesense-php": "^4.9"

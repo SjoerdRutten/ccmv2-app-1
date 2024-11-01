@@ -8,12 +8,12 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
+use Sellvation\CCMV2\Ccm\Components\acitivity_log\Table;
 use Sellvation\CCMV2\Ccm\Components\dashboard\TypesenseCollectionsCard;
 use Sellvation\CCMV2\Ccm\Components\dashboard\TypesenseMemoryCard;
 use Sellvation\CCMV2\Ccm\Http\Middelware\CcmContextMiddleware;
 use Sellvation\CCMV2\Ccm\Livewire\Admin\Customers\Edit;
 use Sellvation\CCMV2\Ccm\Livewire\Admin\Customers\Overview;
-use Sellvation\CCMV2\Ccm\Livewire\Admin\Features;
 use Sellvation\CCMV2\Ccm\Livewire\EnvironmentSelector;
 use Sellvation\CCMV2\Ccm\Livewire\ModalError;
 use Sellvation\CCMV2\Ccm\Livewire\ModalSuccess;
@@ -38,6 +38,7 @@ class CcmServiceProvider extends ServiceProvider
 
             Blade::component('ccm::dashboard.typesense-memory-card', TypesenseMemoryCard::class);
             Blade::component('ccm::dashboard.typesense-collections-card', TypesenseCollectionsCard::class);
+            Blade::component('ccm::activity_log.table', Table::class);
         }
     }
 
@@ -47,7 +48,6 @@ class CcmServiceProvider extends ServiceProvider
         Livewire::component('ccm::modal-error', ModalError::class);
         Livewire::component('ccm::environment-selector', EnvironmentSelector::class);
 
-        Livewire::component('ccm::admin::features', Features::class);
         Livewire::component('ccm::admin::customers', Overview::class);
         Livewire::component('ccm::admin::customers.edit', Edit::class);
         Livewire::component('ccm::admin::environments', \Sellvation\CCMV2\Ccm\Livewire\Admin\Environments\Overview::class);

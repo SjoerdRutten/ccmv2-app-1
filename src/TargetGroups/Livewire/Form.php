@@ -19,6 +19,8 @@ class Form extends Component
     #[Locked]
     public ?int $id = null;
 
+    public TargetGroup $targetGroup;
+
     public ?string $name = null;
 
     public array $elements = [];
@@ -39,6 +41,10 @@ class Form extends Component
             $this->id = $targetGroup->id;
             $this->name = $targetGroup->name;
             $this->elements = $targetGroup->filters;
+
+            $this->targetGroup = $targetGroup;
+        } else {
+            $this->targetGroup = new TargetGroup;
         }
 
         $this->updateCount();

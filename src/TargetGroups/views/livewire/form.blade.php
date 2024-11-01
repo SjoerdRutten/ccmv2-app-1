@@ -11,6 +11,9 @@
                 <x-ccm::tabs.nav-tab :index="0" :badge="ReadableNumber($count, '.')">
                     Query builder
                 </x-ccm::tabs.nav-tab>
+                @if ($id > 0)
+                    <x-ccm::tabs.nav-tab :index="2">Logs</x-ccm::tabs.nav-tab>
+                @endif
                 @if (Auth::user()->isAdmin)
                     <x-ccm::tabs.nav-tab :index="1">Debug</x-ccm::tabs.nav-tab>
                 @endif
@@ -43,7 +46,11 @@
             <x-ccm::tabs.tab-content :index="1">
                 {{ $this->getQueryFilters() }}
             </x-ccm::tabs.tab-content>
-
+            @if ($id > 0)
+                <x-ccm::tabs.tab-content :index="2" :no-margin="true">
+                    <x-ccm::activity_log.table :performed_on="$targetGroup"></x-ccm::activity_log.table>
+                </x-ccm::tabs.tab-content>
+            @endif
 
         </x-ccm::tabs.base>
 

@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelectorFacade;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class TargetGroup extends Model
 {
     use HasEnvironment;
+    use LogsActivity;
 
     protected $fillable = [
         'name',
@@ -28,5 +31,11 @@ class TargetGroup extends Model
         return Attribute::make(
             get: fn () => TargetGroupSelectorFacade::count($this->filters)
         );
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable();
     }
 }
