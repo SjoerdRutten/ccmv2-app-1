@@ -15,6 +15,7 @@ use Sellvation\CCMV2\TargetGroups\Elements\Column;
 use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeBoolean;
 use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeDate;
 use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeInteger;
+use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeIntegerArray;
 use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeSelect;
 use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeTag;
 use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeTargetGroup;
@@ -69,7 +70,7 @@ class Rule extends Component
         // First the order columns
         $columns[] = new Column('target_group_id', new ColumnTypeTargetGroup, '- Doelgroep selectie');
         $columns[] = new Column('tags', new ColumnTypeTag, '- Kenmerk');
-        $columns[] = new Column('orders.store', new ColumnTypeInteger, 'Transactie winkelnummer');
+        $columns[] = new Column('orders.store', new ColumnTypeIntegerArray, 'Transactie winkelnummer');
         $columns[] = new Column('orders.order_time', new ColumnTypeDate, 'Transactie transactie datum');
         $columns[] = new Column('orders.payment_method', new ColumnTypeText, 'Transactie betaalmethode');
         $columns[] = new Column('orders.total_price', new ColumnTypeInteger, 'Transactie totaalprijs');

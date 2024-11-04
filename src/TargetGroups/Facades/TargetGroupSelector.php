@@ -158,11 +158,16 @@ class TargetGroupSelector
 
     private function generateComparison($operator, $value, $columnType): string
     {
-        if ($columnType === 'text_array') {
+        if (($columnType === 'text_array') || ($columnType === 'integer_array')) {
             if (! is_array($value)) {
                 $value = explode(',', $value);
             }
             $value = Arr::where($value, fn ($value) => ! empty($value));
+
+            if ($columnType === 'integer_array') {
+                $value = Arr::map($value, fn ($value) => (int) $value);
+            }
+
             $valueWildcard = implode(',', Arr::map($value, fn ($value) => $value.'*'));
             $value = implode(',', $value);
 

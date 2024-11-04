@@ -53,23 +53,27 @@
             </x-ccm::forms.select>
             <x-ccm::forms.input name="filter.value" wire:model.blur="filter.value" :grow="true"/>
         @elseif (Arr::get($filter, 'columnType') === 'text_array')
-            <x-ccm::forms.select name="operator" wire:model.live="filter.operator">
+            <x-ccm::forms.select name="operator" wire:model.live="filter.operator" class="w-[170px]">
                 <option value="">Kies operator</option>
                 <option value="con">Bevat</option>
                 <option value="dnc">Bevat niet</option>
-                <option value="eq">Gelijk aan</option>
                 <option value="eqm">Gelijk aan 1 van</option>
                 <option value="neqm">Niet gelijk aan 1 van</option>
             </x-ccm::forms.select>
             @if (($filter['operator'] === 'eqm') || ($filter['operator'] === 'neqm'))
-                <x-ccm::forms.multiple-select name="filter.value" :grow="true">
-
-                </x-ccm::forms.multiple-select>
+                <x-ccm::forms.multiple-select name="filter.value" :grow="true"></x-ccm::forms.multiple-select>
             @else
-                <x-ccm::forms.input name="filter.value" wire:model.blur="filter.value" :grow="true"/>
+                <x-ccm::forms.input name="filter.value{{ $filter['id'] }}" wire:model.blur="filter.value" :grow="true"/>
             @endif
+        @elseif (Arr::get($filter, 'columnType') === 'integer_array')
+            <x-ccm::forms.select name="operator" wire:model.live="filter.operator" class="w-[170px]">
+                <option value="">Kies operator</option>
+                <option value="eqm">Gelijk aan 1 van</option>
+                <option value="neqm">Niet gelijk aan 1 van</option>
+            </x-ccm::forms.select>
+            <x-ccm::forms.multiple-select name="filter.value" :grow="true"></x-ccm::forms.multiple-select>
         @elseif (Arr::get($filter, 'columnType') === 'select')
-            <x-ccm::forms.select name="operator" wire:model.live="filter.operator">
+            <x-ccm::forms.select name="operator" wire:model.live="filter.operator" class="w-[170px]">
                 <option value="">Kies operator</option>
                 <option value="con">Bevat</option>
                 <option value="dnc">Bevat niet</option>
@@ -94,7 +98,7 @@
                 Nee
             </label>
         @elseif (Arr::get($filter, 'columnType') === 'integer')
-            <x-ccm::forms.select name="operator" wire:model.live="filter.operator">
+            <x-ccm::forms.select name="operator" wire:model.live="filter.operator" class="w-[170px]">
                 <option value="">Kies operator</option>
                 <option value="gt">Groter dan</option>
                 <option value="gte">Groter of gelijk</option>
@@ -120,7 +124,7 @@
                 @endif
             @endif
         @elseif (Arr::get($filter, 'columnType') === 'date')
-            <x-ccm::forms.select name="operator" wire:model.live="filter.operator">
+            <x-ccm::forms.select name="operator" wire:model.live="filter.operator" class="w-[170px]">
                 <option value="">Kies operator</option>
                 <option value="gt">Groter dan</option>
                 <option value="gte">Groter of gelijk</option>
