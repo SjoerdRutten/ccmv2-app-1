@@ -13,7 +13,11 @@
 
 
     <!-- Scripts -->
-    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+    {{--    @if (app()->environment('local'))--}}
+    {{--        <script defer src="/vendor/ccm/js/alpinejs-multiselect.js"></script>--}}
+    {{--    @else--}}
+    <script defer src="/vendor/ccm/js/alpinejs-multiselect.min.js"></script>
+    {{--    @endif--}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 

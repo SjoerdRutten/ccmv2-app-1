@@ -31,6 +31,10 @@ class CcmServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
         $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
 
+        $this->publishes([
+            __DIR__.'/resources/js' => public_path('vendor/ccm/js'),
+        ], 'ccm::js');
+
         $router->pushMiddlewareToGroup('web', CcmContextMiddleware::class);
 
         if (! App::runningInConsole()) {

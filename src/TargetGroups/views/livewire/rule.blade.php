@@ -61,14 +61,13 @@
                 <option value="eqm">Gelijk aan 1 van</option>
                 <option value="neqm">Niet gelijk aan 1 van</option>
             </x-ccm::forms.select>
-            <x-ccm::forms.input name="filter.value" wire:model.blur="filter.value" :grow="true"/>
-        @elseif (Arr::get($filter, 'columnType') === 'product_array')
-            <x-ccm::forms.select name="operator" wire:model.live="filter.operator">
-                <option value="">Kies operator</option>
-                <option value="con">Bevat</option>
-                <option value="dnc">Bevat niet</option>
-            </x-ccm::forms.select>
-            <x-ccm::forms.input name="filter.value" wire:model.blur="filter.value" :grow="true"/>
+            @if (($filter['operator'] === 'eqm') || ($filter['operator'] === 'neqm'))
+                <x-ccm::forms.multiple-select name="filter.value" :grow="true">
+
+                </x-ccm::forms.multiple-select>
+            @else
+                <x-ccm::forms.input name="filter.value" wire:model.blur="filter.value" :grow="true"/>
+            @endif
         @elseif (Arr::get($filter, 'columnType') === 'select')
             <x-ccm::forms.select name="operator" wire:model.live="filter.operator">
                 <option value="">Kies operator</option>
