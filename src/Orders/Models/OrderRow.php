@@ -63,6 +63,7 @@ class OrderRow extends Model
         $data['amount'] = (int) $data['amount'];
         $data['unit_price'] = (int) $data['unit_price'];
         $data['total_price'] = (int) $data['total_price'];
+        $data['is_promo'] = (int) $data['is_promo'];
 
         return $data;
     }
