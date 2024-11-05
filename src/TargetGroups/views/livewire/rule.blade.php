@@ -10,7 +10,7 @@
         <x-ccm::forms.checkbox name="filter.active" wire:model.live="filter.active">
         </x-ccm::forms.checkbox>
 
-        <div class="flex flex-row gap-2 items-center {{ $filter['active'] ?: 'opacity-50' }}">
+        <div class="flex flex-row gap-2 items-center grow {{ Arr::get($filter, 'active') ?: 'opacity-50' }}">
             <x-ccm::forms.select name="column" wire:model.live="filter.column" :grow="true" div-class="max-w-[25%]">
                 <option>Kies kolom</option>
                 @foreach ($columns AS $column)

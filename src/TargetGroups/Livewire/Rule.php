@@ -36,22 +36,6 @@ class Rule extends Component
     public function mount()
     {
         $this->uniq = uniqid();
-
-        $config = [
-            'id' => null,
-            'active' => true,
-            'to' => null,
-            'from' => null,
-            'name' => null,
-            'type' => null,
-            'index' => null,
-            'value' => null,
-            'column' => null,
-            'operator' => null,
-            'columnType' => null,
-        ];
-
-        $this->filter = array_merge($config, $this->filter);
     }
 
     public function updated($property, $value)
