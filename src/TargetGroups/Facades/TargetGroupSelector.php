@@ -185,6 +185,19 @@ class TargetGroupSelector
                 default:
                     throw new \Exception('Unknown operator: '.$operator);
             }
+        } elseif ($columnType === 'product_array') {
+            if (is_array($value)) {
+                $value = implode(',', $value);
+            }
+
+            switch ($operator) {
+                case 'eqm':
+                    return '=['.$value.']';
+                case 'neqm':
+                    return '!=['.$value.']';
+                default:
+                    throw new \Exception('Unknown operator: '.$operator);
+            }
         } elseif ($columnType === 'select') {
             if (is_array($value)) {
                 $value = implode(',', $value);

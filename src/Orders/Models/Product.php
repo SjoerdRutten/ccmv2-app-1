@@ -22,6 +22,13 @@ class Product extends Model
         'name',
     ];
 
+    protected $hidden = [
+        'environment_id',
+        'brand_id',
+        'created_at',
+        'updated_at',
+    ];
+
     public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class);
@@ -34,7 +41,19 @@ class Product extends Model
 
     public function searchableAs()
     {
-        return $this->getTable().'_'.$this->environment_id;
+        if ($this->environment_id) {
+            $environmentId = $this->environment_id;
+        } elseif (app()->runningInConsole()) {
+            if (\Context::has('environment_id')) {
+                $environmentId = \Context::get('environment_id');
+            } else {
+                $environmentId = config('ccm.environment_id');
+            }
+        } else {
+            $environmentId = \Auth::check() ? \Auth::user()->currentEnvironmentId : $this->environment_id;
+        }
+
+        return $this->getTable().'_'.$environmentId;
     }
 
     public function indexableAs()

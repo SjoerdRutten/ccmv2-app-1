@@ -78,7 +78,7 @@ class Rule extends Component
         $columns[] = new Column('orders.number_of_products', new ColumnTypeInteger, 'Transactie aantal producten');
         $columns[] = new Column('orders.order_rows.products.eans', new ColumnTypeTextArray, 'Transactie bevat EAN');
         $columns[] = new Column('orders.order_rows.products.sku', new ColumnTypeTextArray, 'Transactie bevat SKU');
-        $columns[] = new Column('orders.order_rows.products.name', new ColumnTypeProductArray, 'Transactie bevat product');
+        $columns[] = new Column('orders.order_rows.products.id', new ColumnTypeProductArray, 'Transactie bevat product');
         $columns[] = new Column('orders.order_type_id', new ColumnTypeSelect(OrderType::pluck('name', 'id')->toArray()), 'Transactie type');
 
         // CRM Card columns
@@ -110,7 +110,7 @@ class Rule extends Component
                     $columnType = false;
                     break;
                 case 'EMAIL':
-                    $columns[] = new Column($crmField->name, new ColumnTypeText, $crmField->label);
+                    $columns[] = new Column($crmField->name, new ColumnTypeText, $crmField->name);
                     $columns[] = new Column('_'.$crmField->name.'_valid', new ColumnTypeBoolean, $crmField->name.' Geldig mailadres');
                     $columns[] = new Column('_'.$crmField->name.'_abuse', new ColumnTypeBoolean, $crmField->name.' Abuse');
                     $columns[] = new Column('_'.$crmField->name.'_abuse_timestamp', new ColumnTypeDate, $crmField->name.' Abuse timestamp');

@@ -15,12 +15,19 @@
     <!-- Scripts -->
     @if (app()->environment('local'))
         <script defer src="/vendor/ccm/js/alpinejs-multiselect.js"></script>
+        <script defer src="/vendor/ccm/js/alpinejs-productselect.js"></script>
     @else
         <script defer src="/vendor/ccm/js/alpinejs-multiselect.min.js"></script>
+        <script defer src="/vendor/ccm/js/alpinejs-productselect.min.js"></script>
     @endif
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
     <!-- Styles -->
     @livewireStyles
 </head>
