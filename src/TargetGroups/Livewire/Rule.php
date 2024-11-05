@@ -75,7 +75,7 @@ class Rule extends Component
             $columns[] = new Column('orders.store', new ColumnTypeIntegerArray, 'Transactie winkelnummer');
             $columns[] = new Column('orders.order_time', new ColumnTypeDate, 'Transactie transactie datum');
             $columns[] = new Column('orders.payment_method', new ColumnTypeText, 'Transactie betaalmethode');
-            $columns[] = new Column('orders.total_price', new ColumnTypeInteger, 'Transactie totaalprijs');
+            $columns[] = new Column('orders.total_price', new ColumnTypeInteger, 'Transactie totaalprijs (in centen)');
             $columns[] = new Column('orders.number_of_products', new ColumnTypeInteger, 'Transactie aantal producten');
             $columns[] = new Column('orders.order_rows.products.ean', new ColumnTypeIntegerArray, 'Transactie bevat EAN');
             $columns[] = new Column('orders.order_rows.products.sku', new ColumnTypeIntegerArray, 'Transactie bevat SKU');
