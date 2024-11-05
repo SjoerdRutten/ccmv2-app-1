@@ -56,7 +56,7 @@ class UpdateTypesenseSchemaListener implements ShouldQueue
         $batch
             ->finally(function (Batch $batch) use ($adding) {
                 if ($adding) {
-                    Artisan::call('scout:import '.addslashes(CrmCard::class));
+                    Artisan::call('scout:import '.CrmCard::class);
                 }
             })
             ->dispatch();
