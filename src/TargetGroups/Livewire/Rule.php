@@ -71,15 +71,18 @@ class Rule extends Component
         // First the order columns
         $columns[] = new Column('target_group_id', new ColumnTypeTargetGroup, '- Doelgroep selectie');
         $columns[] = new Column('tags', new ColumnTypeTag, '- Kenmerk');
-        $columns[] = new Column('orders.store', new ColumnTypeIntegerArray, 'Transactie winkelnummer');
-        $columns[] = new Column('orders.order_time', new ColumnTypeDate, 'Transactie transactie datum');
-        $columns[] = new Column('orders.payment_method', new ColumnTypeText, 'Transactie betaalmethode');
-        $columns[] = new Column('orders.total_price', new ColumnTypeInteger, 'Transactie totaalprijs');
-        $columns[] = new Column('orders.number_of_products', new ColumnTypeInteger, 'Transactie aantal producten');
-        $columns[] = new Column('orders.order_rows.products.eans', new ColumnTypeTextArray, 'Transactie bevat EAN');
-        $columns[] = new Column('orders.order_rows.products.sku', new ColumnTypeTextArray, 'Transactie bevat SKU');
-        $columns[] = new Column('orders.order_rows.products.id', new ColumnTypeProductArray, 'Transactie bevat product');
-        $columns[] = new Column('orders.order_type_id', new ColumnTypeSelect(OrderType::pluck('name', 'id')->toArray()), 'Transactie type');
+
+        if (Auth::user()->hasPermissionTo('gds', 'transactions')) {
+            $columns[] = new Column('orders.store', new ColumnTypeIntegerArray, 'Transactie winkelnummer');
+            $columns[] = new Column('orders.order_time', new ColumnTypeDate, 'Transactie transactie datum');
+            $columns[] = new Column('orders.payment_method', new ColumnTypeText, 'Transactie betaalmethode');
+            $columns[] = new Column('orders.total_price', new ColumnTypeInteger, 'Transactie totaalprijs');
+            $columns[] = new Column('orders.number_of_products', new ColumnTypeInteger, 'Transactie aantal producten');
+            $columns[] = new Column('orders.order_rows.products.eans', new ColumnTypeTextArray, 'Transactie bevat EAN');
+            $columns[] = new Column('orders.order_rows.products.sku', new ColumnTypeTextArray, 'Transactie bevat SKU');
+            $columns[] = new Column('orders.order_rows.products.id', new ColumnTypeProductArray, 'Transactie bevat product');
+            $columns[] = new Column('orders.order_type_id', new ColumnTypeSelect(OrderType::pluck('name', 'id')->toArray()), 'Transactie type');
+        }
 
         // CRM Card columns
         foreach (CrmField::whereEnvironmentId(Auth::user()->currentEnvironmentId)
