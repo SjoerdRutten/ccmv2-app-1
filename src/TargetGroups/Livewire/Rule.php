@@ -111,6 +111,7 @@ class Rule extends Component
                     break;
                 case 'EMAIL':
                     $columns[] = new Column($crmField->name, new ColumnTypeText, $crmField->label);
+                    $columns[] = new Column('_'.$crmField->name.'_valid', new ColumnTypeBoolean, $crmField->name.' Geldig mailadres');
                     $columns[] = new Column('_'.$crmField->name.'_abuse', new ColumnTypeBoolean, $crmField->name.' Abuse');
                     $columns[] = new Column('_'.$crmField->name.'_abuse_timestamp', new ColumnTypeDate, $crmField->name.' Abuse timestamp');
                     $columns[] = new Column('_'.$crmField->name.'_bounce_reason', new ColumnTypeText, $crmField->name.' Bounce reason');

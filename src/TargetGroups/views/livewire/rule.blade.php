@@ -68,7 +68,7 @@
                 <option value="dnc">Bevat niet product</option>
             </x-ccm::forms.select>
             <div>0 Producten geselecteerd</div>
-            <div x-data="{ show: true }">
+            <div x-data="{ show: false }">
                 <x-ccm::buttons.primary x-on:click="show = true">Producten selecteren</x-ccm::buttons.primary>
                 <x-ccm::layouts.modal
                         title="Producten selecteren"
