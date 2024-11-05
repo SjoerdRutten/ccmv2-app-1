@@ -98,6 +98,7 @@ class Form extends Component
         Arr::set($this->elements, $index.'.subelements.'.$count,
             [
                 'type' => 'rule',
+                'active' => true,
                 'id' => uniqid(),
                 'index' => $index.'.subelements.'.$count,
                 'name' => uniqid(),
