@@ -20,6 +20,7 @@ class RemoveFieldJob extends TypesenseJob implements ShouldQueue
                     ],
                 ]]);
         } catch (\Exception $e) {
+            dump($e->getMessage());
         }
     }
 }

@@ -19,6 +19,12 @@ class TypesenseJob implements ShouldQueue
 
     protected function initClient()
     {
+        $client = new HttplugClient;
+        $client->withOptions([
+            'timeout' => 600,
+            'max_duration' => 600,
+        ]);
+
         $this->client = new Client(
             [
                 'api_key' => config('scout.typesense.client-settings.api_key'),
@@ -29,7 +35,7 @@ class TypesenseJob implements ShouldQueue
                         'protocol' => 'http',
                     ],
                 ],
-                'client' => new HttplugClient,
+                'client' => $client,
             ]
         );
     }

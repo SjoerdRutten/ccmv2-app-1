@@ -15,6 +15,7 @@ class AddFieldJob extends TypesenseJob implements ShouldQueue
             $this->client->collections[$this->collection]
                 ->update(['fields' => [$this->field]]);
         } catch (\Exception $e) {
+            dump($e->getMessage());
         }
     }
 }
