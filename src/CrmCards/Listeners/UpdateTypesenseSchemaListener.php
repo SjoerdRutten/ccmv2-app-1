@@ -31,8 +31,10 @@ class UpdateTypesenseSchemaListener implements ShouldQueue
 
         $batch = Bus::batch([]);
 
+        $adding = false;
         if ($crmField->isDirty('is_shown_on_target_group_builder')) {
             if ($crmField->is_shown_on_target_group_builder) {
+                $adding = true;
                 foreach ($crmField->getTypesenseFields() as $field) {
                     $batch->add(new AddFieldJob('crm_cards_'.$crmField->environment_id, $field));
                 }
@@ -42,6 +44,7 @@ class UpdateTypesenseSchemaListener implements ShouldQueue
                 }
             }
         } elseif ($crmField->isDirty('name')) {
+            $adding = true;
             foreach ($this->removeIndex($crmField, $crmField->getOriginal('name')) as $fieldName) {
                 $batch->add(new RemoveFieldJob('crm_cards_'.$crmField->environment_id, $fieldName));
             }
@@ -51,8 +54,10 @@ class UpdateTypesenseSchemaListener implements ShouldQueue
         }
 
         $batch
-            ->finally(function (Batch $batch) {
-                Artisan::call('scout:import '.addslashes(CrmCard::class));
+            ->finally(function (Batch $batch) use ($adding) {
+                if ($adding) {
+                    Artisan::call('scout:import '.addslashes(CrmCard::class));
+                }
             })
             ->dispatch();
 
