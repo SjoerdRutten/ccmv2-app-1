@@ -156,22 +156,25 @@ class CrmCard extends Model
                     $data[$crmField->name] = (int) \Arr::get($this->data, $crmField->name);
                     break;
                 case 'EMAIL':
+                    $validator = \Validator::make(['email' => \Arr::get($this->data, $crmField->name)], ['email' => 'required|email:rfc']);
+
                     $data[$crmField->name] = \Arr::get($this->data, $crmField->name);
                     $data[$crmField->name.'_infix'] = $this->makeStringArray(\Arr::get($this->data, $crmField->name));
-                    $data['_'.$crmField->name.'_abuse'] = (bool) \Arr::get($this->data, $crmField->name.'_abuse');
-                    $data['_'.$crmField->name.'_abuse_timestamp'] = $this->makeTimestamp(\Arr::get($this->data, $crmField->name.'_abuse_timestamp'));
-                    $data['_'.$crmField->name.'_bounce_reason'] = \Arr::get($this->data, $crmField->name.'_bounce_reason');
-                    $data['_'.$crmField->name.'_bounce_score'] = (int) \Arr::get($this->data, $crmField->name.'_bounce_score');
-                    $data['_'.$crmField->name.'_bounce_type'] = \Arr::get($this->data, $crmField->name.'_bounce_type');
-                    $data['_'.$crmField->name.'_type'] = \Arr::get($this->data, $crmField->name.'_type');
+                    $data['_'.$crmField->name.'_valid'] = $validator->passes();
+                    $data['_'.$crmField->name.'_abuse'] = (bool) \Arr::get($this->data, '_'.$crmField->name.'_abuse');
+                    $data['_'.$crmField->name.'_abuse_timestamp'] = $this->makeTimestamp(\Arr::get($this->data, '_'.$crmField->name.'_abuse_timestamp'));
+                    $data['_'.$crmField->name.'_bounce_reason'] = \Arr::get($this->data, '_'.$crmField->name.'_bounce_reason');
+                    $data['_'.$crmField->name.'_bounce_score'] = (int) \Arr::get($this->data, '_'.$crmField->name.'_bounce_score');
+                    $data['_'.$crmField->name.'_bounce_type'] = \Arr::get($this->data, '_'.$crmField->name.'_bounce_type');
+                    $data['_'.$crmField->name.'_type'] = \Arr::get($this->data, '_'.$crmField->name.'_type');
                     break;
                 case 'MEDIA':
                     $data['_'.$crmField->name.'_optin'] = (bool) \Arr::get($this->data, $crmField->name.'_optin');
-                    $data['_'.$crmField->name.'_optin_timestamp'] = $this->makeTimestamp(\Arr::get($this->data, $crmField->name.'_optin_timestamp'));
-                    $data['_'.$crmField->name.'_confirmed_optin'] = (bool) \Arr::get($this->data, $crmField->name.'_confirmed_optin');
-                    $data['_'.$crmField->name.'_confirmed_optin_timestamp'] = $this->makeTimestamp(\Arr::get($this->data, $crmField->name.'_confirmed_optin_timestamp'));
-                    $data['_'.$crmField->name.'_confirmed_optout'] = (bool) \Arr::get($this->data, $crmField->name.'_confirmed_optout');
-                    $data['_'.$crmField->name.'_optout_timestamp'] = $this->makeTimestamp(\Arr::get($this->data, $crmField->name.'_optout_timestamp'));
+                    $data['_'.$crmField->name.'_optin_timestamp'] = $this->makeTimestamp(\Arr::get($this->data, '_'.$crmField->name.'_optin_timestamp'));
+                    $data['_'.$crmField->name.'_confirmed_optin'] = (bool) \Arr::get($this->data, '_'.$crmField->name.'_confirmed_optin');
+                    $data['_'.$crmField->name.'_confirmed_optin_timestamp'] = $this->makeTimestamp(\Arr::get($this->data, '_'.$crmField->name.'_confirmed_optin_timestamp'));
+                    $data['_'.$crmField->name.'_confirmed_optout'] = (bool) \Arr::get($this->data, '_'.$crmField->name.'_confirmed_optout');
+                    $data['_'.$crmField->name.'_optout_timestamp'] = $this->makeTimestamp(\Arr::get($this->data, '_'.$crmField->name.'_optout_timestamp'));
                     break;
                 case 'TEXTBIG':
                 case 'TEXTMICRO':
@@ -295,61 +298,7 @@ class CrmCard extends Model
                 ->whereIsShownOnTargetGroupBuilder(1)
                 ->get() as $crmField
         ) {
-            switch ($crmField->type) {
-                case 'BOOLEAN':
-                case 'CONSENT':
-                    $fieldType = 'bool';
-                    break;
-                case 'DATETIME':
-                    $fieldType = 'int64';
-                    break;
-                case 'DECIMAL':
-                    $fieldType = 'float';
-                    break;
-                case 'INT':
-                    $fieldType = 'int32';
-                    break;
-                case 'MEDIA':
-                    $fields[] = ['name' => '_'.$crmField->name.'_optin', 'type' => 'bool', 'optional' => true];
-                    $fields[] = ['name' => '_'.$crmField->name.'_optin_timestamp', 'type' => 'int64', 'optional' => true];
-                    $fields[] = ['name' => '_'.$crmField->name.'_confirmed_optin', 'type' => 'bool', 'optional' => true];
-                    $fields[] = ['name' => '_'.$crmField->name.'_confirmed_optin_timestamp', 'type' => 'int64', 'optional' => true];
-                    $fields[] = ['name' => '_'.$crmField->name.'_confirmed_optout', 'type' => 'bool', 'optional' => true];
-                    $fields[] = ['name' => '_'.$crmField->name.'_optout_timestamp', 'type' => 'int64', 'optional' => true];
-
-                    $fieldType = false;
-                    break;
-                case 'EMAIL':
-                    $fields[] = ['name' => $crmField->name, 'type' => 'string', 'optional' => true];
-                    $fields[] = ['name' => $crmField->name.'_infix', 'type' => 'string[]', 'optional' => true];
-                    $fields[] = ['name' => '_'.$crmField->name.'_abuse', 'type' => 'bool', 'optional' => true];
-                    $fields[] = ['name' => '_'.$crmField->name.'_abuse_timestamp', 'type' => 'int64', 'optional' => true];
-                    $fields[] = ['name' => '_'.$crmField->name.'_bounce_reason', 'type' => 'string', 'optional' => true];
-                    $fields[] = ['name' => '_'.$crmField->name.'_bounce_score', 'type' => 'int32', 'optional' => true];
-                    $fields[] = ['name' => '_'.$crmField->name.'_bounce_type', 'type' => 'string', 'optional' => true];
-                    $fields[] = ['name' => '_'.$crmField->name.'_type', 'type' => 'string', 'optional' => true];
-
-                    $fieldType = false;
-                    break;
-                case 'TEXTBIG':
-                case 'TEXTMICRO':
-                case 'TEXTMIDDLE':
-                case 'TEXTMINI':
-                case 'TEXTSMALL':
-                default:
-                    $fields[] = ['name' => $crmField->name, 'type' => 'string', 'optional' => true];
-                    $fields[] = ['name' => $crmField->name.'_infix', 'type' => 'string[]', 'optional' => true];
-
-                    $fieldType = false;
-            }
-
-            if ($fieldType) {
-                $fields[] = [
-                    'name' => $crmField->name,
-                    'type' => $fieldType,
-                    'optional' => true,
-                ];
-            }
+            $fields = array_merge($fields, $crmField->getTypesenseFields());
         }
 
         $fields[] = [

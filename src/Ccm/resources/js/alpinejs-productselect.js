@@ -1,0 +1,24 @@
+document.addEventListener("alpine:init", () => {
+    Alpine.data("productSelect", (obj) => ({
+        value: obj.value,
+        elements: [],
+        products: [],
+        searchResult: [],
+        init() {
+            this.elements = this.value ? this.value.split(",") : []
+
+        },
+        addProduct(id) {
+            this.elements.push(id)
+        },
+        addAllProducts() {
+            this.searchResult.forEach(element => { this.addElement(element) })
+        },
+        removeProduct(index) {
+            this.elements.splice(index, 1)
+        },
+        removeAll() {
+            this.elements = []
+        },
+    }));
+});

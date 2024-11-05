@@ -61,6 +61,43 @@
             @else
                 <x-ccm::forms.input name="filter.value{{ $filter['id'] }}" wire:model.blur="filter.value" :grow="true"/>
             @endif
+        @elseif (Arr::get($filter, 'columnType') === 'product_array')
+            <x-ccm::forms.select name="operator" wire:model.live="filter.operator" class="w-[170px]">
+                <option value="">Kies operator</option>
+                <option value="con">Bevat product</option>
+                <option value="dnc">Bevat niet product</option>
+            </x-ccm::forms.select>
+            <div>0 Producten geselecteerd</div>
+            <div x-data="{ show: true }">
+                <x-ccm::buttons.primary x-on:click="show = true">Producten selecteren</x-ccm::buttons.primary>
+                <x-ccm::layouts.modal
+                        title="Producten selecteren"
+                        width="2xl"
+                >
+                    <x-ccm::forms.input
+                            placeholder="Zoek producten op naam, sku of ean"
+                            class="mb-4"
+                    />
+
+                    <div class="flex gap-4">
+                        <div class="w-[48%] h-[200px] overflow-auto border border-gray-300 rounded">
+                            LINKS
+                        </div>
+                        <div class="grow">
+                            >
+                        </div>
+                        <div class="w-[48%] h-[200px] overflow-auto border border-gray-300 rounded">
+                            RECHTS
+                        </div>
+                    </div>
+
+                    <x-slot:buttons>
+                        <x-ccm::buttons.secundary x-on:click="show = false">
+                            Sluiten
+                        </x-ccm::buttons.secundary>
+                    </x-slot:buttons>
+                </x-ccm::layouts.modal>
+            </div>
         @elseif (Arr::get($filter, 'columnType') === 'integer_array')
             <x-ccm::forms.select name="operator" wire:model.live="filter.operator" class="w-[170px]">
                 <option value="">Kies operator</option>
