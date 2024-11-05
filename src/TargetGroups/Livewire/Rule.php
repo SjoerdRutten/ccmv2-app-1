@@ -99,23 +99,23 @@ class Rule extends Component
                     $columnType = new ColumnTypeInteger;
                     break;
                 case 'MEDIA':
-                    $columns[] = new Column('_'.$crmField->name.'_optin', new ColumnTypeBoolean, $crmField->label.' Optin');
-                    $columns[] = new Column('_'.$crmField->name.'_optin_timestamp', new ColumnTypeDate, $crmField->label.' Optin timestamp');
-                    $columns[] = new Column('_'.$crmField->name.'_confirmed_optin', new ColumnTypeBoolean, $crmField->label.' Confirmed optin option');
-                    $columns[] = new Column('_'.$crmField->name.'_confirmed_optin_timestamp', new ColumnTypeDate, $crmField->label.' Confirmed optin timestamp');
-                    $columns[] = new Column('_'.$crmField->name.'_confirmed_optout', new ColumnTypeBoolean, $crmField->label.' Optout');
-                    $columns[] = new Column('_'.$crmField->name.'_optout_timestamp', new ColumnTypeDate, $crmField->label.' Optout timestamp');
+                    $columns[] = new Column('_'.$crmField->name.'_optin', new ColumnTypeBoolean, $crmField->name.' Optin');
+                    $columns[] = new Column('_'.$crmField->name.'_optin_timestamp', new ColumnTypeDate, $crmField->name.' Optin timestamp');
+                    $columns[] = new Column('_'.$crmField->name.'_confirmed_optin', new ColumnTypeBoolean, $crmField->name.' Confirmed optin option');
+                    $columns[] = new Column('_'.$crmField->name.'_confirmed_optin_timestamp', new ColumnTypeDate, $crmField->name.' Confirmed optin timestamp');
+                    $columns[] = new Column('_'.$crmField->name.'_confirmed_optout', new ColumnTypeBoolean, $crmField->name.' Optout');
+                    $columns[] = new Column('_'.$crmField->name.'_optout_timestamp', new ColumnTypeDate, $crmField->name.' Optout timestamp');
 
                     $columnType = false;
                     break;
                 case 'EMAIL':
                     $columns[] = new Column($crmField->name, new ColumnTypeText, $crmField->label);
-                    $columns[] = new Column('_'.$crmField->name.'_abuse', new ColumnTypeBoolean, $crmField->label.' Abuse');
-                    $columns[] = new Column('_'.$crmField->name.'_abuse_timestamp', new ColumnTypeDate, $crmField->label.' Abuse timestamp');
-                    $columns[] = new Column('_'.$crmField->name.'_bounce_reason', new ColumnTypeText, $crmField->label.' Bounce reason');
-                    $columns[] = new Column('_'.$crmField->name.'_bounce_score', new ColumnTypeInteger, $crmField->label.' Bounce score');
-                    $columns[] = new Column('_'.$crmField->name.'_bounce_type', new ColumnTypeText, $crmField->label.' Bounce type');
-                    $columns[] = new Column('_'.$crmField->name.'_type', new ColumnTypeText, $crmField->label.' Type e-mail');
+                    $columns[] = new Column('_'.$crmField->name.'_abuse', new ColumnTypeBoolean, $crmField->name.' Abuse');
+                    $columns[] = new Column('_'.$crmField->name.'_abuse_timestamp', new ColumnTypeDate, $crmField->name.' Abuse timestamp');
+                    $columns[] = new Column('_'.$crmField->name.'_bounce_reason', new ColumnTypeText, $crmField->name.' Bounce reason');
+                    $columns[] = new Column('_'.$crmField->name.'_bounce_score', new ColumnTypeInteger, $crmField->name.' Bounce score');
+                    $columns[] = new Column('_'.$crmField->name.'_bounce_type', new ColumnTypeText, $crmField->name.' Bounce type');
+                    $columns[] = new Column('_'.$crmField->name.'_type', new ColumnTypeText, $crmField->name.' Type e-mail');
                     $columnType = false;
                     break;
                 default:
@@ -123,7 +123,7 @@ class Rule extends Component
             }
 
             if ($columnType) {
-                $columns[] = new Column($crmField->name, $columnType, empty($crmField->label) ? $crmField->name : $crmField->label);
+                $columns[] = new Column($crmField->name, $columnType, $crmField->name);
             }
 
         }

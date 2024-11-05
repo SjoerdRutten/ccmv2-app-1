@@ -11,11 +11,7 @@
             <option>Kies kolom</option>
             @foreach ($columns AS $column)
                 <option value="{{ $column->name }}">
-                    @if (empty($column->label))
-                        {{ $column->name }}
-                    @else
-                        {{ $column->label }}
-                    @endif
+                    {{ $column->label }}
                 </option>
             @endforeach
         </x-ccm::forms.select>

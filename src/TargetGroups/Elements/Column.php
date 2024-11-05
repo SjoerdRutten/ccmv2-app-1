@@ -2,11 +2,15 @@
 
 namespace Sellvation\CCMV2\TargetGroups\Elements;
 
+use Illuminate\Support\Str;
 use Livewire\Wireable;
 
 class Column implements Wireable
 {
-    public function __construct(public string $name, public ColumnType $columnType, public string $label = '') {}
+    public function __construct(public string $name, public ColumnType $columnType, public string $label = '')
+    {
+        $this->label = Str::replace('_', ' ', $label);
+    }
 
     public function toLivewire()
     {
