@@ -3,6 +3,8 @@
 namespace Sellvation\CCMV2\Typesense\Jobs;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
+use Typesense\Exceptions\ObjectUnprocessable;
 
 class RemoveFieldJob extends TypesenseJob implements ShouldQueue
 {
@@ -19,8 +21,13 @@ class RemoveFieldJob extends TypesenseJob implements ShouldQueue
                         'drop' => true,
                     ],
                 ]]);
+
+            Log::error('Fields removed', ['collection' => $this->collection, 'field' => $this->fieldName]);
+        } catch (ObjectUnprocessable $e) {
+            $this->release(60);
+            Log::error('Try again in 60 seconds:', ['collection' => $this->collection, 'field' => $this->fieldName]);
         } catch (\Exception $e) {
-            dump($e->getMessage());
+            Log::error($e->getMessage(), ['collection' => $this->collection, 'field' => $this->fieldName]);
         }
     }
 }

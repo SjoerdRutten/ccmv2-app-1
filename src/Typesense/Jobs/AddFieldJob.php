@@ -3,6 +3,8 @@
 namespace Sellvation\CCMV2\Typesense\Jobs;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
+use Typesense\Exceptions\ObjectUnprocessable;
 
 class AddFieldJob extends TypesenseJob implements ShouldQueue
 {
@@ -14,8 +16,13 @@ class AddFieldJob extends TypesenseJob implements ShouldQueue
             $this->initClient();
             $this->client->collections[$this->collection]
                 ->update(['fields' => [$this->field]]);
+
+            Log::error('Field added', ['collection' => $this->collection, 'field' => $this->field]);
+        } catch (ObjectUnprocessable $e) {
+            $this->release(60);
+            Log::error('Typesense busy, try again in 60 seconds:', ['collection' => $this->collection, 'field' => $this->field]);
         } catch (\Exception $e) {
-            dump($e->getMessage());
+            Log::error($e->getMessage(), ['collection' => $this->collection, 'field' => $this->field]);
         }
     }
 }

@@ -56,7 +56,7 @@ class UpdateTypesenseSchemaListener implements ShouldQueue
         $batch
             ->finally(function (Batch $batch) use ($adding) {
                 if ($adding) {
-                    Artisan::call('scout:import '.CrmCard::class);
+                    Artisan::call('scout:import '.addslashes(CrmCard::class));
                 }
             })
             ->dispatch();
@@ -71,6 +71,7 @@ class UpdateTypesenseSchemaListener implements ShouldQueue
 
         switch ($crmField->type) {
             case 'MEDIA':
+                $fields[] = '_'.$name.'_allowed';
                 $fields[] = '_'.$name.'_optin';
                 $fields[] = '_'.$name.'_confirmed_optin';
                 $fields[] = '_'.$name.'_confirmed_optin_timestamp';
@@ -81,6 +82,7 @@ class UpdateTypesenseSchemaListener implements ShouldQueue
                 $fields[] = $name;
                 $fields[] = $name.'_infix';
                 $fields[] = '_'.$name.'_valid';
+                $fields[] = '_'.$name.'_possible';
                 $fields[] = '_'.$name.'_abuse';
                 $fields[] = '_'.$name.'_abuse_timestamp';
                 $fields[] = '_'.$name.'_bounce_reason';

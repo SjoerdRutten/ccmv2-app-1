@@ -2,6 +2,7 @@
 
 namespace Sellvation\CCMV2\Typesense\Jobs;
 
+use DateTime;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -38,6 +39,11 @@ class TypesenseJob implements ShouldQueue
                 'client' => $client,
             ]
         );
+    }
+
+    public function retryUntil(): DateTime
+    {
+        return now()->addDay();
     }
 
     public function handle(): void {}
