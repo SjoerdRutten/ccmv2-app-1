@@ -22,12 +22,12 @@ class RemoveFieldJob extends TypesenseJob implements ShouldQueue
                     ],
                 ]]);
 
-            Log::error('Fields removed', ['collection' => $this->collection, 'field' => $this->fieldName]);
+            Log::error('Field removed', ['collection' => $this->collection, 'field' => $this->fieldName]);
         } catch (ObjectUnprocessable $e) {
             $this->release(60);
-            Log::error('Try again in 60 seconds:', ['collection' => $this->collection, 'field' => $this->fieldName]);
+            Log::error('RemoveField: Try again in 60 seconds:', ['collection' => $this->collection, 'field' => $this->fieldName]);
         } catch (\Exception $e) {
-            Log::error($e->getMessage(), ['collection' => $this->collection, 'field' => $this->fieldName]);
+            Log::error('RemoveField: '.$e->getMessage(), ['collection' => $this->collection, 'field' => $this->fieldName]);
         }
     }
 }
