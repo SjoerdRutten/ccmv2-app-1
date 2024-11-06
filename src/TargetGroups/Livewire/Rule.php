@@ -105,6 +105,7 @@ class Rule extends Component
                     $columnType = new ColumnTypeInteger;
                     break;
                 case 'MEDIA':
+                    $columns[] = new Column('_'.$crmField->name.'_allowed', new ColumnTypeBoolean, $crmField->name.' Mailen toegestaan');
                     $columns[] = new Column('_'.$crmField->name.'_optin', new ColumnTypeBoolean, $crmField->name.' Optin');
                     $columns[] = new Column('_'.$crmField->name.'_optin_timestamp', new ColumnTypeDate, $crmField->name.' Optin timestamp');
                     $columns[] = new Column('_'.$crmField->name.'_confirmed_optin', new ColumnTypeBoolean, $crmField->name.' Confirmed optin option');
@@ -117,6 +118,7 @@ class Rule extends Component
                 case 'EMAIL':
                     $columns[] = new Column($crmField->name, new ColumnTypeText, $crmField->name);
                     $columns[] = new Column('_'.$crmField->name.'_valid', new ColumnTypeBoolean, $crmField->name.' Geldig mailadres');
+                    $columns[] = new Column('_'.$crmField->name.'_possible', new ColumnTypeBoolean, $crmField->name.' Mailen mogelijk');
                     $columns[] = new Column('_'.$crmField->name.'_abuse', new ColumnTypeBoolean, $crmField->name.' Abuse');
                     $columns[] = new Column('_'.$crmField->name.'_abuse_timestamp', new ColumnTypeDate, $crmField->name.' Abuse timestamp');
                     $columns[] = new Column('_'.$crmField->name.'_bounce_reason', new ColumnTypeText, $crmField->name.' Bounce reason');
