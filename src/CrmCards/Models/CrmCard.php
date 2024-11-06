@@ -89,6 +89,40 @@ class CrmCard extends Model
         return $this->belongsTo(User::class, 'updated_by_api_id');
     }
 
+    private function isEmailaddressValid(array $data, string $name): bool
+    {
+        $validator = \Validator::make(['email' => \Arr::get($data, $name)], ['email' => 'required|email:rfc']);
+
+        return $validator->passes();
+    }
+
+    private function isEmailaddressPossible(array $data, string $name): bool
+    {
+        if (
+            ($this->isEmailaddressValid($data, $name)) &&
+            (! \Arr::get($data, '_'.$name.'_abuse')) &&
+            (\Arr::get($data, '_'.$name.'_bounce_type') !== 'hard') &&
+            (\Arr::get($data, '_'.$name.'_bounce_score') < 3)
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function isEmailaddressAllowed(array $data, string $name): bool
+    {
+        if (
+            (\Arr::get($data, '_'.$name.'_optin')) &&
+            (\Arr::get($data, '_'.$name.'_confirmed_optin')) &&
+            (! \Arr::get($data, '_'.$name.'_confirmed_optout'))
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function searchableAs()
     {
         if ($this->environment_id) {
@@ -156,11 +190,10 @@ class CrmCard extends Model
                     $data[$crmField->name] = (int) \Arr::get($this->data, $crmField->name);
                     break;
                 case 'EMAIL':
-                    $validator = \Validator::make(['email' => \Arr::get($this->data, $crmField->name)], ['email' => 'required|email:rfc']);
-
                     $data[$crmField->name] = \Arr::get($this->data, $crmField->name);
                     $data[$crmField->name.'_infix'] = $this->makeStringArray(\Arr::get($this->data, $crmField->name));
-                    $data['_'.$crmField->name.'_valid'] = $validator->passes();
+                    $data['_'.$crmField->name.'_valid'] = $this->isEmailaddressValid($this->data, $crmField->name);
+                    $data['_'.$crmField->name.'_possible'] = $this->isEmailaddressPossible($this->data, $crmField->name);
                     $data['_'.$crmField->name.'_abuse'] = (bool) \Arr::get($this->data, '_'.$crmField->name.'_abuse');
                     $data['_'.$crmField->name.'_abuse_timestamp'] = $this->makeTimestamp(\Arr::get($this->data, '_'.$crmField->name.'_abuse_timestamp'));
                     $data['_'.$crmField->name.'_bounce_reason'] = \Arr::get($this->data, '_'.$crmField->name.'_bounce_reason');
@@ -169,6 +202,7 @@ class CrmCard extends Model
                     $data['_'.$crmField->name.'_type'] = \Arr::get($this->data, '_'.$crmField->name.'_type');
                     break;
                 case 'MEDIA':
+                    $data['_'.$crmField->name.'_allowed'] = $this->isEmailaddressAllowed($this->data, $crmField->name);
                     $data['_'.$crmField->name.'_optin'] = (bool) \Arr::get($this->data, $crmField->name.'_optin');
                     $data['_'.$crmField->name.'_optin_timestamp'] = $this->makeTimestamp(\Arr::get($this->data, '_'.$crmField->name.'_optin_timestamp'));
                     $data['_'.$crmField->name.'_confirmed_optin'] = (bool) \Arr::get($this->data, '_'.$crmField->name.'_confirmed_optin');

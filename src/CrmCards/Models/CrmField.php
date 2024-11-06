@@ -83,6 +83,7 @@ class CrmField extends Model
                 $fieldType = 'int32';
                 break;
             case 'MEDIA':
+                $fields[] = ['name' => '_'.$this->name.'_allowed', 'type' => 'bool', 'optional' => true];
                 $fields[] = ['name' => '_'.$this->name.'_optin', 'type' => 'bool', 'optional' => true];
                 $fields[] = ['name' => '_'.$this->name.'_optin_timestamp', 'type' => 'int64', 'optional' => true];
                 $fields[] = ['name' => '_'.$this->name.'_confirmed_optin', 'type' => 'bool', 'optional' => true];
@@ -96,12 +97,13 @@ class CrmField extends Model
                 $fields[] = ['name' => $this->name, 'type' => 'string', 'optional' => true];
                 $fields[] = ['name' => $this->name.'_infix', 'type' => 'string[]', 'optional' => true];
                 $fields[] = ['name' => '_'.$this->name.'_valid', 'type' => 'bool', 'optional' => true];
+                $fields[] = ['name' => '_'.$this->name.'_possible', 'type' => 'bool', 'optional' => true];
                 $fields[] = ['name' => '_'.$this->name.'_abuse', 'type' => 'bool', 'optional' => true];
                 $fields[] = ['name' => '_'.$this->name.'_abuse_timestamp', 'type' => 'int64', 'optional' => true];
-                $fields[] = ['name' => '_'.$this->name.'_bounce_reason', 'type' => 'string', 'optional' => true, 'facet' => true];
+                $fields[] = ['name' => '_'.$this->name.'_bounce_reason', 'type' => 'string', 'optional' => true];
                 $fields[] = ['name' => '_'.$this->name.'_bounce_score', 'type' => 'int32', 'optional' => true];
                 $fields[] = ['name' => '_'.$this->name.'_bounce_type', 'type' => 'string', 'optional' => true, 'facet' => true];
-                $fields[] = ['name' => '_'.$this->name.'_type', 'type' => 'string', 'optional' => true];
+                $fields[] = ['name' => '_'.$this->name.'_type', 'type' => 'string', 'optional' => true, 'facet' => true];
 
                 $fieldType = false;
                 break;
