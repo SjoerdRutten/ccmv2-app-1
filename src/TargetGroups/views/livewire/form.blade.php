@@ -6,12 +6,16 @@
                 <x-ccm::buttons.save wire:click="save"></x-ccm::buttons.save>
             </x-slot:actions>
         </x-ccm::pages.intro>
-        <x-ccm::tabs.base>
+        <x-ccm::tabs.base :current-tab="3">
             <x-slot:tabs>
                 <x-ccm::tabs.nav-tab :index="0" :badge="ReadableNumber($count, '.')">
                     Query builder
                 </x-ccm::tabs.nav-tab>
                 @if ($id > 0)
+                    <x-ccm::tabs.nav-tab :index="3">Export</x-ccm::tabs.nav-tab>
+                    @if ($targetGroup->targetGroupExports()->count() > 0)
+                        <x-ccm::tabs.nav-tab :index="4">Downloads</x-ccm::tabs.nav-tab>
+                    @endif
                     <x-ccm::tabs.nav-tab :index="2">Logs</x-ccm::tabs.nav-tab>
                 @endif
                 @if (Auth::user()->isAdmin)
@@ -49,6 +53,24 @@
             @if ($id > 0)
                 <x-ccm::tabs.tab-content :index="2" :no-margin="true">
                     <x-ccm::activity_log.table :performed_on="$targetGroup"></x-ccm::activity_log.table>
+                </x-ccm::tabs.tab-content>
+                <x-ccm::tabs.tab-content :index="3">
+                    <p>
+                        Export maken van {{ ReadableNumber($count, '.') }} CRM Kaarten
+                    </p>
+                    <div class="flex flex-col gap-4 w-1/2">
+                        @if (count($fieldSets))
+                            <x-ccm::forms.select label="Veldenset">
+                                <option></option>
+                                @foreach ($fieldSets AS $fieldSet)
+                                    <option value="{{ $fieldSet->id }}">
+                                        {{ $fieldSet->name }}
+                                    </option>
+                                @endforeach
+                            </x-ccm::forms.select>
+                        @endif
+                        <livewire:target-group-selector::create-target-group-fieldset/>
+                    </div>
                 </x-ccm::tabs.tab-content>
             @endif
 

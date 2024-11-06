@@ -11,6 +11,7 @@ use Sellvation\CCMV2\Ccm\Livewire\Traits\HasModals;
 use Sellvation\CCMV2\CrmCards\Jobs\AddTagToCrmCardJob;
 use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelectorFacade;
 use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
+use Sellvation\CCMV2\TargetGroups\Models\TargetGroupFieldset;
 
 class Form extends Component
 {
@@ -178,6 +179,9 @@ class Form extends Component
 
     public function render()
     {
-        return view('target-group::livewire.form');
+        return view('target-group::livewire.form')
+            ->with([
+                'fieldSets' => TargetGroupFieldset::orderBy('name')->get(),
+            ]);
     }
 }

@@ -36,6 +36,24 @@ class CrmField extends Model
         'saving' => CrmFieldSavingEvent::class,
     ];
 
+    protected $hidden = [
+        'environment_id',
+        'crm_field_type_id',
+        'crm_field_category_id',
+        'label_en',
+        'label_de',
+        'label_fr',
+        'is_shown_on_overview',
+        'is_shown_on_target_group_builder',
+        'is_hidden',
+        'is_locked',
+        'position',
+        'log_file',
+        'overview_index',
+        'created_at',
+        'updated_at',
+    ];
+
     protected function casts()
     {
         return [

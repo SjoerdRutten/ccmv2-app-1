@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelectorFacade;
+use Sellvation\CCMV2\TargetGroups\Livewire\CreateTargetGroupFieldset;
 use Sellvation\CCMV2\TargetGroups\Livewire\Form;
 use Sellvation\CCMV2\TargetGroups\Livewire\Overview;
 use Sellvation\CCMV2\TargetGroups\Livewire\Rule;
@@ -26,6 +27,10 @@ class TargetGroupServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
         $this->loadViewsFrom(__DIR__.'/views', 'target-group');
 
+        $this->publishes([
+            __DIR__.'/resources/js' => public_path('vendor/ccm/js'),
+        ], 'target-groups::js');
+
         if (! App::runningInConsole()) {
             $this->registerLivewireComponents();
         }
@@ -36,5 +41,6 @@ class TargetGroupServiceProvider extends ServiceProvider
         Livewire::component('target-group-selector::form', Form::class);
         Livewire::component('target-group-selector::rule', Rule::class);
         Livewire::component('target-group-selector::overview', Overview::class);
+        Livewire::component('target-group-selector::create-target-group-fieldset', CreateTargetGroupFieldset::class);
     }
 }
