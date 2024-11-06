@@ -17,12 +17,12 @@ class AddFieldJob extends TypesenseJob implements ShouldQueue
             $this->client->collections[$this->collection]
                 ->update(['fields' => [$this->field]]);
 
-            Log::error('Field added', ['collection' => $this->collection, 'field' => $this->fieldName]);
+            Log::error('Field added', ['collection' => $this->collection, 'field' => $this->field]);
         } catch (ObjectUnprocessable $e) {
             $this->release(60);
-            Log::error('AddField: Try again in 60 seconds:', ['collection' => $this->collection, 'field' => $this->fieldName]);
+            Log::error('AddField: Try again in 60 seconds:', ['collection' => $this->collection, 'field' => $this->field]);
         } catch (\Exception $e) {
-            Log::error('AddField: '.$e->getMessage(), ['collection' => $this->collection, 'field' => $this->fieldName]);
+            Log::error('AddField: '.$e->getMessage(), ['collection' => $this->collection, 'field' => $this->field]);
         }
     }
 }
