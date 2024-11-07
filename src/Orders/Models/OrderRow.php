@@ -56,14 +56,14 @@ class OrderRow extends Model
 
     public function toSearchableArray()
     {
-        $data = $this->toArray();
+        $data = [];
         $data['id'] = (string) $this->id;
         $data['order_id'] = (string) $this->order_id;
         $data['product_id'] = (string) $this->product_id;
-        $data['amount'] = (int) $data['amount'];
-        $data['unit_price'] = (int) $data['unit_price'];
-        $data['total_price'] = (int) $data['total_price'];
-        $data['is_promo'] = (int) \Arr::get($data, 'is_promo');
+        $data['amount'] = (int) $this->amount;
+        $data['unit_price'] = (int) $this->unit_price;
+        $data['total_price'] = (int) $this->total_price;
+        $data['is_promo'] = (int) $this->is_promo;
 
         return $data;
     }
