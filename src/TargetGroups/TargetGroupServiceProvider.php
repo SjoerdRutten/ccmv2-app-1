@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Sellvation\CCMV2\TargetGroups\Events\Listeners\CreateExportListener;
+use Sellvation\CCMV2\TargetGroups\Events\Listeners\DeleteExportListener;
 use Sellvation\CCMV2\TargetGroups\Events\TargetGroupExportCreatedEvent;
+use Sellvation\CCMV2\TargetGroups\Events\TargetGroupExportDeletingEvent;
 use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelectorFacade;
 use Sellvation\CCMV2\TargetGroups\Livewire\CreateTargetGroupFieldset;
 use Sellvation\CCMV2\TargetGroups\Livewire\Form;
@@ -54,5 +56,6 @@ class TargetGroupServiceProvider extends ServiceProvider
         $events = $this->app->make(Dispatcher::class);
 
         $events->listen(TargetGroupExportCreatedEvent::class, CreateExportListener::class);
+        $events->listen(TargetGroupExportDeletingEvent::class, DeleteExportListener::class);
     }
 }

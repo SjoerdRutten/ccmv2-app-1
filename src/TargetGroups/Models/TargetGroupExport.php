@@ -5,6 +5,7 @@ namespace Sellvation\CCMV2\TargetGroups\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Sellvation\CCMV2\TargetGroups\Events\TargetGroupExportCreatedEvent;
+use Sellvation\CCMV2\TargetGroups\Events\TargetGroupExportDeletingEvent;
 use Sellvation\CCMV2\Users\Traits\HasUser;
 
 class TargetGroupExport extends Model
@@ -32,6 +33,7 @@ class TargetGroupExport extends Model
     ];
 
     protected $dispatchesEvents = [
+        'deleting' => TargetGroupExportDeletingEvent::class,
         'created' => TargetGroupExportCreatedEvent::class,
     ];
 

@@ -126,6 +126,12 @@
                                                 <x-ccm::tables.download-link
                                                         wire:click="downloadExport({{ $export->id }})"></x-ccm::tables.download-link>
                                             @endif
+                                            @if ($export->status !== 1)
+                                                <x-ccm::tables.delete-link
+                                                        wire:confirm="Weet je zeker dat je deze export wilt verwijderen ?"
+                                                        wire:click="deleteExport({{ $export->id }})"
+                                                ></x-ccm::tables.delete-link>
+                                            @endif
                                         </x-ccm::tables.td>
                                     </x-ccm::tables.tr>
                                 @endforeach

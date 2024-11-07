@@ -184,6 +184,11 @@ class Form extends Component
         return Storage::disk($targetGroupExport->disk)->download($targetGroupExport->path);
     }
 
+    public function deleteExport(TargetGroupExport $targetGroupExport)
+    {
+        $targetGroupExport->delete();
+    }
+
     #[On('update-count')]
     public function updateCount()
     {
