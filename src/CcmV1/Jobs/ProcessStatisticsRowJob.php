@@ -52,7 +52,7 @@ class ProcessStatisticsRowJob implements ShouldQueue
                             'crm_card_id' => $crmCardId,
                             'email_id' => $emailId,
                         ], [
-                            $column => \DB::raw($column.' + 1'),
+                            $column => 1,
                             'created_at' => now(),
                             'updated_at' => now(),
                         ]);
