@@ -11,6 +11,7 @@ class Email extends Model
     use HasEnvironment;
 
     protected $fillable = [
+        'id',
         'email_category_id',
         'recipient_crm_field_id',
         'name',

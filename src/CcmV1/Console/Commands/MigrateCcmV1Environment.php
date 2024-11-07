@@ -5,6 +5,7 @@ namespace Sellvation\CCMV2\CcmV1\Console\Commands;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
+use Sellvation\CCMV2\CcmV1\Jobs\ProcessStatisticsRowJob;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\CrmCards\Models\CrmFieldCategory;
 use Sellvation\CCMV2\CrmCards\Models\CrmFieldType;
@@ -34,11 +35,20 @@ class MigrateCcmV1Environment extends Command
                 $this->environmentId = $environment->id;
                 $this->environment = $environment;
 
-                $this->migrateCrmFieldCategories();
-                $this->migrateCrmFields();
-                $this->migrateCrmCards();
-                $this->migrateEmailCategories();
-                $this->migrateEmails();
+                if ($this->confirm('Crm Fields importeren ?', false)) {
+                    $this->migrateCrmFieldCategories();
+                    $this->migrateCrmFields();
+                }
+                if ($this->confirm('Crm Card importeren ?', false)) {
+                    $this->migrateCrmCards();
+                }
+                if ($this->confirm('E-mails importeren ?', false)) {
+                    $this->migrateEmailCategories();
+                    $this->migrateEmails();
+                }
+                if ($this->confirm('E-mail statistieken importeren ?', true)) {
+                    $this->migrateEmailStats();
+                }
 
                 $this->cleanup();
             }
@@ -285,6 +295,8 @@ class MigrateCcmV1Environment extends Command
     {
         $this->info('Import e-mails');
 
+        \DB::table('emails')->delete();
+
         $rows = \DB::connection('db02')
             ->table('emails')
             ->where('omgevingen_id', $this->environmentId)
@@ -335,11 +347,39 @@ class MigrateCcmV1Environment extends Command
                     ];
 
                     $email = $this->environment->emails()->updateOrCreate([
-                        'name' => $row->naam,
+                        'id' => $row->id,
                     ], $data);
                 }
             });
 
         $this->info($this->environment->emails()->count().' e-mail imported');
+    }
+
+    private function migrateEmailStats()
+    {
+        $this->info('Import crm_statistieken_xxx');
+
+        \DB::table('email_statistics')->delete();
+
+        $bar = $this->output->createProgressBar(CrmCard::count());
+
+        \DB::connection('db02')
+            ->table('crm_statistieken_'.$this->environmentId)
+            ->select([
+                'crm_id',
+                'email_verzonden',
+                'email_gebounced',
+                'email_geopend',
+                'email_geklikt',
+            ])
+            ->orderBy('crm_id')
+            ->chunk(5000, function ($rows) use ($bar) {
+                foreach ($rows as $row) {
+                    $bar->advance();
+                    ProcessStatisticsRowJob::dispatch($this->environmentId, $row);
+                }
+            });
+
+        $bar->finish();
     }
 }
