@@ -13,6 +13,7 @@ class TargetGroupExport extends Model
 
     protected $fillable = [
         'status',
+        'error_message',
         'progress',
         'number_of_records',
         'file_type',

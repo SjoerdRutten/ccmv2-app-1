@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Context;
 use Maatwebsite\Excel\Facades\Excel;
 use Sellvation\CCMV2\TargetGroups\Exports\CrmCardsExport;
 use Sellvation\CCMV2\TargetGroups\Models\TargetGroupExport;
+use Throwable;
 
 class ExportTargetGroupJob implements ShouldQueue
 {
@@ -32,6 +33,7 @@ class ExportTargetGroupJob implements ShouldQueue
 
         $this->targetGroupExport->update([
             'status' => 1,
+            'error_message' => null,
             'number_of_records' => $targetGroup->numberOfResults,
         ]);
 
@@ -62,5 +64,13 @@ class ExportTargetGroupJob implements ShouldQueue
                 'status' => 99,
             ]);
         }
+    }
+
+    public function failed(Throwable $exception)
+    {
+        $this->targetGroupExport->update([
+            'status' => 99,
+            'error_message' => $exception->getMessage(),
+        ]);
     }
 }
