@@ -13,7 +13,12 @@ use Sellvation\CCMV2\TargetGroups\Models\TargetGroupExport;
 
 class CrmCardsExport implements FromGenerator, ShouldAutoSize, WithHeadings, WithMapping
 {
-    public function __construct(private readonly TargetGroupExport $targetGroupExport) {}
+    private array $fields = [];
+
+    public function __construct(private readonly TargetGroupExport $targetGroupExport)
+    {
+        $this->fields = Arr::sort($this->targetGroupExport->targetGroupFieldset->crmFields->pluck('name')->toArray());
+    }
 
     public function generator(): Generator
     {
@@ -36,14 +41,12 @@ class CrmCardsExport implements FromGenerator, ShouldAutoSize, WithHeadings, Wit
 
     public function headings(): array
     {
-        $headings = array_merge(
+        return array_merge(
             [
                 'crm_id',
             ],
-            $this->targetGroupExport->targetGroupFieldset->crmFields()->pluck('name')->toArray()
+            $this->fields,
         );
-
-        return $this->targetGroupExport->targetGroupFieldset->crmFields()->pluck('name')->toArray();
     }
 
     public function map(mixed $row): array
@@ -52,11 +55,6 @@ class CrmCardsExport implements FromGenerator, ShouldAutoSize, WithHeadings, Wit
             $row->crm_id,
         ];
 
-        foreach ($this->targetGroupExport->targetGroupFieldset->crmFields as $crmField) {
-            $data[] = Arr::get($row->data, $crmField->name);
-        }
-
-        return $data;
-
+        return array_merge($data, Arr::only($row, $this->fields));
     }
 }
