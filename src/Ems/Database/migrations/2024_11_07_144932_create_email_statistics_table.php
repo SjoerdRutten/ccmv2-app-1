@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('email_statistics', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('email_id')->constrained();
-            $table->foreignId('crm_card_id')->constrained();
+            $table->foreignId('email_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('crm_card_id')->constrained()->cascadeOnDelete();
             $table->integer('send')->default(0);
             $table->integer('bounced')->default(0);
             $table->integer('opened')->default(0);
