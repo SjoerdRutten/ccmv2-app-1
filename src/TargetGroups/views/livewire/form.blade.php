@@ -117,9 +117,9 @@
                                             {{ ReadableNumber($export->number_of_records, '.') }}
                                         </x-ccm::tables.td>
                                         <x-ccm::tables.td>
-                                            {{--                                            @if ($export->status === 1)--}}
-                                            {{ $export->expected_end_time?->translatedFormat('H:i') }}
-                                            {{--                                            @endif--}}
+                                            @if ($export->status === 1)
+                                                {{ $export->expected_end_time?->translatedFormat('H:i') }}
+                                            @endif
                                         </x-ccm::tables.td>
                                         <x-ccm::tables.td :link="true">
                                             @if ($export->disk && $export->path && ($export->status === 2))
