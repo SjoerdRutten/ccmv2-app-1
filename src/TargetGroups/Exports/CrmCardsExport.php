@@ -55,6 +55,6 @@ class CrmCardsExport implements FromGenerator, ShouldAutoSize, WithHeadings, Wit
             $row->crm_id,
         ];
 
-        return array_merge($data, Arr::only($row, $this->fields));
+        return array_merge($data, Arr::only($row->data, $this->fields));
     }
 }
