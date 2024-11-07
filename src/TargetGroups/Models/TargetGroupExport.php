@@ -4,6 +4,7 @@ namespace Sellvation\CCMV2\TargetGroups\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Sellvation\CCMV2\TargetGroups\Events\TargetGroupExportCreatedEvent;
 use Sellvation\CCMV2\Users\Traits\HasUser;
 
 class TargetGroupExport extends Model
@@ -11,13 +12,17 @@ class TargetGroupExport extends Model
     use HasUser;
 
     protected $fillable = [
-        'config',
+        'status',
+        'progress',
+        'number_of_records',
+        'file_type',
+        'disk',
         'path',
+        'target_group_fieldset_id',
     ];
 
-    protected $casts = [
-        'is_ready' => 'boolean',
-        'config' => 'json',
+    protected $dispatchesEvents = [
+        'created' => TargetGroupExportCreatedEvent::class,
     ];
 
     public function targetGroup(): BelongsTo

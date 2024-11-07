@@ -16,9 +16,11 @@
     @if (app()->environment('local'))
         <script defer src="/vendor/ccm/js/alpinejs-multiselect.js"></script>
         <script defer src="/vendor/ccm/js/alpinejs-productselect.js"></script>
+        <script defer src="/vendor/ccm/js/alpinejs-fieldselect.js"></script>
     @else
         <script defer src="/vendor/ccm/js/alpinejs-multiselect.min.js"></script>
         <script defer src="/vendor/ccm/js/alpinejs-productselect.min.js"></script>
+        <script defer src="/vendor/ccm/js/alpinejs-fieldselect.min.js"></script>
     @endif
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 

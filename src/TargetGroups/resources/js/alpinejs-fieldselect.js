@@ -1,11 +1,13 @@
 document.addEventListener("alpine:init", () => {
     Alpine.data("fieldSelect", (obj) => ({
         value: obj.value,
-        fieldIds: [],    // Array met geselecteerde product ids
+        fieldIds: [],       // Array met geselecteerde field ids
         selectedFields: [],
         search: '',         // Zoekstring
         searchResult: [],   // Zoek resultaten
         init() {
+            this.searchFields()
+
             this.$watch("search", (e => {
                 this.searchFields()
             }))
@@ -14,10 +16,11 @@ document.addEventListener("alpine:init", () => {
                 this.value = this.fieldIds.join(',')
             }))
 
-            this.fieldIds = this.value.split(',')
+            // console.log(this.value)
+            // this.fieldIds = this.value.split(',')
         },
         async getSelectedFields() {
-            var data = await fetch('/target-groupApi/crm-field/selected?' + new URLSearchParams({
+            var data = await fetch('/target-group-api/crm-field/selected?' + new URLSearchParams({
                 ids: this.fieldIds,
             }).toString())
                 .then(res => res.json())
@@ -27,24 +30,23 @@ document.addEventListener("alpine:init", () => {
                     }
                 )
 
-            this.selectedProducts = data
+            this.selectedFields = data
         },
         async searchFields() {
             this.searchResult = []
-            if (this.search.length > 2) {
-                var data = await fetch('/target-group-api/crm-field/search?' + new URLSearchParams({
-                    q: this.search,
-                }).toString())
-                    .then(res => res.json())
-                    .then(
-                        function (data) {
-                            return data
-                        }
-                    )
 
-                this.searchResult = data
-                this.filterAddedFieldsFromSearchResults()
-            }
+            var data = await fetch('/target-group-api/crm-field/search?' + new URLSearchParams({
+                q: this.search,
+            }).toString())
+                .then(res => res.json())
+                .then(
+                    function (data) {
+                        return data
+                    }
+                )
+
+            this.searchResult = data
+            this.filterAddedFieldsFromSearchResults()
         },
         addField(id) {
             this.fieldIds.push(id)
@@ -55,7 +57,7 @@ document.addEventListener("alpine:init", () => {
                 this.addField(element.id)
             })
         },
-        removeProduct(index) {
+        removeField(index) {
             this.fieldIds.splice(index, 1)
             this.searchFields()
         },
@@ -67,8 +69,8 @@ document.addEventListener("alpine:init", () => {
             var $this = this
 
             this.searchResult = this.searchResult.filter(
-                function (product) {
-                    return $this.fieldIds.indexOf(product.id) < 0
+                function (field) {
+                    return $this.fieldIds.indexOf(field.id) < 0
                 }
             )
         }

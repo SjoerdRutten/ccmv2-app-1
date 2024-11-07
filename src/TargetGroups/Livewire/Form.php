@@ -11,7 +11,9 @@ use Sellvation\CCMV2\Ccm\Livewire\Traits\HasModals;
 use Sellvation\CCMV2\CrmCards\Jobs\AddTagToCrmCardJob;
 use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelectorFacade;
 use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
+use Sellvation\CCMV2\TargetGroups\Models\TargetGroupExport;
 use Sellvation\CCMV2\TargetGroups\Models\TargetGroupFieldset;
+use Storage;
 
 class Form extends Component
 {
@@ -35,6 +37,11 @@ class Form extends Component
     public int $count = 0;
 
     public bool $showTagModal = false;
+
+    public array $export = [
+        'targetGroupFieldSetId' => null,
+        'file_type' => 'xlsx',
+    ];
 
     public function mount(TargetGroup $targetGroup)
     {
@@ -159,6 +166,24 @@ class Form extends Component
         $this->showSuccessModal(title: 'Kenmerken worden toegevoegd', message: 'Kenmerken worden toegevoegd op de achtergrond, dit kan enkele minuten duren');
     }
 
+    public function startExport()
+    {
+        $this->targetGroup
+            ->targetGroupExports()
+            ->create([
+                'target_group_fieldset_id' => $this->export['targetGroupFieldSetId'],
+                'file_type' => $this->export['file_type'],
+            ]);
+
+        $this->reset(['export']);
+        $this->showSuccessModal('Export gestart', 'Export wordt gestart, dit kan enkele minuten duren.');
+    }
+
+    public function downloadExport(TargetGroupExport $targetGroupExport)
+    {
+        return Storage::disk($targetGroupExport->disk)->download($targetGroupExport->path);
+    }
+
     #[On('update-count')]
     public function updateCount()
     {
@@ -175,6 +200,13 @@ class Form extends Component
     public function getQueryFilters()
     {
         return TargetGroupSelectorFacade::getQueryFilters($this->elements);
+    }
+
+    #[On('refresh-field-sets')]
+    public function refreshFieldSets($id)
+    {
+        $this->targetGroupFieldSetId = $id;
+        $this->dispatch('$refresh');
     }
 
     public function render()

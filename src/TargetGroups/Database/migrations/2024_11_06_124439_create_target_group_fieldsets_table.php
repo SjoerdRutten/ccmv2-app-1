@@ -15,8 +15,8 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('crm_field_target_group_fieldsets', function (Blueprint $table) {
-            $table->foreignId('target_group_id')->constrained('target_groups')->cascadeOnDelete();
+        Schema::create('crm_field_target_group_fieldset', function (Blueprint $table) {
+            $table->foreignId('target_group_fieldset_id')->constrained('target_group_fieldsets')->cascadeOnDelete();
             $table->foreignId('crm_field_id')->constrained('crm_fields')->cascadeOnDelete();
         });
 
@@ -25,9 +25,12 @@ return new class extends Migration
             $table->foreignId('target_group_id')->constrained('target_groups')->cascadeOnDelete();
             $table->foreignId('target_group_fieldset_id')->constrained('target_group_fieldsets')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->boolean('is_ready')->default(false);
-            $table->json('config');
-            $table->string('path');
+            $table->integer('number_of_records')->default(0);
+            $table->boolean('status')->default(0);
+            $table->integer('progress')->default(0);
+            $table->string('file_type');
+            $table->string('disk')->nullable();
+            $table->string('path')->nullable();
             $table->timestamps();
         });
     }
@@ -35,7 +38,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('target_group_exports');
-        Schema::dropIfExists('crm_field_target_group_fieldsets');
+        Schema::dropIfExists('crm_field_target_group_fieldset');
         Schema::dropIfExists('target_group_fieldsets');
     }
 };

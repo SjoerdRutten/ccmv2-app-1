@@ -6,16 +6,13 @@
                 <x-ccm::buttons.save wire:click="save"></x-ccm::buttons.save>
             </x-slot:actions>
         </x-ccm::pages.intro>
-        <x-ccm::tabs.base :current-tab="3">
+        <x-ccm::tabs.base>
             <x-slot:tabs>
                 <x-ccm::tabs.nav-tab :index="0" :badge="ReadableNumber($count, '.')">
                     Query builder
                 </x-ccm::tabs.nav-tab>
                 @if ($id > 0)
                     <x-ccm::tabs.nav-tab :index="3">Export</x-ccm::tabs.nav-tab>
-                    @if ($targetGroup->targetGroupExports()->count() > 0)
-                        <x-ccm::tabs.nav-tab :index="4">Downloads</x-ccm::tabs.nav-tab>
-                    @endif
                     <x-ccm::tabs.nav-tab :index="2">Logs</x-ccm::tabs.nav-tab>
                 @endif
                 @if (Auth::user()->isAdmin)
@@ -54,23 +51,81 @@
                 <x-ccm::tabs.tab-content :index="2" :no-margin="true">
                     <x-ccm::activity_log.table :performed_on="$targetGroup"></x-ccm::activity_log.table>
                 </x-ccm::tabs.tab-content>
-                <x-ccm::tabs.tab-content :index="3">
-                    <p>
-                        Export maken van {{ ReadableNumber($count, '.') }} CRM Kaarten
-                    </p>
-                    <div class="flex flex-col gap-4 w-1/2">
-                        @if (count($fieldSets))
-                            <x-ccm::forms.select label="Veldenset">
-                                <option></option>
-                                @foreach ($fieldSets AS $fieldSet)
-                                    <option value="{{ $fieldSet->id }}">
-                                        {{ $fieldSet->name }}
-                                    </option>
-                                @endforeach
-                            </x-ccm::forms.select>
-                        @endif
-                        <livewire:target-group-selector::create-target-group-fieldset/>
+                <x-ccm::tabs.tab-content :index="3" no-margin="true">
+                    <div class="px-6 pt-6">
+                        <h2>Nieuwe export aanmaken</h2>
+                        <div class="flex flex-col gap-4 w-1/2" x-on:hide-modal="$refresh">
+                            <div class="flex items-end gap-4">
+                                @if (count($fieldSets))
+                                    <x-ccm::forms.select label="Veldenset"
+                                                         wire:model.live="export.targetGroupFieldSetId"
+                                                         class="w-[400px]">
+                                        <option></option>
+                                        @foreach ($fieldSets AS $fieldSet)
+                                            <option value="{{ $fieldSet->id }}">
+                                                {{ $fieldSet->name }}
+                                                ({{ $fieldSet->crmFields()->count() }} velden)
+                                            </option>
+                                        @endforeach
+                                    </x-ccm::forms.select>
+                                @endif
+                                <livewire:target-group-selector::create-target-group-fieldset/>
+                            </div>
+                            @if ($export['targetGroupFieldSetId'] > 0)
+                                <x-ccm::forms.select label="Bestandsformaat" wire:model.live="export.file_type">
+                                    <option value="xlsx">Excel (xlsx)</option>
+                                    <option value="csv">CSV</option>
+                                </x-ccm::forms.select>
+
+                                <div>
+                                    <x-ccm::buttons.primary wire:click="startExport">Export starten
+                                    </x-ccm::buttons.primary>
+                                </div>
+                            @endif
+                        </div>
+
+                        <h2 class="my-6">Exports downloaden</h2>
                     </div>
+                    <x-ccm::tables.table :no-margin="true">
+                        <x-slot:thead>
+                            <x-ccm::tables.th :first="true">Status</x-ccm::tables.th>
+                            <x-ccm::tables.th>Aangemaakt door</x-ccm::tables.th>
+                            <x-ccm::tables.th>Aangemaakt op</x-ccm::tables.th>
+                            <x-ccm::tables.th>Bestandsformaat</x-ccm::tables.th>
+                            <x-ccm::tables.th>Aantal records</x-ccm::tables.th>
+                            <x-ccm::tables.th :link="true"></x-ccm::tables.th>
+                        </x-slot:thead>
+                        <x-slot:tbody>
+                            @foreach ($targetGroup->targetGroupExports()->latest()->get() AS $export)
+                                <x-ccm::tables.tr>
+                                    <x-ccm::tables.td :first="true">
+                                        @if ($export->status === 0)
+                                            Ingepland
+                                        @elseif ($export->status === 1)
+                                            Wordt uitgevoerd
+                                        @elseif ($export->status === 2)
+                                            Klaar
+                                        @elseif ($export->status === 99)
+                                            Fout
+                                        @endif
+                                    </x-ccm::tables.td>
+                                    <x-ccm::tables.td>{{ $export->user->name }}</x-ccm::tables.td>
+                                    <x-ccm::tables.td>{{ $export->created_at }}</x-ccm::tables.td>
+                                    <x-ccm::tables.td>{{ $export->file_type }}</x-ccm::tables.td>
+                                    <x-ccm::tables.td>
+                                        {{ ReadableNumber($export->progress, '.') }} /
+                                        {{ ReadableNumber($export->number_of_records, '.') }}
+                                    </x-ccm::tables.td>
+                                    <x-ccm::tables.td :link="true">
+                                        @if ($export->disk && $export->path)
+                                            <x-ccm::tables.download-link
+                                                    wire:click="downloadExport({{ $export->id }})"></x-ccm::tables.download-link>
+                                        @endif
+                                    </x-ccm::tables.td>
+                                </x-ccm::tables.tr>
+                            @endforeach
+                        </x-slot:tbody>
+                    </x-ccm::tables.table>
                 </x-ccm::tabs.tab-content>
             @endif
 

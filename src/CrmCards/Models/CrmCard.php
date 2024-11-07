@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
@@ -127,6 +128,8 @@ class CrmCard extends Model
     {
         if ($this->environment_id) {
             $environmentId = $this->environment_id;
+        } elseif (Context::has('environment_id')) {
+            $environmentId = Context::get('environment_id');
         } elseif (app()->runningInConsole()) {
             $environmentId = config('ccm.environment_id');
         } else {

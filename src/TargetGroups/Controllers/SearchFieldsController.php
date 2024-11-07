@@ -5,7 +5,6 @@ namespace Sellvation\CCMV2\TargetGroups\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
-use Sellvation\CCMV2\Orders\Models\Product;
 
 class SearchFieldsController extends Controller
 {
@@ -26,7 +25,8 @@ class SearchFieldsController extends Controller
         $ids = $request->input('ids');
         $ids = explode(',', $ids);
 
-        $query = Product::whereIn('id', $ids)
+        $query = CrmField::query()
+            ->whereIn('id', $ids)
             ->orderBy('name')
             ->get();
 
