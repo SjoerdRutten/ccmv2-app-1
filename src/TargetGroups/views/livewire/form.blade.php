@@ -52,7 +52,7 @@
                     <x-ccm::activity_log.table :performed_on="$targetGroup"></x-ccm::activity_log.table>
                 </x-ccm::tabs.tab-content>
                 <x-ccm::tabs.tab-content :index="3" no-margin="true">
-                    <div class="px-6 pt-6">
+                    <div class="px-6 py-6">
                         <h2>Nieuwe export aanmaken</h2>
                         <div class="flex flex-col gap-4 w-1/2" x-on:hide-modal="$refresh">
                             <div class="flex items-end gap-4">
@@ -83,49 +83,49 @@
                                 </div>
                             @endif
                         </div>
-
-                        <h2 class="my-6">Exports downloaden</h2>
                     </div>
-                    <x-ccm::tables.table :no-margin="true">
-                        <x-slot:thead>
-                            <x-ccm::tables.th :first="true">Status</x-ccm::tables.th>
-                            <x-ccm::tables.th>Aangemaakt door</x-ccm::tables.th>
-                            <x-ccm::tables.th>Aangemaakt op</x-ccm::tables.th>
-                            <x-ccm::tables.th>Bestandsformaat</x-ccm::tables.th>
-                            <x-ccm::tables.th>Aantal records</x-ccm::tables.th>
-                            <x-ccm::tables.th :link="true"></x-ccm::tables.th>
-                        </x-slot:thead>
-                        <x-slot:tbody>
-                            @foreach ($targetGroup->targetGroupExports()->latest()->get() AS $export)
-                                <x-ccm::tables.tr>
-                                    <x-ccm::tables.td :first="true">
-                                        @if ($export->status === 0)
-                                            Ingepland
-                                        @elseif ($export->status === 1)
-                                            Wordt uitgevoerd
-                                        @elseif ($export->status === 2)
-                                            Klaar
-                                        @elseif ($export->status === 99)
-                                            Fout
-                                        @endif
-                                    </x-ccm::tables.td>
-                                    <x-ccm::tables.td>{{ $export->user->name }}</x-ccm::tables.td>
-                                    <x-ccm::tables.td>{{ $export->created_at }}</x-ccm::tables.td>
-                                    <x-ccm::tables.td>{{ $export->file_type }}</x-ccm::tables.td>
-                                    <x-ccm::tables.td>
-                                        {{ ReadableNumber($export->progress, '.') }} /
-                                        {{ ReadableNumber($export->number_of_records, '.') }}
-                                    </x-ccm::tables.td>
-                                    <x-ccm::tables.td :link="true">
-                                        @if ($export->disk && $export->path)
-                                            <x-ccm::tables.download-link
-                                                    wire:click="downloadExport({{ $export->id }})"></x-ccm::tables.download-link>
-                                        @endif
-                                    </x-ccm::tables.td>
-                                </x-ccm::tables.tr>
-                            @endforeach
-                        </x-slot:tbody>
-                    </x-ccm::tables.table>
+                    @if ($targetGroup->targetGroupExports()->count())
+                        <x-ccm::tables.table :no-margin="true">
+                            <x-slot:thead>
+                                <x-ccm::tables.th :first="true">Status</x-ccm::tables.th>
+                                <x-ccm::tables.th>Aangemaakt door</x-ccm::tables.th>
+                                <x-ccm::tables.th>Aangemaakt op</x-ccm::tables.th>
+                                <x-ccm::tables.th>Bestandsformaat</x-ccm::tables.th>
+                                <x-ccm::tables.th>Aantal records</x-ccm::tables.th>
+                                <x-ccm::tables.th :link="true"></x-ccm::tables.th>
+                            </x-slot:thead>
+                            <x-slot:tbody>
+                                @foreach ($targetGroup->targetGroupExports()->latest()->get() AS $export)
+                                    <x-ccm::tables.tr>
+                                        <x-ccm::tables.td :first="true">
+                                            @if ($export->status === 0)
+                                                Ingepland
+                                            @elseif ($export->status === 1)
+                                                Wordt uitgevoerd
+                                            @elseif ($export->status === 2)
+                                                Klaar
+                                            @elseif ($export->status === 99)
+                                                Fout
+                                            @endif
+                                        </x-ccm::tables.td>
+                                        <x-ccm::tables.td>{{ $export->user->name }}</x-ccm::tables.td>
+                                        <x-ccm::tables.td>{{ $export->created_at }}</x-ccm::tables.td>
+                                        <x-ccm::tables.td>{{ $export->file_type }}</x-ccm::tables.td>
+                                        <x-ccm::tables.td>
+                                            {{ ReadableNumber($export->progress, '.') }} /
+                                            {{ ReadableNumber($export->number_of_records, '.') }}
+                                        </x-ccm::tables.td>
+                                        <x-ccm::tables.td :link="true">
+                                            @if ($export->disk && $export->path && ($export->status === 2))
+                                                <x-ccm::tables.download-link
+                                                        wire:click="downloadExport({{ $export->id }})"></x-ccm::tables.download-link>
+                                            @endif
+                                        </x-ccm::tables.td>
+                                    </x-ccm::tables.tr>
+                                @endforeach
+                            </x-slot:tbody>
+                        </x-ccm::tables.table>
+                    @endif
                 </x-ccm::tabs.tab-content>
             @endif
 
