@@ -20,6 +20,15 @@ class TargetGroupExport extends Model
         'disk',
         'path',
         'target_group_fieldset_id',
+        'started_at',
+        'ended_at',
+        'expected_end_time',
+    ];
+
+    protected $casts = [
+        'started_at' => 'datetime',
+        'ended_at' => 'datetime',
+        'expected_end_time' => 'datetime',
     ];
 
     protected $dispatchesEvents = [

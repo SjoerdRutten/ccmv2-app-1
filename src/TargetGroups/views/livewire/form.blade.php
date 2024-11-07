@@ -92,6 +92,7 @@
                                 <x-ccm::tables.th>Aangemaakt op</x-ccm::tables.th>
                                 <x-ccm::tables.th>Bestandsformaat</x-ccm::tables.th>
                                 <x-ccm::tables.th>Aantal records</x-ccm::tables.th>
+                                <x-ccm::tables.th>Verwachtte eindtijd</x-ccm::tables.th>
                                 <x-ccm::tables.th :link="true"></x-ccm::tables.th>
                             </x-slot:thead>
                             <x-slot:tbody>
@@ -114,6 +115,11 @@
                                         <x-ccm::tables.td>
                                             {{ ReadableNumber($export->progress, '.') }} /
                                             {{ ReadableNumber($export->number_of_records, '.') }}
+                                        </x-ccm::tables.td>
+                                        <x-ccm::tables.td>
+                                            {{--                                            @if ($export->status === 1)--}}
+                                            {{ $export->expected_end_time?->translatedFormat('H:i') }}
+                                            {{--                                            @endif--}}
                                         </x-ccm::tables.td>
                                         <x-ccm::tables.td :link="true">
                                             @if ($export->disk && $export->path && ($export->status === 2))

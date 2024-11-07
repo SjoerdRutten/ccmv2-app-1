@@ -15,9 +15,12 @@ class CrmCardsExport implements FromGenerator, ShouldAutoSize, WithHeadings, Wit
 {
     private array $fields = [];
 
+    private \DateTime $startedAt;
+
     public function __construct(private readonly TargetGroupExport $targetGroupExport)
     {
         $this->fields = Arr::sort($this->targetGroupExport->targetGroupFieldset->crmFields->pluck('name')->toArray());
+        $this->startedAt = $this->targetGroupExport->started_at;
     }
 
     public function generator(): Generator
@@ -33,7 +36,19 @@ class CrmCardsExport implements FromGenerator, ShouldAutoSize, WithHeadings, Wit
             $progress = ($page * 100) + count($crmCards);
             $progress = $progress > $this->targetGroupExport->number_of_records ? $this->targetGroupExport->number_of_records : $progress;
 
-            $this->targetGroupExport->update(['progress' => $progress]);
+            if ($progress % 1000 === 0) {
+                // Calculated expected endtime
+                $secondsSinceStart = $this->startedAt->diffInMicroseconds(now());
+
+                $secondsPerRecord = $secondsSinceStart / $progress;
+
+                $expectedEndTime = now()->addMicroseconds(ceil($secondsPerRecord * ($this->targetGroupExport->number_of_records - $progress)));
+
+                $this->targetGroupExport->update([
+                    'progress' => $progress,
+                    'expected_end_time' => $expectedEndTime,
+                ]);
+            }
             $page++;
 
         } while (count($crmCards) > 0);

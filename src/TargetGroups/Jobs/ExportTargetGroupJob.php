@@ -34,6 +34,7 @@ class ExportTargetGroupJob implements ShouldQueue
         $this->targetGroupExport->update([
             'status' => 1,
             'error_message' => null,
+            'started_at' => now(),
             'number_of_records' => $targetGroup->numberOfResults,
         ]);
 
@@ -58,10 +59,12 @@ class ExportTargetGroupJob implements ShouldQueue
         if (Excel::store(new CrmCardsExport($this->targetGroupExport), $path, 'local', $exportType)) {
             $this->targetGroupExport->update([
                 'status' => 2,
+                'ended_at' => now(),
             ]);
         } else {
             $this->targetGroupExport->update([
                 'status' => 99,
+                'ended_at' => now(),
             ]);
         }
     }
@@ -71,6 +74,7 @@ class ExportTargetGroupJob implements ShouldQueue
         $this->targetGroupExport->update([
             'status' => 99,
             'error_message' => $exception->getMessage(),
+            'ended_at' => now(),
         ]);
     }
 }
