@@ -52,6 +52,10 @@ class CrmCardsExport implements FromGenerator, ShouldAutoSize, WithHeadings, Wit
             $page++;
 
         } while (count($crmCards) > 0);
+
+        $this->targetGroupExport->update([
+            'progress' => $progress,
+        ]);
     }
 
     public function headings(): array
