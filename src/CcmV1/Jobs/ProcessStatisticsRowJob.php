@@ -4,7 +4,6 @@ namespace Sellvation\CCMV2\CcmV1\Jobs;
 
 use Base62\Facades\Base62;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -12,7 +11,7 @@ use Illuminate\Support\Facades\Config;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\Ems\Models\EmailStatistic;
 
-class ProcessStatisticsRowJob implements ShouldQueue
+class ProcessStatisticsRowJob
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
