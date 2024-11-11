@@ -102,6 +102,8 @@ class CheckSchemaJob implements ShouldQueue
 
         $fields = array_merge($dropFields, $addFields, $updateFields);
 
+        dump($fields);
+
         if (count($fields)) {
             \Typesense::updateCollectionSchema($this->model->indexableAs(), ['fields' => $fields]);
         }
