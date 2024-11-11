@@ -343,6 +343,7 @@ class MigrateCcmV1Environment extends Command
                         'stripo_html' => $row->stripo_html,
                         'stripo_css' => $row->stripo_css,
                         'is_template' => (bool) $row->is_template,
+                        'created_at' => $row->datum,
                         'updated_at' => $row->datum,
                     ];
 

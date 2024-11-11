@@ -32,6 +32,7 @@ class Email extends Model
         'is_locked',
         'is_template',
         'updated_at',
+        'created_at',
     ];
 
     protected function casts()

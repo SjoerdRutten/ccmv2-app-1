@@ -14,19 +14,6 @@ class Order extends Model
     use HasEnvironment;
     use Searchable;
 
-    protected $fillable = [
-        'environment_id',
-        'order_type_id',
-        'crm_card_id',
-        'order_number',
-        'crm_id',
-        'store',
-        'order_time',
-        'loyalty_card',
-        'paymeny_method',
-        'processed_at',
-    ];
-
     protected function casts()
     {
         return [
