@@ -116,7 +116,7 @@ class Order extends Model
             ],
         ];
 
-        $fields['fields'] = array_merge($fields['fields'], \CustomFields::getSchemaFields('orders'));
+        $fields['fields'] = array_merge($fields['fields'], \CustomOrderFields::getSchemaFields('orders'));
 
         return $fields;
     }

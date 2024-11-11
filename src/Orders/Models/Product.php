@@ -103,7 +103,7 @@ class Product extends Model
             ],
         ];
 
-        $fields['fields'] = array_merge($fields['fields'], \CustomFields::getSchemaFields('products'));
+        $fields['fields'] = array_merge($fields['fields'], \CustomOrderFields::getSchemaFields('products'));
 
         return $fields;
     }
