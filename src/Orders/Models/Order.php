@@ -65,6 +65,11 @@ class Order extends Model
             'number_of_products' => (int) $this->number_of_products,
         ];
 
+        foreach (\CustomOrderFields::getSchemaFields('orders') as $field) {
+            $fieldName = $field['name'];
+            $data[$fieldName] = $this->$fieldName;
+        }
+
         return $data;
     }
 
