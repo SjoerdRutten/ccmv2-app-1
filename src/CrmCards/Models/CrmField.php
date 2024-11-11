@@ -31,10 +31,10 @@ class CrmField extends Model
         'overview_index',
     ];
 
-    protected $dispatchesEvents = [
-        'saved' => CrmFieldSavedEvent::class,
-        'saving' => CrmFieldSavingEvent::class,
-    ];
+    //    protected $dispatchesEvents = [
+    //        'saved' => CrmFieldSavedEvent::class,
+    //        'saving' => CrmFieldSavingEvent::class,
+    //    ];
 
     protected $hidden = [
         'environment_id',
@@ -43,10 +43,6 @@ class CrmField extends Model
         'label_en',
         'label_de',
         'label_fr',
-        'is_shown_on_overview',
-        'is_shown_on_target_group_builder',
-        'is_hidden',
-        'is_locked',
         'position',
         'log_file',
         'overview_index',

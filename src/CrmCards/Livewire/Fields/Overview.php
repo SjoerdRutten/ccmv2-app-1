@@ -3,6 +3,7 @@
 namespace Sellvation\CCMV2\CrmCards\Livewire\Fields;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Artisan;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
@@ -46,6 +47,11 @@ class Overview extends Component
         }
 
         $this->getCrmFields();
+    }
+
+    public function updateSchema()
+    {
+        Artisan::call('typesense:check-schemas -n --crmcards');
     }
 
     public function getCrmFields(): void

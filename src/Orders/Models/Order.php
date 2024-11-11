@@ -5,6 +5,7 @@ namespace Sellvation\CCMV2\Orders\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Context;
 use Laravel\Scout\Searchable;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
@@ -33,7 +34,15 @@ class Order extends Model
 
     public function searchableAs()
     {
-        return $this->getTable().'_'.$this->environment_id;
+        if ($this->environment_id) {
+            $environmentId = $this->environment_id;
+        } elseif (Context::has('environment_id')) {
+            $environmentId = Context::get('environment_id');
+        } elseif (app()->runningInConsole()) {
+            $environmentId = config('ccm.environment_id');
+        }
+
+        return $this->getTable().'_'.$environmentId;
     }
 
     public function indexableAs()
@@ -66,7 +75,7 @@ class Order extends Model
 
     public function typesenseCollectionSchema()
     {
-        return [
+        $fields = [
             'fields' => [
                 [
                     'name' => 'id',
@@ -106,5 +115,9 @@ class Order extends Model
                 ],
             ],
         ];
+
+        $fields['fields'] = array_merge($fields['fields'], \CustomFields::getSchemaFields('orders'));
+
+        return $fields;
     }
 }

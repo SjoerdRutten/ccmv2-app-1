@@ -76,7 +76,7 @@ class Product extends Model
 
     public function typesenseCollectionSchema()
     {
-        return [
+        $fields = [
             'fields' => [
                 [
                     'name' => 'id',
@@ -102,6 +102,10 @@ class Product extends Model
                 ],
             ],
         ];
+
+        $fields['fields'] = array_merge($fields['fields'], \CustomFields::getSchemaFields('products'));
+
+        return $fields;
     }
 
     public function shouldBeSearchable()

@@ -6,8 +6,6 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
-use Sellvation\CCMV2\CrmCards\Events\CrmFieldSavedEvent;
-use Sellvation\CCMV2\CrmCards\Listeners\UpdateTypesenseSchemaListener;
 
 class CrmCardServiceProvider extends ServiceProvider
 {
@@ -37,7 +35,5 @@ class CrmCardServiceProvider extends ServiceProvider
     private function registerEvents()
     {
         $events = $this->app->make(Dispatcher::class);
-
-        $events->listen(CrmFieldSavedEvent::class, UpdateTypesenseSchemaListener::class);
     }
 }

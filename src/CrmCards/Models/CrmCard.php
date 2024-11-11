@@ -173,7 +173,7 @@ class CrmCard extends Model
         ];
 
         foreach (
-            CrmField::whereEnvironmentId($this->environment_id)
+            CrmField::whereEnvironmentId($this->environment_id ?: \Context::get('environment_id'))
                 ->whereIsShownOnTargetGroupBuilder(1)
                 ->get() as $crmField
         ) {
@@ -331,17 +331,12 @@ class CrmCard extends Model
         ];
 
         foreach (
-            CrmField::whereEnvironmentId($this->environment_id)
+            CrmField::whereEnvironmentId($this->environment_id ?: \Context::get('environment_id'))
                 ->whereIsShownOnTargetGroupBuilder(1)
                 ->get() as $crmField
         ) {
             $fields = array_merge($fields, $crmField->getTypesenseFields());
         }
-
-        $fields[] = [
-            'name' => '.*',
-            'type' => 'auto',
-        ];
 
         return [
             'fields' => $fields,

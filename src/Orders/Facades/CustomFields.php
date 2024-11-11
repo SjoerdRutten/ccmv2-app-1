@@ -8,9 +8,13 @@ class CustomFields
 
     private array $dataFields = [];
 
-    public function addField(string $tableName, array $schema = [], string $data = '')
+    public function addSchemaField(string $tableName, array $field)
     {
-        $this->schemaFields[$tableName][] = $schema;
-        $this->dataFields[$tableName][] = $data;
+        $this->schemaFields[$tableName][] = $field;
+    }
+
+    public function getSchemaFields(string $tableName): array
+    {
+        return $this->schemaFields[$tableName] ?? [];
     }
 }

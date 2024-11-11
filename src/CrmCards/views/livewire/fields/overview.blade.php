@@ -16,6 +16,14 @@
                 >Zoek op naam of omschrijving
                 </x-ccm::forms.input>
             </div>
+
+            <x-slot:actions>
+                <x-ccm::buttons.primary
+                        wire:confirm="Weet je zeker dat je de index wilt updaten, dit kan meer dan een uur duren!"
+                        wire:click="updateSchema"
+                >Index updaten
+                </x-ccm::buttons.primary>
+            </x-slot:actions>
         </x-ccm::pages.intro>
         <x-ccm::tables.table>
             <x-slot:thead>
