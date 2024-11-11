@@ -69,7 +69,10 @@ class Rule extends Component
         $columns = [];
         // First the order columns
         $columns[] = new Column('target_group_id', new ColumnTypeTargetGroup, '- Doelgroep selectie');
-        $columns[] = new Column('tags', new ColumnTypeTag, '- Kenmerk');
+
+        if (Tag::query()->withType('crm-card-'.\Context::get('environment_id'))->count()) {
+            $columns[] = new Column('tags', new ColumnTypeTag, '- Kenmerk');
+        }
 
         if (Auth::user()->hasPermissionTo('gds', 'transactions')) {
             $columns[] = new Column('orders.store', new ColumnTypeIntegerArray, 'Transactie winkelnummer');

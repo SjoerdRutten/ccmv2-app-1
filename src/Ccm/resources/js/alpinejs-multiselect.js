@@ -12,6 +12,9 @@ document.addEventListener("alpine:init", () => {
                 this.tags.sort()
                 this.elements = this.tags.join(',')
             }))
+            this.$watch("elements", (e => {
+                this.tags = this.elements ? this.elements.split(",") : []
+            }))
         },
         addElement() {
             if (this.newElement.length > 1) {

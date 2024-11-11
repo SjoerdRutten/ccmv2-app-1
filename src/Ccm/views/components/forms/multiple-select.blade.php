@@ -26,10 +26,21 @@
         />
         </span>
 
-        <input type="text"
-               class="p-0 border-transparent focus:border-transparent focus:ring-0"
-               x-model="newElement"
-               @keyup.enter="addElement()"
-        />
+        <div x-data="{ showAdd: false }"
+             class="inline py-1 pl-2 border border-gray-200 bg-gray-100 rounded-full"
+             :class="showAdd ? 'opacity-100' : 'opacity-0'"
+        >
+            <input type="text"
+                   class="p-0 bg-transparent border-transparent text-gray-700 focus:border-transparent focus:ring-0"
+                   x-model="newElement"
+                   @focus="showAdd = true"
+                   @blur="showAdd = false"
+                   @keyup.enter="addElement()"
+            />
+
+            <div class="inline p-1 px-2 cursor-pointer bg-gray-200 rounded-r-full" @click="addElement">
+                Toevoegen
+            </div>
+        </div>
     </div>
 </div>

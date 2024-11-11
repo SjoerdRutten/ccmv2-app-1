@@ -81,7 +81,9 @@ class TargetGroupSelector
         } elseif (Arr::get($filter, 'columnType') === 'target_group') {
             $value = Arr::get($filter, 'value');
         } elseif (Arr::get($filter, 'columnType') === 'tag') {
-            $tags = Tag::whereIn('id', Arr::get($filter, 'value'))->pluck('name')->toArray();
+            $ids = is_array(Arr::get($filter, 'value')) ? Arr::get($filter, 'value') : [Arr::get($filter, 'value')];
+
+            $tags = Tag::whereIn('id', $ids)->pluck('name')->toArray();
 
             $value = null;
             if (count($tags)) {
