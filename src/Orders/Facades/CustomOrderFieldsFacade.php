@@ -5,12 +5,12 @@ namespace Sellvation\CCMV2\Orders\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see CustomFields
+ * @see CustomOrderFields
  */
-class CustomFieldsFacade extends Facade
+class CustomOrderFieldsFacade extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return 'custom-fields';
+        return 'custom-order-fields';
     }
 }

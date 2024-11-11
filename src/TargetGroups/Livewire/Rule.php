@@ -140,6 +140,8 @@ class Rule extends Component
 
         }
 
+        $columns = array_merge($columns, \CustomOrderFields::getRuleFields('orders'));
+
         $columns = Arr::sort($columns, fn ($column) => Str::lower($column->label));
 
         return $columns;
