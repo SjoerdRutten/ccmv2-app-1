@@ -95,13 +95,15 @@ class Form extends Component
 
     public function removeElement($index)
     {
-        data_forget($this->elements, $index);
+        Arr::set($this->elements, $index, null);
     }
 
     public function addRule($index)
     {
-        $keys = array_keys(Arr::get($this->elements, $index.'.subelements'));
-        $count = Arr::last($keys) + 1;
+        //        $keys = array_keys(Arr::get($this->elements, $index.'.subelements'));
+        //        $count = Arr::last($keys) + 1;
+
+        $count = uniqid();
 
         Arr::set($this->elements, $index.'.subelements.'.$count,
             [
