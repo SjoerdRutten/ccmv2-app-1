@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Context;
+use Illuminate\Support\Facades\Log;
 use Laravel\Scout\Searchable;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
@@ -69,6 +70,8 @@ class Order extends Model
             $fieldName = $field['name'];
             $data[$fieldName] = $this->$fieldName;
         }
+
+        Log::info('Order searchable:', $data);
 
         return $data;
     }
