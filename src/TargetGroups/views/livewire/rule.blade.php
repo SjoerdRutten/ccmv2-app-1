@@ -1,7 +1,7 @@
 <div class="flex flex-row gap-2 items-center">
     @if ($filter)
         <button class="bg-red-500 hover:bg-red-700 text-white font-bold rounded h-8 px-2 mt-2"
-                wire:confirm="Weet je zeker dat je dit criterium wilt verwijderen ?"
+                wire:confirm="Weet je zeker dat je dit criterium wilt verwijderen?"
                 wire:click="$parent.removeElement('{{ $filter['index'] }}')"
         >
             <x-heroicon-s-trash class="text-white h-4 w-4"/>
