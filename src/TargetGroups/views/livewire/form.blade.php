@@ -12,7 +12,9 @@
                     Query builder
                 </x-ccm::tabs.nav-tab>
                 @if ($id > 0)
-                    <x-ccm::tabs.nav-tab :index="3">Export</x-ccm::tabs.nav-tab>
+                    @if (Auth::user()->hasPermissionTo('gds', 'export'))
+                        <x-ccm::tabs.nav-tab :index="3">Export</x-ccm::tabs.nav-tab>
+                    @endif
                     <x-ccm::tabs.nav-tab :index="2">Logs</x-ccm::tabs.nav-tab>
                 @endif
                 @if (Auth::user()->isAdmin)
