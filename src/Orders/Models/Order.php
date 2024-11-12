@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Context;
-use Illuminate\Support\Facades\Log;
 use Laravel\Scout\Searchable;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
@@ -68,10 +67,21 @@ class Order extends Model
 
         foreach (\CustomOrderFields::getSchemaFields('orders') as $field) {
             $fieldName = $field['name'];
-            $data[$fieldName] = $this->$fieldName;
-        }
+            $value = $this->$fieldName;
 
-        Log::info('Order searchable:', $data);
+            switch ($field['type']) {
+                case 'bool':
+                    $value = (bool) $value;
+                    break;
+                case 'string':
+                    $value = (string) $value;
+                    break;
+                default:
+                    $value = (int) $value;
+            }
+
+            $data[$fieldName] = $value;
+        }
 
         return $data;
     }
