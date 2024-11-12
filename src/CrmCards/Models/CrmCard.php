@@ -206,7 +206,7 @@ class CrmCard extends Model
                     break;
                 case 'MEDIA':
                     $data['_'.$crmField->name.'_allowed'] = $this->isEmailaddressAllowed($this->data, $crmField->name);
-                    $data['_'.$crmField->name.'_optin'] = (bool) \Arr::get($this->data, $crmField->name.'_optin');
+                    $data['_'.$crmField->name.'_optin'] = (bool) \Arr::get($this->data, '_'.$crmField->name.'_optin');
                     $data['_'.$crmField->name.'_optin_timestamp'] = $this->makeTimestamp(\Arr::get($this->data, '_'.$crmField->name.'_optin_timestamp'));
                     $data['_'.$crmField->name.'_confirmed_optin'] = (bool) \Arr::get($this->data, '_'.$crmField->name.'_confirmed_optin');
                     $data['_'.$crmField->name.'_confirmed_optin_timestamp'] = $this->makeTimestamp(\Arr::get($this->data, '_'.$crmField->name.'_confirmed_optin_timestamp'));
