@@ -73,7 +73,11 @@ class TargetGroupSelector
                     return Carbon::parse($date)->timestamp;
                 });
             } else {
-                $value = Carbon::parse(Arr::get($filter, 'value'))->timestamp;
+                try {
+                    $value = Carbon::parse(Arr::get($filter, 'value'))->timestamp;
+                } catch (\Exception $e) {
+                    $value = null;
+                }
             }
         } elseif (Arr::get($filter, 'columnType') === 'boolean') {
             $filter['operator'] = 'eq';
@@ -210,6 +214,10 @@ class TargetGroupSelector
                     return '=['.$value.']';
                 case 'dnc':
                     return '!=['.$value.']';
+                case 'eq':
+                    return '='.$value;
+                case 'ne':
+                    return '!='.$value;
                 default:
                     throw new \Exception('Unknown operator: '.$operator);
             }
@@ -226,12 +234,12 @@ class TargetGroupSelector
                 return '<='.$value;
             case 'eq':
                 return '='.$value;
+            case 'ne':
+                return '!='.$value;
             case 'eqm':
                 return '=['.$value.']';
             case 'neqm':
                 return '!=['.$value.']';
-            case 'ne':
-                return '!='.$value;
             case 'between':
                 return '['.(int) Arr::get($value, 'from').'..'.(int) Arr::get($value, 'to').']';
             case 'con':

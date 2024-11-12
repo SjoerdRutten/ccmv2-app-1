@@ -22,6 +22,8 @@
         <script defer src="/vendor/ccm/js/alpinejs-productselect.min.js"></script>
         <script defer src="/vendor/ccm/js/alpinejs-fieldselect.min.js"></script>
     @endif
+    @stack('js')
+    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 

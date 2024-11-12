@@ -167,7 +167,7 @@ class Rule extends Component
         return view('target-group::livewire.rule')
             ->with([
                 'columns' => $this->getColumns(),
-                'targetGroup' => TargetGroup::orderBy('name')->get(),
+                'targetGroups' => TargetGroup::orderBy('name')->get(),
                 'tags' => Tag::withType('crm-card-'.\Context::get('environment_id'))->orderBy('name')->get(),
             ]);
     }

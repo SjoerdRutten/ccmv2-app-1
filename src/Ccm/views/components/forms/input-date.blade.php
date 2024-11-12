@@ -1,5 +1,5 @@
 <x-ccm::forms.input {{ $attributes->merge([
-    'type' => 'date'
+    'type' => 'text'
 ]) }}>
     {{ $slot }}
 </x-ccm::forms.input>
