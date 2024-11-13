@@ -41,7 +41,7 @@ class Rule extends Component
     {
         if (Str::startsWith($property, 'filter.')) {
             $column = $this->getColumnByName($this->filter['column']);
-            $this->filter['columnType'] = $column->columnType->name;
+            $this->filter['columnType'] = $column?->columnType?->name;
 
             if ($property === 'filter.column') {
                 $this->filter['value'] = null;

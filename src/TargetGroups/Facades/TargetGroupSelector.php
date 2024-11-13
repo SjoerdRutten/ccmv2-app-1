@@ -5,46 +5,35 @@ namespace Sellvation\CCMV2\TargetGroups\Facades;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
+use Laravel\Scout\Builder;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
-use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
 use Spatie\Tags\Tag;
 
 class TargetGroupSelector
 {
-    public function getQueryFilters($elements, $root = true)
+    public function getQueryFilters($elements)
     {
         $filters = [];
         foreach ($elements as $row) {
-            if (Arr::get($row, 'type') == 'rule') {
-                if ((Arr::get($row, 'active')) && ($filter = $this->getFilter($row))) {
-                    $filters[] = $filter;
-                }
-            } elseif ((Arr::get($row, 'type') == 'block') && (count(Arr::get($row, 'subelements')))) {
-                if ($filter = $this->getQueryFilters(Arr::get($row, 'subelements'), false)) {
-                    $filters[] = $filter;
-                }
+            if ((Arr::get($row, 'type') == 'block') && (count(Arr::get($row, 'subelements')))) {
+                $subElements = Arr::get($row, 'subelements');
+                $nestedRules = $this->makeNestedRules($subElements);
+
+                $filters[] = $this->makeBlockFilters($nestedRules, $subElements);
             }
         }
 
         if (count($filters)) {
-            if ($root) {
-                $filterString = implode(' || ', $filters);
-            } else {
-                $filterString = implode(' && ', $filters);
-            }
-
-            if (count($filters) > 1) {
-                $filterString = '('.$filterString.')';
-            }
-
-            return $filterString;
+            return implode(' || ', $filters);
         }
 
         return null;
     }
 
-    public function getQuery($elements, $perPage = 10, $page = 0)
+    /**
+     * Generate the CRM Card Query for obtaining the results
+     */
+    public function getQuery($elements, $perPage = 10, $page = 0): Builder
     {
         return CrmCard::search('*')
             ->options([
@@ -54,7 +43,10 @@ class TargetGroupSelector
             ]);
     }
 
-    public function count($elements)
+    /**
+     * Returns the count of results of the query
+     */
+    public function count($elements): int
     {
         if ($data = $this->getQuery($elements, 1)) {
             $data = $data->raw();
@@ -65,106 +57,158 @@ class TargetGroupSelector
         return 0;
     }
 
-    public function getFilter($filter): string|bool
+    /**
+     * Make a nested array for the selected rules, so a collection can be only be joined once
+     */
+    private function makeNestedRules(array $subelements): array
     {
+        $filters = [];
+
+        foreach ($subelements as $subelement) {
+            if ($subelement) {
+                $column = explode('.', $subelement['column']);
+                Arr::pull($column, count($column) - 1);
+
+                if (count($column)) {
+                    $key = implode('.', $column).'.ids';
+                } else {
+                    $key = 'ids';
+                }
+
+                if (! Arr::has($filters, $key)) {
+                    Arr::set($filters, $key, []);
+                }
+
+                Arr::set($filters, $key.'.'.count(Arr::get($filters, $key)), $subelement['id']);
+            }
+        }
+
+        return $filters;
+    }
+
+    /**
+     * Create the filterstring for a block of rules
+     */
+    private function makeBlockFilters(array $nestedRules, array $subElements): string
+    {
+        $filters = [];
+
+        foreach (Arr::get($nestedRules, 'ids', []) as $id) {
+            if ($filter = $this->makeFilter(Arr::first($subElements, function ($value) use ($id) {
+                return $value['id'] == $id;
+            }))) {
+                $filters[] = $filter;
+            }
+        }
+
+        foreach (Arr::except($nestedRules, 'ids') as $key => $element) {
+            $filters[] = $this->makePathFilter($key, $element, $subElements);
+        }
+
+        return implode(' && ', Arr::whereNotNull($filters));
+    }
+
+    /**
+     * Create the filter string for a set of rules
+     */
+    private function makePathFilter(string $path, array $element, array $subElements): ?string
+    {
+        $pathName = '$'.$path.'_'.Auth::user()->currentEnvironmentId.'(%s)';
+
+        $filters = [];
+
+        if (Arr::has($element, 'ids') && count(Arr::get($element, 'ids'))) {
+            foreach (Arr::get($element, 'ids') as $id) {
+                if ($filter = $this->makeFilter(Arr::first($subElements, function ($value) use ($id) {
+                    return $value['id'] == $id;
+                }))) {
+                    $filters[] = $filter;
+                }
+            }
+        }
+
+        foreach (Arr::except($element, 'ids') as $key => $elm) {
+            if ($filter = $this->makePathFilter($key, $elm, $subElements)) {
+                $filters[] = $filter;
+            }
+        }
+
+        if (count($filters)) {
+            return sprintf($pathName, implode(' && ', $filters));
+        }
+
+        return null;
+    }
+
+    /**
+     * Create the filterstring of a rule
+     *
+     * @throws \Exception
+     */
+    private function makeFilter($rule): ?string
+    {
+        $comparison = $this->generateComparison(
+            Arr::get($rule, 'operator'),
+            $this->parseValue($rule),
+            Arr::get($rule, 'columnType')
+        );
+
+        $columns = explode('.', $rule['column']);
+
+        if ($comparison) {
+            return Arr::last($columns).':'.$comparison;
+        }
+
+        return null;
+    }
+
+    /**
+     * Pase the value to the desired format
+     *
+     * @return array|\ArrayAccess|float|int|mixed|string|null
+     */
+    private function parseValue($filter)
+    {
+        $value = Arr::get($filter, 'value');
+
         if (Arr::get($filter, 'columnType') === 'date') {
-            if (is_array(Arr::get($filter, 'value'))) {
-                $value = Arr::map(Arr::get($filter, 'value'), function ($date) {
+            if (is_array($value)) {
+                $value = Arr::map($value, function ($date) {
                     return Carbon::parse($date)->timestamp;
                 });
             } else {
                 try {
-                    $value = Carbon::parse(Arr::get($filter, 'value'))->timestamp;
+                    $value = Carbon::parse($value)->timestamp;
                 } catch (\Exception $e) {
-                    $value = null;
                 }
             }
         } elseif (Arr::get($filter, 'columnType') === 'boolean') {
-            $filter['operator'] = 'eq';
-            $value = Arr::get($filter, 'value') ? 'true' : 'false';
-        } elseif (Arr::get($filter, 'columnType') === 'target_group') {
-            $value = Arr::get($filter, 'value');
+            $value = $value ? 'true' : 'false';
         } elseif (Arr::get($filter, 'columnType') === 'tag') {
-            $ids = is_array(Arr::get($filter, 'value')) ? Arr::get($filter, 'value') : [Arr::get($filter, 'value')];
-
+            $ids = is_array($value) ? $value : [$value];
             $tags = Tag::whereIn('id', $ids)->pluck('name')->toArray();
 
             $value = null;
             if (count($tags)) {
                 $value = '['.implode(',', $tags).']';
             }
-        } else {
-            $value = Arr::get($filter, 'value');
         }
 
-        if (Arr::get($filter, 'column') && ($operator = Arr::get($filter, 'operator'))) {
-            if ($operator === 'between') {
-                if (filled(Arr::get($filter, 'from')) && filled(Arr::get($filter, 'to'))) {
-                    if (Str::contains(Arr::get($filter, 'column'), '.')) {
-                        $columnCollection = explode('.', Arr::get($filter, 'column'));
-                        $comparison = '['.(int) Arr::get($filter, 'from').'..'.(int) Arr::get($filter, 'to').']';
-
-                        return $this->makeReferenceColumn($columnCollection, $comparison, $operator);
-                    } else {
-                        return Arr::get($filter, 'column').':['.(int) Arr::get($filter, 'from').'..'.(int) Arr::get($filter, 'to').']';
-                    }
-                }
-            } elseif (filled($value)) {
-                if (Arr::get($filter, 'columnType') == 'target_group') {
-                    if ($targetGroup = TargetGroup::find(Arr::get($filter, 'value'))) {
-                        return $this->getQueryFilters($targetGroup->filters);
-                    }
-
-                    return false;
-                } elseif (Str::contains(Arr::get($filter, 'column'), '.')) {
-                    $columnCollection = explode('.', Arr::get($filter, 'column'));
-                    $comparison = $this->generateComparison(Arr::get($filter, 'operator'), $value, Arr::get($filter, 'columnType'));
-
-                    return $this->makeReferenceColumn($columnCollection, $comparison, $operator);
-                } else {
-                    $column = Arr::get($filter, 'column');
-
-                    switch ($operator) {
-                        case 'con':
-                        case 'dnc':
-                        case 'ew':
-                        case 'enw':
-                            $column .= '_infix';
-                            break;
-                    }
-
-                    return $column.':'.$this->generateComparison(Arr::get($filter, 'operator'), $value, Arr::get($filter, 'columnType'));
-                }
-            }
-        }
-
-        return false;
+        return $value;
     }
 
-    private function makeReferenceColumn($references, $comparison, $operator)
+    /**
+     * Generate the comparison for a rule
+     *
+     * @throws \Exception
+     */
+    private function generateComparison($operator, $value, $columnType): ?string
     {
-        if (count($references) === 1) {
-            $column = Arr::first($references);
-
-            switch ($operator) {
-                case 'con':
-                case 'dnc':
-                    $column .= '_infix';
-                    break;
-            }
-
-            return $column.':'.$comparison;
-        } else {
-            $name = Arr::first($references);
-            $references = array_values(Arr::except($references, 0));
-
-            return '$'.$name.'_'.Auth::user()->currentEnvironmentId.'('.$this->makeReferenceColumn($references, $comparison, $operator).')';
-        }
-    }
-
-    private function generateComparison($operator, $value, $columnType): string
-    {
-        if (($columnType === 'text_array') || ($columnType === 'integer_array')) {
+        if (empty($value)) {
+            return null;
+        } elseif ($columnType === 'boolean') {
+            return '='.$value;
+        } elseif (($columnType === 'text_array') || ($columnType === 'integer_array')) {
             if (! is_array($value)) {
                 $value = explode(',', $value);
             }
@@ -253,6 +297,7 @@ class TargetGroupSelector
             case 'enw':
                 return '!'.$value;
             default:
+                return '='.$value;
                 throw new \Exception('Unknown operator: '.$operator);
         }
     }

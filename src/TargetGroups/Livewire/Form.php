@@ -95,7 +95,7 @@ class Form extends Component
 
     public function removeElement($index)
     {
-        Arr::set($this->elements, $index, null);
+        Arr::pull($this->elements, $index);
     }
 
     public function addRule($index)
