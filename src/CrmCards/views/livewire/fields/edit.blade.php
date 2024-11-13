@@ -43,6 +43,7 @@
                             label="Type"
                             :disabled="!!$form->id"
                     >
+                        <option></option>
                         @foreach ($form->crmFieldTypes() AS $crmFieldType)
                             <option value="{{ $crmFieldType->id }}">
                                 {{ $crmFieldType->name }}
@@ -66,9 +67,28 @@
                 </x-ccm::forms.form>
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="2">
-                <div>
-                    TODO: Wat wordt hiervan precies gebruikt, waar wordt het opgeslagen, hoe werkt het precies.
-                </div>
+                <x-ccm::typography.h2>
+                    Stap 1: Correctie van veldwaarde vóór validatie
+                    <span class="text-xs">(optioneel)</span>
+                </x-ccm::typography.h2>
+                @foreach ($form->preProcessingRules AS $key => $processingRule)
+                    <x-crm-cards::processing-rule :form="$form" :key="'form.preProcessingRules.'.$key"/>
+                @endforeach
+                <x-ccm::buttons.primary wire:click="addPreProcessingRule">Regel toevoegen</x-ccm::buttons.primary>
+
+                <x-ccm::typography.h2>
+                    Stap 2: Validatie van veldwaarde
+                    <span class="text-xs">(verplicht)</span>
+                </x-ccm::typography.h2>
+                <x-ccm::buttons.primary wire:click="addValidationRule">Regel toevoegen</x-ccm::buttons.primary>
+
+
+                <x-ccm::typography.h2>
+                    Stap 3: Correctie van veldwaarde ná validatie
+                    <span class="text-xs">(optioneel)</span>
+                </x-ccm::typography.h2>
+
+                <x-ccm::buttons.primary wire:click="addPostProcessingRule">Regel toevoegen</x-ccm::buttons.primary>
             </x-ccm::tabs.tab-content>
         </x-ccm::tabs.base>
     </div>

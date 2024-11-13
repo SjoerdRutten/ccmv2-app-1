@@ -22,6 +22,9 @@ class CrmField extends Model
         'label_en',
         'label_de',
         'label_fr',
+        'pre_processing_rules',
+        'validation_rules',
+        'post_processing_rules',
         'is_shown_on_overview',
         'is_shown_on_target_group_builder',
         'is_hidden',
@@ -36,20 +39,6 @@ class CrmField extends Model
     //        'saving' => CrmFieldSavingEvent::class,
     //    ];
 
-    protected $hidden = [
-        'environment_id',
-        'crm_field_type_id',
-        'crm_field_category_id',
-        'label_en',
-        'label_de',
-        'label_fr',
-        'position',
-        'log_file',
-        'overview_index',
-        'created_at',
-        'updated_at',
-    ];
-
     protected function casts()
     {
         return [
@@ -58,6 +47,9 @@ class CrmField extends Model
             'is_hidden' => 'boolean',
             'is_locked' => 'boolean',
             'is_visible' => 'boolean',
+            'pre_processing_rules' => 'json',
+            'validation_rules' => 'json',
+            'post_processing_rules' => 'json',
         ];
     }
 

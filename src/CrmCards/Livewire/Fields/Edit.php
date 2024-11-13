@@ -27,6 +27,21 @@ class Edit extends Component
         $this->showSuccessModal('Veld is opgeslagen');
     }
 
+    public function addPreProcessingRule()
+    {
+        $this->form->addPreProcessingRule();
+    }
+
+    public function addPostProcessingRule()
+    {
+        $this->form->addPostProcessingRule();
+    }
+
+    public function addValidationRule()
+    {
+        $this->form->addValidationRule();
+    }
+
     public function render()
     {
         return view('crm-cards::livewire.fields.edit');

@@ -61,6 +61,12 @@ class CrmFieldForm extends Form
     #[Validate]
     public int $overview_index = 0;
 
+    public $preProcessingRules = [];
+
+    public $validationRules = [];
+
+    public $postProcessingRules = [];
+
     public function rules(): array
     {
         return [
@@ -121,6 +127,10 @@ class CrmFieldForm extends Form
         $this->crmField = $crmField;
 
         $this->fill($crmField->toArray());
+
+        $this->preProcessingRules = $this->crmField->pre_processing_rules ?? [];
+        $this->validationRules = $this->crmField->validation_rules ?? [];
+        $this->postProcessingRules = $this->crmField->post_processing_rules ?? [];
     }
 
     public function save()
@@ -129,11 +139,38 @@ class CrmFieldForm extends Form
 
         $this->name = Str::slug($this->name, '_');
 
+        $data = Arr::except($this->all(), ['crmField', 'id', 'preProcessingRules', 'validationRules', 'postProcessingRules']);
+        $data['pre_processing_rules'] = $this->preProcessingRules;
+        $data['validation_rules'] = $this->validationRules;
+        $data['post_processing_rules'] = $this->postProcessingRules;
+
         if ($this->crmField->id) {
-            $this->crmField->update(Arr::except($this->all(), ['crmField', 'id']));
+            $this->crmField->update($data);
         } else {
-            $this->crmField = CrmField::create(Arr::except($this->all(), ['crmField', 'id']));
+            $this->crmField = CrmField::create($data);
         }
+    }
+
+    public function addPreProcessingRule()
+    {
+        $this->preProcessingRules[uniqid()] = $this->newProcessingRule();
+    }
+
+    public function addPostProcessingRule()
+    {
+        $this->postProcessingRules[uniqid()] = $this->newProcessingRule();
+    }
+
+    public function addValidationRule()
+    {
+        $this->validationRules[uniqid()] = [];
+    }
+
+    private function newProcessingRule()
+    {
+        return [
+            'type' => null,
+        ];
     }
 
     public function crmFieldTypes()
