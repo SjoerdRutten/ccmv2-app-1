@@ -70,6 +70,34 @@ class CrmField extends Model
         );
     }
 
+    public function preCorrectValue($value): mixed
+    {
+        return $this->correctValue($value, $this->pre_processing_rules);
+    }
+
+    public function postCorrectValue($value): mixed
+    {
+        return $this->correctValue($value, $this->post_processing_rules);
+    }
+
+    private function correctValue($value, $rules): mixed
+    {
+        if (is_array($rules)) {
+            foreach ($rules as $rule) {
+                if ($corrector = \Arr::get($rule, 'corrector')) {
+                    $corrector = new $corrector;
+                    $value = $corrector->handle($value);
+
+                    if ($value === false) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return $value;
+    }
+
     public function getTypesenseFields(): array
     {
         $fields = [];

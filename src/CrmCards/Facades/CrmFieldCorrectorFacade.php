@@ -1,16 +1,16 @@
 <?php
 
-namespace Sellvation\CCMV2\TargetGroups\Facades;
+namespace Sellvation\CCMV2\CrmCards\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
  * @see CrmFieldCorrector
  */
-class TargetGroupSelectorFacade extends Facade
+class CrmFieldCorrectorFacade extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return TargetGroupSelector::class;
+        return 'crm-field-correctors';
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Sellvation\CCMV2\CrmCards\Livewire\Fields;
 
+use Illuminate\Support\Arr;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Sellvation\CCMV2\Ccm\Livewire\Traits\HasModals;
 use Sellvation\CCMV2\CrmCards\Livewire\Fields\Forms\CrmFieldForm;
@@ -15,9 +17,23 @@ class Edit extends Component
 
     public CrmFieldForm $form;
 
+    public string $testValue = '';
+
+    public string|bool $correctedValue = '';
+
     public function mount()
     {
         $this->form->setCrmField($this->crmField);
+        $this->getCorrectedValue();
+    }
+
+    public function updated($property, $value)
+    {
+        switch ($property) {
+            case 'testValue':
+                $this->getCorrectedValue();
+                break;
+        }
     }
 
     public function save()
@@ -40,6 +56,28 @@ class Edit extends Component
     public function addValidationRule()
     {
         $this->form->addValidationRule();
+    }
+
+    #[On('remove-rule')]
+    public function removeRule($ruleType, $key)
+    {
+        Arr::pull($this->form->{$ruleType}, $key);
+        $this->getCorrectedValue();
+    }
+
+    #[On('updated-rule')]
+    public function getCorrectedValue()
+    {
+        $this->crmField->pre_processing_rules = $this->form->preProcessingRules;
+        $this->crmField->post_processing_rules = $this->form->postProcessingRules;
+
+        $this->correctedValue = $this->crmField->preCorrectValue($this->testValue);
+        $this->correctedValue = $this->crmField->postCorrectValue($this->correctedValue);
+    }
+
+    public function testCorrection()
+    {
+        $this->form->save();
     }
 
     public function render()

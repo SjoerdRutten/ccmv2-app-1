@@ -71,24 +71,67 @@
                     Stap 1: Correctie van veldwaarde vóór validatie
                     <span class="text-xs">(optioneel)</span>
                 </x-ccm::typography.h2>
-                @foreach ($form->preProcessingRules AS $key => $processingRule)
-                    <x-crm-cards::processing-rule :form="$form" :key="'form.preProcessingRules.'.$key"/>
-                @endforeach
-                <x-ccm::buttons.primary wire:click="addPreProcessingRule">Regel toevoegen</x-ccm::buttons.primary>
 
-                <x-ccm::typography.h2>
-                    Stap 2: Validatie van veldwaarde
-                    <span class="text-xs">(verplicht)</span>
-                </x-ccm::typography.h2>
-                <x-ccm::buttons.primary wire:click="addValidationRule">Regel toevoegen</x-ccm::buttons.primary>
+                <div class="flex gap-4">
+                    <div class="w-1/2">
+                        @foreach ($form->preProcessingRules AS $key => $processingRule)
+                            <livewire:crm-cards::fields::rule wire:model="form.preProcessingRules.{{ $key }}"
+                                                              wire:key="pre{{ $key }}"
+                                                              rule-type="preProcessingRules"
+                                                              :rule-key="$key"
+                            />
+                        @endforeach
+                        <x-ccm::buttons.primary wire:click="addPreProcessingRule">
+                            Regel toevoegen
+                        </x-ccm::buttons.primary>
+
+                        <x-ccm::typography.h2>
+                            Stap 2: Validatie van veldwaarde
+                            <span class="text-xs">(verplicht)</span>
+                        </x-ccm::typography.h2>
+                        <x-ccm::buttons.primary wire:click="addValidationRule">Regel toevoegen</x-ccm::buttons.primary>
 
 
-                <x-ccm::typography.h2>
-                    Stap 3: Correctie van veldwaarde ná validatie
-                    <span class="text-xs">(optioneel)</span>
-                </x-ccm::typography.h2>
+                        <x-ccm::typography.h2>
+                            Stap 3: Correctie van veldwaarde ná validatie
+                            <span class="text-xs">(optioneel)</span>
+                        </x-ccm::typography.h2>
 
-                <x-ccm::buttons.primary wire:click="addPostProcessingRule">Regel toevoegen</x-ccm::buttons.primary>
+                        @foreach ($form->postProcessingRules AS $key => $processingRule)
+                            <livewire:crm-cards::fields::rule wire:model="form.postProcessingRules.{{ $key }}"
+                                                              wire:key="post{{ $key }}"
+                                                              rule-type="postProcessingRules"
+                                                              :rule-key="$key"
+                            />
+                        @endforeach
+
+                        <x-ccm::buttons.primary wire:click="addPostProcessingRule">Regel toevoegen
+                        </x-ccm::buttons.primary>
+                    </div>
+                    <div class="grow">
+                        <x-ccm::forms.input wire:model.blur="testValue">Test value</x-ccm::forms.input>
+
+                        @if (!empty($testValue))
+                            <p class="text-center block my-4">
+                                Resulteert in:
+                            </p>
+
+                            <div class="bg-gray-200 border border-gray-300 rounded text-center py-4 text-lg mb-2">
+                                @if ($correctedValue === false)
+                                    <span class="text-red-500">
+                                        Deze invoer kan niet gecorrigeerd worden
+                                    </span>
+
+                                @else
+                                    {{ $correctedValue }}
+                                @endif
+                            </div>
+                        @endif
+
+                        <x-ccm::buttons.primary>Test</x-ccm::buttons.primary>
+
+                    </div>
+                </div>
             </x-ccm::tabs.tab-content>
         </x-ccm::tabs.base>
     </div>
