@@ -5,8 +5,23 @@
             <option></option>
             <option value="regex">Correctie m.b.v. patroonherkenning</option>
             <option value="casing">Correctie van hoofd- en kleine letters gebruik</option>
-            <option value="trim">Verwijderen karakters en witruimte</option>
+            <option value="removing">Verwijderen karakters en witruimte</option>
         </x-ccm::forms.select>
+        <div x-show="rule.type === 'removing'">
+            <x-ccm::forms.select label="Verwijder de volgende karakters" x-model="rule.corrector">
+                <option></option>
+                @foreach ($correctors['removing'] AS $key => $corrector)
+                    <option value="{{ $corrector::class }}">
+                        {{ $corrector->name }}
+                    </option>
+                @endforeach
+            </x-ccm::forms.select>
+            <div x-show="rule.corrector.endsWith('CharacterList')">
+                <x-ccm::forms.input x-model="rule.characterlist">
+                    Karakterlijst
+                </x-ccm::forms.input>
+            </div>
+        </div>
         <div x-show="rule.type === 'casing'">
             <x-ccm::forms.select label="Correctie" x-model="rule.corrector">
                 <option></option>
@@ -26,11 +41,13 @@
                     </option>
                 @endforeach
             </x-ccm::forms.select>
+            <div x-show="rule.corrector.endsWith('CrmFieldCorrectorManual')">
+                <x-ccm::forms.input x-model="rule.regex">Vrij invoer patroon (regulier expressie)
+                </x-ccm::forms.input>
+                <x-ccm::forms.input x-model="rule.replacePattern">Verwerkingsregel</x-ccm::forms.input>
+            </div>
         </div>
-        <div x-show="rule.corrector.endsWith('CrmFieldCorrectorManual') && rule.type === 'regex'">
-            <x-ccm::forms.input x-model.blur="rule.regex">Vrij invoer patroon (regulier expressie)</x-ccm::forms.input>
-            <x-ccm::forms.input x-model.blur="rule.replacePattern">Verwerkingsregel</x-ccm::forms.input>
-        </div>
+
     </x-ccm::forms.form>
 
     <div class="flex flex-row gap-4 mt-4">
