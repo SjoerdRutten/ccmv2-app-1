@@ -4,9 +4,19 @@
         <x-ccm::forms.select label="Type regel" x-model="rule.type">
             <option></option>
             <option value="regex">Correctie m.b.v. patroonherkenning</option>
-            <option value="ulcase">Correctie van hoofd- en kleine letters gebruik</option>
+            <option value="casing">Correctie van hoofd- en kleine letters gebruik</option>
             <option value="trim">Verwijderen karakters en witruimte</option>
         </x-ccm::forms.select>
+        <div x-show="rule.type === 'casing'">
+            <x-ccm::forms.select label="Correctie" x-model="rule.corrector">
+                <option></option>
+                @foreach ($correctors['casing'] AS $key => $corrector)
+                    <option value="{{ $corrector::class }}">
+                        {{ $corrector->name }}
+                    </option>
+                @endforeach
+            </x-ccm::forms.select>
+        </div>
         <div x-show="rule.type === 'regex'">
             <x-ccm::forms.select label="Patroon" x-model="rule.corrector">
                 <option></option>
@@ -17,7 +27,7 @@
                 @endforeach
             </x-ccm::forms.select>
         </div>
-        <div x-show="rule.corrector.endsWith('CrmFieldCorrectorManual')">
+        <div x-show="rule.corrector.endsWith('CrmFieldCorrectorManual') && rule.type === 'regex'">
             <x-ccm::forms.input x-model.blur="rule.regex">Vrij invoer patroon (regulier expressie)</x-ccm::forms.input>
             <x-ccm::forms.input x-model.blur="rule.replacePattern">Verwerkingsregel</x-ccm::forms.input>
         </div>
