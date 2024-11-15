@@ -10,7 +10,7 @@ class CrmFieldCorrectorInitials extends CrmFieldCorrector
 
     public ?string $pattern = '^[\p{L}\s.-]+$';
 
-    public function handle($value): mixed
+    public function handle($value, ...$params): mixed
     {
         if ($matches = $this->matchRegex($value)) {
             $oldEncoding = mb_internal_encoding();

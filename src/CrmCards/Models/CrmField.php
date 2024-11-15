@@ -86,7 +86,7 @@ class CrmField extends Model
             foreach ($rules as $rule) {
                 if ($corrector = \Arr::get($rule, 'corrector')) {
                     $corrector = new $corrector;
-                    $value = $corrector->handle($value);
+                    $value = $corrector->handle($value, $rule);
 
                     if ($value === false) {
                         return false;

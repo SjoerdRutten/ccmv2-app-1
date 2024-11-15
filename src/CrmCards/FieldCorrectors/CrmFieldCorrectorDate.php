@@ -12,7 +12,7 @@ class CrmFieldCorrectorDate extends CrmFieldCorrector
 
     public ?string $pattern = '^[\p{L}\s\d\-\+\:\\/\\\\]+$';
 
-    public function handle($value): mixed
+    public function handle($value, ...$params): mixed
     {
         if ($matches = $this->matchRegex($value)) {
             $date = \Arr::get($matches, 0);

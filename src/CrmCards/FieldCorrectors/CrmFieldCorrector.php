@@ -12,7 +12,7 @@ abstract class CrmFieldCorrector
 
     public function __construct() {}
 
-    abstract public function handle(mixed $value): mixed;
+    abstract public function handle(mixed $value, ...$params): mixed;
 
     protected function matchRegex($value): bool|array
     {

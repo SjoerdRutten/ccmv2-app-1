@@ -12,7 +12,7 @@ class CrmFieldCorrectorZipcodeBe extends CrmFieldCorrectorPersonName
 
     public ?string $pattern = '^.*((?:\s*[0-9]{1}){4}\s*).*$';
 
-    public function handle($value): mixed
+    public function handle($value, ...$params): mixed
     {
         $value = Str::replace(' ', '', $value);
 

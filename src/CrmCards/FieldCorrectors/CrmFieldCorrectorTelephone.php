@@ -12,7 +12,7 @@ class CrmFieldCorrectorTelephone extends CrmFieldCorrector
 
     public ?string $pattern = '^((?:\+|00)(?:[1-9][0-9]{0,3}\s|[1-9][0-9]))(.*)$';
 
-    public function handle($value): mixed
+    public function handle($value, ...$params): mixed
     {
         if ($matches = $this->matchRegex($value)) {
 
