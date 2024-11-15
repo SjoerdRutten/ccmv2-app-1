@@ -1,5 +1,5 @@
 <div class="border border-gray-300 bg-gray-200 p-2 my-1 flex flex-col relative gap-2 rounded"
-     x-data="{ rule: @entangle('rule').live }">
+     x-data="{ rule: @entangle('rule') }">
     <x-ccm::forms.form>
         <x-ccm::forms.select label="Type regel" x-model="rule.type">
             <option></option>
@@ -15,18 +15,11 @@
                         {{ $corrector->name }}
                     </option>
                 @endforeach
-                {{--            <option value="date">Datum en tijd</option>--}}
-                {{--            <option value="email">E-mailadres</option>--}}
-                {{--            <option value="initials">Initialen</option>--}}
-                {{--            <option value="person-name">Persoonsnaam</option>--}}
-                {{--            <option value="city-name">Plaatsnaam</option>--}}
-                {{--            <option value="zipcode-be">Postcode, Belgisch</option>--}}
-                {{--            <option value="zipcode-de">Postcode, Duits</option>--}}
-                {{--            <option value="zipcode-nl">Postcode, Nederlands</option>--}}
-                {{--            <option value="street-name">Straatnaam</option>--}}
-                {{--            <option value="phone">Telefoonnummer</option>--}}
-                <option value="manual">Handmatige invoer van een patroon</option>
             </x-ccm::forms.select>
+        </div>
+        <div x-show="rule.corrector.endsWith('CrmFieldCorrectorManual')">
+            <x-ccm::forms.input x-model.blur="rule.regex">Vrij invoer patroon (regulier expressie)</x-ccm::forms.input>
+            <x-ccm::forms.input x-model.blur="rule.replacePattern">Verwerkingsregel</x-ccm::forms.input>
         </div>
     </x-ccm::forms.form>
 

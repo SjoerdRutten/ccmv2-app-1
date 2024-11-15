@@ -77,6 +77,7 @@
                         @foreach ($form->preProcessingRules AS $key => $processingRule)
                             <livewire:crm-cards::fields::rule wire:model="form.preProcessingRules.{{ $key }}"
                                                               wire:key="pre{{ $key }}"
+                                                              :key="$key"
                                                               rule-type="preProcessingRules"
                                                               :rule-key="$key"
                             />
@@ -100,6 +101,7 @@
                         @foreach ($form->postProcessingRules AS $key => $processingRule)
                             <livewire:crm-cards::fields::rule wire:model="form.postProcessingRules.{{ $key }}"
                                                               wire:key="post{{ $key }}"
+                                                              :key="$key"
                                                               rule-type="postProcessingRules"
                                                               :rule-key="$key"
                             />
@@ -128,7 +130,7 @@
                             </div>
                         @endif
 
-                        <x-ccm::buttons.primary>Test</x-ccm::buttons.primary>
+                        <x-ccm::buttons.primary wire:click="getCorrectedValue">Test</x-ccm::buttons.primary>
 
                     </div>
                 </div>
