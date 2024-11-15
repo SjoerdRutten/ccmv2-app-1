@@ -1,12 +1,26 @@
 <div class="border border-gray-300 bg-gray-200 p-2 my-1 flex flex-col relative gap-2 rounded"
      x-data="{ rule: @entangle('rule') }">
     <x-ccm::forms.form>
+
         <x-ccm::forms.select label="Type regel" x-model="rule.type">
             <option></option>
+            @if (Arr::get($correctors['extensions']))
+                <option value="extensions">Correctie via extensie</option>
+            @endif
             <option value="regex">Correctie m.b.v. patroonherkenning</option>
             <option value="casing">Correctie van hoofd- en kleine letters gebruik</option>
             <option value="removing">Verwijderen karakters en witruimte</option>
         </x-ccm::forms.select>
+        <div x-show="rule.type === 'extensions'">
+            <x-ccm::forms.select label="Extensie regel" x-model="rule.corrector">
+                <option></option>
+                @foreach ($correctors['extensions'] AS $key => $corrector)
+                    <option value="{{ $corrector::class }}">
+                        {{ $corrector->name }}
+                    </option>
+                @endforeach
+            </x-ccm::forms.select>
+        </div>
         <div x-show="rule.type === 'removing'">
             <x-ccm::forms.select label="Verwijder de volgende karakters" x-model="rule.corrector">
                 <option></option>
