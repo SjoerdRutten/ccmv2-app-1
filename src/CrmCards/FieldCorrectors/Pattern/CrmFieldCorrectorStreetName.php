@@ -1,6 +1,6 @@
 <?php
 
-namespace Sellvation\CCMV2\CrmCards\FieldCorrectors;
+namespace Sellvation\CCMV2\CrmCards\FieldCorrectors\Pattern;
 
 class CrmFieldCorrectorStreetName extends CrmFieldCorrectorPersonName
 {

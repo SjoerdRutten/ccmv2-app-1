@@ -1,16 +1,16 @@
 <?php
 
-namespace Sellvation\CCMV2\CrmCards\FieldCorrectors;
+namespace Sellvation\CCMV2\CrmCards\FieldCorrectors\Pattern;
 
 use Illuminate\Support\Str;
 
-class CrmFieldCorrectorZipcodeBe extends CrmFieldCorrectorPersonName
+class CrmFieldCorrectorZipcodeDe extends CrmFieldCorrectorPersonName
 {
     public string $group = 'pattern';
 
-    public string $name = 'Postcode Belgie';
+    public string $name = 'Postcode Duitsland';
 
-    public ?string $pattern = '^.*((?:\s*[0-9]{1}){4}\s*).*$';
+    public ?string $pattern = '^.*((?:\s*[0-9]{1}){5}\s*).*$';
 
     public function handle($value, ...$params): mixed
     {

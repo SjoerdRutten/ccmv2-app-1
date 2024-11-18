@@ -1,8 +1,9 @@
 <?php
 
-namespace Sellvation\CCMV2\CrmCards\FieldCorrectors;
+namespace Sellvation\CCMV2\CrmCards\FieldCorrectors\Pattern;
 
 use Illuminate\Support\Str;
+use Sellvation\CCMV2\CrmCards\FieldCorrectors\CrmFieldCorrector;
 
 class CrmFieldCorrectorTelephone extends CrmFieldCorrector
 {

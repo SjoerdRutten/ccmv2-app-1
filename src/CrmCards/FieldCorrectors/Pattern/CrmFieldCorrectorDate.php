@@ -1,8 +1,9 @@
 <?php
 
-namespace Sellvation\CCMV2\CrmCards\FieldCorrectors;
+namespace Sellvation\CCMV2\CrmCards\FieldCorrectors\Pattern;
 
 use Carbon\Carbon;
+use Sellvation\CCMV2\CrmCards\FieldCorrectors\CrmFieldCorrector;
 
 class CrmFieldCorrectorDate extends CrmFieldCorrector
 {
