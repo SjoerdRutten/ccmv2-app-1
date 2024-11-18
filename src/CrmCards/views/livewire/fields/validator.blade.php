@@ -9,6 +9,8 @@
             @endif
             <option value="characters">Controle op aantal karakters</option>
             <option value="dates">Controle van datums</option>
+            <option value="numbers">Controle van getallen</option>
+            <option value="texts">Controle van tekst</option>
         </x-ccm::forms.select>
         <div x-show="validator.type === 'characters'">
             <x-ccm::forms.select label="Karakter regels" x-model="validator.rule">
@@ -31,6 +33,28 @@
                 @endforeach
             </x-ccm::forms.select>
             <x-ccm::forms.input x-model="validator.date">Datum</x-ccm::forms.input>
+        </div>
+        <div x-show="validator.type === 'numbers'">
+            <x-ccm::forms.select label="Getal regels" x-model="validator.rule">
+                <option></option>
+                @foreach ($validators['numbers'] AS $key => $validator)
+                    <option value="{{ $validator::class }}">
+                        {{ $validator->name }}
+                    </option>
+                @endforeach
+            </x-ccm::forms.select>
+            <x-ccm::forms.input x-model="validator.value">Waarde</x-ccm::forms.input>
+        </div>
+        <div x-show="validator.type === 'texts'">
+            <x-ccm::forms.select label="Tekst regels" x-model="validator.rule">
+                <option></option>
+                @foreach ($validators['texts'] AS $key => $validator)
+                    <option value="{{ $validator::class }}">
+                        {{ $validator->name }}
+                    </option>
+                @endforeach
+            </x-ccm::forms.select>
+            <x-ccm::forms.input x-model="validator.value">Waarde</x-ccm::forms.input>
         </div>
 
     </x-ccm::forms.form>
