@@ -125,12 +125,14 @@
                             Test de correctie en validatie regels
                         </x-ccm::typography.h2>
 
-                        <x-ccm::forms.input wire:model.blur="testValue">Test waarde</x-ccm::forms.input>
+                        <div class="mb-4">
+                            <x-ccm::forms.input wire:model.blur="testValue">Test waarde</x-ccm::forms.input>
+                        </div>
 
                         @if (!empty($testValue))
-                            <p class="text-center block my-4">
+                            <x-ccm::typography.h3 class="text-center">
                                 Correctie voor validatie:
-                            </p>
+                            </x-ccm::typography.h3>
 
                             <div class="bg-gray-200 border border-gray-300 rounded text-center py-4 mb-2">
                                 @if ($preCorrectedValue === false)
@@ -145,9 +147,9 @@
                                 @endif
                             </div>
 
-                            <p class="text-center block my-4">
+                            <x-ccm::typography.h3 class="text-center">
                                 Validatie:
-                            </p>
+                            </x-ccm::typography.h3>
                             <div class="{{ count($validation) ? 'bg-red-200 border-red-500 text-red-700' : 'bg-green-200 border-green-500 text-green-700' }} border rounded text-center py-4 mb-2">
                                 @if (count($validation))
                                     <ul>
@@ -160,9 +162,9 @@
                                 @endif
                             </div>
 
-                            <p class="text-center block my-4">
+                            <x-ccm::typography.h3 class="text-center">
                                 Correctie na validatie:
-                            </p>
+                            </x-ccm::typography.h3>
 
                             <div class="bg-gray-200 border border-gray-300 rounded text-center py-4 mb-2">
                                 @if ($postCorrectedValue === false)
