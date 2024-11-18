@@ -2,8 +2,8 @@
 
 namespace Sellvation\CCMV2\CrmCards\FieldValidators\Texts;
 
-use Closure;
 use Sellvation\CCMV2\CrmCards\FieldValidators\CrmFieldValidator;
+use Sellvation\CCMV2\CrmCards\Rules\StringComparisonRule;
 
 class CrmFieldValidatorTextEndsWith extends CrmFieldValidator
 {
@@ -15,11 +15,7 @@ class CrmFieldValidatorTextEndsWith extends CrmFieldValidator
     {
         return [
             'string',
-            function (string $attribute, mixed $value, Closure $fail) use ($params) {
-                if (! \Str::endsWith($value, (string) \Arr::get($params, 'value'))) {
-                    $fail('De waarde moet eindigen met '.\Arr::get($params, 'value'));
-                }
-            },
+            new StringComparisonRule('ew', (string) \Arr::get($params, 'value')),
         ];
     }
 

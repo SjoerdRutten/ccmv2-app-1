@@ -1,21 +1,22 @@
 <?php
 
-namespace Sellvation\CCMV2\CrmCards\FieldValidators\Texts;
+namespace Sellvation\CCMV2\CrmCards\FieldValidators\Pattern;
 
 use Sellvation\CCMV2\CrmCards\FieldValidators\CrmFieldValidator;
-use Sellvation\CCMV2\CrmCards\Rules\StringComparisonRule;
 
-class CrmFieldValidatorTextDoesNotEndWith extends CrmFieldValidator
+class CrmFieldValidatorPatternEmail extends CrmFieldValidator
 {
-    public string $group = 'texts';
+    public string $group = 'patterns';
 
-    public string $name = 'eindigt niet met';
+    public string $name = 'E-mailadres';
+
+    public bool $hasValue = false;
 
     public function getRules(\Sellvation\CCMV2\CrmCards\Models\CrmField $crmField, ...$params): array
     {
         return [
             'string',
-            new StringComparisonRule('dnew', (string) \Arr::get($params, 'value')),
+            'email:rfc,dns',
         ];
     }
 
@@ -23,6 +24,7 @@ class CrmFieldValidatorTextDoesNotEndWith extends CrmFieldValidator
     {
         return [
             'string' => 'Waarde moet een string zijn',
+            'email' => 'Dit is geen geldig e-mailadres',
         ];
     }
 }

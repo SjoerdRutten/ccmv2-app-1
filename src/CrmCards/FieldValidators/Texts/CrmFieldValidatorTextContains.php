@@ -2,8 +2,8 @@
 
 namespace Sellvation\CCMV2\CrmCards\FieldValidators\Texts;
 
-use Closure;
 use Sellvation\CCMV2\CrmCards\FieldValidators\CrmFieldValidator;
+use Sellvation\CCMV2\CrmCards\Rules\StringComparisonRule;
 
 class CrmFieldValidatorTextContains extends CrmFieldValidator
 {
@@ -15,11 +15,7 @@ class CrmFieldValidatorTextContains extends CrmFieldValidator
     {
         return [
             'string',
-            function (string $attribute, mixed $value, Closure $fail) use ($params) {
-                if (! \Str::contains($value, (string) \Arr::get($params, 'value', 0))) {
-                    $fail('De waarde moet '.\Arr::get($params, 'value').' bevatten');
-                }
-            },
+            new StringComparisonRule('con', (string) \Arr::get($params, 'value')),
         ];
     }
 

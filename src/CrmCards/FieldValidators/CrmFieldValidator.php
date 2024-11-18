@@ -10,6 +10,8 @@ abstract class CrmFieldValidator
 
     public string $name;
 
+    public bool $hasValue = true;
+
     abstract public function getRules(CrmField $crmField, ...$params): array;
 
     public function getMessages(...$params): array

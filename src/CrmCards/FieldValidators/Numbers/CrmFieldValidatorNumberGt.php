@@ -2,8 +2,8 @@
 
 namespace Sellvation\CCMV2\CrmCards\FieldValidators\Numbers;
 
-use Closure;
 use Sellvation\CCMV2\CrmCards\FieldValidators\CrmFieldValidator;
+use Sellvation\CCMV2\CrmCards\Rules\NumberComparisonRule;
 
 class CrmFieldValidatorNumberGt extends CrmFieldValidator
 {
@@ -15,11 +15,7 @@ class CrmFieldValidatorNumberGt extends CrmFieldValidator
     {
         return [
             'numeric',
-            function (string $attribute, mixed $value, Closure $fail) use ($params) {
-                if ((float) $value <= (float) \Arr::get($params, 'value', 0)) {
-                    $fail('De waarde moet groter zijn dan '.\Arr::get($params, 'value', 0));
-                }
-            },
+            new NumberComparisonRule('gt', \Arr::get($params, 'value', 0)),
         ];
     }
 

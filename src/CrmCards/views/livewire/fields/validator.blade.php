@@ -11,12 +11,16 @@
             <option value="dates">Controle van datums</option>
             <option value="numbers">Controle van getallen</option>
             <option value="texts">Controle van tekst</option>
+            <option value="patterns">Controle m.b.v. patroonherkenning</option>
         </x-ccm::forms.select>
         <div x-show="validator.type === 'characters'">
             <x-ccm::forms.select label="Karakter regels" x-model="validator.rule">
                 <option></option>
                 @foreach ($validators['characters'] AS $key => $validator)
-                    <option value="{{ $validator::class }}">
+                    <option
+                            value="{{ $validator::class }}"
+                            data-hasValue="{{ $validator->hasValue ? 1 : 0 }}"
+                    >
                         {{ $validator->name }}
                     </option>
                 @endforeach
@@ -27,7 +31,10 @@
             <x-ccm::forms.select label="Datum regels" x-model="validator.rule">
                 <option></option>
                 @foreach ($validators['dates'] AS $key => $validator)
-                    <option value="{{ $validator::class }}">
+                    <option
+                            value="{{ $validator::class }}"
+                            data-hasValue="{{ $validator->hasValue ? 1 : 0 }}"
+                    >
                         {{ $validator->name }}
                     </option>
                 @endforeach
@@ -38,7 +45,10 @@
             <x-ccm::forms.select label="Getal regels" x-model="validator.rule">
                 <option></option>
                 @foreach ($validators['numbers'] AS $key => $validator)
-                    <option value="{{ $validator::class }}">
+                    <option
+                            value="{{ $validator::class }}"
+                            data-hasValue="{{ $validator->hasValue ? 1 : 0 }}"
+                    >
                         {{ $validator->name }}
                     </option>
                 @endforeach
@@ -49,7 +59,24 @@
             <x-ccm::forms.select label="Tekst regels" x-model="validator.rule">
                 <option></option>
                 @foreach ($validators['texts'] AS $key => $validator)
-                    <option value="{{ $validator::class }}">
+                    <option
+                            value="{{ $validator::class }}"
+                            data-hasValue="{{ $validator->hasValue ? 1 : 0 }}"
+                    >
+                        {{ $validator->name }}
+                    </option>
+                @endforeach
+            </x-ccm::forms.select>
+            <x-ccm::forms.input x-model="validator.value">Waarde</x-ccm::forms.input>
+        </div>
+        <div x-show="validator.type === 'patterns'">
+            <x-ccm::forms.select label="Patroon" x-model="validator.rule">
+                <option></option>
+                @foreach ($validators['patterns'] AS $key => $validator)
+                    <option
+                            value="{{ $validator::class }}"
+                            data-hasValue="{{ $validator->hasValue ? 1 : 0 }}"
+                    >
                         {{ $validator->name }}
                     </option>
                 @endforeach

@@ -3,6 +3,7 @@
 namespace Sellvation\CCMV2\CrmCards\FieldValidators\Characters;
 
 use Sellvation\CCMV2\CrmCards\FieldValidators\CrmFieldValidator;
+use Sellvation\CCMV2\CrmCards\Rules\StringLengthComparisonRule;
 
 class CrmFieldValidatorStrLengthEqual extends CrmFieldValidator
 {
@@ -14,7 +15,7 @@ class CrmFieldValidatorStrLengthEqual extends CrmFieldValidator
     {
         return [
             'string',
-            'size:'.\Arr::get($params, 'length', 0),
+            new StringLengthComparisonRule('eq', \Arr::get($params, 'length', 0)),
         ];
     }
 

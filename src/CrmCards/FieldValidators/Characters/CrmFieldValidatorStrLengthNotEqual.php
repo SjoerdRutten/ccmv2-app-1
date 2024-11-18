@@ -2,8 +2,8 @@
 
 namespace Sellvation\CCMV2\CrmCards\FieldValidators\Characters;
 
-use Closure;
 use Sellvation\CCMV2\CrmCards\FieldValidators\CrmFieldValidator;
+use Sellvation\CCMV2\CrmCards\Rules\StringLengthComparisonRule;
 
 class CrmFieldValidatorStrLengthNotEqual extends CrmFieldValidator
 {
@@ -15,11 +15,7 @@ class CrmFieldValidatorStrLengthNotEqual extends CrmFieldValidator
     {
         return [
             'string',
-            function (string $attribute, mixed $value, Closure $fail) use ($params) {
-                if (strlen($value) === (int) \Arr::get($params, 'length', 0)) {
-                    $fail('De waarde mag niet uit '.\Arr::get($params, 'length', 0).' karakters bestaan');
-                }
-            },
+            new StringLengthComparisonRule('neq', \Arr::get($params, 'length', 0)),
         ];
     }
 
