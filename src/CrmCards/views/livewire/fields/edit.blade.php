@@ -150,11 +150,13 @@
                             <x-ccm::typography.h3 class="text-center">
                                 Validatie:
                             </x-ccm::typography.h3>
-                            <div class="{{ count($validation) ? 'bg-red-200 border-red-500 text-red-700' : 'bg-green-200 border-green-500 text-green-700' }} border rounded text-center py-4 mb-2">
-                                @if (count($validation))
+
+
+                            <div class="{{ $errors->count() ? 'bg-red-200 border-red-500 text-red-700' : 'bg-green-200 border-green-500 text-green-700' }} border rounded text-center py-4 mb-2">
+                                @if ($errors->count())
                                     <ul>
-                                        @foreach ($validation AS $msg)
-                                            <li>{{ $msg }}</li>
+                                        @foreach ($errors->all() AS $error)
+                                            <li>{{ $error }}</li>
                                         @endforeach
                                     </ul>
                                 @else

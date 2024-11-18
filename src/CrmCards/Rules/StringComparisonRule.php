@@ -61,7 +61,7 @@ class StringComparisonRule implements ValidationRule
 
     private function startsWith(mixed $value, Closure $fail)
     {
-        if (Str::startsWith($value, $this->checkValue)) {
+        if (! Str::startsWith($value, $this->checkValue)) {
             $fail('Waarde moet met :value beginnen')->translate([
                 'value' => $this->checkValue,
             ]);
@@ -70,7 +70,7 @@ class StringComparisonRule implements ValidationRule
 
     private function doesNotStartWith(mixed $value, Closure $fail)
     {
-        if (! Str::startsWith($value, $this->checkValue)) {
+        if (Str::startsWith($value, $this->checkValue)) {
             $fail('Waarde mag niet met :value beginnen')->translate([
                 'value' => $this->checkValue,
             ]);
@@ -79,7 +79,7 @@ class StringComparisonRule implements ValidationRule
 
     private function endsWith(mixed $value, Closure $fail)
     {
-        if (Str::endsWith($value, $this->checkValue)) {
+        if (! Str::endsWith($value, $this->checkValue)) {
             $fail('Waarde moet met :value eindigen')->translate([
                 'value' => $this->checkValue,
             ]);
@@ -88,8 +88,8 @@ class StringComparisonRule implements ValidationRule
 
     private function doesNotEndWith(mixed $value, Closure $fail)
     {
-        if (! Str::endsWith($value, $this->checkValue)) {
-            $fail('Waarde mag niet net :value eindigen')->translate([
+        if (Str::endsWith($value, $this->checkValue)) {
+            $fail('Waarde mag niet met :value eindigen')->translate([
                 'value' => $this->checkValue,
             ]);
         }

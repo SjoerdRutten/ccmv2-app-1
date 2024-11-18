@@ -111,17 +111,17 @@ class CrmField extends Model
             $messages = array_merge($messages, $validationRule->getMessages($this, ...$rule));
         }
 
-        try {
-            Validator::validate(
-                ['value' => $value],
-                ['value' => $rules],
-                ['value' => $messages],
-            );
+        //        try {
+        Validator::validate(
+            ['value' => $value],
+            ['value' => $rules],
+            ['value' => $messages],
+        );
 
-            return [];
-        } catch (ValidationException $e) {
-            return \Arr::get($e->errors(), 'value');
-        }
+        return [];
+        //        } catch (ValidationException $e) {
+        //            return \Arr::get($e->errors(), 'value');
+        //        }
     }
 
     public function getTypesenseFields(): array
