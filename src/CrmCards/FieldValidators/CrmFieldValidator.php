@@ -2,13 +2,18 @@
 
 namespace Sellvation\CCMV2\CrmCards\FieldValidators;
 
+use Sellvation\CCMV2\CrmCards\Models\CrmField;
+
 abstract class CrmFieldValidator
 {
     public string $group;
 
     public string $name;
 
-    protected string $message;
+    abstract public function getRules(CrmField $crmField, ...$params): array;
 
-    abstract public function getRules($field, ...$params): array;
+    public function getMessages(...$params): array
+    {
+        return [];
+    }
 }

@@ -10,12 +10,19 @@ class CrmFieldValidatorStrLengthEqual extends CrmFieldValidator
 
     public string $name = 'is gelijk aan';
 
-    public function getRules($field, ...$params): array
+    public function getRules(\Sellvation\CCMV2\CrmCards\Models\CrmField $crmField, ...$params): array
     {
         return [
             'string',
-            'min:'.$params[0],
-            'max:'.$params[0],
+            'size:'.\Arr::get($params, 'length', 0),
+        ];
+    }
+
+    public function getMessages(...$params): array
+    {
+        return [
+            'string' => 'Waarde moet een string zijn',
+            'size' => 'De waarde moet uit exact :size karakters bestaan',
         ];
     }
 }

@@ -10,11 +10,19 @@ class CrmFieldValidatorStrLengthGt extends CrmFieldValidator
 
     public string $name = 'is groter of gelijk aan';
 
-    public function getRules($field, ...$params): array
+    public function getRules(\Sellvation\CCMV2\CrmCards\Models\CrmField $crmField, ...$params): array
     {
         return [
             'string',
-            'min:'.$params[0],
+            'min:'.\Arr::get($params, 'length', 0),
+        ];
+    }
+
+    public function getMessages(...$params): array
+    {
+        return [
+            'string' => 'Waarde moet een string zijn',
+            'min' => 'De waarde moet uit minimaal :min karakters bestaan',
         ];
     }
 }

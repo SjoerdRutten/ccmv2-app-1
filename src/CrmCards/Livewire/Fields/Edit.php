@@ -19,7 +19,11 @@ class Edit extends Component
 
     public string $testValue = '';
 
-    public string|bool $correctedValue = '';
+    public string|bool $preCorrectedValue = '';
+
+    public array $validation;
+
+    public string|bool $postCorrectedValue = '';
 
     public function mount()
     {
@@ -65,14 +69,23 @@ class Edit extends Component
         $this->getCorrectedValue();
     }
 
+    #[On('remove-validator')]
+    public function removeValidator($key)
+    {
+        Arr::pull($this->form->validationRules, $key);
+        $this->getCorrectedValue();
+    }
+
     #[On('updated-rule')]
     public function getCorrectedValue()
     {
         $this->crmField->pre_processing_rules = $this->form->preProcessingRules;
         $this->crmField->post_processing_rules = $this->form->postProcessingRules;
+        $this->crmField->validation_rules = $this->form->validationRules;
 
-        $this->correctedValue = $this->crmField->preCorrectValue($this->testValue);
-        $this->correctedValue = $this->crmField->postCorrectValue($this->correctedValue);
+        $this->preCorrectedValue = $this->crmField->preCorrectValue($this->testValue);
+        $this->validation = $this->crmField->validate($this->preCorrectedValue);
+        $this->postCorrectedValue = $this->crmField->postCorrectValue($this->preCorrectedValue);
     }
 
     public function testCorrection()

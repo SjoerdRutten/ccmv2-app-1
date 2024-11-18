@@ -4,6 +4,8 @@ namespace Sellvation\CCMV2\CrmCards\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Sellvation\CCMV2\CrmCards\Events\CrmFieldSavedEvent;
 use Sellvation\CCMV2\CrmCards\Events\CrmFieldSavingEvent;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
@@ -96,6 +98,30 @@ class CrmField extends Model
         }
 
         return $value;
+    }
+
+    public function validate($value): array
+    {
+        $rules = [];
+        $messages = [];
+
+        foreach ($this->validation_rules as $rule) {
+            $validationRule = new ($rule['rule']);
+            $rules = array_merge($rules, $validationRule->getRules($this, ...$rule));
+            $messages = array_merge($messages, $validationRule->getMessages($this, ...$rule));
+        }
+
+        try {
+            Validator::validate(
+                ['value' => $value],
+                ['value' => $rules],
+                ['value' => $messages],
+            );
+
+            return [];
+        } catch (ValidationException $e) {
+            return \Arr::get($e->errors(), 'value');
+        }
     }
 
     public function getTypesenseFields(): array

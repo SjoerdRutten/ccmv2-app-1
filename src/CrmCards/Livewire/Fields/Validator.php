@@ -22,9 +22,9 @@ class Validator extends Component
         $this->dispatch('updated-validator')->to(Edit::class);
     }
 
-    public function removeValidator($validatorType, $key)
+    public function removeValidator($key)
     {
-        $this->dispatch('remove-validator', ruleType: $validatorType, key: $key)->to(Edit::class);
+        $this->dispatch('remove-validator', key: $key)->to(Edit::class);
     }
 
     public function render()

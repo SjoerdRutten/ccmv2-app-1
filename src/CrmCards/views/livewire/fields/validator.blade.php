@@ -27,7 +27,7 @@
         <a href="#"
            class="text-red-500"
            wire:confirm="Weet je zeker dat je deze validatieregel wilt verwijderen ?"
-           wire:click.prevent="removeValidator('{{ $validatorType }}', '{{ $validatorKey }}')"
+           wire:click.prevent="removeValidator('{{ $validatorKey }}')"
         >
             <x-heroicon-s-trash class="w-5 h-5 inline"/>
             Regel verwijderen
