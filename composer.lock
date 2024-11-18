@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a5b03a3506be2b663d2da67f89beca6a",
+    "content-hash": "bd01b93b2790a9aa508b72e95e574ef3",
     "packages": [
         {
             "name": "amphp/amp",
@@ -864,6 +864,72 @@
                 }
             ],
             "time": "2024-01-30T23:01:51+00:00"
+        },
+        {
+            "name": "axlon/laravel-postal-code-validation",
+            "version": "v3.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/axlon/laravel-postal-code-validation.git",
+                "reference": "20b5483b75556dacb6a2795e70865cc80fa7d492"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/axlon/laravel-postal-code-validation/zipball/20b5483b75556dacb6a2795e70865cc80fa7d492",
+                "reference": "20b5483b75556dacb6a2795e70865cc80fa7d492",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^5.5 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0",
+                "illuminate/support": "^5.5 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0",
+                "illuminate/validation": "^5.5 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0",
+                "php": "^7.2 || ^8.0"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^7.8",
+                "phpunit/phpunit": "^8.5 || ^9.6 || ^10.5",
+                "symfony/var-exporter": "^4.0 || ^5.0 || ^6.0 || ^7.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "PostalCodes": "\\Axlon\\PostalCodeValidation\\Support\\Facades\\PostalCodes"
+                    },
+                    "providers": [
+                        "\\Axlon\\PostalCodeValidation\\ValidationServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Axlon\\PostalCodeValidation\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Choraimy Kroonstuiver",
+                    "homepage": "https://github.com/axlon"
+                }
+            ],
+            "description": "Worldwide postal code validation for Laravel and Lumen",
+            "keywords": [
+                "laravel",
+                "lumen",
+                "post code",
+                "postal code",
+                "validation",
+                "zip code"
+            ],
+            "support": {
+                "issues": "https://github.com/axlon/laravel-postal-code-validation/issues",
+                "source": "https://github.com/axlon/laravel-postal-code-validation/tree/v3.7.0"
+            },
+            "time": "2024-09-10T15:23:59+00:00"
         },
         {
             "name": "base62/base62",
@@ -3725,6 +3791,63 @@
                 }
             ],
             "time": "2024-06-28T09:40:51+00:00"
+        },
+        {
+            "name": "nembie/iban-rule",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Nembie/iban-rule.git",
+                "reference": "2ebb82bab077be8c2fb2be5b099bb3ee05c27563"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Nembie/iban-rule/zipball/2ebb82bab077be8c2fb2be5b099bb3ee05c27563",
+                "reference": "2ebb82bab077be8c2fb2be5b099bb3ee05c27563",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/validation": ">=10.0 || ^11.0",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Nembie\\IbanRule\\": "src/"
+                },
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Luca P",
+                    "email": "lucapacitto.dev@gmail.com",
+                    "homepage": "https://nembie.it",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A Laravel validation rule to validate IBAN numbers",
+            "homepage": "https://github.com/Nembie/iban-rule",
+            "keywords": [
+                "Nembie",
+                "iban-rule",
+                "laravel",
+                "rule",
+                "validation"
+            ],
+            "support": {
+                "issues": "https://github.com/Nembie/iban-rule/issues",
+                "source": "https://github.com/Nembie/iban-rule/tree/1.0.3"
+            },
+            "time": "2024-04-01T09:42:33+00:00"
         },
         {
             "name": "nesbot/carbon",
