@@ -7,7 +7,7 @@
             @if (Arr::get($correctors, 'extensions'))
                 <option value="extensions">Correctie via extensie</option>
             @endif
-            <option value="regex">Correctie m.b.v. patroonherkenning</option>
+            <option value="pattern">Correctie m.b.v. patroonherkenning</option>
             <option value="casing">Correctie van hoofd- en kleine letters gebruik</option>
             <option value="removing">Verwijderen karakters en witruimte</option>
         </x-ccm::forms.select>
@@ -48,7 +48,7 @@
                 @endforeach
             </x-ccm::forms.select>
         </div>
-        <div x-show="rule.type === 'regex'">
+        <div x-show="rule.type === 'pattern'">
             <x-ccm::forms.select label="Patroon" x-model="rule.corrector">
                 <option></option>
                 @foreach ($correctors['pattern'] AS $key => $corrector)

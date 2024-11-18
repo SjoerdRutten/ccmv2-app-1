@@ -29,6 +29,8 @@ class CrmFieldCorrector
 
     public function getCorrectors(?string $group = null)
     {
+        $this->discover();
+
         return $group ? \Arr::get($this->correctors, $group) : $this->correctors;
     }
 }

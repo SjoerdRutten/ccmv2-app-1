@@ -48,7 +48,5 @@ class CrmCardServiceProvider extends ServiceProvider
 
         $loader = AliasLoader::getInstance();
         $loader->alias('CrmFieldCorrector', CrmFieldCorrectorFacade::class);
-
-        \CrmFieldCorrector::discover();
     }
 }
