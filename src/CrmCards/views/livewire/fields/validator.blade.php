@@ -8,6 +8,7 @@
                 <option value="extensions">Correctie via extensie</option>
             @endif
             <option value="characters">Controle op aantal karakters</option>
+            <option value="dates">Controle van datums</option>
         </x-ccm::forms.select>
         <div x-show="validator.type === 'characters'">
             <x-ccm::forms.select label="Karakter regels" x-model="validator.rule">
@@ -19,6 +20,17 @@
                 @endforeach
             </x-ccm::forms.select>
             <x-ccm::forms.input x-model="validator.length">Aantal karakters</x-ccm::forms.input>
+        </div>
+        <div x-show="validator.type === 'dates'">
+            <x-ccm::forms.select label="Datum regels" x-model="validator.rule">
+                <option></option>
+                @foreach ($validators['dates'] AS $key => $validator)
+                    <option value="{{ $validator::class }}">
+                        {{ $validator->name }}
+                    </option>
+                @endforeach
+            </x-ccm::forms.select>
+            <x-ccm::forms.input x-model="validator.date">Datum</x-ccm::forms.input>
         </div>
 
     </x-ccm::forms.form>
