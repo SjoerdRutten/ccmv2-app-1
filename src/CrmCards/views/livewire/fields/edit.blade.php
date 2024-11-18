@@ -75,11 +75,11 @@
                 <div class="flex gap-4">
                     <div class="w-1/2">
                         @foreach ($form->preProcessingRules AS $key => $processingRule)
-                            <livewire:crm-cards::fields::rule wire:model="form.preProcessingRules.{{ $key }}"
-                                                              wire:key="pre{{ $key }}"
-                                                              :key="$key"
-                                                              rule-type="preProcessingRules"
-                                                              :rule-key="$key"
+                            <livewire:crm-cards::fields::corrector wire:model="form.preProcessingRules.{{ $key }}"
+                                                                   wire:key="pre{{ $key }}"
+                                                                   :key="$key"
+                                                                   rule-type="preProcessingRules"
+                                                                   :rule-key="$key"
                             />
                         @endforeach
                         <x-ccm::buttons.primary wire:click="addPreProcessingRule">
@@ -90,6 +90,17 @@
                             Stap 2: Validatie van veldwaarde
                             <span class="text-xs">(verplicht)</span>
                         </x-ccm::typography.h2>
+
+
+                        @foreach ($form->validationRules AS $key => $validationRule)
+                            <livewire:crm-cards::fields::validator wire:model="form.validationRules.{{ $key }}"
+                                                                   wire:key="vaidation{{ $key }}"
+                                                                   :key="$key"
+                                                                   rule-type="ValidationRules"
+                                                                   :rule-key="$key"
+                            />
+                        @endforeach
+
                         <x-ccm::buttons.primary wire:click="addValidationRule">Regel toevoegen</x-ccm::buttons.primary>
 
 
@@ -99,11 +110,11 @@
                         </x-ccm::typography.h2>
 
                         @foreach ($form->postProcessingRules AS $key => $processingRule)
-                            <livewire:crm-cards::fields::rule wire:model="form.postProcessingRules.{{ $key }}"
-                                                              wire:key="post{{ $key }}"
-                                                              :key="$key"
-                                                              rule-type="postProcessingRules"
-                                                              :rule-key="$key"
+                            <livewire:crm-cards::fields::corrector wire:model="form.postProcessingRules.{{ $key }}"
+                                                                   wire:key="post{{ $key }}"
+                                                                   :key="$key"
+                                                                   rule-type="postProcessingRules"
+                                                                   :rule-key="$key"
                             />
                         @endforeach
 

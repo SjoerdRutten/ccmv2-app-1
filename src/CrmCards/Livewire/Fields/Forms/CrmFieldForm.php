@@ -163,10 +163,17 @@ class CrmFieldForm extends Form
 
     public function addValidationRule()
     {
-        $this->validationRules[uniqid()] = [];
+        $this->validationRules[uniqid()] = $this->newValidationRule();
     }
 
     private function newProcessingRule()
+    {
+        return [
+            'type' => null,
+        ];
+    }
+
+    private function newValidationRule()
     {
         return [
             'type' => null,

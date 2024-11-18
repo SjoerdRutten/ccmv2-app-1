@@ -6,7 +6,7 @@ use Livewire\Attributes\Modelable;
 use Livewire\Component;
 use Sellvation\CCMV2\Ccm\Livewire\Traits\HasModals;
 
-class Rule extends Component
+class Corrector extends Component
 {
     use HasModals;
 
@@ -29,7 +29,7 @@ class Rule extends Component
 
     public function render()
     {
-        return view('crm-cards::livewire.fields.rule')
+        return view('crm-cards::livewire.fields.corrector')
             ->with([
                 'correctors' => \CrmFieldCorrector::getCorrectors(),
             ]);

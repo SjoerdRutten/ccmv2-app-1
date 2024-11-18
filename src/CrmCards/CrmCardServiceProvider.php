@@ -9,6 +9,8 @@ use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Sellvation\CCMV2\CrmCards\Facades\CrmFieldCorrector;
 use Sellvation\CCMV2\CrmCards\Facades\CrmFieldCorrectorFacade;
+use Sellvation\CCMV2\CrmCards\Facades\CrmFieldValidator;
+use Sellvation\CCMV2\CrmCards\Facades\CrmFieldValidatorFacade;
 
 class CrmCardServiceProvider extends ServiceProvider
 {
@@ -32,7 +34,8 @@ class CrmCardServiceProvider extends ServiceProvider
     {
         Livewire::component('crm-cards::fields::overview', \Sellvation\CCMV2\CrmCards\Livewire\Fields\Overview::class);
         Livewire::component('crm-cards::fields::edit', \Sellvation\CCMV2\CrmCards\Livewire\Fields\Edit::class);
-        Livewire::component('crm-cards::fields::rule', \Sellvation\CCMV2\CrmCards\Livewire\Fields\Rule::class);
+        Livewire::component('crm-cards::fields::corrector', \Sellvation\CCMV2\CrmCards\Livewire\Fields\Corrector::class);
+        Livewire::component('crm-cards::fields::validator', \Sellvation\CCMV2\CrmCards\Livewire\Fields\Validator::class);
         Livewire::component('crm-cards::cards::overview', \Sellvation\CCMV2\CrmCards\Livewire\Cards\Overview::class);
         Livewire::component('crm-cards::cards::edit', \Sellvation\CCMV2\CrmCards\Livewire\Cards\Edit::class);
     }
@@ -45,8 +48,10 @@ class CrmCardServiceProvider extends ServiceProvider
     private function registerFacades()
     {
         $this->app->bind('crm-field-correctors', CrmFieldCorrector::class);
+        $this->app->bind('crm-field-validator', CrmFieldValidator::class);
 
         $loader = AliasLoader::getInstance();
         $loader->alias('CrmFieldCorrector', CrmFieldCorrectorFacade::class);
+        $loader->alias('CrmFieldValidator', CrmFieldValidatorFacade::class);
     }
 }
