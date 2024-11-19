@@ -25,7 +25,7 @@
                     </option>
                 @endforeach
             </x-ccm::forms.select>
-            <x-ccm::forms.input x-model="validator.length">Aantal karakters</x-ccm::forms.input>
+            <x-ccm::forms.input x-model="validator.value">Aantal karakters</x-ccm::forms.input>
         </div>
         <div x-show="validator.type === 'dates'">
             <x-ccm::forms.select label="Datum regels" x-model="validator.rule">
@@ -39,7 +39,7 @@
                     </option>
                 @endforeach
             </x-ccm::forms.select>
-            <x-ccm::forms.input x-model="validator.date">Datum</x-ccm::forms.input>
+            <x-ccm::forms.input x-model="validator.value">Datum</x-ccm::forms.input>
         </div>
         <div x-show="validator.type === 'numbers'">
             <x-ccm::forms.select label="Getal regels" x-model="validator.rule">

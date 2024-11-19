@@ -15,7 +15,7 @@ class CrmFieldValidatorStrLengthEqual extends CrmFieldValidator
     {
         return [
             'string',
-            new StringLengthComparisonRule('eq', \Arr::get($params, 'length', 0)),
+            new StringLengthComparisonRule('eq', \Arr::get($params, 'value', 0)),
         ];
     }
 

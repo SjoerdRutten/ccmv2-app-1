@@ -13,7 +13,7 @@ class CrmFieldValidatorDateAfter extends CrmFieldValidator
 
     public function getRules(\Sellvation\CCMV2\CrmCards\Models\CrmField $crmField, ...$params): array
     {
-        $date = Carbon::parse(\Arr::get($params, 'date'))->toDateString();
+        $date = Carbon::parse(\Arr::get($params, 'value'))->toDateString();
 
         return [
             'date',

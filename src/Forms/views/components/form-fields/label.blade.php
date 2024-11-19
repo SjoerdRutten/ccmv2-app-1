@@ -1,0 +1,1 @@
+<label for="{{ $crmField['name'] }}">{{ $field['label'] ?: $crmField['label'] }}{{ $field['required'] ? '*' : '' }}</label>

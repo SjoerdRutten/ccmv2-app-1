@@ -95,18 +95,18 @@ class CrmCard extends Model
         $data = $this->data;
 
         $response = [
-            'ignored' => [],
+            'not_changed' => [],
             'success' => [],
         ];
 
         foreach ($input as $name => $value) {
-            if ($crmField = CrmField::where('name', $name)->first()) {
-                $value = $crmField->correctAndValidate($value);
+            // TODO: Logging
 
+            if ($data[$name] !== $value) {
                 $data[$name] = $value;
                 $response['success'][] = $name;
             } else {
-                $response['ignored'][] = $name;
+                $response['not_changed'][] = $name;
             }
         }
 

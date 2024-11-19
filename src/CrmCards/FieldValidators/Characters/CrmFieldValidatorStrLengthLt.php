@@ -14,7 +14,7 @@ class CrmFieldValidatorStrLengthLt extends CrmFieldValidator
     {
         return [
             'string',
-            'max:'.\Arr::get($params, 'length', 0),
+            'max:'.\Arr::get($params, 'value', 0),
         ];
     }
 
