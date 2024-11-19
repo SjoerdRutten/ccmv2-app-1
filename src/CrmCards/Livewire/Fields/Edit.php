@@ -84,7 +84,7 @@ class Edit extends Component
         $this->crmField->validation_rules = $this->form->validationRules;
 
         $this->preCorrectedValue = $this->crmField->preCorrectValue($this->testValue);
-        $this->validation = $this->crmField->validate($this->preCorrectedValue);
+        $this->crmField->validate($this->preCorrectedValue);
         $this->postCorrectedValue = $this->crmField->postCorrectValue($this->preCorrectedValue);
     }
 

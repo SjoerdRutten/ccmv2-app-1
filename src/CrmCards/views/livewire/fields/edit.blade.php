@@ -164,21 +164,23 @@
                                 @endif
                             </div>
 
-                            <x-ccm::typography.h3 class="text-center">
-                                Correctie na validatie:
-                            </x-ccm::typography.h3>
+                            @if (!$errors->count())
+                                <x-ccm::typography.h3 class="text-center">
+                                    Correctie na validatie:
+                                </x-ccm::typography.h3>
 
-                            <div class="bg-gray-200 border border-gray-300 rounded text-center py-4 mb-2">
-                                @if ($postCorrectedValue === false)
-                                    <span class="text-red-500">
-                                        Deze invoer kan niet gecorrigeerd worden
-                                    </span>
-                                @else
-                                    <span class="text-lg">
-                                        {{ $postCorrectedValue }}
-                                    </span>
-                                @endif
-                            </div>
+                                <div class="bg-gray-200 border border-gray-300 rounded text-center py-4 mb-2">
+                                    @if ($postCorrectedValue === false)
+                                        <span class="text-red-500">
+                                            Deze invoer kan niet gecorrigeerd worden
+                                        </span>
+                                    @else
+                                        <span class="text-lg">
+                                            {{ $postCorrectedValue }}
+                                        </span>
+                                    @endif
+                                </div>
+                            @endif
                         @endif
 
                         <x-ccm::buttons.primary class="mt-2" wire:click="getCorrectedValue">Test

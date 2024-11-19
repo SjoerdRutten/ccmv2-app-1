@@ -72,6 +72,14 @@ class CrmField extends Model
         );
     }
 
+    public function correctAndValidate($value): mixed
+    {
+        $value = $this->preCorrectValue($value);
+        $this->validate($value);
+
+        return $this->postCorrectValue($value);
+    }
+
     public function preCorrectValue($value): mixed
     {
         return $this->correctValue($value, $this->pre_processing_rules);
@@ -100,28 +108,29 @@ class CrmField extends Model
         return $value;
     }
 
-    public function validate($value): array
+    /**
+     * @params $value
+     *
+     * @throws ValidationException
+     */
+    public function validate($value): void
     {
         $rules = [];
         $messages = [];
 
-        foreach ($this->validation_rules as $rule) {
-            $validationRule = new ($rule['rule']);
-            $rules = array_merge($rules, $validationRule->getRules($this, ...$rule));
-            $messages = array_merge($messages, $validationRule->getMessages($this, ...$rule));
+        if (is_array($this->validation_rules)) {
+            foreach ($this->validation_rules as $rule) {
+                $validationRule = new ($rule['rule']);
+                $rules = array_merge($rules, $validationRule->getRules($this, ...$rule));
+                $messages = array_merge($messages, $validationRule->getMessages($this, ...$rule));
+            }
+
+            Validator::validate(
+                ['value' => $value],
+                ['value' => $rules],
+                ['value' => $messages],
+            );
         }
-
-        //        try {
-        Validator::validate(
-            ['value' => $value],
-            ['value' => $rules],
-            ['value' => $messages],
-        );
-
-        return [];
-        //        } catch (ValidationException $e) {
-        //            return \Arr::get($e->errors(), 'value');
-        //        }
     }
 
     public function getTypesenseFields(): array

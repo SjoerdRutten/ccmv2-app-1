@@ -90,6 +90,31 @@ class CrmCard extends Model
         return $this->belongsTo(User::class, 'updated_by_api_id');
     }
 
+    public function setData(array $input): array
+    {
+        $data = $this->data;
+
+        $response = [
+            'ignored' => [],
+            'success' => [],
+        ];
+
+        foreach ($input as $name => $value) {
+            if ($crmField = CrmField::where('name', $name)->first()) {
+                $value = $crmField->correctAndValidate($value);
+
+                $data[$name] = $value;
+                $response['success'][] = $name;
+            } else {
+                $response['ignored'][] = $name;
+            }
+        }
+
+        $this->data = $data;
+
+        return $response;
+    }
+
     private function isEmailaddressValid(array $data, string $name): bool
     {
         $validator = \Validator::make(['email' => \Arr::get($data, $name)], ['email' => 'required|email:rfc']);
