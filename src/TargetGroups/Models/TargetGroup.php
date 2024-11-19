@@ -17,6 +17,7 @@ class TargetGroup extends Model
 
     protected $fillable = [
         'name',
+        'description',
         'filters',
     ];
 

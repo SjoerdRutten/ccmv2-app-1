@@ -25,6 +25,8 @@
             <x-ccm::tabs.tab-content :index="0">
                 <div class="w-1/2 flex flex-col gap-4">
                     <x-ccm::forms.input name="name" wire:model="name">Naam</x-ccm::forms.input>
+                    <x-ccm::forms.textarea name="description" wire:model="description">Omschrijving
+                    </x-ccm::forms.textarea>
                 </div>
 
                 <div class="flex flex-col mt-10">

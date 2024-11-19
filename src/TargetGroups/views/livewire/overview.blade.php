@@ -9,19 +9,21 @@
             <x-slot:thead>
                 {{--                <x-ccm::tables.th :first="true">ID</x-ccm::tables.th>--}}
                 <x-ccm::tables.th>Naam</x-ccm::tables.th>
+                <x-ccm::tables.th width="30%">Omschrijving</x-ccm::tables.th>
+                <x-ccm::tables.th>Aantal resultaten</x-ccm::tables.th>
                 <x-ccm::tables.th>Creatietijd</x-ccm::tables.th>
                 <x-ccm::tables.th>Updatetijd</x-ccm::tables.th>
-                <x-ccm::tables.th>Aantal resultaten</x-ccm::tables.th>
                 <x-ccm::tables.th :link="true"></x-ccm::tables.th>
             </x-slot:thead>
             <x-slot:tbody>
                 @foreach ($this->targetGroups AS $targetGroup)
                     <x-ccm::tables.tr :route="route('target-groups::form', $targetGroup)">
-                        {{--                        <x-ccm::tables.td :first="true">{{ $targetGroup->id }}</x-ccm::tables.td>--}}
                         <x-ccm::tables.td>{{ $targetGroup->name }}</x-ccm::tables.td>
+                        <x-ccm::tables.td
+                                class="text-wrap">{{ $targetGroup->description }}</x-ccm::tables.td>
+                        <x-ccm::tables.td>{{ ReadableNumber($targetGroup->numberOfResults, '.') }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $targetGroup->created_at->toDateTimeString() }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $targetGroup->updated_at->toDateTimeString() }}</x-ccm::tables.td>
-                        <x-ccm::tables.td>{{ ReadableNumber($targetGroup->numberOfResults, '.') }}</x-ccm::tables.td>
                         <x-ccm::tables.td :link="true">
                             <div class="flex flex-row-reverse gap-4">
                                 <x-ccm::tables.edit-link :href="route('target-groups::form', $targetGroup)"/>

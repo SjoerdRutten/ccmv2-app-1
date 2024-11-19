@@ -26,6 +26,8 @@ class Form extends Component
 
     public ?string $name = null;
 
+    public ?string $description = null;
+
     public array $elements = [];
 
     public string $tag = '';
@@ -48,6 +50,7 @@ class Form extends Component
         if ($targetGroup->id) {
             $this->id = $targetGroup->id;
             $this->name = $targetGroup->name;
+            $this->description = $targetGroup->description;
             $this->elements = $targetGroup->filters;
 
             $this->targetGroup = $targetGroup;
@@ -100,9 +103,6 @@ class Form extends Component
 
     public function addRule($index)
     {
-        //        $keys = array_keys(Arr::get($this->elements, $index.'.subelements'));
-        //        $count = Arr::last($keys) + 1;
-
         $count = uniqid();
 
         Arr::set($this->elements, $index.'.subelements.'.$count,
@@ -129,6 +129,7 @@ class Form extends Component
             'id' => $this->id,
         ], [
             'name' => $this->name,
+            'description' => $this->description,
             'filters' => $this->elements,
         ]);
 
