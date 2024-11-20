@@ -9,6 +9,11 @@
                 <x-ccm::navigation.desktop-link route="crm-cards::fields::overview" label="Velden" :sub="true"/>
             </x-ccm::navigation.desktop-link>
             @endpermission
+            @permission ('cms', 'overview')
+            <x-ccm::navigation.desktop-link route="cms::forms::overview" label="CMS">
+                <x-ccm::navigation.desktop-link route="cms::forms::overview" label="Formulieren" :sub="true"/>
+            </x-ccm::navigation.desktop-link>
+            @endpermission
             @permission ('ems', 'overview')
             <x-ccm::navigation.desktop-link route="ems::emails::overview" label="EMS">
                 <x-ccm::navigation.desktop-link route="ems::emails::overview" label="E-mails" :sub="true"/>

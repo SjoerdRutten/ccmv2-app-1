@@ -2,7 +2,7 @@
     <div class="px-4 sm:px-6 lg:px-8">
         <x-ccm::pages.intro title="Formulier">
             <x-slot:actions>
-                <x-ccm::buttons.back :href="route('forms::overview')">Terug</x-ccm::buttons.back>
+                <x-ccm::buttons.back :href="route('cms::forms::overview')">Terug</x-ccm::buttons.back>
                 <x-ccm::buttons.save wire:click="save"></x-ccm::buttons.save>
             </x-slot:actions>
         </x-ccm::pages.intro>
