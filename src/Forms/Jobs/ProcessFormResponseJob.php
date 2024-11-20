@@ -26,7 +26,5 @@ class ProcessFormResponseJob implements ShouldQueue
         if (count(\Arr::get($changed, 'success'))) {
             $crmCard->save();
         }
-
-        // TODO: Acties uitvoeren
     }
 }

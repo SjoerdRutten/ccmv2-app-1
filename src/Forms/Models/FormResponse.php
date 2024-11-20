@@ -5,6 +5,7 @@ namespace Sellvation\CCMV2\Forms\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
+use Sellvation\CCMV2\Forms\Events\FormResponseCreatedEvent;
 
 class FormResponse extends Model
 {
@@ -19,6 +20,10 @@ class FormResponse extends Model
     protected $casts = [
         'headers' => 'json',
         'data' => 'json',
+    ];
+
+    protected $dispatchesEvents = [
+        'created' => FormResponseCreatedEvent::class,
     ];
 
     public function form(): BelongsTo

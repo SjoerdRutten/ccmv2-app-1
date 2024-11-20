@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
+use Sellvation\CCMV2\CrmCards\Events\CrmCardCreatingEvent;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 use Sellvation\CCMV2\Orders\Models\Order;
 use Spatie\Tags\HasTags;
@@ -55,6 +56,10 @@ class CrmCard extends Model
         'created_at',
     ];
 
+    protected $dispatchesEvents = [
+        'creating' => CrmCardCreatingEvent::class,
+    ];
+
     protected function casts(): array
     {
         return [
@@ -73,6 +78,11 @@ class CrmCard extends Model
     public function orders(): HasMany
     {
         return $this->hasmany(Order::class);
+    }
+
+    public function crmCardLogs(): HasMany
+    {
+        return $this->hasMany(CrmCardLog::class);
     }
 
     public function updatedByUser(): BelongsTo
@@ -100,17 +110,23 @@ class CrmCard extends Model
         ];
 
         foreach ($input as $name => $value) {
-            // TODO: Logging
+            if (\Arr::get($data, $name) !== $value) {
+                $response['success'][$name] = [
+                    'old' => \Arr::get($data, $name),
+                    'new' => $value,
+                ];
 
-            if ($data[$name] !== $value) {
                 $data[$name] = $value;
-                $response['success'][] = $name;
             } else {
                 $response['not_changed'][] = $name;
             }
         }
 
         $this->data = $data;
+
+        if (($this->id) && (count($response['success']) > 0)) {
+            $this->crmCardLogs()->create(['changes' => $response['success']]);
+        }
 
         return $response;
     }
@@ -176,24 +192,24 @@ class CrmCard extends Model
             'crm_id' => $this->crm_id,
             'updated_at' => $this->updated_at->timestamp,
             'created_at' => $this->created_at->timestamp,
-            'first_email_send_at' => $this->first_email_send_at ? Carbon::parse($this->first_email_send_at)->timestamp : null,
-            'latest_email_send_at' => $this->latest_email_send_at ? Carbon::parse($this->latest_email_send_at)->timestamp : null,
-            'first_email_opened_at' => $this->first_email_opened_at ? Carbon::parse($this->first_email_opened_at)->timestamp : null,
-            'latest_email_opened_at' => $this->latest_email_opened_at ? Carbon::parse($this->latest_email_opened_at)->timestamp : null,
-            'first_email_clicked_at' => $this->first_email_clicked_at ? Carbon::parse($this->first_email_clicked_at)->timestamp : null,
-            'latest_email_clicked_at' => $this->latest_email_clicked_at ? Carbon::parse($this->latest_email_clicked_at)->timestamp : null,
-            'first_visit_at' => $this->first_visit_at ? Carbon::parse($this->first_visit_at)->timestamp : null,
-            'latest_visit_at' => $this->latest_visit_at ? Carbon::parse($this->latest_visit_at)->timestamp : null,
-            'browser_ua' => $this->browser_ua,
-            'browser' => $this->browser,
-            'browser_device_type' => $this->browser_device_type,
-            'browser_device' => $this->browser_device,
-            'browser_os' => $this->browser_os,
-            'mailclient_ua' => $this->mailclient_ua,
-            'mailclient' => $this->mailclient,
-            'mailclient_device_type' => $this->mailclient_device_type,
-            'mailclient_device' => $this->mailclient_device,
-            'mailclient_os' => $this->mailclient_os,
+            'first_email_send_at' => $this->first_email_send_at ? Carbon::parse($this->first_email_send_at)->timestamp : 0,
+            'latest_email_send_at' => $this->latest_email_send_at ? Carbon::parse($this->latest_email_send_at)->timestamp : 0,
+            'first_email_opened_at' => $this->first_email_opened_at ? Carbon::parse($this->first_email_opened_at)->timestamp : 0,
+            'latest_email_opened_at' => $this->latest_email_opened_at ? Carbon::parse($this->latest_email_opened_at)->timestamp : 0,
+            'first_email_clicked_at' => $this->first_email_clicked_at ? Carbon::parse($this->first_email_clicked_at)->timestamp : 0,
+            'latest_email_clicked_at' => $this->latest_email_clicked_at ? Carbon::parse($this->latest_email_clicked_at)->timestamp : 0,
+            'first_visit_at' => $this->first_visit_at ? Carbon::parse($this->first_visit_at)->timestamp : 0,
+            'latest_visit_at' => $this->latest_visit_at ? Carbon::parse($this->latest_visit_at)->timestamp : 0,
+            'browser_ua' => empty($this->browser_ua) ? '' : $this->browser_ua,
+            'browser' => empty($this->browser) ? '' : $this->browser,
+            'browser_device_type' => empty($this->browser_device_type) ? '' : $this->browser_device_type,
+            'browser_device' => empty($this->browser_device) ? '' : $this->browser_device,
+            'browser_os' => empty($this->browser_os) ? '' : $this->browser_os,
+            'mailclient_ua' => empty($this->mailclient_ua) ? '' : $this->mailclient_ua,
+            'mailclient' => empty($this->mailclient) ? '' : $this->mailclient,
+            'mailclient_device_type' => empty($this->mailclient_device_type) ? '' : $this->mailclient_device_type,
+            'mailclient_device' => empty($this->mailclient_device) ? '' : $this->mailclient_device,
+            'mailclient_os' => empty($this->mailclient_os) ? '' : $this->mailclient_os,
             'tags' => $this->tags()->pluck('name')->toArray(),
         ];
 

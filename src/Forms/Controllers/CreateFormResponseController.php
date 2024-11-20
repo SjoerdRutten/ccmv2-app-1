@@ -16,18 +16,17 @@ class CreateFormResponseController extends Controller
         // First only get the fields which are attached to the form
         $fields = $form->fields;
         foreach ($fields as $key => $field) {
-            if (\Str::endsWith($field['crm_field_id'], '_optin')) {
-                $crmField = CrmField::find(\Str::substr($field['crm_field_id'], 0, -6));
-                $fields[$key]['name'] = '_'.$crmField->name.'_optin';
-                $fields[$key]['is_optin'] = true;
-            } else {
-                $crmField = CrmField::find($field['crm_field_id']);
-                $fields[$key]['name'] = $crmField->name;
-            }
+            $crmField = CrmField::find($field['crm_field_id']);
+            $fields[$key]['name'] = $crmField->name;
             $fields[$key]['crmField'] = $crmField;
 
             // Correct and validate values
             $data[$fields[$key]['name']] = $crmField->correctAndValidate($request->input($fields[$key]['name']));
+
+            if (in_array($fields[$key]['name'], $request->input('optin'))) {
+                $data['_'.$fields[$key]['name'].'_optin'] = 1;
+                $data['_'.$fields[$key]['name'].'_optin_timestamp'] = now()->toDateTimeString();
+            }
         }
 
         // After creating the response, the data will be processed in a seperate process

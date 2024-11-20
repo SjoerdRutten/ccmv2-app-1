@@ -12,8 +12,6 @@ class ProcessFormResponseListener
 
     public function handle(FormResponseCreatedEvent $event): void
     {
-        Context::add('environment_id', $event->formResponse->form->environment_id);
-
         AttachCrmCardToFormResponseJob::dispatch($event->formResponse)
             ->chain([
                 new ProcessFormResponseJob($event->formResponse),

@@ -7,10 +7,12 @@ use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
+use Sellvation\CCMV2\CrmCards\Events\CrmCardCreatingEvent;
 use Sellvation\CCMV2\CrmCards\Facades\CrmFieldCorrector;
 use Sellvation\CCMV2\CrmCards\Facades\CrmFieldCorrectorFacade;
 use Sellvation\CCMV2\CrmCards\Facades\CrmFieldValidator;
 use Sellvation\CCMV2\CrmCards\Facades\CrmFieldValidatorFacade;
+use Sellvation\CCMV2\CrmCards\Listeners\CreateCrmIdListener;
 
 class CrmCardServiceProvider extends ServiceProvider
 {
@@ -43,6 +45,8 @@ class CrmCardServiceProvider extends ServiceProvider
     private function registerEvents()
     {
         $events = $this->app->make(Dispatcher::class);
+
+        $events->listen(CrmCardCreatingEvent::class, CreateCrmIdListener::class);
     }
 
     private function registerFacades()

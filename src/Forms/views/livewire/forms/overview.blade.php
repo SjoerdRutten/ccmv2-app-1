@@ -33,7 +33,7 @@
                         <x-ccm::tables.td>{{ $form->name }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $form->description }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $form->formResponses()->count() }}</x-ccm::tables.td>
-                        <x-ccm::tables.td>{{ $form->formResponses()->latest()->first()?->createdAt() }}</x-ccm::tables.td>
+                        <x-ccm::tables.td>{{ $form->formResponses()->latest()->first()?->created_at }}</x-ccm::tables.td>
                         <x-ccm::tables.td :link="true">
                             <x-ccm::tables.edit-link :href="route('forms::edit', $form)"/>
                         </x-ccm::tables.td>

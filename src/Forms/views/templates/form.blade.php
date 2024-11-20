@@ -17,7 +17,9 @@
         @if ($crmField)
             @if ($optin)
                 <x-forms::form-fields.checkbox
-                        :name="'_'.$crmField->name.'_optin'"
+                        name="optin[]"
+                        :id="$crmField->name.'_optin'"
+                        :value="$crmField->name"
                         :field="$field"
                         :crm-field="$crmField"
                 />

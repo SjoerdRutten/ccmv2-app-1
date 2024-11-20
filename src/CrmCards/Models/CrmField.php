@@ -72,17 +72,23 @@ class CrmField extends Model
         );
     }
 
-    public function correctAndValidate($value): mixed
+    public function correctAndValidate($value, $required = false): mixed
     {
-        $value = $this->preCorrectValue($value);
+        $value = $this->preCorrectValue($value, $required);
         $this->validate($value);
 
         return $this->postCorrectValue($value);
     }
 
-    public function preCorrectValue($value): mixed
+    public function preCorrectValue($value, $required = false): mixed
     {
-        return $this->correctValue($value, $this->pre_processing_rules);
+        $rules = $this->pre_processing_rules;
+
+        if ($required) {
+            $rules[] = 'required';
+        }
+
+        return $this->correctValue($value, $rules);
     }
 
     public function postCorrectValue($value): mixed
