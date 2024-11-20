@@ -20,6 +20,8 @@ class FormEditForm extends Form
 
     public ?array $fields = [];
 
+    public ?string $success_redirect = null;
+
     public ?string $html_form = '';
 
     public function rules(): array
@@ -80,6 +82,7 @@ class FormEditForm extends Form
             'name',
             'description',
             'fields',
+            'success_redirect',
             'html_form',
         ]);
 

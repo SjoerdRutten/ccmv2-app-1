@@ -1,5 +1,8 @@
-<form method="post" action="{{ route('forms::create-form-response', $form) }}">
+<form method="post" action="{{ route('cms::forms::create-form-response', $form) }}">
     @@csrf
+
+    <x-forms::form-fields.errors/>
+
     @foreach ($fields AS $field)
         @php
             $optin = false;

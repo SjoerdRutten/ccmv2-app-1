@@ -1,4 +1,4 @@
-<div wire:loading.remove>
+<div>
     <div class="px-4 sm:px-6 lg:px-8">
         <x-ccm::pages.intro title="Formulier">
             <x-slot:actions>
@@ -18,11 +18,14 @@
 
             <x-ccm::tabs.tab-content :index="0">
                 <div class="w-1/2 flex flex-col gap-4 mb-4">
-                    <x-ccm::forms.input name="editForm.name" wire:model.live="editForm.name">
+                    <x-ccm::forms.input name="editForm.name" wire:model="editForm.name">
                         Naam
                     </x-ccm::forms.input>
-                    <x-ccm::forms.input name="editForm.description" wire:model.live="editForm.description">
+                    <x-ccm::forms.input name="editForm.description" wire:model="editForm.description">
                         Omschrijving
+                    </x-ccm::forms.input>
+                    <x-ccm::forms.input name="editForm.success_redirect" wire:model="editForm.success_redirect">
+                        Redirect na verzenden formulier
                     </x-ccm::forms.input>
                 </div>
 

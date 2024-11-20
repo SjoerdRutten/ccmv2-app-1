@@ -21,7 +21,7 @@ class CreateFormResponseController extends Controller
             $fields[$key]['crmField'] = $crmField;
 
             // Correct and validate values
-            $data[$fields[$key]['name']] = $crmField->correctAndValidate($request->input($fields[$key]['name']));
+            $data[$fields[$key]['name']] = $crmField->correctAndValidate($request->input($fields[$key]['name']), \Arr::get($field, 'required', false));
 
             if (in_array($fields[$key]['name'], $request->input('optin'))) {
                 $data['_'.$fields[$key]['name'].'_optin'] = 1;
@@ -38,6 +38,10 @@ class CreateFormResponseController extends Controller
             'data' => $data,
         ]);
 
-        dd('Hier moet een redirect komen naar een pagina....');
+        if (! empty($form->success_redirect)) {
+            return redirect($form->success_redirect);
+        } else {
+            // TODO: Redirect action
+        }
     }
 }

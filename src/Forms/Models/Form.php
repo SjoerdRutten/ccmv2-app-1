@@ -19,11 +19,17 @@ class Form extends Model
         'name',
         'description',
         'fields',
+        'success_redirect',
+        'success_redirect_action',
+        'sync_actions',
+        'async_actions',
         'html_form',
     ];
 
     protected $casts = [
         'fields' => 'json',
+        'sync_actions' => 'json',
+        'async_actions' => 'json',
     ];
 
     protected $dispatchesEvents = [

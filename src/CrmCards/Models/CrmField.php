@@ -74,21 +74,15 @@ class CrmField extends Model
 
     public function correctAndValidate($value, $required = false): mixed
     {
-        $value = $this->preCorrectValue($value, $required);
-        $this->validate($value);
+        $value = $this->preCorrectValue($value);
+        $this->validate($value, $required);
 
         return $this->postCorrectValue($value);
     }
 
-    public function preCorrectValue($value, $required = false): mixed
+    public function preCorrectValue($value): mixed
     {
-        $rules = $this->pre_processing_rules;
-
-        if ($required) {
-            $rules[] = 'required';
-        }
-
-        return $this->correctValue($value, $rules);
+        return $this->correctValue($value, $this->pre_processing_rules);
     }
 
     public function postCorrectValue($value): mixed
@@ -119,10 +113,15 @@ class CrmField extends Model
      *
      * @throws ValidationException
      */
-    public function validate($value): void
+    public function validate($value, $required = false): void
     {
         $rules = [];
         $messages = [];
+
+        if ($required) {
+            $rules[] = 'required';
+            $messages[] = 'Veld '.$this->name.' is verplicht';
+        }
 
         if (is_array($this->validation_rules)) {
             foreach ($this->validation_rules as $rule) {
@@ -130,7 +129,9 @@ class CrmField extends Model
                 $rules = array_merge($rules, $validationRule->getRules($this, ...$rule));
                 $messages = array_merge($messages, $validationRule->getMessages($this, ...$rule));
             }
+        }
 
+        if (count($rules)) {
             Validator::validate(
                 ['value' => $value],
                 ['value' => $rules],
