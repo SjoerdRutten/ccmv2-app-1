@@ -2,6 +2,7 @@
 
 namespace Sellvation\CCMV2\Forms\Livewire\Forms;
 
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Sellvation\CCMV2\Ccm\Livewire\Traits\HasModals;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
@@ -25,6 +26,8 @@ class Edit extends Component
     {
         if (\Str::endsWith($property, 'crm_field_id')) {
             $this->editForm->updateLabel($property);
+        } elseif (\Str::endsWith($property, 'success_redirect_action')) {
+            dd($this->editForm->success_redirect_action);
         }
     }
 
@@ -46,8 +49,19 @@ class Edit extends Component
                 'fields' => $this->editForm->fields,
             ])
             ->render();
-        $this->editForm->save();
+        //        $this->editForm->save();
+    }
 
+    public function getRedirectActionForm(): ?View
+    {
+        if ($this->editForm->success_redirect_action) {
+            $action = $this->editForm->success_redirect_action;
+            $action = new $action;
+
+            return $action->form($this->editForm->success_redirect_params ?? []);
+        }
+
+        return null;
     }
 
     public function save()
@@ -60,6 +74,7 @@ class Edit extends Component
     {
         return view('forms::livewire.forms.edit')
             ->with([
+                'redirectActions' => \RedirectAction::getRedirectActions(),
                 'crmFields' => CrmField::query()
                     ->orderBy('name')
                     ->get(),

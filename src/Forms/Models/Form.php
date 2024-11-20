@@ -19,8 +19,8 @@ class Form extends Model
         'name',
         'description',
         'fields',
-        'success_redirect',
         'success_redirect_action',
+        'success_redirect_params',
         'sync_actions',
         'async_actions',
         'html_form',
@@ -28,6 +28,7 @@ class Form extends Model
 
     protected $casts = [
         'fields' => 'json',
+        'success_redirect_params' => 'json',
         'sync_actions' => 'json',
         'async_actions' => 'json',
     ];

@@ -5,6 +5,7 @@ namespace Sellvation\CCMV2\Forms\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
+use Sellvation\CCMV2\Forms\Actions\RedirectAction;
 use Sellvation\CCMV2\Forms\Models\Form;
 
 class CreateFormResponseController extends Controller
@@ -32,16 +33,19 @@ class CreateFormResponseController extends Controller
         }
 
         // After creating the response, the data will be processed in a seperate process
-        $form->formResponses()->create([
+        $formResponse = $form->formResponses()->create([
             'ip_address' => $request->ip(),
             'headers' => $request->headers->all(),
             'data' => $data,
         ]);
 
-        if (! empty($form->success_redirect)) {
-            return redirect($form->success_redirect);
+        if ($form->success_redirect_action) {
+            /** @var RedirectAction $action */
+            $action = new ($form->success_redirect_action);
+
+            return $action->handle($form, $formResponse);
         } else {
-            // TODO: Redirect action
+            abort(200, 'Geen redirect action ingesteld');
         }
     }
 }

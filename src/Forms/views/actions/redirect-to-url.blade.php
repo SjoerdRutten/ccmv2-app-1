@@ -1,0 +1,1 @@
+<x-ccm::forms.input wire:model="editForm.success_redirect_params.url">URL</x-ccm::forms.input>

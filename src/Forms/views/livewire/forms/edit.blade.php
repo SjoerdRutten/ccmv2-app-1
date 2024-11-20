@@ -24,9 +24,20 @@
                     <x-ccm::forms.input name="editForm.description" wire:model="editForm.description">
                         Omschrijving
                     </x-ccm::forms.input>
-                    <x-ccm::forms.input name="editForm.success_redirect" wire:model="editForm.success_redirect">
-                        Redirect na verzenden formulier
-                    </x-ccm::forms.input>
+                    <x-ccm::forms.select name="editForm.success_redirect_action"
+                                         wire:model.live="editForm.success_redirect_action"
+                                         label="Redirect na verzenden formulier"
+                    >
+                        <option></option>
+                        @foreach ($redirectActions AS $redirectAction)
+                            <option value="{{ $redirectAction::class }}">
+                                {{ $redirectAction->name }}
+                            </option>
+                        @endforeach
+                    </x-ccm::forms.select>
+                    @if ($this->getRedirectActionForm())
+                        {!! $this->getRedirectActionForm()->render() !!}
+                    @endif
                 </div>
 
                 <x-ccm::typography.h2>Velden</x-ccm::typography.h2>

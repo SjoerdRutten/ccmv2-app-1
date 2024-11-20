@@ -20,7 +20,9 @@ class FormEditForm extends Form
 
     public ?array $fields = [];
 
-    public ?string $success_redirect = null;
+    public ?string $success_redirect_action = '';
+
+    public ?array $success_redirect_params = [];
 
     public ?string $html_form = '';
 
@@ -37,6 +39,8 @@ class FormEditForm extends Form
     {
         $this->form = $form;
         $this->fill($form->toArray());
+
+        $this->success_redirect_params = is_array($this->success_redirect_params) ? $this->success_redirect_params : [];
 
         $this->fields = $form->fields ?: [];
     }
@@ -82,7 +86,8 @@ class FormEditForm extends Form
             'name',
             'description',
             'fields',
-            'success_redirect',
+            'success_redirect_action',
+            'success_redirect_params',
             'html_form',
         ]);
 
