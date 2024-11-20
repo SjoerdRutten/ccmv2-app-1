@@ -27,7 +27,7 @@ class Edit extends Component
         if (\Str::endsWith($property, 'crm_field_id')) {
             $this->editForm->updateLabel($property);
         } elseif (\Str::endsWith($property, 'success_redirect_action')) {
-            dd($this->editForm->success_redirect_action);
+            $this->editForm->success_redirect_params = [];
         }
     }
 

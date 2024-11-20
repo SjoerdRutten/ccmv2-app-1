@@ -13,7 +13,14 @@ class ProcessFormResponseListener
 
     public function handle(FormResponseCreatedEvent $event): void
     {
-        $batch = [];
+        // First add all actions which have to be executes always
+        foreach (\FormAction::getAlwaysExecuteFormActions() as $action) {
+            $batch[] = $action->setFormResponse($event->formResponse)
+                ->setForm($event->formResponse->form);
+        }
+
+        // Add the selected actions of the form, and add these to the batch
+        // TODO: Add actions
 
         Bus::chain([
             new AttachCrmCardToFormResponseJob($event->formResponse),

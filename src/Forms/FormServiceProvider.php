@@ -9,6 +9,8 @@ use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Sellvation\CCMV2\Forms\Events\FormCreatingEvent;
 use Sellvation\CCMV2\Forms\Events\FormResponseCreatedEvent;
+use Sellvation\CCMV2\Forms\Facades\FormAction;
+use Sellvation\CCMV2\Forms\Facades\FormActionFacade;
 use Sellvation\CCMV2\Forms\Facades\RedirectAction;
 use Sellvation\CCMV2\Forms\Facades\RedirectActionFacade;
 use Sellvation\CCMV2\Forms\Listeners\AddUuidToFormListener;
@@ -52,8 +54,10 @@ class FormServiceProvider extends ServiceProvider
     private function registerFacades(): void
     {
         $this->app->bind('redirect-action', RedirectAction::class);
+        $this->app->bind('form-action', FormAction::class);
 
         $loader = AliasLoader::getInstance();
         $loader->alias('RedirectAction', RedirectActionFacade::class);
+        $loader->alias('FormAction', FormActionFacade::class);
     }
 }

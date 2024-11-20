@@ -5,6 +5,7 @@ namespace Sellvation\CCMV2\Forms\Actions;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -19,9 +20,30 @@ abstract class FormAction implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    public bool $alwaysExecute = false;
+
+    public string $name = '';
+
     public function __construct(
-        private readonly Form $form,
-        private readonly FormResponse $formResponse) {}
+        protected ?Form $form = null,
+        protected ?FormResponse $formResponse = null,
+    ) {}
 
     abstract public function handle(): void;
+
+    abstract public function form(): ?View;
+
+    public function setForm(Form $form): self
+    {
+        $this->form = $form;
+
+        return $this;
+    }
+
+    public function setFormResponse(FormResponse $formResponse): self
+    {
+        $this->formResponse = $formResponse;
+
+        return $this;
+    }
 }
