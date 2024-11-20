@@ -26,6 +26,8 @@ class CreateFormResponseController extends Controller
             if (in_array($fields[$key]['name'], $request->input('optin'))) {
                 $data['_'.$fields[$key]['name'].'_optin'] = 1;
                 $data['_'.$fields[$key]['name'].'_optin_timestamp'] = now()->toDateTimeString();
+                $data['_'.$fields[$key]['name'].'_optout'] = null;
+                $data['_'.$fields[$key]['name'].'_optout_timestamp'] = now();
             }
         }
 
