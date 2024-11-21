@@ -3,12 +3,12 @@
 namespace Sellvation\CCMV2\Forms\Actions;
 
 use Illuminate\Contracts\View\View;
-use Sellvation\CCMV2\Ccm\Actions\CrmCards\SetOptInAction;
+use Sellvation\CCMV2\Ccm\Actions\CrmCards\SetConfirmedOptInAction;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
 
-class FormActionOptin extends FormAction
+class FormActionConfirmedOptin extends FormAction
 {
-    public string $name = 'Set opt-in voor geselecteerd veld';
+    public string $name = 'Set opt-in en confirmed opt-in voor geselecteerd veld';
 
     public function handle(): void
     {
@@ -16,7 +16,7 @@ class FormActionOptin extends FormAction
 
         if ($crmField = CrmField::find(\Arr::get($params, 'crm_field_id'))) {
 
-            (new SetOptInAction($this->formResponse->crmCard, $crmField))->handle();
+            (new SetConfirmedOptInAction($this->formResponse->crmCard, $crmField))->handle();
 
             $this->formResponse->crmCard->save();
         }

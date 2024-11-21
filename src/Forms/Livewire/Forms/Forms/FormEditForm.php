@@ -24,6 +24,8 @@ class FormEditForm extends Form
 
     public ?array $success_redirect_params = [];
 
+    public ?array $async_actions = [];
+
     public ?string $html_form = '';
 
     public function rules(): array
@@ -41,6 +43,7 @@ class FormEditForm extends Form
         $this->fill($form->toArray());
 
         $this->success_redirect_params = is_array($this->success_redirect_params) ? $this->success_redirect_params : [];
+        $this->async_actions = is_array($this->async_actions) ? $this->async_actions : [];
 
         $this->fields = $form->fields ?: [];
     }
@@ -59,6 +62,14 @@ class FormEditForm extends Form
     public function removeField($key)
     {
         \Arr::pull($this->fields, $key);
+    }
+
+    public function addAsyncAction()
+    {
+        $this->async_actions[uniqid()] = [
+            'action' => '',
+            'params' => [],
+        ];
     }
 
     public function updateLabel($key)
@@ -88,6 +99,7 @@ class FormEditForm extends Form
             'fields',
             'success_redirect_action',
             'success_redirect_params',
+            'async_actions',
             'html_form',
         ]);
 

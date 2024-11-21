@@ -9,10 +9,14 @@
         <x-ccm::tabs.base>
             <x-slot:tabs>
                 <x-ccm::tabs.nav-tab :index="0">Basisinformatie</x-ccm::tabs.nav-tab>
-                <x-ccm::tabs.nav-tab :index="1">Inhoud HTML-deel</x-ccm::tabs.nav-tab>
-                <x-ccm::tabs.nav-tab :index="2">Testformulier</x-ccm::tabs.nav-tab>
+                <x-ccm::tabs.nav-tab :index="1">
+                    Acties
+                    <x-slot:badge>{{ count($editForm->async_actions) }}</x-slot:badge>
+                </x-ccm::tabs.nav-tab>
+                <x-ccm::tabs.nav-tab :index="2">Inhoud HTML-deel</x-ccm::tabs.nav-tab>
+                <x-ccm::tabs.nav-tab :index="3">Testformulier</x-ccm::tabs.nav-tab>
                 @if ($form->formResponses()->count())
-                    <x-ccm::tabs.nav-tab :index="3">Form responses</x-ccm::tabs.nav-tab>
+                    <x-ccm::tabs.nav-tab :index="4">Form responses</x-ccm::tabs.nav-tab>
                 @endif
             </x-slot:tabs>
 
@@ -104,6 +108,31 @@
 
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="1">
+                <x-slot:intro>
+                    Hier kan je acties toevoegen die uitgevoerd worden op het moment dat een formulier goed is
+                    gecorrigeerd en gevalideerd.
+                    Deze acties worden in willekeurige volgorde op de achtergrond uitgevoerd.
+                </x-slot:intro>
+
+                @foreach ($editForm->async_actions AS $key => $action)
+                    <x-ccm::layouts.block>
+                        <x-ccm::forms.select wire:model.live="editForm.async_actions.{{ $key }}.action" label="Actie">
+                            <option></option>
+                            @foreach ($asyncActions AS $asyncAction)
+                                <option value="{{ $asyncAction::class }}">
+                                    {{ $asyncAction->name }}
+                                </option>
+                            @endforeach
+                        </x-ccm::forms.select>
+                        {!! $this->getAsyncForm($key) !!}
+                    </x-ccm::layouts.block>
+                @endforeach
+
+                <x-slot:buttons>
+                    <x-ccm::buttons.add wire:click="addAsyncAction" class="mt-4">Actie toevoegen</x-ccm::buttons.add>
+                </x-slot:buttons>
+            </x-ccm::tabs.tab-content>
+            <x-ccm::tabs.tab-content :index="2">
                 <x-ccm::buttons.primary class="mb-4"
                                         wire:confirm="Weet je het zeker, het formulier wat er nu staat zal overschreven worden"
                                         wire:click.prevent="generateHtmlForm">
@@ -112,7 +141,10 @@
 
                 <x-ccm::forms.html-editor wire-name="editForm.html_form"/>
             </x-ccm::tabs.tab-content>
-            <x-ccm::tabs.tab-content :index="2">
+            <x-ccm::tabs.tab-content :index="3">
+                {!! \Illuminate\Support\Facades\Blade::render($editForm->html_form) !!}
+            </x-ccm::tabs.tab-content>
+            <x-ccm::tabs.tab-content :index="4">
                 {!! \Illuminate\Support\Facades\Blade::render($editForm->html_form) !!}
             </x-ccm::tabs.tab-content>
         </x-ccm::tabs.base>

@@ -24,7 +24,7 @@ class Edit extends Component
 
     public function updated($property, $value)
     {
-        if (\Str::endsWith($property, 'crm_field_id')) {
+        if (\Str::endsWith($property, 'crm_field_id') && \Str::startsWith($property, 'editForm.fields')) {
             $this->editForm->updateLabel($property);
         } elseif (\Str::endsWith($property, 'success_redirect_action')) {
             $this->editForm->success_redirect_params = [];
@@ -41,6 +41,11 @@ class Edit extends Component
         $this->editForm->removeField($key);
     }
 
+    public function addAsyncAction()
+    {
+        $this->editForm->addAsyncAction();
+    }
+
     public function generateHtmlForm()
     {
         $this->editForm->html_form = view('forms::templates.form')
@@ -49,7 +54,6 @@ class Edit extends Component
                 'fields' => $this->editForm->fields,
             ])
             ->render();
-        //        $this->editForm->save();
     }
 
     public function getRedirectActionForm(): ?View
@@ -59,6 +63,23 @@ class Edit extends Component
             $action = new $action;
 
             return $action->form($this->editForm->success_redirect_params ?? []);
+        }
+
+        return null;
+    }
+
+    public function getAsyncForm($key): ?View
+    {
+        $asyncAction = \Arr::get($this->editForm->async_actions, $key);
+        $className = \Arr::get($asyncAction, 'action');
+        if (! empty($className) && ($action = new ($className))) {
+            /** @var View $view */
+            $view = $action->form();
+
+            return $view->with([
+                'key' => $key,
+                'params' => \Arr::get($asyncAction, 'params', []),
+            ]);
         }
 
         return null;
@@ -75,6 +96,7 @@ class Edit extends Component
         return view('forms::livewire.forms.edit')
             ->with([
                 'redirectActions' => \RedirectAction::getRedirectActions(),
+                'asyncActions' => \FormAction::getUserFormActions(),
                 'crmFields' => CrmField::query()
                     ->orderBy('name')
                     ->get(),

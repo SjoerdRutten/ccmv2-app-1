@@ -27,6 +27,7 @@ abstract class FormAction implements ShouldQueue
     public function __construct(
         protected ?Form $form = null,
         protected ?FormResponse $formResponse = null,
+        protected array $params = [],
     ) {}
 
     abstract public function handle(): void;

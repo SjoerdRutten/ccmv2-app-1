@@ -20,7 +20,9 @@ class ProcessFormResponseListener
         }
 
         // Add the selected actions of the form, and add these to the batch
-        // TODO: Add actions
+        foreach ($event->formResponse->form->async_actions as $async_action) {
+            $batch[] = new ($async_action['action'])($event->formResponse->form, $event->formResponse, \Arr::get($async_action, 'params', []));
+        }
 
         Bus::chain([
             new AttachCrmCardToFormResponseJob($event->formResponse),
