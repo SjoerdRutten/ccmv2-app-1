@@ -16,6 +16,7 @@ class CreateFormResponseController extends Controller
 
         // First only get the fields which are attached to the form
         $fields = $form->fields;
+
         foreach ($fields as $key => $field) {
             $crmField = CrmField::find($field['crm_field_id']);
             $fields[$key]['name'] = $crmField->name;
@@ -23,14 +24,9 @@ class CreateFormResponseController extends Controller
 
             // Correct and validate values
             $data[$fields[$key]['name']] = $crmField->correctAndValidate($request->input($fields[$key]['name']), \Arr::get($field, 'required', false));
-
-            if (in_array($fields[$key]['name'], $request->input('optin'))) {
-                $data['_'.$fields[$key]['name'].'_optin'] = 1;
-                $data['_'.$fields[$key]['name'].'_optin_timestamp'] = now()->toDateTimeString();
-                $data['_'.$fields[$key]['name'].'_optout'] = null;
-                $data['_'.$fields[$key]['name'].'_optout_timestamp'] = now();
-            }
         }
+
+        $data['optin'] = $request->input('optin', []);
 
         // After creating the response, the data will be processed in a seperate process
         $formResponse = $form->formResponses()->create([
@@ -41,9 +37,9 @@ class CreateFormResponseController extends Controller
 
         if ($form->success_redirect_action) {
             /** @var RedirectAction $action */
-            $action = new ($form->success_redirect_action);
+            $action = new ($form->success_redirect_action)($form, $formResponse);
 
-            return $action->handle($form, $formResponse);
+            return $action->handle();
         } else {
             abort(200, 'Geen redirect action ingesteld');
         }

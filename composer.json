@@ -67,6 +67,7 @@
         "Sellvation\\CCMV2\\Environments\\EnvironmentServiceProvider",
         "Sellvation\\CCMV2\\Forms\\FormServiceProvider",
         "Sellvation\\CCMV2\\Orders\\OrderServiceProvider",
+        "Sellvation\\CCMV2\\Sites\\SiteServiceProvider",
         "Sellvation\\CCMV2\\TargetGroups\\TargetGroupServiceProvider",
         "Sellvation\\CCMV2\\Typesense\\TypesenseServiceProvider",
         "Sellvation\\CCMV2\\Users\\UserServiceProvider"

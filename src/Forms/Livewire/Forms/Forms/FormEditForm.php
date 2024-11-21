@@ -72,6 +72,11 @@ class FormEditForm extends Form
         ];
     }
 
+    public function removeAsyncAction($key)
+    {
+        \Arr::pull($this->async_actions, $key);
+    }
+
     public function updateLabel($key)
     {
         $fieldKey = explode('.', $key);

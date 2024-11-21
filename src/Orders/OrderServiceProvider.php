@@ -18,17 +18,13 @@ class OrderServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->app->bind('custom-order-fields', CustomOrderFields::class);
-
-        $loader = AliasLoader::getInstance();
-        $loader->alias('CustomOrderFields', CustomOrderFieldsFacade::class);
+        $this->registerEvents();
+        $this->registerFacades();
     }
 
     public function boot(): void
     {
         $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
-
-        $this->registerEvents();
 
         if (! App::runningInConsole()) {
             $this->registerLivewireComponents();
@@ -47,5 +43,13 @@ class OrderServiceProvider extends ServiceProvider
         $events = $this->app->make(Dispatcher::class);
 
         $events->listen(OrderRowCreatingEvent::class, UpdateOrderRowTotalListener::class);
+    }
+
+    private function registerFacades()
+    {
+        $this->app->bind('custom-order-fields', CustomOrderFields::class);
+
+        $loader = AliasLoader::getInstance();
+        $loader->alias('CustomOrderFields', CustomOrderFieldsFacade::class);
     }
 }

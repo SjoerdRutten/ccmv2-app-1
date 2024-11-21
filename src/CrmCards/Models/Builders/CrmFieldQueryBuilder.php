@@ -18,13 +18,18 @@ class CrmFieldQueryBuilder extends Builder
         return $this;
     }
 
-    public function isMediaFieldType(): self
+    public function isDatetimeFieldType(): self
     {
-        return $this->isCrmFieldType('MEDIA');
+        return $this->isCrmFieldType('DATETIME');
     }
 
     public function isEmailFieldType(): self
     {
         return $this->isCrmFieldType('EMAIL');
+    }
+
+    public function isMediaFieldType(): self
+    {
+        return $this->isCrmFieldType('MEDIA');
     }
 }

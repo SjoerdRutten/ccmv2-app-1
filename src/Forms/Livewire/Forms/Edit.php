@@ -17,8 +17,9 @@ class Edit extends Component
 
     public FormEditForm $editForm;
 
-    public function mount()
+    public function mount(Form $form)
     {
+        $this->form = $form;
         $this->editForm->setFormEditForm($this->form);
     }
 
@@ -44,6 +45,11 @@ class Edit extends Component
     public function addAsyncAction()
     {
         $this->editForm->addAsyncAction();
+    }
+
+    public function removeAsyncAction($key)
+    {
+        $this->editForm->removeAsyncAction($key);
     }
 
     public function generateHtmlForm()

@@ -20,8 +20,16 @@ abstract class FormAction implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    /**
+     * @var bool
+     *           Set to true if this action should be executed for all forms
+     */
     public bool $alwaysExecute = false;
 
+    /**
+     * @var string
+     *             The name of the action, how it will appear in the system
+     */
     public string $name = '';
 
     public function __construct(
@@ -30,10 +38,22 @@ abstract class FormAction implements ShouldQueue
         protected array $params = [],
     ) {}
 
+    /**
+     * @return void
+     *              Execute the action
+     */
     abstract public function handle(): void;
 
+    /**
+     * @return View|null
+     *                   Return a view with the config form for the action, or null of no
+     *                   params are necessary
+     */
     abstract public function form(): ?View;
 
+    /**
+     * @return $this
+     */
     public function setForm(Form $form): self
     {
         $this->form = $form;
@@ -41,6 +61,9 @@ abstract class FormAction implements ShouldQueue
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function setFormResponse(FormResponse $formResponse): self
     {
         $this->formResponse = $formResponse;

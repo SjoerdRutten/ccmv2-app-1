@@ -125,6 +125,13 @@
                             @endforeach
                         </x-ccm::forms.select>
                         {!! $this->getAsyncForm($key) !!}
+
+                        <x-slot:buttons>
+                            <x-ccm::buttons.delete wire:confirm="Weet je zeker dat je deze actie wilt verwijderen ?"
+                                                   wire:click="removeAsyncAction('{{ $key }}')">
+                                Actie verwijderen
+                            </x-ccm::buttons.delete>
+                        </x-slot:buttons>
                     </x-ccm::layouts.block>
                 @endforeach
 
