@@ -18,9 +18,11 @@ return new class extends Migration
         Schema::create('sites', function (Blueprint $table) {
             $table->id();
             $table->foreignId('environment_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('site_category_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('site_category_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('domain');
+            $table->string('description')->nullable();
+            $table->string('favicon_disk')->nullable();
             $table->string('favicon')->nullable();
             $table->timestamps();
         });
@@ -30,7 +32,6 @@ return new class extends Migration
             $table->foreignId('environment_id')->constrained()->cascadeOnDelete();
             $table->foreignId('site_category_id')->constrained()->cascadeOnDelete();
             $table->enum('type', ['js', 'css']); // js of css
-            $table->smallInteger('position')->default(0);
             $table->string('name');
             $table->string('slug')->nullable();
             $table->string('description')->nullable();
@@ -42,7 +43,7 @@ return new class extends Migration
         Schema::create('site_layouts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('environment_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('site_category_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('site_category_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('description')->nullable();
             $table->longText('body')->nullable();
@@ -51,8 +52,7 @@ return new class extends Migration
 
         Schema::create('site_pages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('site_category_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('site_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('site_category_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('site_layout_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('slug');
@@ -60,6 +60,11 @@ return new class extends Migration
             $table->dateTime('start_at')->nullable();
             $table->dateTime('end_at')->nullable();
             $table->timestamps();
+        });
+
+        Schema::create('site_site_pages', function (Blueprint $table) {
+            $table->foreignId('site_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('site_page_id')->constrained()->cascadeOnDelete();
         });
 
         Schema::create('site_blocks', function (Blueprint $table) {
@@ -86,6 +91,12 @@ return new class extends Migration
             $table->smallInteger('position')->default(0);
         });
 
+        Schema::create('site_block_imports', function (Blueprint $table) {
+            $table->foreignId('site_block_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('site_import_id')->constrained()->cascadeOnDelete();
+            $table->smallInteger('position')->default(0);
+        });
+
         Schema::create('site_layout_imports', function (Blueprint $table) {
             $table->foreignId('site_layout_id')->constrained()->cascadeOnDelete();
             $table->foreignId('site_import_id')->constrained()->cascadeOnDelete();
@@ -102,8 +113,10 @@ return new class extends Migration
         Schema::table('sites', function (Blueprint $table) {
             $table->dropConstrainedForeignId('site_page_id');
         });
+        Schema::dropIfExists('site_site_pages');
         Schema::dropIfExists('site_layout_imports');
         Schema::dropIfExists('site_page_imports');
+        Schema::dropIfExists('site_block_imports');
         Schema::dropIfExists('site_page_blocks');
         Schema::dropIfExists('site_blocks');
         Schema::dropIfExists('site_pages');

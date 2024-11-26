@@ -15,5 +15,7 @@ Route::prefix('cms')
             ->name('sites::')
             ->group(function () {
                 Route::get('/', Overview::class)->name('overview');
+                Route::get('/new', \Sellvation\CCMV2\Sites\Livewire\Sites\Edit::class)->name('add');
+                Route::get('/{site}', \Sellvation\CCMV2\Sites\Livewire\Sites\Edit::class)->name('edit');
             });
     });

@@ -11,6 +11,7 @@
             @endpermission
             @permission ('cms', 'overview')
             <x-ccm::navigation.desktop-link route="cms::forms::overview" label="CMS">
+                <x-ccm::navigation.desktop-link route="cms::sites::overview" label="Sites" :sub="true"/>
                 <x-ccm::navigation.desktop-link route="cms::forms::overview" label="Formulieren" :sub="true"/>
             </x-ccm::navigation.desktop-link>
             @endpermission

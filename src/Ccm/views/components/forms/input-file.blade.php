@@ -1,7 +1,6 @@
 @props([
     'id' => uniqid(),
     'name' => uniqid(),
-    'type' => 'text',
     'disabled' => false,
     'required' => false,
     'grow' => false,
@@ -10,8 +9,8 @@
 <div class="{{ $grow ? 'grow' : '' }}">
     <label for="{{ $id }}"
            class="block text-sm font-medium leading-6 text-gray-900">{{ $slot }}{{ $required ? '*' : '' }}</label>
-    <div class="mt-1">
-        <input type="{{ $type }}"
+    <div class="mt-1 flex items-center gap-4">
+        <input type="file"
                name="{{ $name }}"
                id="{{ $id }}"
                wire:key="{{ $name }}"
@@ -21,6 +20,9 @@
                      ])
                  }}
         >
+        @if ($preview ?? false)
+            {{ $preview }}
+        @endif
     </div>
     @if ($errors->has($name))
         <p class="mt-2 text-sm text-red-600" id="email-error">

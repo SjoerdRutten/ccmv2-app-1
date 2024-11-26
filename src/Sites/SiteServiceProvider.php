@@ -2,9 +2,15 @@
 
 namespace Sellvation\CCMV2\Sites;
 
+use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
+use Sellvation\CCMV2\Sites\Events\SiteSavingEvent;
+use Sellvation\CCMV2\Sites\Events\SiteUpdatingEvent;
+use Sellvation\CCMV2\Sites\Listeners\SiteSavingListener;
+use Sellvation\CCMV2\Sites\Listeners\SiteUpdatingListener;
+use Sellvation\CCMV2\Sites\Livewire\Sites\Edit;
 use Sellvation\CCMV2\Sites\Livewire\Sites\Overview;
 
 class SiteServiceProvider extends ServiceProvider
@@ -28,7 +34,14 @@ class SiteServiceProvider extends ServiceProvider
     private function registerLivewireComponents(): void
     {
         Livewire::component('sites::overview', Overview::class);
+        Livewire::component('sites::edit', Edit::class);
     }
 
-    private function registerEvents() {}
+    private function registerEvents()
+    {
+        $events = $this->app->make(Dispatcher::class);
+
+        $events->listen(SiteUpdatingEvent::class, SiteUpdatingListener::class);
+        $events->listen(SiteSavingEvent::class, SiteSavingListener::class);
+    }
 }

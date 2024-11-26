@@ -30,6 +30,7 @@ class CcmServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/views', 'ccm');
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
         $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
+        $this->mergeConfigFrom(__DIR__.'/config/ccm.php', 'ccm');
 
         $this->publishes([
             __DIR__.'/resources/js' => public_path('vendor/ccm/js'),
