@@ -2,7 +2,7 @@
         wire:ignore
         x-data="{
                                 monacoContent: $wire.entangle('{{ $wireName }}'),
-                                monacoLanguage: 'html',
+                                monacoLanguage: '{{ ($type ?? 'html') === 'js' ? 'javascript' : $type }}',
                                 monacoPlaceholder: true,
                                 monacoPlaceholderText: '',
                                 monacoLoader: true,

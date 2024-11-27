@@ -37,6 +37,8 @@ class SiteServiceProvider extends ServiceProvider
         Livewire::component('sites::edit', Edit::class);
         Livewire::component('layouts::overview', \Sellvation\CCMV2\Sites\Livewire\Layouts\Overview::class);
         Livewire::component('layouts::edit', \Sellvation\CCMV2\Sites\Livewire\Layouts\Edit::class);
+        Livewire::component('imports::overview', \Sellvation\CCMV2\Sites\Livewire\Imports\Overview::class);
+        Livewire::component('imports::edit', \Sellvation\CCMV2\Sites\Livewire\Imports\Edit::class);
     }
 
     private function registerEvents()

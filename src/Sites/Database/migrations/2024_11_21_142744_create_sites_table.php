@@ -30,7 +30,7 @@ return new class extends Migration
         Schema::create('site_imports', function (Blueprint $table) {
             $table->id();
             $table->foreignId('environment_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('site_category_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('site_category_id')->nullable()->constrained()->cascadeOnDelete();
             $table->enum('type', ['js', 'css']); // js of css
             $table->string('name');
             $table->string('slug')->nullable();

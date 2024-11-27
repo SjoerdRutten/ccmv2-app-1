@@ -24,4 +24,11 @@ Route::prefix('cms')
                 Route::get('/new', \Sellvation\CCMV2\Sites\Livewire\Layouts\Edit::class)->name('add');
                 Route::get('/{siteLayout}', \Sellvation\CCMV2\Sites\Livewire\Layouts\Edit::class)->name('edit');
             });
+        Route::prefix('imports')
+            ->name('imports::')
+            ->group(function () {
+                Route::get('/', \Sellvation\CCMV2\Sites\Livewire\Imports\Overview::class)->name('overview');
+                Route::get('/new', \Sellvation\CCMV2\Sites\Livewire\Imports\Edit::class)->name('add');
+                Route::get('/{siteImport}', \Sellvation\CCMV2\Sites\Livewire\Imports\Edit::class)->name('edit');
+            });
     });
