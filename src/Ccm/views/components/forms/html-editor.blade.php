@@ -76,7 +76,7 @@
             }, 5);
         "
         :id="monacoId"
-        class="flex flex-col items-center relative justify-start w-full bg-[#0C1021] min-h-[500px] pt-3 h-[500px]"
+        class="flex flex-col items-center relative justify-start w-full bg-[#0C1021] min-h-[700px] pt-3 h-[700px]"
 >
     <div x-show="monacoLoader"
          class="absolute inset-0 z-20 flex items-center justify-center w-full h-[500px] duration-1000 ease-out">

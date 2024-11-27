@@ -14,7 +14,17 @@ class SiteLayout extends Model
         'site_category_id',
         'name',
         'description',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
+        'follow',
+        'index',
         'body',
+    ];
+
+    protected $casts = [
+        'follow' => 'boolean',
+        'index' => 'boolean',
     ];
 
     public function siteCategory(): BelongsTo
