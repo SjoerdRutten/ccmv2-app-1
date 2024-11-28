@@ -97,7 +97,7 @@ return new class extends Migration
             $table->smallInteger('position')->default(0);
         });
 
-        Schema::create('site_layout_imports', function (Blueprint $table) {
+        Schema::create('site_import_site_layout', function (Blueprint $table) {
             $table->foreignId('site_layout_id')->constrained()->cascadeOnDelete();
             $table->foreignId('site_import_id')->constrained()->cascadeOnDelete();
             $table->smallInteger('position')->default(0);
@@ -114,7 +114,7 @@ return new class extends Migration
             $table->dropConstrainedForeignId('site_page_id');
         });
         Schema::dropIfExists('site_site_pages');
-        Schema::dropIfExists('site_layout_imports');
+        Schema::dropIfExists('site_import_site_layout');
         Schema::dropIfExists('site_page_imports');
         Schema::dropIfExists('site_block_imports');
         Schema::dropIfExists('site_page_blocks');

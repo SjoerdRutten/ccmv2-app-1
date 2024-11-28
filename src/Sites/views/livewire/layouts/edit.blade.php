@@ -12,6 +12,7 @@
                 <x-ccm::tabs.nav-tab :index="0">Basis informatie</x-ccm::tabs.nav-tab>
                 <x-ccm::tabs.nav-tab :index="1">Meta informatie</x-ccm::tabs.nav-tab>
                 <x-ccm::tabs.nav-tab :index="2">Body</x-ccm::tabs.nav-tab>
+                <x-ccm::tabs.nav-tab :index="3">CSS/JS</x-ccm::tabs.nav-tab>
             </x-slot:tabs>
 
             <x-ccm::tabs.tab-content :index="0">
@@ -56,6 +57,57 @@
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="2">
                 <x-ccm::forms.html-editor wire-name="form.body"></x-ccm::forms.html-editor>
+            </x-ccm::tabs.tab-content>
+            <x-ccm::tabs.tab-content :index="3">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <x-ccm::forms.select label="CSS" wire:model.live="importId">
+                            <option></option>
+                            @foreach ($importsCSS AS $import)
+                                <option value="{{ $import->id }}">
+                                    {{ $import->name }}
+                                </option>
+                            @endforeach
+                        </x-ccm::forms.select>
+
+                        <x-ccm::sortable-list.ul
+                                x-data="{ handle: (item, position) => { $wire.reOrderSiteImport(item, position) } }">
+                            @foreach ($layoutImportCss AS $import)
+                                <x-ccm::sortable-list.li :id="$import->id">
+                                    <div class="grow truncate ...">
+                                        {{ $import->name }}
+                                    </div>
+                                    <x-ccm::buttons.delete
+                                            wire:click.prevent="removeItemFromList({{ $import->id }})"></x-ccm::buttons.delete>
+                                </x-ccm::sortable-list.li>
+                            @endforeach
+                        </x-ccm::sortable-list.ul>
+
+                    </div>
+                    <div>
+                        <x-ccm::forms.select label="JS" wire:model.live="importId">
+                            <option></option>
+                            @foreach ($importsJS AS $import)
+                                <option value="{{ $import->id }}">
+                                    {{ $import->name }}
+                                </option>
+                            @endforeach
+                        </x-ccm::forms.select>
+
+                        <x-ccm::sortable-list.ul
+                                x-data="{ handle: (item, position) => { $wire.reOrderSiteImport(item, position) } }">
+                            @foreach ($layoutImportJs AS $import)
+                                <x-ccm::sortable-list.li :id="$import->id">
+                                    <div class="grow truncate ...">
+                                        {{ $import->name }}
+                                    </div>
+                                    <x-ccm::buttons.delete
+                                            wire:click.prevent="removeItemFromList({{ $import->id }})"></x-ccm::buttons.delete>
+                                </x-ccm::sortable-list.li>
+                            @endforeach
+                        </x-ccm::sortable-list.ul>
+                    </div>
+                </div>
             </x-ccm::tabs.tab-content>
         </x-ccm::tabs.base>
     </div>

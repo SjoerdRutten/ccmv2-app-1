@@ -13,6 +13,8 @@
 
 
     <!-- Scripts -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/sort@3.x.x/dist/cdn.min.js"></script>
+
     @if (app()->environment('local'))
         <script defer src="/vendor/ccm/js/alpinejs-multiselect.js"></script>
         <script defer src="/vendor/ccm/js/alpinejs-productselect.js"></script>
@@ -23,11 +25,15 @@
         <script defer src="/vendor/ccm/js/alpinejs-fieldselect.min.js"></script>
     @endif
     @stack('js')
-    
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 
     <style>
+        .sortable-ghost {
+            opacity: .3 !important;
+        }
+
         [x-cloak] {
             display: none !important;
         }
