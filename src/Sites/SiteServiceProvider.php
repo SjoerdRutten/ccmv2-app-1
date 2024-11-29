@@ -59,18 +59,21 @@ class SiteServiceProvider extends ServiceProvider
     {
         $router = app()->make('router');
 
-        foreach (Site::all() as $site) {
-            $router->domain($site->domain)
-                ->middleware([
-                    'web',
-                ])
-                ->name('frontend::')
-                ->group(function () use ($router) {
-                    $router->get('assets/favicon.ico', FaviconController::class)->name('assets.favicon');
-                    $router->get('assets/{siteImport}/{name}', ImportController::class)->name('assets.siteImport');
-                    $router->get('/{sitePage:slug}', PageController::class);
-                    $router->get('/', PageController::class);
-                });
+        try {
+            foreach (Site::all() as $site) {
+                $router->domain($site->domain)
+                    ->middleware([
+                        'web',
+                    ])
+                    ->name('frontend::')
+                    ->group(function () use ($router) {
+                        $router->get('assets/favicon.ico', FaviconController::class)->name('assets.favicon');
+                        $router->get('assets/{siteImport}/{name}', ImportController::class)->name('assets.siteImport');
+                        $router->get('/{sitePage:slug}', PageController::class);
+                        $router->get('/', PageController::class);
+                    });
+            }
+        } catch (\Exception $e) {
         }
     }
 }
