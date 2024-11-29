@@ -44,6 +44,13 @@ class SiteImport extends Model
         );
     }
 
+    protected function fileName(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => \Str::slug($this->name).'.'.$this->type
+        );
+    }
+
     public function newEloquentBuilder($query)
     {
         return new SiteImportQueryBuilder($query);

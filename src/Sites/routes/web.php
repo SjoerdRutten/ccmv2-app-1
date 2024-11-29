@@ -14,6 +14,7 @@ Route::prefix('cms')
             ->name('sites::')
             ->group(function () {
                 Route::get('/', Sellvation\CCMV2\Sites\Livewire\Sites\Overview::class)->name('overview');
+                Route::get('/{site}/favicon', \Sellvation\CCMV2\Sites\Http\Controllers\FaviconCcmController::class)->name('favicon');
                 Route::get('/new', \Sellvation\CCMV2\Sites\Livewire\Sites\Edit::class)->name('add');
                 Route::get('/{site}', \Sellvation\CCMV2\Sites\Livewire\Sites\Edit::class)->name('edit');
             });
@@ -30,5 +31,12 @@ Route::prefix('cms')
                 Route::get('/', \Sellvation\CCMV2\Sites\Livewire\Imports\Overview::class)->name('overview');
                 Route::get('/new', \Sellvation\CCMV2\Sites\Livewire\Imports\Edit::class)->name('add');
                 Route::get('/{siteImport}', \Sellvation\CCMV2\Sites\Livewire\Imports\Edit::class)->name('edit');
+            });
+        Route::prefix('pages')
+            ->name('pages::')
+            ->group(function () {
+                Route::get('/', \Sellvation\CCMV2\Sites\Livewire\Pages\Overview::class)->name('overview');
+                Route::get('/new', \Sellvation\CCMV2\Sites\Livewire\Pages\Edit::class)->name('add');
+                Route::get('/{sitePage}', \Sellvation\CCMV2\Sites\Livewire\Pages\Edit::class)->name('edit');
             });
     });

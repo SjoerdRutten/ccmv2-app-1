@@ -1,12 +1,12 @@
 <?php
 
-namespace Sellvation\CCMV2\Sites\Controllers\Frontend;
+namespace Sellvation\CCMV2\Sites\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
 use Sellvation\CCMV2\Sites\Models\Site;
 
-class FaviconController extends Controller
+class FaviconCcmController extends Controller
 {
     public function __invoke(Site $site)
     {

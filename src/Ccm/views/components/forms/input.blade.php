@@ -9,7 +9,10 @@
 
 <div class="{{ $grow ? 'grow' : '' }}">
     <label for="{{ $id }}"
-           class="block text-sm font-medium leading-6 text-gray-900">{{ $slot }}{{ $required ? '*' : '' }}</label>
+           class="block text-sm font-medium leading-6 text-gray-900"
+    >{{ $slot }}
+        <x-ccm::forms.required :required="$required"/>
+    </label>
     <div class="mt-1">
         <input type="{{ $type }}"
                name="{{ $name }}"

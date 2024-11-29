@@ -47,7 +47,7 @@
                         Favicon
                         <x-slot:preview>
                             @if ($site->favicon)
-                                <img src="{{ route('frontend::favicon', $site) }}" class="w-[16px] h-[16px]"/>
+                                <img src="{{ route('cms::sites::favicon', $site) }}" class="w-[16px] h-[16px]"/>
                             @endif
                         </x-slot:preview>
                     </x-ccm::forms.input-file>

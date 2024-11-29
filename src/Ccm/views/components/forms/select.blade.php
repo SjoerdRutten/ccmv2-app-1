@@ -3,13 +3,16 @@
     'label' => '',
     'name' => '',
     'disabled' => false,
+    'required' => false,
     'grow' => false,
     'divClass' => ''
 ])
 
 <div class="{{ $grow ? 'grow' : '' }} {{ $divClass }}">
     @if (filled($label))
-        <label for="{{ $id }}" class="block text-sm font-medium leading-6 text-gray-900">{{ $label }}</label>
+        <label for="{{ $id }}" class="block text-sm font-medium leading-6 text-gray-900">{{ $label }}
+            <x-ccm::forms.required :required="$required"/>
+        </label>
     @endif
     <select id="{{ $id }}"
             name="{{ $name }}"

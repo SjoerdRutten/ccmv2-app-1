@@ -2,9 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return redirect()->route('ccm::dashboard');
-});
+Route::domain(config('app.url'))
+    ->get('/', function () {
+        return redirect()->route('ccm::dashboard');
+    });
 
 Route::middleware([
     'auth:sanctum',

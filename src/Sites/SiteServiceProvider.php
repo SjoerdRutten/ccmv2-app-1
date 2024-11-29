@@ -8,10 +8,14 @@ use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Sellvation\CCMV2\Sites\Events\SiteSavingEvent;
 use Sellvation\CCMV2\Sites\Events\SiteUpdatingEvent;
+use Sellvation\CCMV2\Sites\Http\Controllers\FaviconController;
+use Sellvation\CCMV2\Sites\Http\Controllers\ImportController;
+use Sellvation\CCMV2\Sites\Http\Controllers\PageController;
 use Sellvation\CCMV2\Sites\Listeners\SiteSavingListener;
 use Sellvation\CCMV2\Sites\Listeners\SiteUpdatingListener;
 use Sellvation\CCMV2\Sites\Livewire\Sites\Edit;
 use Sellvation\CCMV2\Sites\Livewire\Sites\Overview;
+use Sellvation\CCMV2\Sites\Models\Site;
 
 class SiteServiceProvider extends ServiceProvider
 {
@@ -21,10 +25,10 @@ class SiteServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
-        $this->loadRoutesFrom(__DIR__.'/routes/frontend.php');
         $this->loadViewsFrom(__DIR__.'/views', 'sites');
 
         $this->registerEvents();
+        $this->registerFrontendRoutes();
 
         if (! App::runningInConsole()) {
             $this->registerLivewireComponents();
@@ -39,6 +43,8 @@ class SiteServiceProvider extends ServiceProvider
         Livewire::component('layouts::edit', \Sellvation\CCMV2\Sites\Livewire\Layouts\Edit::class);
         Livewire::component('imports::overview', \Sellvation\CCMV2\Sites\Livewire\Imports\Overview::class);
         Livewire::component('imports::edit', \Sellvation\CCMV2\Sites\Livewire\Imports\Edit::class);
+        Livewire::component('pages::overview', \Sellvation\CCMV2\Sites\Livewire\Pages\Overview::class);
+        Livewire::component('pages::edit', \Sellvation\CCMV2\Sites\Livewire\Pages\Edit::class);
     }
 
     private function registerEvents()
@@ -47,5 +53,24 @@ class SiteServiceProvider extends ServiceProvider
 
         $events->listen(SiteUpdatingEvent::class, SiteUpdatingListener::class);
         $events->listen(SiteSavingEvent::class, SiteSavingListener::class);
+    }
+
+    private function registerFrontendRoutes()
+    {
+        $router = app()->make('router');
+
+        foreach (Site::all() as $site) {
+            $router->domain($site->domain)
+                ->middleware([
+                    'web',
+                ])
+                ->name('frontend::')
+                ->group(function () use ($router) {
+                    $router->get('assets/favicon.ico', FaviconController::class)->name('assets.favicon');
+                    $router->get('assets/{siteImport}/{name}', ImportController::class)->name('assets.siteImport');
+                    $router->get('/{sitePage:slug}', PageController::class);
+                    $router->get('/', PageController::class);
+                });
+        }
     }
 }
