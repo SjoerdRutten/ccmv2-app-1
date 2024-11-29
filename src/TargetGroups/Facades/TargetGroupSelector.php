@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Scout\Builder;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
+use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
 use Spatie\Tags\Tag;
 
 class TargetGroupSelector
@@ -17,6 +18,17 @@ class TargetGroupSelector
         foreach ($elements as $row) {
             if ((Arr::get($row, 'type') == 'block') && (count(Arr::get($row, 'subelements')))) {
                 $subElements = Arr::get($row, 'subelements');
+
+                foreach ($subElements as $key => $subElement) {
+                    if ($subElement['columnType'] === 'target_group') {
+                        $targetGroup = TargetGroup::find($subElement['value']);
+
+                        $subElements = array_merge($subElements, Arr::get($targetGroup->filters, '0.subelements'));
+
+                        Arr::pull($subElements, $key);
+                    }
+                }
+
                 $nestedRules = $this->makeNestedRules($subElements);
 
                 $filters[] = $this->makeBlockFilters($nestedRules, $subElements);
@@ -65,21 +77,24 @@ class TargetGroupSelector
         $filters = [];
 
         foreach ($subelements as $subelement) {
+
             if ($subelement) {
-                $column = explode('.', $subelement['column']);
-                Arr::pull($column, count($column) - 1);
+                if (Arr::get($subelement, 'column') !== 'target_group_id') {
+                    $column = explode('.', $subelement['column']);
+                    Arr::pull($column, count($column) - 1);
 
-                if (count($column)) {
-                    $key = implode('.', $column).'.ids';
-                } else {
-                    $key = 'ids';
+                    if (count($column)) {
+                        $key = implode('.', $column).'.ids';
+                    } else {
+                        $key = 'ids';
+                    }
+
+                    if (! Arr::has($filters, $key)) {
+                        Arr::set($filters, $key, []);
+                    }
+
+                    Arr::set($filters, $key.'.'.count(Arr::get($filters, $key)), $subelement['id']);
                 }
-
-                if (! Arr::has($filters, $key)) {
-                    Arr::set($filters, $key, []);
-                }
-
-                Arr::set($filters, $key.'.'.count(Arr::get($filters, $key)), $subelement['id']);
             }
         }
 
