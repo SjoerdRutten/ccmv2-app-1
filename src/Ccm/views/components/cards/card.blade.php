@@ -1,8 +1,11 @@
 <li class="overflow-hidden rounded-xl border border-gray-200 bg-white">
-    <div class="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
-        {{--        <img src="https://tailwindui.com/plus/img/logos/48x48/reform.svg" alt="Reform"--}}
-        {{--             class="h-12 w-12 flex-none rounded-lg bg-white object-cover ring-1 ring-gray-900/10">--}}
-        <div class="text-sm font-medium leading-6 text-gray-900">{{ $title }}</div>
+    <div class="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 px-6 py-3">
+        <div>
+            <div class="text-md font-medium leading-6 text-gray-900">{{ $title }}</div>
+            @if ($subtitle ?? false)
+                <div class="text-sm font-medium leading-6 text-gray-700 italic">{{ $subtitle }}</div>
+            @endif
+        </div>
         {{--        <div class="relative ml-auto">--}}
         {{--            <button type="button" class="-m-2.5 block p-2.5 text-gray-400 hover:text-gray-500"--}}
         {{--                    id="options-menu-2-button" aria-expanded="false" aria-haspopup="true">--}}

@@ -6,6 +6,8 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Sellvation\CCMV2\Ccm\Livewire\Traits\HasModals;
 use Sellvation\CCMV2\Sites\Livewire\Pages\Forms\PageForm;
+use Sellvation\CCMV2\Sites\Models\Site;
+use Sellvation\CCMV2\Sites\Models\SiteBlock;
 use Sellvation\CCMV2\Sites\Models\SiteCategory;
 use Sellvation\CCMV2\Sites\Models\SiteLayout;
 use Sellvation\CCMV2\Sites\Models\SitePage;
@@ -19,10 +21,14 @@ class Edit extends Component
 
     public PageForm $form;
 
+    public $layoutConfigBlocks = [];
+
     public function mount(SitePage $sitePage)
     {
         $this->sitePage = $sitePage;
         $this->form->setSitePage($sitePage);
+
+        $this->layoutConfigBlocks = $sitePage->siteLayout?->config ?: [];
     }
 
     public function updated($property, $value)
@@ -31,7 +37,44 @@ class Edit extends Component
             $this->form->slug = \Str::slug($this->form->name);
         } elseif ($property === 'form.slug') {
             $this->form->slugGenerated = false;
+        } elseif ($property === 'form.site_layout_id') {
+            if ($siteLayout = SiteLayout::find($value)) {
+                $this->sitePage->siteLayout()->associate($siteLayout);
+                $this->form->setSitePageConfig($siteLayout);
+            } else {
+                $this->sitePage->siteLayout()->dissociate();
+            }
+            $this->layoutConfigBlocks = $this->sitePage->siteLayout?->config ?: [];
         }
+    }
+
+    public function addBlockToList($list)
+    {
+        $this->form->config[$list][] = null;
+    }
+
+    public function removeBlockFromList($list, $index)
+    {
+        \Arr::pull($this->form->config, $list.'.'.$index);
+    }
+
+    public function reOrderBlocks($list, $from, $to)
+    {
+        $result = [];
+        $item = $this->form->config[$list][$from];
+        foreach ($this->form->config[$list] as $key => $row) {
+            if (count($result) === $to) {
+                $result[] = $item;
+            }
+            if ($key !== $from) {
+                $result[] = $row;
+            }
+            if (count($result) === $to) {
+                $result[] = $item;
+            }
+        }
+
+        $this->form->config[$list] = $result;
     }
 
     public function save()
@@ -47,6 +90,8 @@ class Edit extends Component
             ->with([
                 'siteCategories' => SiteCategory::orderBy('name')->get(),
                 'siteLayouts' => SiteLayout::orderBy('name')->get(),
+                'siteBlocks' => SiteBlock::orderBy('name')->get(),
+                'sites' => Site::orderBy('name')->get(),
             ]);
     }
 }

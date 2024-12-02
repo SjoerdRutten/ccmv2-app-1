@@ -19,17 +19,4 @@ return new class extends Migration
             });
         });
     }
-
-    public function down(): void
-    {
-        Schema::table('site_layouts', function (Blueprint $table) {
-            $table->dropColumn([
-                'meta_title',
-                'meta_description',
-                'meta_keywords',
-                'follow',
-                'index',
-            ]);
-        });
-    }
 };

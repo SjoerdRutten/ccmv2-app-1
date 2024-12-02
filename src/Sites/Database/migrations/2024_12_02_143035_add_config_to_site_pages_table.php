@@ -8,8 +8,9 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('site_layouts', function (Blueprint $table) {
-            $table->json('config')->nullable()->after('index');
+        Schema::dropIfExists('site_page_blocks');
+        Schema::table('site_pages', function (Blueprint $table) {
+            $table->json('config')->nullable()->after('end_at');
         });
     }
 };

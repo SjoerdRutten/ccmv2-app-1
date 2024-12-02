@@ -12,11 +12,4 @@ return new class extends Migration
             $table->foreignId('environment_id')->after('id')->constrained()->cascadeOnDelete();
         });
     }
-
-    public function down(): void
-    {
-        Schema::table('site_pages', function (Blueprint $table) {
-            $table->dropForeign('environment_id');
-        });
-    }
 };

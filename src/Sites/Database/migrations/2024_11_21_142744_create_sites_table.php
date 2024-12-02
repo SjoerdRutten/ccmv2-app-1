@@ -107,22 +107,4 @@ return new class extends Migration
             $table->foreignId('site_page_id')->after('environment_id')->nullable()->constrained()->nullOnDelete();
         });
     }
-
-    public function down(): void
-    {
-        Schema::table('sites', function (Blueprint $table) {
-            $table->dropConstrainedForeignId('site_page_id');
-        });
-        Schema::dropIfExists('site_site_pages');
-        Schema::dropIfExists('site_import_site_layout');
-        Schema::dropIfExists('site_page_imports');
-        Schema::dropIfExists('site_block_imports');
-        Schema::dropIfExists('site_page_blocks');
-        Schema::dropIfExists('site_blocks');
-        Schema::dropIfExists('site_pages');
-        Schema::dropIfExists('site_layouts');
-        Schema::dropIfExists('site_imports');
-        Schema::dropIfExists('sites');
-        Schema::dropIfExists('site_categories');
-    }
 };

@@ -8,8 +8,8 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('site_layouts', function (Blueprint $table) {
-            $table->json('config')->nullable()->after('index');
+        Schema::table('site_pages', function (Blueprint $table) {
+            $table->foreignId('site_id')->nullable()->after('environment_id')->index()->constrained('sites');
         });
     }
 };

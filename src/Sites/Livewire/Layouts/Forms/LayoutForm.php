@@ -104,6 +104,9 @@ class LayoutForm extends Form
 
         $data = $this->except('siteLayout', 'id');
 
+        $data['index'] = (bool) $data['index'];
+        $data['follow'] = (bool) $data['follow'];
+
         if ($this->siteLayout->id) {
             $this->siteLayout->update($data);
         } else {

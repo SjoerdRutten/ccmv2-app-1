@@ -21,15 +21,26 @@ class PageForm extends Form
     public ?int $site_layout_id = null;
 
     #[Validate]
+    public ?int $site_id = null;
+
+    #[Validate]
     public $name;
 
     #[Validate]
     public $slug;
 
+    #[Validate]
+    public $start_at;
+
+    #[Validate]
+    public $end_at;
+
     public bool $slugGenerated = true;
 
     #[Validate]
     public $description;
+
+    public $config = [];
 
     public function rules(): array
     {
@@ -41,6 +52,10 @@ class PageForm extends Form
                 'required',
                 'exists:site_layouts,id',
             ],
+            'site_id' => [
+                'nullable',
+                'exists:sites,id',
+            ],
             'name' => [
                 'required',
             ],
@@ -50,6 +65,14 @@ class PageForm extends Form
             'description' => [
                 'nullable',
             ],
+            'start_at' => [
+                'nullable',
+                'date',
+            ],
+            'end_at' => [
+                'nullable',
+                'date',
+            ],
         ];
     }
 
@@ -58,6 +81,22 @@ class PageForm extends Form
         $this->sitePage = $sitePage;
 
         $this->fill($sitePage->toArray());
+        $this->setSitePageConfig($sitePage->siteLayout);
+    }
+
+    public function setSitePageConfig($siteLayout)
+    {
+        $this->config = [];
+
+        if ($siteLayout) {
+            foreach ($siteLayout->config as $row) {
+                if ($row['multiple']) {
+                    $this->config[$row['key']] = array_values(\Arr::get($this->sitePage->config, $row['key'], []));
+                } else {
+                    $this->config[$row['key']] = \Arr::get($this->sitePage->config, $row['key']);
+                }
+            }
+        }
     }
 
     public function save()

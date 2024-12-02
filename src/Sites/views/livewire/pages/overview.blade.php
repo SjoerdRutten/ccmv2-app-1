@@ -26,15 +26,36 @@
             <x-slot:thead>
                 <x-ccm::tables.th :first="true">ID</x-ccm::tables.th>
                 <x-ccm::tables.th>Naam</x-ccm::tables.th>
-                <x-ccm::tables.th>Omschrijving</x-ccm::tables.th>
+                <x-ccm::tables.th>Site</x-ccm::tables.th>
+                <x-ccm::tables.th>Online</x-ccm::tables.th>
+                <x-ccm::tables.th>Slug</x-ccm::tables.th>
+                <x-ccm::tables.th>Publicatie</x-ccm::tables.th>
                 <x-ccm::tables.th :link="true">Acties</x-ccm::tables.th>
             </x-slot:thead>
             <x-slot:tbody>
                 @foreach ($pages AS $key => $page)
                     <x-ccm::tables.tr :route="route('cms::pages::edit', $page)">
                         <x-ccm::tables.td :first="true">{{ $page->id }}</x-ccm::tables.td>
-                        <x-ccm::tables.td>{{ $page->name }}</x-ccm::tables.td>
-                        <x-ccm::tables.td>{{ $page->description }}</x-ccm::tables.td>
+                        <x-ccm::tables.td>
+                            {{ $page->name }}
+                            <x-slot:sub>{{ $page->description }}</x-slot:sub>
+                        </x-ccm::tables.td>
+                        <x-ccm::tables.td>{{ $page->site?->name }}</x-ccm::tables.td>
+                        <x-ccm::tables.td>
+                            @if ($page->isOnline)
+                                <x-ccm::tags.success>Online</x-ccm::tags.success>
+                            @else
+                                <x-ccm::tags.error>Offline</x-ccm::tags.error>
+                            @endif
+                        </x-ccm::tables.td>
+                        <x-ccm::tables.td>{{ $page->slug }}</x-ccm::tables.td>
+                        <x-ccm::tables.td>
+                            {{ $page->start_at?->toDateTimeString('minutes') }}
+                            @if ($page->start_at && $page->end_at)
+                                t/m
+                            @endif
+                            {{ $page->end_at?->toDateTimeString('minutes') }}
+                        </x-ccm::tables.td>
                         <x-ccm::tables.td :link="true">
                             <x-ccm::tables.edit-link :href="route('cms::pages::edit', $page)"/>
                             <x-ccm::tables.delete-link
