@@ -46,6 +46,8 @@
                         <x-ccm::tables.td>{{ $import->description }}</x-ccm::tables.td>
                         <x-ccm::tables.td :link="true">
                             <x-ccm::tables.edit-link :href="route('cms::imports::edit', $import)"/>
+                            <x-ccm::tables.delete-link wire:confirm="Weet je zeker dat je dit item wilt verwijderen ?"
+                                                       wire:click="removeImport({{ $import->id }})"/>
                         </x-ccm::tables.td>
                     </x-ccm::tables.tr>
                 @endforeach

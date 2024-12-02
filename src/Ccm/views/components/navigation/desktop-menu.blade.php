@@ -15,6 +15,7 @@
                 <x-ccm::navigation.desktop-link route="cms::layouts::overview" label="Layouts" :sub="true"/>
                 <x-ccm::navigation.desktop-link route="cms::imports::overview" label="JS/CSS" :sub="true"/>
                 <x-ccm::navigation.desktop-link route="cms::pages::overview" label="Pagina's" :sub="true"/>
+                <x-ccm::navigation.desktop-link route="cms::blocks::overview" label="Contentblokken" :sub="true"/>
                 <x-ccm::navigation.desktop-link route="cms::forms::overview" label="Formulieren" :sub="true"/>
             </x-ccm::navigation.desktop-link>
             @endpermission

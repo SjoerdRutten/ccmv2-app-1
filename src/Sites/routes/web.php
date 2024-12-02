@@ -39,4 +39,11 @@ Route::prefix('cms')
                 Route::get('/new', \Sellvation\CCMV2\Sites\Livewire\Pages\Edit::class)->name('add');
                 Route::get('/{sitePage}', \Sellvation\CCMV2\Sites\Livewire\Pages\Edit::class)->name('edit');
             });
+        Route::prefix('blocks')
+            ->name('blocks::')
+            ->group(function () {
+                Route::get('/', \Sellvation\CCMV2\Sites\Livewire\Blocks\Overview::class)->name('overview');
+                Route::get('/new', \Sellvation\CCMV2\Sites\Livewire\Blocks\Edit::class)->name('add');
+                Route::get('/{siteBlock}', \Sellvation\CCMV2\Sites\Livewire\Blocks\Edit::class)->name('edit');
+            });
     });

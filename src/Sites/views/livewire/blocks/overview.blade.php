@@ -1,8 +1,8 @@
 <div wire:loading.remove>
     <div class="px-4 sm:px-6 lg:px-8">
-        <x-ccm::pages.intro title="Pagina's">
+        <x-ccm::pages.intro title="Contentblok">
             <x-slot:actions>
-                <x-ccm::buttons.add route="cms::pages::add">Pagina toevoegen</x-ccm::buttons.add>
+                <x-ccm::buttons.add route="cms::blocks::add">Contentblok toevoegen</x-ccm::buttons.add>
             </x-slot:actions>
             <div class="flex gap-4">
                 @if (count($siteCategories))
@@ -30,22 +30,23 @@
                 <x-ccm::tables.th :link="true">Acties</x-ccm::tables.th>
             </x-slot:thead>
             <x-slot:tbody>
-                @foreach ($pages AS $key => $page)
-                    <x-ccm::tables.tr :route="route('cms::pages::edit', $page)">
-                        <x-ccm::tables.td :first="true">{{ $page->id }}</x-ccm::tables.td>
-                        <x-ccm::tables.td>{{ $page->name }}</x-ccm::tables.td>
-                        <x-ccm::tables.td>{{ $page->description }}</x-ccm::tables.td>
+                @foreach ($blocks AS $key => $block)
+                    <x-ccm::tables.tr :route="route('cms::blocks::edit', $block)">
+                        <x-ccm::tables.td :first="true">{{ $block->id }}</x-ccm::tables.td>
+                        <x-ccm::tables.td>{{ $block->name }}</x-ccm::tables.td>
+                        <x-ccm::tables.td>{{ $block->description }}</x-ccm::tables.td>
                         <x-ccm::tables.td :link="true">
-                            <x-ccm::tables.edit-link :href="route('cms::pages::edit', $page)"/>
-                            <x-ccm::tables.delete-link
-                                    wire:confirm="Weet je zeker dat je deze pagina wilt verwijderen ?"
-                                    wire:click="removePage({{ $page->id }})"/>
+                            <x-ccm::tables.edit-link :href="route('cms::blocks::edit', $block)"/>
+                            <x-ccm::tables.delete-link wire:confirm="Weet je zeker dat je dit blok wilt verwijderen ?"
+                                                       wire:click="removeBlock({{ $block->id }})"/>
+                            <x-ccm::tables.duplicate-link wire:confirm="Wil je een kopie maken van dit contentblok ?"
+                                                          wire:click="duplicateBlock({{ $block->id }})"/>
                         </x-ccm::tables.td>
                     </x-ccm::tables.tr>
                 @endforeach
             </x-slot:tbody>
         </x-ccm::tables.table>
 
-        {{ $pages->links() }}
+        {{ $blocks->links() }}
     </div>
 </div>

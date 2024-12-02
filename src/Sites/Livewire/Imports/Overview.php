@@ -42,6 +42,11 @@ class Overview extends Component
             ->paginate();
     }
 
+    public function removeImport(SiteImport $import)
+    {
+        $import->delete();
+    }
+
     public function render()
     {
         return view('sites::livewire.imports.overview')

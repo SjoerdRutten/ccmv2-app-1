@@ -37,14 +37,16 @@ class SiteServiceProvider extends ServiceProvider
 
     private function registerLivewireComponents(): void
     {
-        Livewire::component('sites::overview', Overview::class);
-        Livewire::component('sites::edit', Edit::class);
-        Livewire::component('layouts::overview', \Sellvation\CCMV2\Sites\Livewire\Layouts\Overview::class);
-        Livewire::component('layouts::edit', \Sellvation\CCMV2\Sites\Livewire\Layouts\Edit::class);
+        Livewire::component('blocks::overview', \Sellvation\CCMV2\Sites\Livewire\Blocks\Overview::class);
+        Livewire::component('blocks::edit', \Sellvation\CCMV2\Sites\Livewire\Blocks\Edit::class);
         Livewire::component('imports::overview', \Sellvation\CCMV2\Sites\Livewire\Imports\Overview::class);
         Livewire::component('imports::edit', \Sellvation\CCMV2\Sites\Livewire\Imports\Edit::class);
+        Livewire::component('layouts::overview', \Sellvation\CCMV2\Sites\Livewire\Layouts\Overview::class);
+        Livewire::component('layouts::edit', \Sellvation\CCMV2\Sites\Livewire\Layouts\Edit::class);
         Livewire::component('pages::overview', \Sellvation\CCMV2\Sites\Livewire\Pages\Overview::class);
         Livewire::component('pages::edit', \Sellvation\CCMV2\Sites\Livewire\Pages\Edit::class);
+        Livewire::component('sites::overview', Overview::class);
+        Livewire::component('sites::edit', Edit::class);
     }
 
     private function registerEvents()
