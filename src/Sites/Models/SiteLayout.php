@@ -20,12 +20,14 @@ class SiteLayout extends Model
         'meta_keywords',
         'follow',
         'index',
+        'config',
         'body',
     ];
 
     protected $casts = [
         'follow' => 'boolean',
         'index' => 'boolean',
+        'config' => 'json',
     ];
 
     public function siteCategory(): BelongsTo

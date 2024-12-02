@@ -11,6 +11,7 @@
             <x-slot:tabs>
                 <x-ccm::tabs.nav-tab :index="0">Basis informatie</x-ccm::tabs.nav-tab>
                 <x-ccm::tabs.nav-tab :index="1">Meta informatie</x-ccm::tabs.nav-tab>
+                <x-ccm::tabs.nav-tab :index="4">Blokken</x-ccm::tabs.nav-tab>
                 <x-ccm::tabs.nav-tab :index="2">Body</x-ccm::tabs.nav-tab>
                 <x-ccm::tabs.nav-tab :index="3">CSS/JS</x-ccm::tabs.nav-tab>
             </x-slot:tabs>
@@ -78,7 +79,7 @@
                                         {{ $import->name }}
                                     </div>
                                     <x-ccm::buttons.delete
-                                            wire:click.prevent="removeItemFromList({{ $import->id }})"></x-ccm::buttons.delete>
+                                            wire:click.prevent="removeImportFromList({{ $import->id }})"></x-ccm::buttons.delete>
                                 </x-ccm::sortable-list.li>
                             @endforeach
                         </x-ccm::sortable-list.ul>
@@ -102,11 +103,35 @@
                                         {{ $import->name }}
                                     </div>
                                     <x-ccm::buttons.delete
-                                            wire:click.prevent="removeItemFromList({{ $import->id }})"></x-ccm::buttons.delete>
+                                            wire:click.prevent="removeImportFromList({{ $import->id }})"></x-ccm::buttons.delete>
                                 </x-ccm::sortable-list.li>
                             @endforeach
                         </x-ccm::sortable-list.ul>
                     </div>
+                </div>
+            </x-ccm::tabs.tab-content>
+            <x-ccm::tabs.tab-content :index="4">
+
+                <x-ccm::sortable-list.ul
+                        x-data="{ handle: (item, position) => { $wire.reOrderBlocks(item, position) } }">
+                    @php($index = 0)
+                    @foreach ($this->form->config ?? [] AS $key => $row)
+                        <x-ccm::sortable-list.li :id="$index">
+                            <x-ccm::forms.input wire:model.blur="form.config.{{ $key }}.key">Naam</x-ccm::forms.input>
+                            <x-ccm::forms.input wire:model="form.config.{{ $key }}.description" :grow="true">
+                                Omschrijving
+                            </x-ccm::forms.input>
+                            <x-ccm::forms.checkbox wire:model="form.config.{{ $key }}.multiple">
+                                Multiple
+                            </x-ccm::forms.checkbox>
+                            <x-ccm::buttons.delete
+                                    wire:click.prevent="removeBlockFromList('{{ $key }}')"/>
+                        </x-ccm::sortable-list.li>
+                        @php($index++)
+                    @endforeach
+                </x-ccm::sortable-list.ul>
+                <div class="flex mt-4">
+                    <x-ccm::buttons.add wire:click="addBlock">Blok toevoegen</x-ccm::buttons.add>
                 </div>
             </x-ccm::tabs.tab-content>
         </x-ccm::tabs.base>

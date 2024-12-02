@@ -36,7 +36,10 @@ class Edit extends Component
 
     public function updated($property, $value)
     {
-        if ($property === 'importId') {
+        if (\Str::startsWith($property, 'form.config') && \Str::endsWith($property, '.key')) {
+            $key = \Arr::get(explode('.', $property), 2);
+            \Arr::set($this->form->config, $key.'.key', \Str::camel(\Str::slug($value)));
+        } elseif ($property === 'importId') {
             $this->addItemToList(SiteImport::find($value));
         }
     }
@@ -65,7 +68,38 @@ class Edit extends Component
         $this->loadImports();
     }
 
-    public function removeItemFromList(SiteImport $import)
+    public function reOrderBlocks($key, $position)
+    {
+        $index = 0;
+        foreach ($this->form->config as $row) {
+            if ($index === $key) {
+                $item = $row;
+            }
+            $index++;
+        }
+
+        $result = [];
+        foreach ($this->form->config as $row) {
+            if (count($result) === $position) {
+                $result[uniqid()] = $item;
+            }
+            if ($row['key'] !== $item['key']) {
+                $result[uniqid()] = $row;
+            }
+            if (count($result) === $position) {
+                $result[uniqid()] = $item;
+            }
+        }
+
+        $this->form->config = $result;
+    }
+
+    public function removeBlockFromList($key)
+    {
+        \Arr::pull($this->form->config, $key);
+    }
+
+    public function removeImportFromList(SiteImport $import)
     {
         $this->siteLayout->siteImports()->detach($import);
         $this->loadImports();
@@ -98,9 +132,14 @@ class Edit extends Component
         }
     }
 
+    public function addBlock()
+    {
+        $this->form->addBlock();
+    }
+
     public function save()
     {
-        $this->form->save();
+        $this->siteLayout = $this->form->save();
 
         $this->showSuccessModal(title: 'Layout is opgeslagen', href: route('cms::layouts::edit', $this->siteLayout->id));
     }

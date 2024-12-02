@@ -2,6 +2,7 @@
 
 namespace Sellvation\CCMV2\Sites\Livewire\Layouts\Forms;
 
+use Illuminate\Support\Arr;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
@@ -35,6 +36,8 @@ class LayoutForm extends Form
 
     #[Validate]
     public $index;
+
+    public ?array $config = [];
 
     public $body;
 
@@ -70,17 +73,32 @@ class LayoutForm extends Form
                 'nullable',
                 'bool',
             ],
+            'config' => [
+                'nullable',
+                'array',
+            ],
         ];
     }
 
     public function setSiteLayout(SiteLayout $siteLayout)
     {
         $this->siteLayout = $siteLayout;
-
         $this->fill($siteLayout->toArray());
     }
 
-    public function save()
+    public function addBlock()
+    {
+        $block = [
+            'key' => uniqid(),
+            'description' => 'Omschrijving van het blok',
+            'multiple' => false,
+        ];
+
+        //        $this->config = $this->config ?: [];
+        $this->config = Arr::add($this->config, uniqid(), $block);
+    }
+
+    public function save(): SiteLayout
     {
         $this->validate();
 
@@ -94,5 +112,6 @@ class LayoutForm extends Form
 
         $this->setSiteLayout($this->siteLayout);
 
+        return $this->siteLayout;
     }
 }
