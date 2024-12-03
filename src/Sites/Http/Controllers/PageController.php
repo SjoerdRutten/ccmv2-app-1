@@ -4,6 +4,7 @@ namespace Sellvation\CCMV2\Sites\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
+use Sellvation\CCMV2\Sites\Models\SiteBlock;
 use Sellvation\CCMV2\Sites\Models\SitePage;
 
 class PageController extends FrontendController
@@ -26,9 +27,20 @@ class PageController extends FrontendController
         $data['page'] = $sitePage;
         $data['layout'] = $sitePage->siteLayout;
         $data['crmCard'] = $this->crmCard;
+        $data['crmCardData'] = $this->crmCard->data;
 
         // TODO: Extensies moeten ook data toe kunnen voegen
         // TODO: De blokken van de pagina moeten in de layout geplaatst worden
+
+        foreach ($sitePage->siteLayout->config as $row) {
+            if (\Arr::get($row, 'multiple')) {
+
+            } else {
+                if ($block = SiteBlock::find(\Arr::get($sitePage->config, $row['key']))) {
+                    $data['content'] = Blade::render($block->body, $data);
+                }
+            }
+        }
 
         $content = Blade::render(
             $sitePage->siteLayout->body,

@@ -39,6 +39,8 @@ class ScrapeAndConvertJob implements ShouldQueue
         $this->scraper->save();
 
         if ($this->scraper->target === 'layout') {
+            //TODO: Header aanpassen naar stub
+
             $this->scraper->siteLayout->update(['body' => $this->dom->outerHtml]);
         } elseif ($this->scraper->target === 'block') {
             $nodes = $this->dom->find($this->scraper->start_selector);
