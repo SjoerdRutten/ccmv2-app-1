@@ -5,6 +5,7 @@ namespace Sellvation\CCMV2\Sites\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 
 class SitePage extends Model
@@ -13,7 +14,6 @@ class SitePage extends Model
 
     protected $fillable = [
         'site_category_id',
-        'site_id',
         'site_layout_id',
         'name',
         'slug',
@@ -39,9 +39,9 @@ class SitePage extends Model
         return $this->belongsTo(SiteLayout::class);
     }
 
-    public function site(): BelongsTo
+    public function sites(): BelongstoMany
     {
-        return $this->belongsTo(Site::class);
+        return $this->belongsToMany(Site::class);
     }
 
     protected function isOnline(): Attribute

@@ -21,7 +21,7 @@ class PageForm extends Form
     public ?int $site_layout_id = null;
 
     #[Validate]
-    public ?int $site_id = null;
+    public array $site_id = [];
 
     #[Validate]
     public $name;
@@ -53,7 +53,7 @@ class PageForm extends Form
                 'exists:site_layouts,id',
             ],
             'site_id' => [
-                'nullable',
+                'array',
                 'exists:sites,id',
             ],
             'name' => [
@@ -82,6 +82,7 @@ class PageForm extends Form
 
         $this->fill($sitePage->toArray());
         $this->setSitePageConfig($sitePage->siteLayout);
+        $this->site_id = $sitePage->sites()->pluck('id')->toArray();
     }
 
     public function setSitePageConfig($siteLayout)
@@ -103,13 +104,15 @@ class PageForm extends Form
     {
         $this->validate();
 
-        $data = $this->except('sitePage', 'id', 'slugGenerated');
+        $data = $this->except('sitePage', 'id', 'slugGenerated', 'site_id');
 
         if ($this->sitePage->id) {
             $this->sitePage->update($data);
         } else {
             $this->sitePage = SitePage::create($data);
         }
+
+        $this->sitePage->sites()->sync($this->site_id);
 
         $this->setSitePage($this->sitePage);
 

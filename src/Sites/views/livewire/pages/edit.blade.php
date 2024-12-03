@@ -1,6 +1,6 @@
 <div wire:loading.remove>
     <div class="px-4 sm:px-6 lg:px-8">
-        <x-ccm::pages.intro title="Pagina wijzigen">
+        <x-ccm::pages.intro :title="'Pagina wijzigen \''.$this->form->name.'\''">
             <x-slot:actions>
                 <x-ccm::buttons.back :href="route('cms::pages::overview')">Terug</x-ccm::buttons.back>
                 <x-ccm::buttons.save wire:click="save"></x-ccm::buttons.save>
@@ -20,17 +20,6 @@
 
             <x-ccm::tabs.tab-content :index="0">
                 <x-ccm::forms.form class="w-1/2">
-                    <x-ccm::forms.select name="form.site_id"
-                                         wire:model.live="form.site_id"
-                                         label="Site"
-                    >
-                        <option></option>
-                        @foreach ($sites AS $site)
-                            <option value="{{ $site->id }}">
-                                {{ $site->name }}
-                            </option>
-                        @endforeach
-                    </x-ccm::forms.select>
                     <x-ccm::forms.input name="form.name"
                                         wire:model.blur="form.name"
                                         :required="true"
@@ -70,6 +59,16 @@
                     >
                         Publicatie eindtijd
                     </x-ccm::forms.input-datetime>
+                    <x-ccm::typography.h2>Sites
+                        <em class="text-xs">
+                            Indien geen enkele site is aangevinkt, dan is de pagina voor alle sites beschikbaar
+                        </em>
+                    </x-ccm::typography.h2>
+                    @foreach ($sites AS $site)
+                        <x-ccm::forms.checkbox wire:model.live="form.site_id"
+                                               value="{{ $site->id }}"
+                                               name="form.site_id">{{ $site->name }}</x-ccm::forms.checkbox>
+                    @endforeach
                 </x-ccm::forms.form>
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="1">

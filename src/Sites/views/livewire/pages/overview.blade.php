@@ -40,7 +40,13 @@
                             {{ $page->name }}
                             <x-slot:sub>{{ $page->description }}</x-slot:sub>
                         </x-ccm::tables.td>
-                        <x-ccm::tables.td>{{ $page->site?->name }}</x-ccm::tables.td>
+                        <x-ccm::tables.td>
+                            <ul>
+                                @foreach($page->sites AS $site)
+                                    <li>{{ $site->name }}</li>
+                                @endforeach
+                            </ul>
+                        </x-ccm::tables.td>
                         <x-ccm::tables.td>
                             @if ($page->isOnline)
                                 <x-ccm::tags.success>Online</x-ccm::tags.success>
