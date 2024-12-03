@@ -92,9 +92,15 @@ class PageForm extends Form
         if ($siteLayout) {
             foreach ($siteLayout->config as $row) {
                 if ($row['multiple']) {
-                    $this->config[$row['key']] = array_values(\Arr::get($this->sitePage->config, $row['key'], []));
+                    $ids = \Arr::get($this->sitePage->config, $row['key'], []);
+                    $ids = is_array($ids) ? $ids : [$ids];
+
+                    $this->config[$row['key']] = array_values($ids);
                 } else {
-                    $this->config[$row['key']] = \Arr::get($this->sitePage->config, $row['key']);
+                    $id = \Arr::get($this->sitePage->config, $row['key']);
+                    $id = is_array($id) ? \Arr::first($id) : $id;
+
+                    $this->config[$row['key']] = $id;
                 }
             }
         }
