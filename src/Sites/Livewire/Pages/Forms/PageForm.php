@@ -106,6 +106,9 @@ class PageForm extends Form
 
         $data = $this->except('sitePage', 'id', 'slugGenerated', 'site_id');
 
+        $data['start_at'] = empty($data['start_at']) ? null : $data['start_at'];
+        $data['end_at'] = empty($data['end_at']) ? null : $data['end_at'];
+
         if ($this->sitePage->id) {
             $this->sitePage->update($data);
         } else {

@@ -1,6 +1,13 @@
 <div wire:loading.remove>
     <div class="px-4 sm:px-6 lg:px-8">
         <x-ccm::pages.intro :title="'Pagina wijzigen \''.$this->form->name.'\''">
+            <x-slot:title_tags>
+                @if ($form->sitePage->isOnline)
+                    <x-ccm::tags.success>Online</x-ccm::tags.success>
+                @else
+                    <x-ccm::tags.error>Offline</x-ccm::tags.error>
+                @endif
+            </x-slot:title_tags>
             <x-slot:actions>
                 <x-ccm::buttons.back :href="route('cms::pages::overview')">Terug</x-ccm::buttons.back>
                 <x-ccm::buttons.save wire:click="save"></x-ccm::buttons.save>
