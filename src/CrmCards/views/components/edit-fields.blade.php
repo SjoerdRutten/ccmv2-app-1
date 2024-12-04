@@ -66,7 +66,8 @@
             </x-ccm::description-lists.element>
         </div>
     @else
-        <x-ccm::description-lists.element :label="$crmField->label ?: $crmField->name" :title="$crmField->name">
+        <x-ccm::description-lists.element :label="Str::replace('_', ' ', ($crmField->label ?: $crmField->name))"
+                                          :title="$crmField->name">
             @if ($crmField->type === 'TEXTMICRO')
                 <x-ccm::forms.input maxlength="4" :name="$crmField->name"
                                     wire:model.live="form.data.{{ $crmField->name }}" :disabled="$crmField->is_locked"/>

@@ -31,10 +31,10 @@
                 <x-ccm::tables.th>Naam</x-ccm::tables.th>
                 <x-ccm::tables.th>Omschrijving</x-ccm::tables.th>
                 <x-ccm::tables.th>Type</x-ccm::tables.th>
-                <x-ccm::tables.th>Overzicht</x-ccm::tables.th>
-                <x-ccm::tables.th>Doelgroep selector</x-ccm::tables.th>
-                <x-ccm::tables.th>CRM-Kaart</x-ccm::tables.th>
-                <x-ccm::tables.th>Vergrendelen</x-ccm::tables.th>
+                <x-ccm::tables.th :link="true">Overzicht</x-ccm::tables.th>
+                <x-ccm::tables.th :link="true">Doelgroep selector</x-ccm::tables.th>
+                <x-ccm::tables.th :link="true">CRM-Kaart</x-ccm::tables.th>
+                <x-ccm::tables.th :link="true">Vergrendelen</x-ccm::tables.th>
                 <x-ccm::tables.th :link="true"></x-ccm::tables.th>
             </x-slot:thead>
             <x-slot:tbody>
