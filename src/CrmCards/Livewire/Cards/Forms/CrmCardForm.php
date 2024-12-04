@@ -52,7 +52,7 @@ class CrmCardForm extends Form
     {
         return CrmFieldCategory::query()
             ->whereHas('crmFields')
-            ->orderBy('name')
+            ->orderBy('position')
             ->get();
     }
 }
