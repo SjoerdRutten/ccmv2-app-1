@@ -1,6 +1,9 @@
 <div wire:loading.remove>
     <div class="px-4 sm:px-6 lg:px-8">
         <x-ccm::pages.intro title="Formulieren">
+            <x-slot:actions>
+                <x-ccm::buttons.add route="cms::forms::add">Formulier toevoegen</x-ccm::buttons.add>
+            </x-slot:actions>
             <div class="flex gap-4">
                 {{--                <x-ccm::forms.select label="Rubriek" wire:model.live="filter.email_category_id">--}}
                 {{--                    <option></option>--}}

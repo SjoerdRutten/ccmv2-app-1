@@ -10,7 +10,7 @@ class CreateCrmIdListener
 
     public function handle(CrmCardCreatingEvent $event): void
     {
-        $event->crmCard->environment_id = \Context::get('environment_id');
-        $event->crmCard->crm_id = \Context::get('environment_id').'_'.uniqid();
+        $event->crmCard->environment_id = $event->crmCard->environment_id ?: \Context::get('environment_id');
+        $event->crmCard->crm_id = $event->crmCard->environment_id.'_'.uniqid();
     }
 }

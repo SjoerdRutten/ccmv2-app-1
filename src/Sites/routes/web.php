@@ -46,4 +46,11 @@ Route::prefix('cms')
                 Route::get('/new', \Sellvation\CCMV2\Sites\Livewire\Blocks\Edit::class)->name('add');
                 Route::get('/{siteBlock}', \Sellvation\CCMV2\Sites\Livewire\Blocks\Edit::class)->name('edit');
             });
+        Route::prefix('scrapers')
+            ->name('scrapers::')
+            ->group(function () {
+                Route::get('/', \Sellvation\CCMV2\Sites\Livewire\Scrapers\Overview::class)->name('overview');
+                Route::get('/new', \Sellvation\CCMV2\Sites\Livewire\Scrapers\Edit::class)->name('add');
+                Route::get('/{siteScraper}', \Sellvation\CCMV2\Sites\Livewire\Scrapers\Edit::class)->name('edit');
+            });
     });

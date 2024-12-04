@@ -17,7 +17,7 @@ class PageController extends FrontendController
         }
 
         // No page found
-        if (! $sitePage->id) {
+        if (! $sitePage) {
             abort(404);
         }
 
@@ -30,19 +30,30 @@ class PageController extends FrontendController
         $data['crmCardData'] = $this->crmCard->data;
 
         // TODO: Extensies moeten ook data toe kunnen voegen
-        // TODO: De blokken van de pagina moeten in de layout geplaatst worden
 
         foreach ($sitePage->siteLayout->config as $row) {
+            $data[$row['key']] = '';
+
             if (\Arr::get($row, 'multiple') && is_array(\Arr::get($sitePage->config, $row['key']))) {
-                $data[$row['key']] = '';
                 foreach (\Arr::get($sitePage->config, $row['key']) as $blockId) {
                     if ($block = SiteBlock::find($blockId)) {
-                        $data[$row['key']] .= Blade::render($block->body, $data);
+                        $blockData = $data;
+                        $blockData['form'] = '';
+                        if ($block->form) {
+                            $blockData['form'] = Blade::render($block->form->html_form, $data);
+                        }
+                        $data[$row['key']] .= Blade::render($block->body, $blockData);
                     }
                 }
             } else {
                 if ($block = SiteBlock::find(\Arr::get($sitePage->config, $row['key']))) {
-                    $data[$row['key']] = Blade::render($block->body, $data);
+                    $blockData = $data;
+                    $blockData['form'] = '';
+                    if ($block->form) {
+                        $blockData['form'] = Blade::render($block->form->html_form, $data);
+                    }
+
+                    $data[$row['key']] = Blade::render($block->body, $blockData);
                 }
             }
         }

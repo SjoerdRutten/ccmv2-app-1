@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
 use Sellvation\CCMV2\Forms\Actions\RedirectAction;
+use Sellvation\CCMV2\Forms\Jobs\AttachCrmCardToFormResponseJob;
 use Sellvation\CCMV2\Forms\Models\Form;
 
 class CreateFormResponseController extends Controller
@@ -34,6 +35,8 @@ class CreateFormResponseController extends Controller
             'headers' => $request->headers->all(),
             'data' => $data,
         ]);
+
+        AttachCrmCardToFormResponseJob::dispatchSync($formResponse);
 
         if ($form->success_redirect_action) {
             /** @var RedirectAction $action */

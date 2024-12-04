@@ -21,6 +21,8 @@ class BlockForm extends Form
     #[Validate]
     public $description;
 
+    public $form_id;
+
     public $start_at;
 
     public $end_at;
@@ -38,6 +40,10 @@ class BlockForm extends Form
             ],
             'description' => [
                 'nullable',
+            ],
+            'form_id' => [
+                'nullable',
+                'exists:forms,id',
             ],
             'start_at' => [
                 'nullable',

@@ -5,6 +5,7 @@ namespace Sellvation\CCMV2\Sites\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 
 class SiteLayout extends Model
@@ -39,6 +40,11 @@ class SiteLayout extends Model
     {
         return $this->belongsToMany(SiteImport::class)
             ->withPivot('position');
+    }
+
+    public function sitePages(): HasMany
+    {
+        return $this->hasMany(SitePage::class);
     }
 
     public function siteImportsJs(): BelongsToMany

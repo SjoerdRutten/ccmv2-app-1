@@ -26,6 +26,16 @@
                     >
                         Omschrijving
                     </x-ccm::forms.input>
+                    <x-ccm::forms.select name="form.form_id"
+                                         wire:model="form.form_id"
+                                         label="Formulier">
+                        <option></option>
+                        @foreach ($forms AS $form)
+                            <option value="{{ $form->id }}">
+                                {{ $form->name }}
+                            </option>
+                        @endforeach
+                    </x-ccm::forms.select>
                     <x-ccm::forms.input-datetime name="form.start_at"
                                                  wire:model="form.start_at">
                         Begin publicatie

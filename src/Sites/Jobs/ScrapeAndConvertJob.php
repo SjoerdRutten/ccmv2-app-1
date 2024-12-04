@@ -8,6 +8,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use PHPHtmlParser\Dom;
+use Sellvation\CCMV2\Sites\Models\SiteBlock;
+use Sellvation\CCMV2\Sites\Models\SiteLayout;
 use Sellvation\CCMV2\Sites\Models\SiteScraper;
 
 class ScrapeAndConvertJob implements ShouldQueue
@@ -23,6 +25,11 @@ class ScrapeAndConvertJob implements ShouldQueue
 
     public function handle(): void
     {
+        $this->scraper->update([
+            'status' => 'running',
+            'last_scraped_at' => null,
+        ]);
+
         $this->dom->loadFromUrl($this->scraper->url, [
             'cleanupInput' => false,
         ]);
@@ -39,22 +46,49 @@ class ScrapeAndConvertJob implements ShouldQueue
         $this->scraper->save();
 
         if ($this->scraper->target === 'layout') {
-            $this->scraper->siteLayout->meta_title = \Arr::first($this->dom->find('title'))->innerHtml();
-            $this->scraper->siteLayout->meta_description = \Arr::first($this->dom->find('meta[name=description]'))?->getAttribute('content');
-            $this->scraper->siteLayout->meta_keywords = \Arr::first($this->dom->find('meta[name=keywords]'))?->getAttribute('content');
+            if (! ($siteLayout = $this->scraper->siteLayout)) {
+                $siteLayout = new SiteLayout;
+                $siteLayout->name = $this->scraper->layout_name;
+                $siteLayout->environment()->associate($this->scraper->environment_id);
+                $siteLayout->config = [];
+                $siteLayout->save();
+
+                $this->scraper->update([
+                    'site_layout_id' => $siteLayout->id,
+                    'layout_name' => null,
+                ]);
+            }
+            $siteLayout->meta_title = \Arr::first($this->dom->find('title'))->innerHtml();
+            $siteLayout->meta_description = \Arr::first($this->dom->find('meta[name=description]'))?->getAttribute('content');
+            $siteLayout->meta_keywords = \Arr::first($this->dom->find('meta[name=keywords]'))?->getAttribute('content');
 
             $this->generateHeadNode();
 
-            $this->scraper->siteLayout->update(['body' => $this->dom->outerHtml]);
+            $siteLayout->update(['body' => $this->dom->outerHtml]);
         } elseif ($this->scraper->target === 'block') {
             $nodes = $this->dom->find($this->scraper->start_selector);
 
             if ($nodes->count()) {
-                /** @var Dom\HtmlNode $node */
-                $node = $nodes->offsetGet(0);
-                $this->scraper->siteBlock->update(['body' => $node->outerHtml()]);
+                if (! ($siteBlock = $this->scraper->siteBlock)) {
+                    $siteBlock = new SiteBlock;
+                    $siteBlock->name = $this->scraper->block_name;
+                    $siteBlock->environment()->associate($this->scraper->environment_id);
+                    $siteBlock->save();
+
+                    $this->scraper->update([
+                        'site_block_id' => $siteBlock->id,
+                        'block_name' => null,
+                    ]);
+                }
+
+                $siteBlock->update(['body' => \Arr::first($nodes)->outerHtml()]);
             }
         }
+
+        $this->scraper->update([
+            'status' => 'done',
+            'last_scraped_at' => now(),
+        ]);
 
     }
 
@@ -127,5 +161,13 @@ class ScrapeAndConvertJob implements ShouldQueue
 
         $headNode->delete();
         $htmlNode->insertBefore($ccmHeadNode, $bodyNode->id());
+    }
+
+    public function failed()
+    {
+        $this->scraper->update([
+            'status' => 'failed',
+            'last_scraped_at' => null,
+        ]);
     }
 }

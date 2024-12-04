@@ -29,13 +29,16 @@ class AttachCrmCardToFormResponseJob implements ShouldQueue
                     $crmField = CrmField::find($field['crm_field_id']);
 
                     if ($crmField->is_shown_on_target_group_builder) {
-                        $crmCard = CrmCard::search('*')
-                            ->options([
-                                'page' => 1,
-                                'per_page' => 1,
-                                'filter_by' => $crmField['name'].':='.$formResponse->data[$crmField->name],
-                            ])
-                            ->first();
+                        try {
+                            $crmCard = CrmCard::search('*')
+                                ->options([
+                                    'page' => 1,
+                                    'per_page' => 1,
+                                    'filter_by' => $crmField['name'].':='.$formResponse->data[$crmField->name],
+                                ])
+                                ->first();
+                        } catch (\Exception $e) {
+                        }
                     } else {
                         // Slow, but necessary if data nog available in index
                         $crmCard = CrmCard::query()
@@ -49,6 +52,7 @@ class AttachCrmCardToFormResponseJob implements ShouldQueue
             if (! $crmCard) {
                 $crmCard = new CrmCard;
                 $crmCard->setData($formResponse->data);
+                $crmCard->environment_id = $this->formResponse->form->environment_id;
                 $crmCard->save();
             }
 

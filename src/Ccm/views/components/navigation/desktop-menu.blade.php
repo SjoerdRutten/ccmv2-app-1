@@ -17,6 +17,7 @@
                 <x-ccm::navigation.desktop-link route="cms::pages::overview" label="Pagina's" :sub="true"/>
                 <x-ccm::navigation.desktop-link route="cms::blocks::overview" label="Contentblokken" :sub="true"/>
                 <x-ccm::navigation.desktop-link route="cms::forms::overview" label="Formulieren" :sub="true"/>
+                <x-ccm::navigation.desktop-link route="cms::scrapers::overview" label="Scrapers" :sub="true"/>
             </x-ccm::navigation.desktop-link>
             @endpermission
             @permission ('ems', 'overview')

@@ -14,7 +14,13 @@ class RedirectToUrl extends RedirectAction
     {
         $data = $this->form->success_redirect_params ?? [];
 
-        return redirect(\Arr::get($data, 'url'));
+        $redirect = redirect(\Arr::get($data, 'url'));
+
+        if ($this->formResponse->crmCard) {
+            $redirect->cookie(cookie('crmId', $this->formResponse->crmCard->crm_id, 60 * 24 * 365));
+        }
+
+        return $redirect;
     }
 
     public function form(array $data): View

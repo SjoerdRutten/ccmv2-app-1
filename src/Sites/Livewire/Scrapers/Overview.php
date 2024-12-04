@@ -1,12 +1,12 @@
 <?php
 
-namespace Sellvation\CCMV2\Sites\Livewire\Layouts;
+namespace Sellvation\CCMV2\Sites\Livewire\Scrapers;
 
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Sellvation\CCMV2\Sites\Models\SiteCategory;
-use Sellvation\CCMV2\Sites\Models\SiteLayout;
+use Sellvation\CCMV2\Sites\Models\SiteScraper;
 
 class Overview extends Component
 {
@@ -25,9 +25,9 @@ class Overview extends Component
         }
     }
 
-    public function getLayouts()
+    public function getScrapers()
     {
-        return SiteLayout::query()
+        return SiteScraper::query()
             ->when($this->filter['q'], function ($query, $filter) {
                 $query->where('name', 'like', '%'.$this->filter['q'].'%')
                     ->orWhere('description', 'like', '%'.$this->filter['q'].'%');
@@ -38,17 +38,17 @@ class Overview extends Component
             ->paginate();
     }
 
-    public function removeLayout(SiteLayout $layout)
+    public function removeScraper(SiteScraper $scraper)
     {
-        $layout->delete();
+        $scraper->delete();
     }
 
     public function render()
     {
-        return view('sites::livewire.layouts.overview')
+        return view('sites::livewire.scrapers.overview')
             ->with([
                 'siteCategories' => SiteCategory::all(),
-                'layouts' => $this->getLayouts(),
+                'scrapers' => $this->getScrapers(),
             ]);
     }
 }

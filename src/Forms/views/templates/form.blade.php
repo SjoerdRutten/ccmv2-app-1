@@ -1,4 +1,4 @@
-<form method="post" action="{{ route('cms::forms::create-form-response', $form) }}">
+<form method="post" action="{{ route('cms::forms::create-form-response', $form, false) }}">
     @@csrf
 
     <x-forms::form-fields.errors/>

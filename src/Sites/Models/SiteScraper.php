@@ -16,6 +16,8 @@ class SiteScraper extends Model
         'name',
         'description',
         'target',
+        'layout_name',
+        'block_name',
         'url',
         'base_url',
         'start_tag',
@@ -24,6 +26,10 @@ class SiteScraper extends Model
         'status',
         'original_html',
         'converted_html',
+    ];
+
+    protected $casts = [
+        'last_scraped_at' => 'datetime',
     ];
 
     public function siteLayout(): BelongsTo
