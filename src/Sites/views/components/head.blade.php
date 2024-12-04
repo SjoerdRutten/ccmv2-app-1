@@ -1,11 +1,13 @@
 @props([
     'site',
     'layout',
-    'page'
+    'page',
+    'crmCard',
+    'crmCardData',
 ])
 <head>
     <x-sites::title/>
-
+    
     <x-sites::favicon/>
     <x-sites::meta/>
     {{ $meta ?? null }}

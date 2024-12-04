@@ -39,7 +39,11 @@ class ScrapeAndConvertJob implements ShouldQueue
         $this->scraper->save();
 
         if ($this->scraper->target === 'layout') {
-            //TODO: Header aanpassen naar stub
+            $this->scraper->siteLayout->meta_title = \Arr::first($this->dom->find('title'))->innerHtml();
+            $this->scraper->siteLayout->meta_description = \Arr::first($this->dom->find('meta[name=description]'))?->getAttribute('content');
+            $this->scraper->siteLayout->meta_keywords = \Arr::first($this->dom->find('meta[name=keywords]'))?->getAttribute('content');
+
+            $this->generateHeadNode();
 
             $this->scraper->siteLayout->update(['body' => $this->dom->outerHtml]);
         } elseif ($this->scraper->target === 'block') {
@@ -74,5 +78,54 @@ class ScrapeAndConvertJob implements ShouldQueue
             $link = $node->getAttribute($attribute);
             $node->setAttribute($attribute, $this->convertUrl($link));
         }
+    }
+
+    private function generateHeadNode()
+    {
+        /** @var Dom\HtmlNode $htmlNode */
+        $htmlNode = \Arr::first($this->dom->find('html'));
+        $bodyNode = \Arr::first($this->dom->find('body'));
+        $headNode = \Arr::first($htmlNode->find('head'));
+
+        // Slots in the head component
+        $ccmHeadNode = new Dom\HtmlNode('x-sites::head');
+        $metaSlot = new Dom\HtmlNode('x-slot:meta');
+        $cssSlot = new Dom\HtmlNode('x-slot:css');
+        $jsSlot = new Dom\HtmlNode('x-slot:js');
+
+        $ccmHeadNode->addChild($metaSlot);
+        $ccmHeadNode->addChild($cssSlot);
+        $ccmHeadNode->addChild($jsSlot);
+
+        $attributes = [
+            'site',
+            'layout',
+            'page',
+            'crmCard',
+            'crmCardData',
+        ];
+
+        // Pass these attributes from the layout to the head
+        foreach ($attributes as $attribute) {
+            $ccmHeadNode->setAttribute(':'.\Str::snake($attribute), '$'.$attribute);
+        }
+
+        // remove meta tags, they are in de head component
+        foreach ($headNode->find('meta') as $metaNode) {
+            $metaSlot->delete();
+        }
+        // Move script tags to component
+        foreach ($headNode->find('script') as $scriptNode) {
+            $jsSlot->addChild($scriptNode);
+        }
+        // Move link tags to component
+        foreach ($headNode->find('link') as $linkNode) {
+            if ($linkNode->getAttribute('rel') === 'stylesheet') {
+                $cssSlot->addChild($linkNode);
+            }
+        }
+
+        $headNode->delete();
+        $htmlNode->insertBefore($ccmHeadNode, $bodyNode->id());
     }
 }
