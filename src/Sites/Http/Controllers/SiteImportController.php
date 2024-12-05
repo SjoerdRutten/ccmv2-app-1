@@ -4,7 +4,7 @@ namespace Sellvation\CCMV2\Sites\Http\Controllers;
 
 use Sellvation\CCMV2\Sites\Models\SiteImport;
 
-class ImportController extends FrontendController
+class SiteImportController extends FrontendController
 {
     public function __invoke(SiteImport $siteImport, string $name)
     {

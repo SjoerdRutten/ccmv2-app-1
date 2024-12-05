@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 
 class SitePage extends Model
@@ -42,6 +43,11 @@ class SitePage extends Model
     public function sites(): BelongstoMany
     {
         return $this->belongsToMany(Site::class);
+    }
+
+    public function sitePageVisits(): HasMany
+    {
+        return $this->hasMany(SitePageVisit::class);
     }
 
     protected function isOnline(): Attribute

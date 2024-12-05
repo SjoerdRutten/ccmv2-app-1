@@ -6,11 +6,13 @@ use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
+use Sellvation\CCMV2\Sites\Events\SitePageVisitCreatedEvent;
 use Sellvation\CCMV2\Sites\Events\SiteSavingEvent;
 use Sellvation\CCMV2\Sites\Events\SiteUpdatingEvent;
 use Sellvation\CCMV2\Sites\Http\Controllers\FaviconController;
-use Sellvation\CCMV2\Sites\Http\Controllers\ImportController;
-use Sellvation\CCMV2\Sites\Http\Controllers\PageController;
+use Sellvation\CCMV2\Sites\Http\Controllers\SiteImportController;
+use Sellvation\CCMV2\Sites\Http\Controllers\SitePageController;
+use Sellvation\CCMV2\Sites\Listeners\SitePageVisitCreatedListener;
 use Sellvation\CCMV2\Sites\Listeners\SiteSavingListener;
 use Sellvation\CCMV2\Sites\Listeners\SiteUpdatingListener;
 use Sellvation\CCMV2\Sites\Livewire\Sites\Edit;
@@ -57,6 +59,7 @@ class SiteServiceProvider extends ServiceProvider
 
         $events->listen(SiteUpdatingEvent::class, SiteUpdatingListener::class);
         $events->listen(SiteSavingEvent::class, SiteSavingListener::class);
+        $events->listen(SitePageVisitCreatedEvent::class, SitePageVisitCreatedListener::class);
     }
 
     private function registerFrontendRoutes()
@@ -72,9 +75,9 @@ class SiteServiceProvider extends ServiceProvider
                     ->name('frontend::')
                     ->group(function () use ($router) {
                         $router->get('assets/favicon.ico', FaviconController::class)->name('assets.favicon');
-                        $router->get('assets/{siteImport}/{name}', ImportController::class)->name('assets.siteImport');
-                        $router->get('/{sitePage:slug}', PageController::class);
-                        $router->get('/', PageController::class);
+                        $router->get('assets/{siteImport}/{name}', SiteImportController::class)->name('assets.siteImport');
+                        $router->get('/{sitePage:slug}', SitePageController::class);
+                        $router->get('/', SitePageController::class);
                     });
             }
         } catch (\Exception $e) {

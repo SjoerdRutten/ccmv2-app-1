@@ -4,10 +4,11 @@ namespace Sellvation\CCMV2\Sites\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
+use Jenssegers\Agent\Agent;
 use Sellvation\CCMV2\Sites\Models\SiteBlock;
 use Sellvation\CCMV2\Sites\Models\SitePage;
 
-class PageController extends FrontendController
+class SitePageController extends FrontendController
 {
     public function __invoke(Request $request, SitePage $sitePage)
     {
@@ -20,6 +21,8 @@ class PageController extends FrontendController
         if (! $sitePage) {
             abort(404);
         }
+
+        $this->saveVisit($sitePage);
 
         // Fill data for template
         $data = [];
@@ -70,5 +73,22 @@ class PageController extends FrontendController
         }
 
         return $response;
+    }
+
+    private function saveVisit(SitePage $sitePage)
+    {
+        $agent = new Agent;
+
+        $sitePage->sitePageVisits()->create([
+            'crm_id' => request()->cookie('crmId'),
+            'browser_ua' => request()->userAgent(),
+            'browser' => $agent->browser(),
+            'browser_device_type' => $agent->deviceType(),
+            'browser_device' => $agent->device(),
+            'browser_os' => $agent->platform(),
+            'ip' => request()->ip(),
+            'uri' => request()->getRequestUri(),
+            'referer' => request()->headers->get('referer'),
+        ]);
     }
 }
