@@ -31,6 +31,9 @@ class Overview extends Component
     public function getCategories()
     {
         return CrmFieldCategory::query()
+            ->when($this->filter['q'], function ($query) {
+                $query->where('name', 'like', '%'.$this->filter['q'].'%');
+            })
             ->orderBy('position')
             ->get();
     }
