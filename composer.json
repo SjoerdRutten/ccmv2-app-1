@@ -22,7 +22,7 @@
     "blade-ui-kit/blade-heroicons": "^2.4",
     "dompdf/dompdf": "^3.0",
     "laravel/scout": "^10.11",
-    "livewire/livewire": "^3.0",
+    "livewire/livewire": "^3.4",
     "maatwebsite/excel": "^3.1",
     "nembie/iban-rule": "^1.0",
     "paquettg/php-html-parser": "^2.2",
@@ -34,9 +34,9 @@
     "typesense/typesense-php": "^4.9"
   },
   "require-dev": {
-    "laravel/laravel": "^10.2",
+    "laravel/laravel": "^11.0",
     "laravel/pint": "^1.18",
-    "nunomaduro/collision": "^7.9"
+    "nunomaduro/collision": "^8.1"
   },
   "autoload": {
     "psr-4": {
