@@ -7,6 +7,7 @@
             <x-ccm::navigation.desktop-link route="crm-cards::fields::overview" label="CRM">
                 <x-ccm::navigation.desktop-link route="crm-cards::cards::overview" label="Kaarten" :sub="true"/>
                 <x-ccm::navigation.desktop-link route="crm-cards::fields::overview" label="Velden" :sub="true"/>
+                <x-ccm::navigation.desktop-link route="crm-cards::categories::overview" label="Rubrieken" :sub="true"/>
             </x-ccm::navigation.desktop-link>
             @endpermission
             @permission ('cms', 'overview')
