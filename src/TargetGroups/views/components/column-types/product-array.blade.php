@@ -1,5 +1,5 @@
 <div class="flex gap-2 grow">
-    <x-ccm::forms.select name="operator" wire:model.live="filter.operator" class="w-[170px]">
+    <x-ccm::forms.select name="operator" wire:model.live="filter.operator" class="w-[170px]" :disabled="$disabled">
         <option value="">Kies operator</option>
         <option value="eqm">Bevat product</option>
         <option value="neqm">Bevat niet product</option>

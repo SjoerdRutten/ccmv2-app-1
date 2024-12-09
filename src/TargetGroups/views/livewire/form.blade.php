@@ -25,13 +25,20 @@
             <x-ccm::tabs.tab-content :index="0">
                 <div class="w-1/2 flex flex-col gap-4">
                     <x-ccm::forms.input name="name" wire:model="name">Naam</x-ccm::forms.input>
-                    <x-ccm::forms.textarea name="description" wire:model="description">Omschrijving
+                    <x-ccm::forms.textarea name="description" wire:model="description">
+                        Omschrijving
                     </x-ccm::forms.textarea>
                 </div>
 
                 <div class="flex flex-col mt-10">
                     @foreach ($elements AS $key => $element)
-                        <x-target-group::block :elements="$elements" :element="$element" :index="$key"/>
+                        @if (Arr::get($element, 'type') === 'block')
+                            <livewire:target-group-selector::block
+                                    wire:model="elements.{{ $key }}"
+                                    wire:key="{{ hash('md5', serialize($element)) }}"
+                                    index="{{ $key }}"
+                            />
+                        @endif
                     @endforeach
                 </div>
 

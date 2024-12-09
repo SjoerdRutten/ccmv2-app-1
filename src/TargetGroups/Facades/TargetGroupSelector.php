@@ -20,8 +20,8 @@ class TargetGroupSelector
                 $subElements = Arr::get($row, 'subelements');
 
                 foreach ($subElements as $key => $subElement) {
-                    if ($subElement['columnType'] === 'target_group') {
-                        if ($targetGroup = TargetGroup::find($subElement['value'])) {
+                    if ((Arr::get($subElement, 'columnType') === 'target_group') && Arr::get($subElement, 'value')) {
+                        if ($targetGroup = TargetGroup::find(Arr::get($subElement, 'value'))) {
                             $subElements = array_merge($subElements, Arr::get($targetGroup->filters, '0.subelements'));
                         }
                         Arr::pull($subElements, $key);

@@ -1,5 +1,5 @@
 <div class="flex gap-2 grow">
-    <x-ccm::forms.select name="value" wire:model.live="filter.value">
+    <x-ccm::forms.select name="value" wire:model.live="filter.value" :disabled="$disabled">
         <option value="">Selecteer doelgroep</option>
         @foreach ($targetGroups AS $targetGroup)
             <option value="{{ $targetGroup->id }}">

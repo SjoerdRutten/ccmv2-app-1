@@ -51,7 +51,7 @@ class Form extends Component
             $this->id = $targetGroup->id;
             $this->name = $targetGroup->name;
             $this->description = $targetGroup->description;
-            $this->elements = $targetGroup->filters;
+            $this->elements = Arr::whereNotNull($targetGroup->filters);
 
             $this->targetGroup = $targetGroup;
         } else {
@@ -81,44 +81,10 @@ class Form extends Component
         ]);
     }
 
-    public function addSubBlock($index)
-    {
-        $keys = array_keys(Arr::get($this->elements, $index.'.subelements'));
-        $count = Arr::last($keys) + 1;
-
-        Arr::set($this->elements, $index.'.subelements.'.$count,
-            [
-                'type' => 'block',
-                'index' => $index.'.subelements.'.$count,
-                'name' => uniqid(),
-                'operation' => 'AND',
-                'subelements' => [],
-            ]);
-    }
-
+    #[On('remove-element')]
     public function removeElement($index)
     {
-        Arr::pull($this->elements, $index);
-    }
-
-    public function addRule($index)
-    {
-        $count = uniqid();
-
-        Arr::set($this->elements, $index.'.subelements.'.$count,
-            [
-                'type' => 'rule',
-                'active' => true,
-                'id' => uniqid(),
-                'index' => $index.'.subelements.'.$count,
-                'name' => uniqid(),
-                'column' => '',
-                'operator' => '',
-                'value' => null,
-                'from' => null,
-                'to' => null,
-                'columnType' => null,
-            ]);
+        Arr::set($this->elements, $index, null);
     }
 
     public function save($redirect = true)
@@ -130,7 +96,7 @@ class Form extends Component
         ], [
             'name' => $this->name,
             'description' => $this->description,
-            'filters' => $this->elements,
+            'filters' => array_values(Arr::whereNotNull($this->elements)),
         ]);
 
         if ($redirect) {

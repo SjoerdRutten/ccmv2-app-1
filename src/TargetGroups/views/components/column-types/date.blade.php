@@ -1,5 +1,5 @@
 <div class="flex gap-2 grow items-center">
-    <x-ccm::forms.select name="operator" wire:model.live="filter.operator" class="w-[170px]">
+    <x-ccm::forms.select name="operator" wire:model.live="filter.operator" class="w-[170px]" :disabled="$disabled">
         <option value="">Kies operator</option>
         <option value="gt">Groter dan</option>
         <option value="gte">Groter of gelijk</option>
@@ -12,15 +12,17 @@
 
     @if (Arr::get($filter, 'operator'))
         @if (Arr::get($filter, 'operator') === 'between')
-            <x-ccm::forms.input-date name="filter.from" wire:model="filter.from"/>
-            <x-ccm::forms.input-date name="filter.to" wire:model="filter.to"/>
+            <x-ccm::forms.input-date name="filter.from" wire:model="filter.from" :disabled="$disabled"/>
+            <x-ccm::forms.input-date name="filter.to" wire:model="filter.to" :disabled="$disabled"/>
         @else
-            <x-ccm::forms.input-date name="filter.value" wire:model="filter.value"/>
+            <x-ccm::forms.input-date name="filter.value" wire:model="filter.value" :disabled="$disabled"/>
         @endif
-        <div x-data
-             x-tooltip="Je kan hier ook een beschrijving geven (in het engels) b.v. -5 months of -3 days of next sunday">
-            <x-heroicon-s-question-mark-circle class="w-6 h-6 text-pink-700"/>
-        </div>
+        @if (!$disabled)
+            <div x-data
+                 x-tooltip="Je kan hier ook een beschrijving geven (in het engels) b.v. -5 months of -3 days of next sunday">
+                <x-heroicon-s-question-mark-circle class="w-6 h-6 text-pink-700"/>
+            </div>
+        @endif
     @endif
 </div>
 @once

@@ -6,7 +6,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\Locked;
 use Livewire\Attributes\Modelable;
 use Livewire\Component;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
@@ -29,12 +28,19 @@ class Rule extends Component
     #[Modelable]
     public $filter;
 
-    #[Locked]
-    public string $uniq;
+    public $index;
+
+    public bool $readonly = false;
+
+    public $elements = [];
 
     public function mount()
     {
-        $this->uniq = uniqid();
+        if (Arr::get($this->filter, 'columnType') === 'target_group') {
+            if ($targetGroup = TargetGroup::find(Arr::get($this->filter, 'value'))) {
+                $this->elements = $targetGroup->filters;
+            }
+        }
     }
 
     public function updated($property, $value)

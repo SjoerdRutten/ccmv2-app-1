@@ -12,6 +12,7 @@ use Sellvation\CCMV2\TargetGroups\Events\Listeners\DeleteExportListener;
 use Sellvation\CCMV2\TargetGroups\Events\TargetGroupExportCreatedEvent;
 use Sellvation\CCMV2\TargetGroups\Events\TargetGroupExportDeletingEvent;
 use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelectorFacade;
+use Sellvation\CCMV2\TargetGroups\Livewire\Block;
 use Sellvation\CCMV2\TargetGroups\Livewire\CreateTargetGroupFieldset;
 use Sellvation\CCMV2\TargetGroups\Livewire\Form;
 use Sellvation\CCMV2\TargetGroups\Livewire\Overview;
@@ -47,6 +48,7 @@ class TargetGroupServiceProvider extends ServiceProvider
     {
         Livewire::component('target-group-selector::form', Form::class);
         Livewire::component('target-group-selector::rule', Rule::class);
+        Livewire::component('target-group-selector::block', Block::class);
         Livewire::component('target-group-selector::overview', Overview::class);
         Livewire::component('target-group-selector::create-target-group-fieldset', CreateTargetGroupFieldset::class);
     }
