@@ -156,7 +156,7 @@ class CrmCard extends Model
     public function toSearchableArray()
     {
         $data = [
-            'id' => (string) $this->id,
+            'id' => $this->id,
             'crm_id' => $this->crm_id,
             'updated_at' => $this->updated_at->timestamp,
             'created_at' => $this->created_at->timestamp,

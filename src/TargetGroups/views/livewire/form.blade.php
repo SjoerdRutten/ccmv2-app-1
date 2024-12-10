@@ -43,7 +43,7 @@
                         @if (Arr::get($element, 'type') === 'block')
                             <livewire:target-group-selector::block
                                     wire:model.live="elements.{{ $key }}"
-                                    wire:key="{{ hash('md5', serialize($element)) }}"
+                                    wire:key="BLOCK{{ $key }}"
                                     index="{{ $key }}"
                             />
                         @endif

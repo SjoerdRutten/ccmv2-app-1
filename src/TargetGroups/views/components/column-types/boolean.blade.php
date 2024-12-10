@@ -2,12 +2,12 @@
     $uniq = uniqid();
 @endphp
 <div class="flex gap-2 grow {{ $disabled ? 'text-gray-400' : '' }}">
-    <input type="hidden" wire:model="filter.operator"/>
+    <input type="hidden" wire:model="filterTmp.operator"/>
     <label>
         <input type="radio"
                name="filter{{ Arr::get($filter, 'column') }}{{ $uniq }}"
                value="1"
-               wire:model.live="filter.value"
+               wire:model.live="filterTmp.value"
                 {{ $disabled ? 'disabled' : '' }}
         />
         Ja
@@ -16,7 +16,7 @@
         <input type="radio"
                name="filter{{ Arr::get($filter, 'column') }}{{ $uniq }}"
                value="0"
-               wire:model.live="filter.value"
+               wire:model.live="filterTmp.value"
                 {{ $disabled ? 'disabled' : '' }}
         />
         Nee

@@ -1,5 +1,5 @@
 <div class="flex gap-2 grow">
-    <x-ccm::forms.select name="operator" wire:model.live="filter.operator" :disabled="$disabled">
+    <x-ccm::forms.select name="operator" wire:model.live="filterTmp.operator" :disabled="$disabled">
         <option value="">Kies operator</option>
         <option value="con">Bevat</option>
         <option value="dnc">Bevat niet</option>
@@ -15,6 +15,7 @@
         <option value="notempty">Niet leeg</option>
     </x-ccm::forms.select>
     @if (!\Illuminate\Support\Str::endsWith($filter['operator'], 'empty'))
-        <x-ccm::forms.input name="filter.value" wire:model.blur="filter.value" :grow="true" :disabled="$disabled"/>
+        <x-ccm::forms.input name="filterTmp.value" wire:model.blur="filterTmp.value" :grow="true"
+                            :disabled="$disabled"/>
     @endif
 </div>

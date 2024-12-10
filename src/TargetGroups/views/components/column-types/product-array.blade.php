@@ -1,12 +1,12 @@
 <div class="flex gap-2 grow">
-    <x-ccm::forms.select name="operator" wire:model.live="filter.operator" class="w-[170px]" :disabled="$disabled">
+    <x-ccm::forms.select name="operator" wire:model.live="filterTmp.operator" class="w-[170px]" :disabled="$disabled">
         <option value="">Kies operator</option>
         <option value="eqm">Bevat product</option>
         <option value="neqm">Bevat niet product</option>
     </x-ccm::forms.select>
 
     <div x-data="{ show: false }">
-        <div x-data="productSelect({ value: @entangle('filter.value') })" class="flex items-center gap-4">
+        <div x-data="productSelect({ value: @entangle('filterTmp.value') })" class="flex items-center gap-4">
                     <span class="mt-1 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-gray-100">
                         <span x-text="selectedProducts.length"></span> Producten geselecteerd
                     </span>

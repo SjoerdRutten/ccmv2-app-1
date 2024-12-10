@@ -30,6 +30,7 @@ class UpdateCrmCardMongoDbJob implements ShouldQueue
 
         foreach (
             CrmField::whereEnvironmentId($this->crmCard->environment_id)
+                ->whereIsShownOnTargetGroupBuilder(1)
                 ->get() as $crmField
         ) {
             switch ($crmField->type) {

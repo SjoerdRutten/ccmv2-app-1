@@ -42,6 +42,7 @@ class Block extends Component
     public function removeRule($key)
     {
         Arr::set($this->element, 'subelements.'.$key, null);
+        $this->dispatch('update-count')->to(Form::class);
     }
 
     public function render()

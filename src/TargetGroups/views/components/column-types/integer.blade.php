@@ -1,5 +1,5 @@
 <div class="flex gap-2 grow">
-    <x-ccm::forms.select name="operator" wire:model.live="filter.operator" class="w-[170px]" :disabled="$disabled">
+    <x-ccm::forms.select name="operator" wire:model.live="filterTmp.operator" class="w-[170px]" :disabled="$disabled">
         <option value="">Kies operator</option>
         <option value="gt">Groter dan</option>
         <option value="gte">Groter of gelijk</option>
@@ -14,15 +14,15 @@
 
     @if (Arr::get($filter, 'operator'))
         @if (Arr::get($filter, 'operator') === 'between')
-            <x-ccm::forms.input type="text" step="1" name="filter.from" wire:model.blur="filter.from"
+            <x-ccm::forms.input type="text" step="1" name="filterTmp.from" wire:model.blur="filterTmp.from"
                                 :disabled="$disabled"/>
-            <x-ccm::forms.input type="text" step="1" name="filter.to" wire:model.blur="filter.to"
+            <x-ccm::forms.input type="text" step="1" name="filterTmp.to" wire:model.blur="filterTmp.to"
                                 :disabled="$disabled"/>
         @else
             <x-ccm::forms.input type="text"
                                 step="1"
-                                name="filter.value"
-                                wire:model.blur="filter.value"
+                                name="filterTmp.value"
+                                wire:model.blur="filterTmp.value"
                                 :grow="true"
                                 :disabled="$disabled"/>
         @endif

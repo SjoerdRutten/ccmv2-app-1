@@ -28,6 +28,8 @@ class Rule extends Component
     #[Modelable]
     public $filter;
 
+    public $filterTmp;
+
     public $index;
 
     public bool $readonly = false;
@@ -36,6 +38,8 @@ class Rule extends Component
 
     public function mount()
     {
+        $this->filterTmp = $this->filter;
+
         if (Arr::get($this->filter, 'columnType') === 'target_group') {
             if ($targetGroup = TargetGroup::find(Arr::get($this->filter, 'value'))) {
                 $this->elements = $targetGroup->filters;
@@ -45,28 +49,38 @@ class Rule extends Component
 
     public function updated($property, $value)
     {
-        if (Str::startsWith($property, 'filter.')) {
-            $column = $this->getColumnByName($this->filter['column']);
-            $this->filter['columnType'] = $column?->columnType?->name;
+        if (Str::startsWith($property, 'filterTmp.')) {
+            $column = $this->getColumnByName($this->filterTmp['column']);
+            $this->filterTmp['columnType'] = $column?->columnType?->name;
 
-            if ($property === 'filter.column') {
-                $this->filter['value'] = null;
+            if ($property === 'filterTmp.column') {
+                $this->filterTmp['value'] = null;
 
-                switch ($this->filter['columnType']) {
+                switch ($this->filterTmp['columnType']) {
                     case 'target_group':
                     case 'tag':
                     case 'text':
-                        $this->filter['operator'] = 'eq';
+                        $this->filterTmp['operator'] = 'eq';
                         break;
                     case 'select':
-                        $this->filter['value'] = [];
+                        $this->filterTmp['value'] = [];
                         break;
                     default:
-                        $this->filter['operator'] = null;
+                        $this->filterTmp['operator'] = null;
                 }
+
             }
+
+            $this->filter = $this->filterTmp;
         }
 
+        if (in_array($property, ['filterTmp.operator', 'filterTmp.value', 'filterTmp.from', 'filterTmp.to', 'filterTmp.active'])) {
+            $this->updateCount();
+        }
+    }
+
+    private function updateCount()
+    {
         $this->dispatch('update-count')->to(Form::class);
     }
 
