@@ -161,7 +161,7 @@ class Form extends Component
     #[On('update-count')]
     public function updateCount()
     {
-        $this->count = TargetGroupSelectorFacade::count($this->elements);
+        $this->dispatch('update-count', $this->elements)->to(TargetGroupRowCount::class);
     }
 
     #[computed]
@@ -174,6 +174,12 @@ class Form extends Component
     public function getQueryFilters()
     {
         return TargetGroupSelectorFacade::getQueryFilters($this->elements);
+    }
+
+    #[Computed]
+    public function getMql()
+    {
+        return TargetGroupSelectorFacade::getMql($this->elements);
     }
 
     #[On('refresh-field-sets')]

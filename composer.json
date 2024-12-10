@@ -25,6 +25,7 @@
     "laravel/scout": "^10.11",
     "livewire/livewire": "^3.4",
     "maatwebsite/excel": "^3.1",
+    "mongodb/laravel-mongodb": "^5.1",
     "nembie/iban-rule": "^1.0",
     "paquettg/php-html-parser": "^2.2",
     "pharaonic/laravel-readable": "^1.0",

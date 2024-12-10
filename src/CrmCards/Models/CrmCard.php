@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
 use Sellvation\CCMV2\CrmCards\Events\CrmCardCreatingEvent;
+use Sellvation\CCMV2\CrmCards\Events\CrmCardSavedEvent;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 use Sellvation\CCMV2\Orders\Models\Order;
 use Spatie\Tags\HasTags;
@@ -58,6 +59,7 @@ class CrmCard extends Model
 
     protected $dispatchesEvents = [
         'creating' => CrmCardCreatingEvent::class,
+        'saved' => CrmCardSavedEvent::class,
     ];
 
     protected function casts(): array
@@ -129,40 +131,6 @@ class CrmCard extends Model
         }
 
         return $response;
-    }
-
-    private function isEmailaddressValid(array $data, string $name): bool
-    {
-        $validator = \Validator::make(['email' => \Arr::get($data, $name)], ['email' => 'required|email:rfc']);
-
-        return $validator->passes();
-    }
-
-    private function isEmailaddressPossible(array $data, string $name): bool
-    {
-        if (
-            ($this->isEmailaddressValid($data, $name)) &&
-            (! \Arr::get($data, '_'.$name.'_abuse')) &&
-            (\Arr::get($data, '_'.$name.'_bounce_type') !== 'hard') &&
-            (\Arr::get($data, '_'.$name.'_bounce_score') < 3)
-        ) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private function isEmailaddressAllowed(array $data, string $name): bool
-    {
-        if (
-            (\Arr::get($data, '_'.$name.'_optin')) &&
-            (\Arr::get($data, '_'.$name.'_confirmed_optin')) &&
-            (! \Arr::get($data, '_'.$name.'_confirmed_optout'))
-        ) {
-            return true;
-        }
-
-        return false;
     }
 
     public function searchableAs()

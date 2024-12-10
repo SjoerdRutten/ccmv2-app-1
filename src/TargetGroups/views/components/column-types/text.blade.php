@@ -11,6 +11,10 @@
         <option value="eq">Gelijk aan</option>
         <option value="eqm">Gelijk aan 1 van</option>
         <option value="neqm">Niet gelijk aan 1 van</option>
+        <option value="empty">Leeg</option>
+        <option value="notempty">Niet leeg</option>
     </x-ccm::forms.select>
-    <x-ccm::forms.input name="filter.value" wire:model.blur="filter.value" :grow="true" :disabled="$disabled"/>
+    @if (!\Illuminate\Support\Str::endsWith($filter['operator'], 'empty'))
+        <x-ccm::forms.input name="filter.value" wire:model.blur="filter.value" :grow="true" :disabled="$disabled"/>
+    @endif
 </div>

@@ -34,6 +34,12 @@ class CcmServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__.'/resources/lang', 'ccm');
         $this->mergeConfigFrom(__DIR__.'/config/ccm.php', 'ccm');
 
+        // Add MongoDB connection, a mergeConfigFrom doesn't work.
+        Config::set('database.connections.mongodb', [
+            'driver' => 'mongodb',
+            'dsn' => env('MONGODB_URI', 'mongodb://localhost:27020/ccmv2'),
+        ]);
+
         $this->publishes([
             __DIR__.'/resources/js' => public_path('vendor/ccm/js'),
         ], 'ccm::js');

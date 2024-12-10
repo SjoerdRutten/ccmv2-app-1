@@ -8,8 +8,16 @@
         </x-ccm::pages.intro>
         <x-ccm::tabs.base>
             <x-slot:tabs>
-                <x-ccm::tabs.nav-tab :index="0" :badge="ReadableNumber($count, '.')">
+                <x-ccm::tabs.nav-tab :index="0">
                     Query builder
+                    <x-slot:badge>
+                        <livewire:target-group-selector::target-group-row-count key="TGCounter"
+                                                                                :elements="$elements"
+                                                                                wire:loading.remove
+                                                                                lazy
+
+                        />
+                    </x-slot:badge>
                 </x-ccm::tabs.nav-tab>
                 @if ($id > 0)
                     @if (Auth::user()->hasPermissionTo('gds', 'export'))
@@ -34,7 +42,7 @@
                     @foreach ($elements AS $key => $element)
                         @if (Arr::get($element, 'type') === 'block')
                             <livewire:target-group-selector::block
-                                    wire:model="elements.{{ $key }}"
+                                    wire:model.live="elements.{{ $key }}"
                                     wire:key="{{ hash('md5', serialize($element)) }}"
                                     index="{{ $key }}"
                             />
@@ -56,7 +64,7 @@
 
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="1">
-                {{ $this->getQueryFilters() }}
+                {{ $this->getMql() }}
             </x-ccm::tabs.tab-content>
             @if ($id > 0)
                 <x-ccm::tabs.tab-content :index="2" :no-margin="true">

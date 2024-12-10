@@ -35,14 +35,14 @@ class MigrateCcmV1Environment extends Command
                 $this->environmentId = $environment->id;
                 $this->environment = $environment;
 
-                if ($this->confirm('Crm Fields importeren ?', false)) {
+                if ($this->confirm('Crm Fields importeren ?', true)) {
                     $this->migrateCrmFieldCategories();
                     $this->migrateCrmFields();
                 }
-                if ($this->confirm('Crm Card importeren ?', false)) {
+                if ($this->confirm('Crm Card importeren ?', true)) {
                     $this->migrateCrmCards();
                 }
-                if ($this->confirm('E-mails importeren ?', false)) {
+                if ($this->confirm('E-mails importeren ?', true)) {
                     $this->migrateEmailCategories();
                     $this->migrateEmails();
                 }

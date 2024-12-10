@@ -21,7 +21,10 @@
                         <x-ccm::tables.td>{{ $targetGroup->name }}</x-ccm::tables.td>
                         <x-ccm::tables.td
                                 class="text-wrap">{{ $targetGroup->description }}</x-ccm::tables.td>
-                        <x-ccm::tables.td>{{ ReadableNumber($targetGroup->numberOfResults, '.') }}</x-ccm::tables.td>
+                        <x-ccm::tables.td>
+                            <livewire:target-group-selector::target-group-row-count :elements="$targetGroup->filters"
+                                                                                    lazy/>
+                        </x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $targetGroup->created_at->toDateTimeString() }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $targetGroup->updated_at->toDateTimeString() }}</x-ccm::tables.td>
                         <x-ccm::tables.td :link="true">

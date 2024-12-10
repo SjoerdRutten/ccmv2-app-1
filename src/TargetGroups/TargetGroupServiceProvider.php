@@ -17,6 +17,7 @@ use Sellvation\CCMV2\TargetGroups\Livewire\CreateTargetGroupFieldset;
 use Sellvation\CCMV2\TargetGroups\Livewire\Form;
 use Sellvation\CCMV2\TargetGroups\Livewire\Overview;
 use Sellvation\CCMV2\TargetGroups\Livewire\Rule;
+use Sellvation\CCMV2\TargetGroups\Livewire\TargetGroupRowCount;
 
 class TargetGroupServiceProvider extends ServiceProvider
 {
@@ -49,6 +50,7 @@ class TargetGroupServiceProvider extends ServiceProvider
         Livewire::component('target-group-selector::form', Form::class);
         Livewire::component('target-group-selector::rule', Rule::class);
         Livewire::component('target-group-selector::block', Block::class);
+        Livewire::component('target-group-selector::target-group-row-count', TargetGroupRowCount::class);
         Livewire::component('target-group-selector::overview', Overview::class);
         Livewire::component('target-group-selector::create-target-group-fieldset', CreateTargetGroupFieldset::class);
     }

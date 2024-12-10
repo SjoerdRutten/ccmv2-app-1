@@ -4,7 +4,7 @@ namespace Sellvation\CCMV2\CrmCards\Listeners;
 
 use Sellvation\CCMV2\CrmCards\Events\CrmCardCreatingEvent;
 
-class CreateCrmIdListener
+class CrmCardCreatingListener
 {
     public function __construct() {}
 

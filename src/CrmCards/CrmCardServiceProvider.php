@@ -12,7 +12,7 @@ use Sellvation\CCMV2\CrmCards\Facades\CrmFieldCorrector;
 use Sellvation\CCMV2\CrmCards\Facades\CrmFieldCorrectorFacade;
 use Sellvation\CCMV2\CrmCards\Facades\CrmFieldValidator;
 use Sellvation\CCMV2\CrmCards\Facades\CrmFieldValidatorFacade;
-use Sellvation\CCMV2\CrmCards\Listeners\CreateCrmIdListener;
+use Sellvation\CCMV2\CrmCards\Listeners\CrmCardCreatingListener;
 
 class CrmCardServiceProvider extends ServiceProvider
 {
@@ -48,7 +48,7 @@ class CrmCardServiceProvider extends ServiceProvider
     {
         $events = $this->app->make(Dispatcher::class);
 
-        $events->listen(CrmCardCreatingEvent::class, CreateCrmIdListener::class);
+        $events->listen(CrmCardCreatingEvent::class, CrmCardCreatingListener::class);
     }
 
     private function registerFacades()

@@ -11,6 +11,6 @@ class TargetGroupSelectorFacade extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return TargetGroupSelector::class;
+        return TargetGroupSelectorMongo::class;
     }
 }

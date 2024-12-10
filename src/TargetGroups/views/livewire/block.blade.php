@@ -3,7 +3,7 @@
         @foreach (Arr::get($element, 'subelements') AS $key => $subElement)
             @if (Arr::get($subElement, 'type') === 'rule')
                 <livewire:target-group-selector::rule
-                        wire:model="{{ $this->getRuleKey($key) }}"
+                        wire:model.live="{{ $this->getRuleKey($key) }}"
                         wire:key="{{ hash('md5', serialize($subElement)) }}"
                         :readonly="$readonly"
                         :index="$key"
