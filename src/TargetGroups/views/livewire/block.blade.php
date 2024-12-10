@@ -1,4 +1,9 @@
 <div class="border border-gray-300 bg-gray-200 p-2 my-1 flex flex-col relative gap-2 rounded">
+    @if ($index > 0)
+        <button wire:click="toggleOperator" class="absolute -top-[18px] bg-white border border-gray-500 px-2 rounded">
+            {{ Arr::get($element, 'operation') }}
+        </button>
+    @endif
     <div>
         @foreach (Arr::get($element, 'subelements') AS $key => $subElement)
             @if (Arr::get($subElement, 'type') === 'rule')

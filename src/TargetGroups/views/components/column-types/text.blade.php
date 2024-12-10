@@ -9,8 +9,8 @@
         <option value="enw">Eindigt niet op</option>
         <option value="neq">Niet gelijk aan</option>
         <option value="eq">Gelijk aan</option>
-        <option value="eqm">Gelijk aan 1 van</option>
-        <option value="neqm">Niet gelijk aan 1 van</option>
+        {{--        <option value="eqm">Gelijk aan 1 van</option>--}}
+        {{--        <option value="neqm">Niet gelijk aan 1 van</option>--}}
         <option value="empty">Leeg</option>
         <option value="notempty">Niet leeg</option>
     </x-ccm::forms.select>

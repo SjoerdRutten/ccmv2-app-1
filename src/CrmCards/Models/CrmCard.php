@@ -20,7 +20,7 @@ class CrmCard extends Model
 {
     use HasEnvironment;
     use HasTags;
-    use Searchable;
+    //    use Searchable;
 
     protected $fillable = [
         'id',

@@ -33,10 +33,6 @@ class TargetGroupRowCount extends Component
 
     public function render()
     {
-        return <<<'HTML'
-            <div>
-                {{ ReadableNumber($this->count, '.') }}
-            </div>
-            HTML;
+        return view('target-group::livewire.target-group-row-count');
     }
 }

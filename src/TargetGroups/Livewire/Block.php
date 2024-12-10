@@ -45,6 +45,13 @@ class Block extends Component
         $this->dispatch('update-count')->to(Form::class);
     }
 
+    public function toggleOperator()
+    {
+        $operation = Arr::get($this->element, 'operation') === 'AND' ? 'OR' : 'AND';
+        Arr::set($this->element, 'operation', $operation);
+        $this->dispatch('update-count')->to(Form::class);
+    }
+
     public function render()
     {
         return view('target-group::livewire.block');

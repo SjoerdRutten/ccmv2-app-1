@@ -11,9 +11,25 @@ use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
 
 class TargetGroupSelectorMongo
 {
-    public function getQueryFilters(\MongoDB\Laravel\Eloquent\Builder $query, $elements)
+    public function getQueryFilters(\MongoDB\Laravel\Eloquent\Builder|MongoDB\Laravel\Query\Builder $query, $elements)
     {
-        foreach ($elements as $row) {
+        if ($orderElements = Arr::where($elements, fn ($item) => \Str::startsWith(Arr::get($item, 'column'), 'orders'))) {
+            $query->whereHas('orders', function ($query) use ($orderElements) {
+                foreach ($orderElements as $row) {
+                    $column = explode('.', Arr::get($row, 'column'))[1];
+                    $query = $this->addWhere(
+                        $query,
+                        $column,
+                        Arr::get($row, 'operator'),
+                        $this->parseValue(Arr::get($row, 'value'), Arr::get($row, 'columnType'))
+                    );
+                }
+            });
+
+        }
+
+        foreach (Arr::where($elements, fn ($item) => ! \Str::startsWith(Arr::get($item, 'column'), 'orders')) as $row) {
+            // Blocks
             if ((Arr::get($row, 'type') == 'block') && (count(Arr::get($row, 'subelements')))) {
                 if ($row['operation'] === 'AND') {
                     $query->where(function ($query) use ($row) {
@@ -24,10 +40,19 @@ class TargetGroupSelectorMongo
                         $this->getQueryFilters($query, $row['subelements']);
                     });
                 }
+                // Rules
             } elseif ((Arr::get($row, 'type') == 'rule') && Arr::get($row, 'active')) {
+                // Sub-target-groups
                 if (Arr::get($row, 'columnType') === 'target_group') {
-                    $targetGroup = TargetGroup::find(Arr::get($row, 'value'));
-                    $this->getQueryFilters($query, $targetGroup->filters);
+                    if ($targetGroup = TargetGroup::find(Arr::get($row, 'value'))) {
+                        if (Arr::get($row, 'operator') === 'eq') {
+                            $this->getQueryFilters($query, $targetGroup->filters);
+                        } else {
+                            $ids = $this->getQueryFilters(CrmCardMongo::query(), $targetGroup->filters)->select('id')->pluck('id')->toArray();
+
+                            $query->whereNotIn('_id', $ids);
+                        }
+                    }
                 } else {
                     if (Arr::get($row, 'operator') === 'between') {
                         $query = $this->addWhere(
@@ -61,12 +86,19 @@ class TargetGroupSelectorMongo
                 return (int) $value;
             case 'date':
                 return Carbon::parse($value)->toIso8601String();
+            case 'integer_array':
+                $value = is_array($value) ? $value : [$value];
+
+                return Arr::map($value, function ($item) {
+                    return (int) $item;
+                });
+
             default:
                 return $value;
         }
     }
 
-    private function addWhere(Builder $query, $column, $operator, $value, $value2 = null)
+    private function addWhere(Builder|MongoDB\Laravel\Query\Builder $query, $column, $operator, $value, $value2 = null)
     {
         switch ($operator) {
             case 'gt':
@@ -99,10 +131,10 @@ class TargetGroupSelectorMongo
             case 'notempty':
                 return $query->whereNotNull($column)
                     ->where($column, '<>', '');
-                //            case 'eqm':,
-                //                return '=['.$value.']';
-                //            case 'neqm':
-                //                return '!=['.$value.']';
+            case 'eqm':
+                return $query->whereIn($column, $value);
+            case 'neqm':
+                return $query->whereNotIn($column, $value);
             case 'between':
                 return $query->whereBetween($column, [$value, $value2]);
             default:

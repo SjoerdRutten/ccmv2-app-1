@@ -57,7 +57,6 @@ class Rule extends Component
                 $this->filterTmp['value'] = null;
 
                 switch ($this->filterTmp['columnType']) {
-                    case 'target_group':
                     case 'tag':
                     case 'text':
                         $this->filterTmp['operator'] = 'eq';
