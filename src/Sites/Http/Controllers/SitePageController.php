@@ -4,7 +4,6 @@ namespace Sellvation\CCMV2\Sites\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
-use Jenssegers\Agent\Agent;
 use Sellvation\CCMV2\Sites\Models\SiteBlock;
 use Sellvation\CCMV2\Sites\Models\SitePage;
 
@@ -29,10 +28,8 @@ class SitePageController extends FrontendController
         $data['site'] = $this->site;
         $data['page'] = $sitePage;
         $data['layout'] = $sitePage->siteLayout;
-        $data['crmCard'] = $this->crmCard;
-        $data['crmCardData'] = $this->crmCard->data;
 
-        // TODO: Extensies moeten ook data toe kunnen voegen
+        $data = \BladeExtensions::mergeData($data, 'CMS');
 
         foreach ($sitePage->siteLayout->config as $row) {
             $data[$row['key']] = '';
@@ -68,8 +65,8 @@ class SitePageController extends FrontendController
 
         $response = response($content);
 
-        if ($this->crmCard) {
-            $response->withCookie(cookie('crmId', $this->crmCard->crm_id, 60 * 24 * 365));    // Set cookie for 365 days
+        if (\Arr::get($data, 'crmCard')) {
+            $response->withCookie(cookie('crmId', \Arr::get($data, 'crmCard')->crm_id, 60 * 24 * 365));    // Set cookie for 365 days
         }
 
         return $response;
@@ -77,15 +74,15 @@ class SitePageController extends FrontendController
 
     private function saveVisit(SitePage $sitePage)
     {
-        $agent = new Agent;
+        //        $agent = new Agent;
 
         $sitePage->sitePageVisits()->create([
             'crm_id' => request()->cookie('crmId'),
             'browser_ua' => request()->userAgent(),
-            'browser' => $agent->browser(),
-            'browser_device_type' => $agent->deviceType(),
-            'browser_device' => $agent->device(),
-            'browser_os' => $agent->platform(),
+            'browser' => '', //$agent->browser(),
+            'browser_device_type' => '', //$agent->deviceType(),
+            'browser_device' => '', //$agent->device(),
+            'browser_os' => '', //$agent->platform(),
             'ip' => request()->ip(),
             'uri' => request()->getRequestUri(),
             'referer' => request()->headers->get('referer'),

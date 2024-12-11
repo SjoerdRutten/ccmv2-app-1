@@ -63,6 +63,7 @@
   "extra": {
     "laravel": {
       "providers": [
+        "Sellvation\\CCMV2\\BladeData\\BladeDataProvider",
         "Sellvation\\CCMV2\\Ccm\\CcmServiceProvider",
         "Sellvation\\CCMV2\\CcmV1\\CcmV1ServiceProvider",
         "Sellvation\\CCMV2\\CrmCards\\CrmCardServiceProvider",

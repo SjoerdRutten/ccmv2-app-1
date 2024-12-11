@@ -32,12 +32,26 @@ class Edit extends Component
         $this->showSuccessModal(title: 'Contentblok is opgeslagen', href: route('cms::blocks::edit', $this->siteBlock->id));
     }
 
+    private function getAvailableVariables()
+    {
+        $variables = \BladeExtensions::getCmsVariables();
+
+        if ($this->form->form_id) {
+            $variables['form'] = 'Plaatst de HTML van het gekoppelde formulier';
+        }
+
+        ksort($variables);
+
+        return $variables;
+    }
+
     public function render()
     {
         return view('sites::livewire.blocks.edit')
             ->with([
                 'siteCategories' => SiteCategory::orderBy('name')->get(),
                 'forms' => Form::orderBy('name')->get(),
+                'availableVariables' => $this->getAvailableVariables(),
             ]);
     }
 }
