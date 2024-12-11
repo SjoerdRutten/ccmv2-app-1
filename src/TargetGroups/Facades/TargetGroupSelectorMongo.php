@@ -114,7 +114,7 @@ class TargetGroupSelectorMongo
                 });
 
             default:
-                return (string) $value;
+                return $value;
         }
     }
 

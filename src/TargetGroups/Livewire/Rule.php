@@ -63,13 +63,9 @@ class Rule extends Component
                     case 'text':
                         $this->filterTmp['operator'] = 'eq';
                         break;
-                    case 'select':
-                        $this->filterTmp['value'] = [];
-                        break;
                     default:
                         $this->filterTmp['operator'] = null;
                 }
-
             }
 
             $this->filter = $this->filterTmp;
