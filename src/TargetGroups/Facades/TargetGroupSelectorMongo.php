@@ -41,7 +41,7 @@ class TargetGroupSelectorMongo
                     });
                 }
                 // Rules
-            } elseif ((Arr::get($row, 'type') == 'rule') && Arr::get($row, 'active')) {
+            } elseif ((Arr::get($row, 'type') == 'rule') && Arr::get($row, 'active') && Arr::get($row, 'value')) {
                 // Sub-target-groups
                 if (Arr::get($row, 'columnType') === 'target_group') {
                     if ($targetGroup = TargetGroup::find(Arr::get($row, 'value'))) {
@@ -87,10 +87,17 @@ class TargetGroupSelectorMongo
             case 'date':
                 return Carbon::parse($value)->toIso8601String();
             case 'integer_array':
+            case 'product_array':
                 $value = is_array($value) ? $value : [$value];
 
                 return Arr::map($value, function ($item) {
                     return (int) $item;
+                });
+            case 'text_array':
+                $value = is_array($value) ? $value : [$value];
+
+                return Arr::map($value, function ($item) {
+                    return (string) $item;
                 });
 
             default:
@@ -132,8 +139,12 @@ class TargetGroupSelectorMongo
                 return $query->whereNotNull($column)
                     ->where($column, '<>', '');
             case 'eqm':
+                $value = is_countable($value) ? $value : [$value];
+
                 return $query->whereIn($column, $value);
             case 'neqm':
+                $value = is_countable($value) ? $value : [$value];
+
                 return $query->whereNotIn($column, $value);
             case 'between':
                 return $query->whereBetween($column, [$value, $value2]);
