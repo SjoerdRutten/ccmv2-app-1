@@ -20,6 +20,7 @@ use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeSelect;
 use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeTag;
 use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeTargetGroup;
 use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeText;
+use Sellvation\CCMV2\TargetGroups\Elements\ColumnTypeTextArray;
 use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
 use Spatie\Tags\Tag;
 
@@ -99,8 +100,8 @@ class Rule extends Component
             $columns[] = new Column('orders.payment_method', new ColumnTypeText, 'Transactie betaalmethode');
             $columns[] = new Column('orders.total_price', new ColumnTypeInteger, 'Transactie totaalprijs (in centen)');
             $columns[] = new Column('orders.number_of_products', new ColumnTypeInteger, 'Transactie aantal producten');
-            $columns[] = new Column('orders.order_rows.products.ean', new ColumnTypeIntegerArray, 'Transactie bevat EAN');
-            $columns[] = new Column('orders.order_rows.products.sku', new ColumnTypeIntegerArray, 'Transactie bevat SKU');
+            $columns[] = new Column('orders.order_rows.ean', new ColumnTypeIntegerArray, 'Transactie bevat EAN');
+            $columns[] = new Column('orders.order_rows.sku', new ColumnTypeTextArray, 'Transactie bevat SKU');
             $columns[] = new Column('orders.order_type_id', new ColumnTypeSelect(OrderType::pluck('name', 'id')->toArray()), 'Transactie type');
 
             if (Auth::user()->hasPermissionTo('gds', 'products')) {

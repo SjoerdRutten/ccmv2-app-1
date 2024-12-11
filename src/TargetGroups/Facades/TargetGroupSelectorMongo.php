@@ -16,7 +16,11 @@ class TargetGroupSelectorMongo
         if ($orderElements = Arr::where($elements, fn ($item) => \Str::startsWith(Arr::get($item, 'column'), 'orders'))) {
             $query->whereHas('orders', function ($query) use ($orderElements) {
                 foreach ($orderElements as $row) {
-                    $column = explode('.', Arr::get($row, 'column'))[1];
+
+                    $column = explode('.', Arr::get($row, 'column'));
+                    Arr::forget($column, 0);
+                    $column = implode('.', $column);
+
                     $query = $this->addWhere(
                         $query,
                         $column,
@@ -24,6 +28,8 @@ class TargetGroupSelectorMongo
                         $this->parseValue(Arr::get($row, 'value'), Arr::get($row, 'columnType'))
                     );
                 }
+
+                //                dd($row, $query->toMql());
             });
 
         }
@@ -94,7 +100,9 @@ class TargetGroupSelectorMongo
                     return (int) $item;
                 });
             case 'text_array':
-                $value = is_array($value) ? $value : [$value];
+                if (! is_countable($value)) {
+                    $value = explode(',', $value);
+                }
 
                 return Arr::map($value, function ($item) {
                     return (string) $item;
@@ -171,7 +179,7 @@ class TargetGroupSelectorMongo
         $mongoDB = \DB::connection('mongodb')->getMongoDB();
         $collection = $mongoDB->selectCollection((new CrmCardMongo)->getTable());
 
-        if (Arr::first(Arr::get($elements, '0.subelements'))) {
+        if (Arr::whereNotNull(Arr::get($elements, '0.subelements'))) {
             return $this->getQuery($elements)->count();
         } else {
             return $collection->estimatedDocumentCount();
