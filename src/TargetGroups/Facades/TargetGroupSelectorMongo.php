@@ -184,7 +184,7 @@ class TargetGroupSelectorMongo
         $mongoDB = \DB::connection('mongodb')->getMongoDB();
         $collection = $mongoDB->selectCollection((new CrmCardMongo)->getTable());
 
-        if (is_array($elements) && Arr::whereNotNull(Arr::get($elements, '0.subelements'))) {
+        if (is_array($elements) && Arr::get($elements, '0.subelements') && Arr::whereNotNull(Arr::get($elements, '0.subelements'))) {
             return $this->getQuery($elements)->count();
         } else {
             return $collection->estimatedDocumentCount();
