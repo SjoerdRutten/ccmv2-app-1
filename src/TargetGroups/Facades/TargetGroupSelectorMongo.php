@@ -13,7 +13,7 @@ class TargetGroupSelectorMongo
 {
     public function getQueryFilters(\MongoDB\Laravel\Eloquent\Builder|MongoDB\Laravel\Query\Builder $query, $elements)
     {
-        if ($orderElements = Arr::where($elements, fn ($item) => \Str::startsWith(Arr::get($item, 'column'), 'orders'))) {
+        if ($orderElements = Arr::where($elements, fn ($item) => \Str::startsWith(Arr::get($item, 'column'), 'orders.'))) {
             $query->whereHas('orders', function ($query) use ($orderElements) {
                 foreach ($orderElements as $row) {
 
@@ -184,7 +184,7 @@ class TargetGroupSelectorMongo
         $mongoDB = \DB::connection('mongodb')->getMongoDB();
         $collection = $mongoDB->selectCollection((new CrmCardMongo)->getTable());
 
-        if (Arr::whereNotNull(Arr::get($elements, '0.subelements'))) {
+        if (is_array($elements) && Arr::whereNotNull(Arr::get($elements, '0.subelements'))) {
             return $this->getQuery($elements)->count();
         } else {
             return $collection->estimatedDocumentCount();

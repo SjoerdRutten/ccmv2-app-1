@@ -30,7 +30,7 @@ class UpdateOrderMongoDbJob implements ShouldQueue
                 'loyalty_card' => $this->order->loyalty_card,
                 'payment_method' => $this->order->payment_method,
                 'store' => (int) $this->order->store,
-                'order_time' => $this->order->order_time->toIso8601String(),
+                'order_time' => $this->order->order_time,
                 'total_price' => (int) $this->order->total_price,
                 'number_of_products' => (int) $this->order->number_of_products,
             ];
