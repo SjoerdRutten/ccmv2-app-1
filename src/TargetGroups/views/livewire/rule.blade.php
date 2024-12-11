@@ -58,6 +58,9 @@
                 @elseif (Arr::get($filterTmp, 'columnType') === 'integer')
                     <x-target-group::column-types.integer :filter="$filterTmp"
                                                           :disabled="$readonly"/>
+                @elseif ((Arr::get($filterTmp, 'columnType') === 'float') || (Arr::get($filterTmp, 'columnType') === 'price'))
+                    <x-target-group::column-types.float :filter="$filterTmp"
+                                                        :disabled="$readonly"/>
                 @elseif (Arr::get($filterTmp, 'columnType') === 'date')
                     <x-target-group::column-types.date :filter="$filterTmp"
                                                        :disabled="$readonly"/>

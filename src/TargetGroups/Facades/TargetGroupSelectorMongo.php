@@ -88,8 +88,13 @@ class TargetGroupSelectorMongo
         switch ($columnType) {
             case 'boolean':
                 return (bool) $value;
+            case 'select_integer':
             case 'integer':
                 return (int) $value;
+            case 'float':
+                return (float) $value;
+            case 'price':
+                return (int) ($value * 100);
             case 'date':
                 return Carbon::parse($value)->toIso8601String();
             case 'integer_array':
@@ -109,7 +114,7 @@ class TargetGroupSelectorMongo
                 });
 
             default:
-                return $value;
+                return (string) $value;
         }
     }
 

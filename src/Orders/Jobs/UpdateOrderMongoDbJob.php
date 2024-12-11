@@ -24,14 +24,13 @@ class UpdateOrderMongoDbJob implements ShouldQueue
         if ($this->order->order_time->isAfter(now()->subYear())) {
             $data = [
                 'id' => $this->order->id,
-                'environment_id' => $this->order->environment_id,
+                'order_type_id' => (int) $this->order->order_type_id,
                 'crm_card_id' => $this->order->crm_card_id,
-                'order_type_id' => $this->order->order_type_id,
                 'order_number' => $this->order->order_number,
                 'loyalty_card' => $this->order->loyalty_card,
                 'payment_method' => $this->order->payment_method,
                 'store' => (int) $this->order->store,
-                'order_time' => $this->order->order_time->timestamp,
+                'order_time' => $this->order->order_time->toIso8601String(),
                 'total_price' => (int) $this->order->total_price,
                 'number_of_products' => (int) $this->order->number_of_products,
             ];
@@ -64,7 +63,6 @@ class UpdateOrderMongoDbJob implements ShouldQueue
                     'unit_price' => (int) $orderRow->unit_price,
                     'total_price' => (int) $orderRow->total_price,
                     'is_promo' => (int) $orderRow->is_promo,
-                    'order_type' => $orderRow->orderType->name,
                     'sku' => (string) $orderRow->product->sku,
                     'eans' => $orderRow->product->eans->pluck('ean')->toArray(),
                 ];

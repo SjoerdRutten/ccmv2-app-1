@@ -35,6 +35,11 @@ class Order extends Model
         return $this->hasmany(OrderRow::class);
     }
 
+    public function orderType(): BelongsTo
+    {
+        return $this->belongsTo(OrderType::class);
+    }
+
     protected function totalPrice(): Attribute
     {
         return Attribute::make(
