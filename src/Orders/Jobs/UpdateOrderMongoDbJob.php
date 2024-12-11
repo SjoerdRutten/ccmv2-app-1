@@ -64,6 +64,7 @@ class UpdateOrderMongoDbJob implements ShouldQueue
                     'unit_price' => (int) $orderRow->unit_price,
                     'total_price' => (int) $orderRow->total_price,
                     'is_promo' => (int) $orderRow->is_promo,
+                    'order_type' => $orderRow->orderType->name,
                     'sku' => (string) $orderRow->product->sku,
                     'eans' => $orderRow->product->eans->pluck('ean')->toArray(),
                 ];
