@@ -8,10 +8,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
+use Sellvation\CCMV2\Orders\Events\OrderSavedEvent;
 
 class Order extends Model
 {
     use HasEnvironment;
+
+    protected $dispatchesEvents = [
+        'saved' => OrderSavedEvent::class,
+    ];
 
     protected function casts()
     {
