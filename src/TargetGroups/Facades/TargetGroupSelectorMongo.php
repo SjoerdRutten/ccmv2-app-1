@@ -118,6 +118,7 @@ class TargetGroupSelectorMongo
                 return $query->where($column, '<=', $value);
             case 'eq':
                 return $query->where($column, '=', $value);
+            case 'neq':
             case 'ne':
                 return $query->where($column, '<>', $value);
             case 'con':
