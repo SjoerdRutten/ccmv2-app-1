@@ -57,7 +57,19 @@
                 </x-ccm::forms.form>
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="2">
-                <x-ccm::forms.html-editor wire-name="form.body"></x-ccm::forms.html-editor>
+                <div class="grid grid-cols-5 gap-4">
+                    <x-ccm::forms.html-editor wire-name="form.body" class="col-span-4"></x-ccm::forms.html-editor>
+                    <div>
+                        <x-ccm::typography.h2>Beschikbare variabelen</x-ccm::typography.h2>
+                        <dl>
+                            @foreach ($availableVariables AS $key => $description)
+                                <dt class="font-bold">${{ $key }}</dt>
+                                <dd class="border-b text-sm">{{ $description }}</dd>
+                            @endforeach
+                        </dl>
+                    </div>
+
+                </div>
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="3">
                 <div class="grid grid-cols-2 gap-4">

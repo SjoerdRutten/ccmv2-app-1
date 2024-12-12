@@ -144,6 +144,15 @@ class Edit extends Component
         $this->showSuccessModal(title: 'Layout is opgeslagen', href: route('cms::layouts::edit', $this->siteLayout->id));
     }
 
+    private function getAvailableVariables()
+    {
+        $variables = \BladeExtensions::getCmsVariables();
+
+        ksort($variables);
+
+        return $variables;
+    }
+
     public function render()
     {
         return view('sites::livewire.layouts.edit')
@@ -157,6 +166,7 @@ class Edit extends Component
                     ->whereNotIn('id', $this->layoutImportJs->pluck('id')->toArray())
                     ->orderBy('name')
                     ->get(),
+                'availableVariables' => $this->getAvailableVariables(),
             ]);
     }
 }

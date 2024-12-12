@@ -23,3 +23,20 @@ Route::prefix('ems')
                 Route::get('/{emailContent}', \Sellvation\CCMV2\Ems\Livewire\EmailContents\Edit::class)->name('edit');
             });
     });
+
+Route::prefix('admin')
+    ->middleware([
+        'auth:sanctum',
+        'verified',
+        'web',
+    ])
+    ->name('admin::')
+    ->group(function (): void {
+        Route::prefix('email_domains')
+            ->name('email_domains::')
+            ->group(function () {
+                Route::get('/', \Sellvation\CCMV2\Ems\Livewire\EmailDomains\Overview::class)->name('overview');
+                Route::get('/add', \Sellvation\CCMV2\Ems\Livewire\EmailDomains\Edit::class)->name('add');
+                Route::get('/{emailDomain}', \Sellvation\CCMV2\Ems\Livewire\EmailDomains\Edit::class)->name('edit');
+            });
+    });
