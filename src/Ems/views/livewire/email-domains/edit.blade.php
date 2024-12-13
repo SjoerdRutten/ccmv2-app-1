@@ -38,6 +38,7 @@
                         <x-ccm::tables.th>Selector</x-ccm::tables.th>
                         <x-ccm::tables.th>Verloopt op</x-ccm::tables.th>
                         <x-ccm::tables.th>Status</x-ccm::tables.th>
+                        <x-ccm::tables.th>Afzender adressen</x-ccm::tables.th>
                         <x-ccm::tables.th :link="true">Acties</x-ccm::tables.th>
                     </x-slot:thead>
                     <x-slot:tbody>
@@ -57,6 +58,13 @@
                                     <em class="text-sm">
                                         {{ $emailDkim->status_message }}
                                     </em>
+                                </x-ccm::tables.td>
+                                <x-ccm::tables.td>
+                                    <ul>
+                                        @foreach ($emailDkim->emailDkimDomains AS $emailDkimDomain)
+                                            <li>{{ $emailDkimDomain->domain }}</li>
+                                        @endforeach
+                                    </ul>
                                 </x-ccm::tables.td>
                                 <x-ccm::tables.td :link="true">
                                     <x-ccm::tables.view-link
