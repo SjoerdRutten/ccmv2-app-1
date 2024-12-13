@@ -1,8 +1,8 @@
 <div wire:loading.remove>
     <div class="px-4 sm:px-6 lg:px-8">
-        <x-ccm::pages.intro title="Layout wijzigen">
+        <x-ccm::pages.intro title="JS/CSS wijzigen">
             <x-slot:actions>
-                <x-ccm::buttons.back :href="route('cms::layouts::overview')">Terug</x-ccm::buttons.back>
+                <x-ccm::buttons.back :href="route('cms::imports::overview')">Terug</x-ccm::buttons.back>
                 <x-ccm::buttons.save wire:click="save"></x-ccm::buttons.save>
             </x-slot:actions>
         </x-ccm::pages.intro>
