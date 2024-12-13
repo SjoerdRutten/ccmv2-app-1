@@ -20,6 +20,8 @@ class EmailDkimForm extends Form
 
     public ?string $selector_prefix = null;
 
+    public array $emailDkimDomains = [];
+
     public function rules(): array
     {
         return [
@@ -41,6 +43,7 @@ class EmailDkimForm extends Form
     {
         $this->emailDkim = $emailDkim;
         $this->fill($emailDkim->toArray());
+        $this->emailDkimDomains = $this->emailDkim->emailDkimDomains()->pluck('domain')->toArray();
     }
 
     public function resetEmailDkim()
@@ -49,6 +52,17 @@ class EmailDkimForm extends Form
             'email_domain_id',
             'selector_prefix',
         ]);
+    }
+
+    public function addEmailDkimDomain()
+    {
+        $this->emailDkimDomains[] = '';
+    }
+
+    public function removeEmailDkimDomain($key)
+    {
+        \Arr::pull($this->emailDkimDomains, $key);
+        $this->emailDkimDomains = array_values($this->emailDkimDomains);
     }
 
     public function save()
@@ -63,6 +77,18 @@ class EmailDkimForm extends Form
         $this->emailDkim->expires_at = now()->addYear();
         $this->emailDkim->emailDomain()->associate($this->emailDomain);
         $this->emailDkim->save();
+
+        $this->emailDkim->emailDkimDomains()->delete();
+
+        foreach ($this->emailDkimDomains as $emailDkimDomain) {
+            $emailDkimDomain = \Str::trim(\Str::lower($emailDkimDomain));
+
+            if (! empty($emailDkimDomain)) {
+                $this->emailDkim->emailDkimDomains()->create([
+                    'domain' => $emailDkimDomain,
+                ]);
+            }
+        }
 
         return $this->emailDkim;
     }

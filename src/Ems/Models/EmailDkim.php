@@ -5,6 +5,7 @@ namespace Sellvation\CCMV2\Ems\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Sellvation\CCMV2\Ems\Events\EmailDkimCreatedEvent;
 
 class EmailDkim extends Model
@@ -32,6 +33,11 @@ class EmailDkim extends Model
     public function emailDomain(): BelongsTo
     {
         return $this->belongsTo(EmailDomain::class);
+    }
+
+    public function emailDkimDomains(): HasMany
+    {
+        return $this->hasMany(EmailDkimDomain::class);
     }
 
     protected function dnsRecordKey(): Attribute

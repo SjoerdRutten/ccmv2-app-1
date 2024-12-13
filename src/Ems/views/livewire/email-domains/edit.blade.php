@@ -112,6 +112,22 @@
                         Selector prefix
                     </x-ccm::forms.input>
                 @endif
+
+                <x-ccm::typography.h2>Afzenderadressen</x-ccm::typography.h2>
+                <dl>
+                    @foreach ($dkimForm->emailDkimDomains AS $key => $emailDkimDomain)
+                        <dd class="flex gap-4">
+                            <x-ccm::forms.input name="dkimForm.emailDkimDomains.{{ $key }}"
+                                                wire:model.live="dkimForm.emailDkimDomains.{{ $key }}"
+                                                :grow="true"
+                            ></x-ccm::forms.input>
+                            <x-ccm::buttons.delete
+                                    wire:click.prevent="removeEmailDkimDomain({{ $key }})"></x-ccm::buttons.delete>
+                        </dd>
+                    @endforeach
+                </dl>
+
+                <x-ccm::buttons.add wire:click="addEmailDkimDomain">Afzenderadres toevoegen</x-ccm::buttons.add>
             </x-ccm::forms.form>
 
             <x-slot:buttons>

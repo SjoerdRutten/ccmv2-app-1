@@ -99,6 +99,16 @@ class Edit extends Component
         CheckDkimJob::dispatchSync($emailDkim);
     }
 
+    public function addEmailDkimDomain()
+    {
+        $this->dkimForm->addEmailDkimDomain();
+    }
+
+    public function removeEmailDkimDomain($key)
+    {
+        $this->dkimForm->removeEmailDkimDomain($key);
+    }
+
     public function render()
     {
         return view('ems::livewire.email-domains.edit');
