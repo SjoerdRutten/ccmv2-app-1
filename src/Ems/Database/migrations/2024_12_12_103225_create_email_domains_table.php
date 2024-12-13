@@ -8,14 +8,14 @@ return new class extends Migration
 {
     public function up(): void
     {
-        //        Schema::create('email_domains', function (Blueprint $table) {
-        //            $table->id();
-        //            $table->foreignId('environment_id')->constrained()->cascadeOnDelete();
-        //            $table->string('domain');
-        //            $table->string('description')->nullable();
-        //            $table->string('return_path')->nullable();
-        //            $table->timestamps();
-        //        });
+        Schema::create('email_domains', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('environment_id')->constrained()->cascadeOnDelete();
+            $table->string('domain');
+            $table->string('description')->nullable();
+            $table->string('return_path')->nullable();
+            $table->timestamps();
+        });
 
         Schema::create('email_dkims', function (Blueprint $table) {
             $table->id();
