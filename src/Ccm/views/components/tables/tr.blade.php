@@ -5,6 +5,7 @@
     @if ($id ?? false)
         x-sort:item="{{ $id }}"
         @endif
+        {{ $attributes }}
 >
     {{ $slot }}
 </tr>

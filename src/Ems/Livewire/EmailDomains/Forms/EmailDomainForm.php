@@ -20,14 +20,6 @@ class EmailDomainForm extends Form
 
     public ?string $return_path = null;
 
-    public ?string $dkim_selector_prefix = null;
-
-    public ?string $dkim_private_key = null;
-
-    public ?string $dkim_public_key = null;
-
-    public ?string $dkim_expires_at = null;
-
     public function rules(): array
     {
         return [
@@ -38,9 +30,6 @@ class EmailDomainForm extends Form
                 'required',
             ],
             'return_path' => [
-                'nullable',
-            ],
-            'dkim_selector_prefix' => [
                 'nullable',
             ],
         ];

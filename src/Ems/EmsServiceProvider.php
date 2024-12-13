@@ -6,6 +6,8 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
+use Sellvation\CCMV2\Ems\Events\EmailDkimCreatedEvent;
+use Sellvation\CCMV2\Ems\Listeners\EmailDkimCreatedListener;
 
 class EmsServiceProvider extends ServiceProvider
 {
@@ -39,5 +41,7 @@ class EmsServiceProvider extends ServiceProvider
     private function registerEvents()
     {
         $events = $this->app->make(Dispatcher::class);
+
+        $events->listen(EmailDkimCreatedEvent::class, EmailDkimCreatedListener::class);
     }
 }

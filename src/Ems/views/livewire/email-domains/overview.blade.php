@@ -17,8 +17,7 @@
                 <x-ccm::tables.th :first="true">ID</x-ccm::tables.th>
                 <x-ccm::tables.th>Domein</x-ccm::tables.th>
                 <x-ccm::tables.th>Omschrijving</x-ccm::tables.th>
-                <x-ccm::tables.th>DKIM aanwezig</x-ccm::tables.th>
-                <x-ccm::tables.th>DKIM check</x-ccm::tables.th>
+                <x-ccm::tables.th>DKIMs</x-ccm::tables.th>
                 <x-ccm::tables.th :link="true">Acties</x-ccm::tables.th>
             </x-slot:thead>
             <x-slot:tbody>
@@ -28,21 +27,19 @@
                         <x-ccm::tables.td>{{ $domain->domain }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $domain->description }}</x-ccm::tables.td>
                         <x-ccm::tables.td>
-                            @if ($domain->hasDkim)
-                                <x-heroicon-s-check-circle class="w-6 h-6 text-green-500"/>
-                            @else
-                                <x-heroicon-s-x-circle class="w-6 h-6 text-red-500"/>
-                            @endif
-                        </x-ccm::tables.td>
-                        <x-ccm::tables.td>
-                            @if ($domain->dkimCheck)
-                                <x-heroicon-s-check-circle class="w-6 h-6 text-green-500 inline"/>
-                            @else
-                                <x-heroicon-s-x-circle class="w-6 h-6 text-red-500 inline"/>
-                            @endif
-                            <em class="text-sm">
-                                {{ $domain->dkim_status_message }}
-                            </em>
+                            <ul>
+                                @foreach ($domain->emailDkims AS $emailDkim)
+                                    <li>
+                                        @if ($emailDkim->status)
+                                            <x-heroicon-s-check-circle class="w-6 h-6 text-green-500 inline"/>
+                                        @else
+                                            <x-heroicon-s-x-circle class="w-6 h-6 text-red-500 inline"/>
+                                        @endif
+                                        {{ $emailDkim->selector_prefix }}
+                                    </li>
+                                @endforeach
+                            </ul>
+
                         </x-ccm::tables.td>
                         <x-ccm::tables.td :link="true">
                             <x-ccm::tables.edit-link :href="route('admin::email_domains::overview', $domain)"/>
