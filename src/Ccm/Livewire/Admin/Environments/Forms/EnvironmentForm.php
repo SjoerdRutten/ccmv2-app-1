@@ -81,11 +81,16 @@ class EnvironmentForm extends Form
     {
         $this->validate();
 
+        $data = $this->except(['environment']);
+        $data['notified'] = 0; // default value
+
         if ($this->environment->id) {
-            $this->environment->update($this->all());
+            $this->environment->update($data);
         } else {
-            $this->environment = Environment::create($this->all());
+            $this->environment = Environment::create($data);
         }
+
+        return $this->environment;
 
     }
 }

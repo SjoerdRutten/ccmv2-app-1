@@ -15,6 +15,7 @@
             <x-ccm::tabs.tab-content :index="0">
                 <x-ccm::forms.form>
                     <x-ccm::forms.select label="Klant" wire:model="form.customer_id">
+                        <option></option>
                         @foreach ($this->form->getCustomers() AS $key => $name)
                             <option value="{{ $key }}">
                                 {{ $name }}

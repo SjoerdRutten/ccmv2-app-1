@@ -7,6 +7,11 @@ use Sellvation\CCMV2\Environments\Models\Environment;
 
 class Overview extends Component
 {
+    public function removeEnvironment(Environment $environment)
+    {
+        $environment->delete();
+    }
+
     public function render()
     {
         return view('ccm::livewire.admin.environments.overview')

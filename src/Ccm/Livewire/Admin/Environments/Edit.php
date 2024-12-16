@@ -15,16 +15,17 @@ class Edit extends Component
 
     public EnvironmentForm $form;
 
-    public function mount()
+    public function mount(Environment $environment)
     {
+        $this->environment = $environment;
         $this->form->setEnvironment($this->environment);
     }
 
     public function save()
     {
-        $this->form->save();
+        $this->environment = $this->form->save();
 
-        $this->showSuccessModal('Omgeving is opgeslagen');
+        $this->showSuccessModal('Omgeving is opgeslagen', href: route('admin::environments::edit', $this->environment->id));
     }
 
     public function render()

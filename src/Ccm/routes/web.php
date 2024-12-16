@@ -19,7 +19,8 @@ Route::middleware([
                 Route::get('/customers/add', \Sellvation\CCMV2\Ccm\Livewire\Admin\Customers\Edit::class)->name('customers::add');
                 Route::get('/customers/{customer}', \Sellvation\CCMV2\Ccm\Livewire\Admin\Customers\Edit::class)->name('customers::edit');
                 Route::get('/customers', \Sellvation\CCMV2\Ccm\Livewire\Admin\Customers\Overview::class)->name('customers');
-                Route::get('/environments/{environment}', \Sellvation\CCMV2\Ccm\Livewire\Admin\Environments\Edit::class)->name('environments.edit');
+                Route::get('/environments/new', \Sellvation\CCMV2\Ccm\Livewire\Admin\Environments\Edit::class)->name('environments::add');
+                Route::get('/environments/{environment}', \Sellvation\CCMV2\Ccm\Livewire\Admin\Environments\Edit::class)->name('environments::edit');
                 Route::get('/environments', \Sellvation\CCMV2\Ccm\Livewire\Admin\Environments\Overview::class)->name('environments');
             });
     });
