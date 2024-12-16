@@ -7,7 +7,7 @@
         </x-ccm::pages.intro>
         <x-ccm::tables.table>
             <x-slot:thead>
-                {{--                <x-ccm::tables.th :first="true">ID</x-ccm::tables.th>--}}
+                <x-ccm::tables.th :first="true">ID</x-ccm::tables.th>
                 <x-ccm::tables.th>Naam</x-ccm::tables.th>
                 <x-ccm::tables.th width="30%">Omschrijving</x-ccm::tables.th>
                 <x-ccm::tables.th>Aantal resultaten</x-ccm::tables.th>
@@ -18,6 +18,7 @@
             <x-slot:tbody>
                 @foreach ($this->targetGroups AS $targetGroup)
                     <x-ccm::tables.tr :route="route('target-groups::form', $targetGroup)">
+                        <x-ccm::tables.td :first="true">{{ $targetGroup->id }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $targetGroup->name }}</x-ccm::tables.td>
                         <x-ccm::tables.td
                                 class="text-wrap">{{ $targetGroup->description }}</x-ccm::tables.td>

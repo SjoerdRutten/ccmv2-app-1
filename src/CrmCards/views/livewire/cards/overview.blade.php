@@ -4,8 +4,9 @@
             <div class="flex gap-4">
                 <x-ccm::forms.input
                         name="filterQ"
-                        wire:model.live.debounce="filter.q"
-                >Zoeken
+                        wire:model.blur="filter.q"
+                >
+                    Zoeken
                 </x-ccm::forms.input>
                 <x-ccm::forms.select label="Zoekveld" wire:model.live="filter.crm_field_id">
                     <option>-Alle geindexeerde velden-</option>
@@ -27,7 +28,9 @@
                 @endif
             </div>
         </x-ccm::pages.intro>
-        <x-ccm::tables.table>
+
+        <x-ccm::loading/>
+        <x-ccm::tables.table wire:loading.remove>
             <x-slot:thead>
                 @foreach ($crmFields AS $key => $crmField)
                     <x-ccm::tables.th :first="$key === 0">

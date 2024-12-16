@@ -10,6 +10,8 @@ class CrmCardMongo extends Model
 {
     protected $connection = 'mongodb';
 
+    private CrmCard $crmCard;
+
     public function getTable()
     {
         return 'crm_cards_'.($this->environment_id ?: \Context::get('environment_id'));
@@ -18,5 +20,16 @@ class CrmCardMongo extends Model
     public function orders(): HasMany
     {
         return $this->hasMany(OrderMongo::class, 'crm_card_id', 'id');
+    }
+
+    public function getAttribute($key)
+    {
+        if (\Arr::exists($this->attributes, $key)) {
+            return $this->attributes[$key];
+        } elseif (\Arr::exists($this->attributes, 'id')) {
+            $this->crmCard = $this->crmCard ?? CrmCard::find($this->attributes['id']);
+
+            return $this->crmCard->$key;
+        }
     }
 }
