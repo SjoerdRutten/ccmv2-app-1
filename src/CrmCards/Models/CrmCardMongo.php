@@ -27,6 +27,7 @@ class CrmCardMongo extends Model
         if (\Arr::exists($this->attributes, $key)) {
             return $this->attributes[$key];
         } elseif (\Arr::exists($this->attributes, 'id')) {
+            //            dd($this->attributes['id']);
             $this->crmCard = $this->crmCard ?? CrmCard::find($this->attributes['id']);
 
             return $this->crmCard->$key;

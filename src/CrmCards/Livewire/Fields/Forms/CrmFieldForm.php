@@ -8,9 +8,9 @@ use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
+use Sellvation\CCMV2\CrmCards\Models\Builders\CrmFieldType;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
 use Sellvation\CCMV2\CrmCards\Models\CrmFieldCategory;
-use Sellvation\CCMV2\CrmCards\Models\CrmFieldType;
 
 class CrmFieldForm extends Form
 {

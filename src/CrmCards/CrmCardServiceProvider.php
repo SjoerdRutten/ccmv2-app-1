@@ -8,11 +8,15 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Sellvation\CCMV2\CrmCards\Events\CrmCardCreatingEvent;
+use Sellvation\CCMV2\CrmCards\Events\CrmCardDeletingEvent;
+use Sellvation\CCMV2\CrmCards\Events\CrmCardSavedEvent;
 use Sellvation\CCMV2\CrmCards\Facades\CrmFieldCorrector;
 use Sellvation\CCMV2\CrmCards\Facades\CrmFieldCorrectorFacade;
 use Sellvation\CCMV2\CrmCards\Facades\CrmFieldValidator;
 use Sellvation\CCMV2\CrmCards\Facades\CrmFieldValidatorFacade;
 use Sellvation\CCMV2\CrmCards\Listeners\CrmCardCreatingListener;
+use Sellvation\CCMV2\CrmCards\Listeners\CrmCardDeletingListener;
+use Sellvation\CCMV2\CrmCards\Listeners\CrmCardSavedListener;
 
 class CrmCardServiceProvider extends ServiceProvider
 {
@@ -49,6 +53,8 @@ class CrmCardServiceProvider extends ServiceProvider
         $events = $this->app->make(Dispatcher::class);
 
         $events->listen(CrmCardCreatingEvent::class, CrmCardCreatingListener::class);
+        $events->listen(CrmCardSavedEvent::class, CrmCardSavedListener::class);
+        $events->listen(CrmCardDeletingEvent::class, CrmCardDeletingListener::class);
     }
 
     private function registerFacades()

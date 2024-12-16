@@ -3,7 +3,6 @@
 namespace Sellvation\CCMV2\CrmCards\Models\Builders;
 
 use Illuminate\Database\Eloquent\Builder;
-use Sellvation\CCMV2\CrmCards\Models\CrmFieldType;
 
 class CrmFieldQueryBuilder extends Builder
 {
@@ -31,5 +30,10 @@ class CrmFieldQueryBuilder extends Builder
     public function isMediaFieldType(): self
     {
         return $this->isCrmFieldType('MEDIA');
+    }
+
+    public function isVisible(): self
+    {
+        return $this->where('is_hidden', 0);
     }
 }

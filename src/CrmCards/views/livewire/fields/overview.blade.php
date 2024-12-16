@@ -33,7 +33,7 @@
                 <x-ccm::tables.th>Type</x-ccm::tables.th>
                 <x-ccm::tables.th :link="true">Overzicht</x-ccm::tables.th>
                 <x-ccm::tables.th :link="true">Doelgroep selector</x-ccm::tables.th>
-                <x-ccm::tables.th :link="true">CRM-Kaart</x-ccm::tables.th>
+                <x-ccm::tables.th :link="true">Verbergen</x-ccm::tables.th>
                 <x-ccm::tables.th :link="true">Vergrendelen</x-ccm::tables.th>
                 <x-ccm::tables.th :link="true"></x-ccm::tables.th>
             </x-slot:thead>

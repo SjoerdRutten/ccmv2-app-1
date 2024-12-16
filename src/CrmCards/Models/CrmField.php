@@ -6,9 +6,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
-use Sellvation\CCMV2\CrmCards\Events\CrmFieldSavedEvent;
-use Sellvation\CCMV2\CrmCards\Events\CrmFieldSavingEvent;
 use Sellvation\CCMV2\CrmCards\Models\Builders\CrmFieldQueryBuilder;
+use Sellvation\CCMV2\CrmCards\Models\Builders\CrmFieldType;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 
 class CrmField extends Model

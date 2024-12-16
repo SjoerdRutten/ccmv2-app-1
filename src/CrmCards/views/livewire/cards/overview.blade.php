@@ -1,6 +1,9 @@
 <div wire:loading.remove>
     <div class="px-4 sm:px-6 lg:px-8">
         <x-ccm::pages.intro title="CRM kaarten">
+            <x-slot:actions>
+                <x-ccm::buttons.add route="crm-cards::cards::add">CRM Kaart toevoegen</x-ccm::buttons.add>
+            </x-slot:actions>
             <div class="flex gap-4">
                 <x-ccm::forms.input
                         name="filterQ"
@@ -49,6 +52,10 @@
                         @endforeach
                         <x-ccm::tables.td :link="true">
                             <x-ccm::tables.edit-link :href="route('crm-cards::cards::edit', $card)"/>
+                            <x-ccm::tables.delete-link
+                                    wire:confirm="Weet je zeker dat je deze kaart wilt verwijderen?"
+                                    wire:click="removeCard({{ $card->id }})"
+                            />
                         </x-ccm::tables.td>
                     </x-ccm::tables.tr>
                 @endforeach

@@ -30,7 +30,7 @@ class CrmCardForm extends Form
     {
         $this->crmCard = $crmCard;
 
-        $this->data = $crmCard->data;
+        $this->data = $crmCard->data ?? [];
     }
 
     public function save()
@@ -39,11 +39,14 @@ class CrmCardForm extends Form
 
         $this->crmCard->data = $this->data;
         $this->crmCard->save();
+
+        return $this->crmCard;
     }
 
     public function noCategoryFields()
     {
         return CrmField::whereNull('crm_field_category_id')
+            ->isVisible()
             ->orderBy('position')
             ->get();
     }

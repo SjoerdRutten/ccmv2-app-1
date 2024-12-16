@@ -17,9 +17,9 @@
                 </x-ccm::description-lists.base>
                 <x-ccm::description-lists.base title="Statistieken">
                     <x-ccm::description-lists.element
-                            label="Datum creatie">{{ $crmCard->created_at->toDateTimeString() }}</x-ccm::description-lists.element>
+                            label="Datum creatie">{{ $crmCard->created_at?->toDateTimeString() }}</x-ccm::description-lists.element>
                     <x-ccm::description-lists.element
-                            label="Datum mutatie">{{ $crmCard->updated_at->toDateTimeString() }}</x-ccm::description-lists.element>
+                            label="Datum mutatie">{{ $crmCard->updated_at?->toDateTimeString() }}</x-ccm::description-lists.element>
                     <x-ccm::description-lists.element
                             label="Eerste bezoek">{{ $crmCard->first_visit_at?->toDateTimeString() }}</x-ccm::description-lists.element>
                     <x-ccm::description-lists.element
@@ -60,14 +60,14 @@
             </x-ccm::accordion.row>
             <x-ccm::accordion.row title="Zonder categorie" key="1">
                 <x-ccm::description-lists.base title="">
-                    <x-crm-cards::edit-fields
-                            :fields="$this->form->noCategoryFields()"/>
+                    <x-crm-cards::edit-fields :fields="$this->form->noCategoryFields()" :crmCard="$crmCard"/>
                 </x-ccm::description-lists.base>
             </x-ccm::accordion.row>
             @foreach ($this->form->categories() AS $key => $category)
                 <x-ccm::accordion.row :title="$category->name" :key="$key + 2">
                     <x-ccm::description-lists.base title="">
-                        <x-crm-cards::edit-fields :fields="$category->crmFields"/>
+                        <x-crm-cards::edit-fields :fields="$category->crmFields()->isVisible()->get()"
+                                                  :crmCard="$crmCard"/>
 
                     </x-ccm::description-lists.base>
                 </x-ccm::accordion.row>

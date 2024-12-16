@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Str;
-use Laravel\Scout\Searchable;
 use Sellvation\CCMV2\CrmCards\Events\CrmCardCreatingEvent;
+use Sellvation\CCMV2\CrmCards\Events\CrmCardDeletingEvent;
 use Sellvation\CCMV2\CrmCards\Events\CrmCardSavedEvent;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 use Sellvation\CCMV2\Orders\Models\Order;
@@ -20,7 +20,6 @@ class CrmCard extends Model
 {
     use HasEnvironment;
     use HasTags;
-    //    use Searchable;
 
     protected $fillable = [
         'id',
@@ -60,6 +59,7 @@ class CrmCard extends Model
     protected $dispatchesEvents = [
         'creating' => CrmCardCreatingEvent::class,
         'saved' => CrmCardSavedEvent::class,
+        'deleting' => CrmCardDeletingEvent::class,
     ];
 
     protected function casts(): array

@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\CrmCards\Models\CrmCardMongo;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
 use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelectorFacade;
@@ -22,11 +23,18 @@ class Overview extends Component
         'crm_field_id' => null,
     ];
 
+    public function mount() {}
+
     public function updated($property, $value)
     {
         if (Str::startsWith($property, 'filter')) {
             $this->resetPage();
         }
+    }
+
+    public function removeCard(CrmCard $card)
+    {
+        $card->delete();
     }
 
     public function getCrmCards()

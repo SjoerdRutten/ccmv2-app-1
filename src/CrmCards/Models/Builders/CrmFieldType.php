@@ -1,6 +1,6 @@
 <?php
 
-namespace Sellvation\CCMV2\CrmCards\Models;
+namespace Sellvation\CCMV2\CrmCards\Models\Builders;
 
 use Illuminate\Database\Eloquent\Model;
 
