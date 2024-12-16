@@ -25,8 +25,10 @@ class Edit extends Component
 
     public string|bool $postCorrectedValue = '';
 
-    public function mount()
+    public function mount(CrmField $crmField)
     {
+        $this->crmField = $crmField;
+
         $this->form->setCrmField($this->crmField);
         $this->getCorrectedValue();
     }

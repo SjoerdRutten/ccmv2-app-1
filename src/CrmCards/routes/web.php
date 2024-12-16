@@ -14,6 +14,7 @@ Route::prefix('crm-cards')
             ->name('fields::')
             ->group(function () {
                 Route::get('/', \Sellvation\CCMV2\CrmCards\Livewire\Fields\Overview::class)->name('overview');
+                Route::get('/add', \Sellvation\CCMV2\CrmCards\Livewire\Fields\Edit::class)->name('add');
                 Route::get('/{crmField}', \Sellvation\CCMV2\CrmCards\Livewire\Fields\Edit::class)->name('edit');
             });
         Route::prefix('cards')

@@ -1,6 +1,9 @@
 <div wire:loading.remove>
     <div class="px-4 sm:px-6 lg:px-8">
         <x-ccm::pages.intro title="CRM Velden">
+            <x-slot:actions>
+                <x-ccm::buttons.add route="crm-cards::fields::add">Veld toevoegen</x-ccm::buttons.add>
+            </x-slot:actions>
             <div class="flex gap-4">
                 <x-ccm::forms.select label="Rubriek" wire:model.live="filter.crm_field_category_id">
                     <option></option>
@@ -16,14 +19,6 @@
                 >Zoek op naam of omschrijving
                 </x-ccm::forms.input>
             </div>
-
-            <x-slot:actions>
-                <x-ccm::buttons.primary
-                        wire:confirm="Weet je zeker dat je de index wilt updaten, dit kan meer dan een uur duren!"
-                        wire:click="updateSchema"
-                >Index updaten
-                </x-ccm::buttons.primary>
-            </x-slot:actions>
         </x-ccm::pages.intro>
         <x-ccm::tables.table>
             <x-slot:thead>
@@ -86,6 +81,9 @@
                         </x-ccm::tables.td>
                         <x-ccm::tables.td :link="true">
                             <x-ccm::tables.edit-link :href="route('crm-cards::fields::edit', $crmField['id'])"/>
+                            <x-ccm::tables.delete-link
+                                    wire:confirm="Weet je zeker dat je dit veld wilt verwijderen ?"
+                                    wire:click="removeField({{ $crmField['id'] }})"/>
                         </x-ccm::tables.td>
                     </x-ccm::tables.tr>
                 @endforeach

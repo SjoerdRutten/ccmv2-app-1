@@ -3,7 +3,6 @@
 namespace Sellvation\CCMV2\CrmCards\Livewire\Fields;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Artisan;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
@@ -11,7 +10,7 @@ use Sellvation\CCMV2\CrmCards\Models\CrmFieldCategory;
 
 class Overview extends Component
 {
-    public array $crmFields = [];
+    private array $crmFields = [];
 
     #[Url]
     public array $filter = [
@@ -49,9 +48,13 @@ class Overview extends Component
         $this->getCrmFields();
     }
 
-    public function updateSchema()
+    public function updateSchema() {}
+
+    public function removeField(CrmField $crmField)
     {
-        Artisan::call('typesense:check-schemas -n --crmcards');
+        $crmField->delete();
+
+        $this->getCrmFields();
     }
 
     public function getCrmFields(): void
@@ -84,6 +87,7 @@ class Overview extends Component
         return view('crm-cards::livewire.fields.overview')
             ->with([
                 'crmFieldCategories' => CrmFieldCategory::whereHas('crmFields')->orderBy('name')->get(),
+                'crmFields' => $this->crmFields,
             ]);
     }
 }

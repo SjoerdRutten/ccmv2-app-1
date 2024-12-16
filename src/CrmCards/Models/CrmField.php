@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Sellvation\CCMV2\CrmCards\Events\CrmFieldDeletedEvent;
 use Sellvation\CCMV2\CrmCards\Models\Builders\CrmFieldQueryBuilder;
 use Sellvation\CCMV2\CrmCards\Models\Builders\CrmFieldType;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
@@ -36,10 +37,9 @@ class CrmField extends Model
         'overview_index',
     ];
 
-    //    protected $dispatchesEvents = [
-    //        'saved' => CrmFieldSavedEvent::class,
-    //        'saving' => CrmFieldSavingEvent::class,
-    //    ];
+    protected $dispatchesEvents = [
+        'deleted' => CrmFieldDeletedEvent::class,
+    ];
 
     protected function casts()
     {
