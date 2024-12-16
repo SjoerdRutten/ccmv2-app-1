@@ -3,6 +3,7 @@
 namespace Sellvation\CCMV2\Environments\Models;
 
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -76,6 +77,18 @@ class Environment extends Model
     public function environmentFeatures(): HasMany
     {
         return $this->hasMany(EnvironmentFeature::class);
+    }
+
+    public function emailCredits(): HasMany
+    {
+        return $this->hasMany(EmailCredit::class)->orderBy('created_at', 'desc');
+    }
+
+    protected function activeEmailCredits(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->emailCredits()->sum('quantity'),
+        );
     }
 
     public function hasFeature($feature): bool

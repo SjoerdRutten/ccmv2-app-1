@@ -53,10 +53,6 @@ class EnvironmentForm extends Form
                 'nullable',
                 'max:80',
             ],
-            'email_credits' => [
-                'nullable',
-                'integer',
-            ],
         ];
     }
 
@@ -82,7 +78,6 @@ class EnvironmentForm extends Form
         $this->validate();
 
         $data = $this->except(['environment']);
-        $data['notified'] = 0; // default value
 
         if ($this->environment->id) {
             $this->environment->update($data);

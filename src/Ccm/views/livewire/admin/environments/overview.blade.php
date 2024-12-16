@@ -19,7 +19,7 @@
                         <x-ccm::tables.td :first="true">{{ $environment->name }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $environment->customer->name }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $environment->description }}</x-ccm::tables.td>
-                        <x-ccm::tables.td>{{ $environment->email_credits }}</x-ccm::tables.td>
+                        <x-ccm::tables.td>{{ ReadableNumber($environment->activeEmailCredits, '.') }}</x-ccm::tables.td>
                         <x-ccm::tables.td :link="true">
                             <x-ccm::tables.edit-link
                                     :href="route('admin::environments::edit', $environment)"></x-ccm::tables.edit-link>
