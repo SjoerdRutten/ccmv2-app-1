@@ -89,14 +89,14 @@ class CustomerForm extends Form
 
         $this->fill($customer->toArray());
 
-        $this->allowed_ips = implode("\n", $this->allowed_ips);
+        $this->allowed_ips = implode("\n", $this->allowed_ips ?? []);
     }
 
     public function save()
     {
         $this->validate();
 
-        $data = $this->all();
+        $data = $this->except(['customer']);
 
         $data['allowed_ips'] = explode("\n", $this->allowed_ips);
 

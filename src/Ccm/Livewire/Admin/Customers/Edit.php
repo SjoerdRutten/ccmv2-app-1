@@ -15,8 +15,9 @@ class Edit extends Component
 
     public CustomerForm $form;
 
-    public function mount()
+    public function mount(Customer $customer)
     {
+        $this->customer = $customer;
         $this->form->setCustomer($this->customer);
     }
 

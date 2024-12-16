@@ -7,6 +7,11 @@ use Sellvation\CCMV2\Users\Models\Customer;
 
 class Overview extends Component
 {
+    public function removeCustomer(Customer $customer)
+    {
+        $customer->delete();
+    }
+
     public function render()
     {
         return view('ccm::livewire.admin.customers.overview')
