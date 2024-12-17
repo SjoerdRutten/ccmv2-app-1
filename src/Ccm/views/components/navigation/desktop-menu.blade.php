@@ -39,6 +39,7 @@
                 <x-ccm::navigation.desktop-link route="admin::environments" label="Omgevingen" :sub="true"/>
                 <x-ccm::navigation.desktop-link route="admin::email_domains::overview" label="E-mail domeinen"
                                                 :sub="true"/>
+                <x-ccm::navigation.desktop-link route="admin::mailservers::overview" label="Mailservers" :sub="true"/>
                 <x-ccm::navigation.desktop-link route="roles::overview" label="Rollen" :sub="true"/>
                 <x-ccm::navigation.desktop-link route="users::overview" label="Gebruikers" :sub="true"/>
             </x-ccm::navigation.desktop-link>

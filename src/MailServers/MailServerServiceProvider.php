@@ -1,0 +1,42 @@
+<?php
+
+namespace Sellvation\CCMV2\MailServers;
+
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire;
+use Sellvation\CCMV2\MailServers\Commands\AddSshKeysToMailserversCommand;
+use Sellvation\CCMV2\MailServers\Commands\CheckMailServersCommand;
+use Sellvation\CCMV2\MailServers\Livewire\Edit;
+use Sellvation\CCMV2\MailServers\Livewire\Overview;
+
+class MailServerServiceProvider extends ServiceProvider
+{
+    public function register(): void
+    {
+        $this->registerEvents();
+        $this->registerLivewireComponents();
+    }
+
+    public function boot(): void
+    {
+        $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
+        $this->loadRoutesFrom(__DIR__.'/routes/web.php');
+        $this->loadViewsFrom(__DIR__.'/views', 'mailservers');
+        $this->commands([
+            CheckMailServersCommand::class,
+            AddSshKeysToMailserversCommand::class,
+        ]);
+    }
+
+    private function registerLivewireComponents(): void
+    {
+        Livewire::component('mailservers::overview', Overview::class);
+        Livewire::component('mailservers::edit', Edit::class);
+    }
+
+    private function registerEvents()
+    {
+        $events = $this->app->make(Dispatcher::class);
+    }
+}

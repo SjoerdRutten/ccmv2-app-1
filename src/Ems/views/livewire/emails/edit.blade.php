@@ -12,6 +12,7 @@
                 <x-ccm::tabs.nav-tab :index="0">Basisinformatie</x-ccm::tabs.nav-tab>
                 <x-ccm::tabs.nav-tab :index="1">Inhoud HTML-deel</x-ccm::tabs.nav-tab>
                 <x-ccm::tabs.nav-tab :index="2">Inhoud Tekst-deel</x-ccm::tabs.nav-tab>
+                <x-ccm::tabs.nav-tab :index="3">Stripo</x-ccm::tabs.nav-tab>
             </x-slot:tabs>
 
             <x-ccm::tabs.tab-content :index="0">
@@ -105,6 +106,9 @@
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="2">
                 <x-ccm::forms.textarea name="text" wire:model="form.text" rows="30"></x-ccm::forms.textarea>
+            </x-ccm::tabs.tab-content>
+            <x-ccm::tabs.tab-content :index="3">
+                <div id="stripoEditorContainer"></div>
             </x-ccm::tabs.tab-content>
         </x-ccm::tabs.base>
     </div>
