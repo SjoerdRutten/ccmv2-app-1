@@ -40,7 +40,7 @@
                             <x-ccm::tables.td>{{ $mailServer->mailServerStat->deferred_queue_size }}</x-ccm::tables.td>
                             <x-ccm::tables.td>{{ $mailServer->mailServerStat->load * 100 }} %</x-ccm::tables.td>
                             <x-ccm::tables.td>
-                                {{ round(($mailServer->mailServerStat->memory_used / $mailServer->mailServerStat->memory_total) * 100) }}
+                                {{ round(100 - (($mailServer->mailServerStat->memory_free / $mailServer->mailServerStat->memory_total) * 100)) }}
                                 %
                             </x-ccm::tables.td>
                         @else
