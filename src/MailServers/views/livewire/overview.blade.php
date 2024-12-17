@@ -56,5 +56,13 @@
                 @endforeach
             </x-slot:tbody>
         </x-ccm::tables.table>
+
+        @if ($mailServers->where('is_valid', 0)->count() >= 0)
+            <div class="mt-4 p-4 bg-gray-200 rounded">
+                LET OP: Er zijn 1 of meer niet valide servers, heb je het volgende commando uitgevoerd om de ssh keys
+                toe te voegen aan de mailserver ?<br>
+                <strong class="bg-gray-100 px-2">php artisan mailserver:add-keys</strong>
+            </div>
+        @endif
     </div>
 </div>
