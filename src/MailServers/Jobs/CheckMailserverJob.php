@@ -42,6 +42,7 @@ class CheckMailserverJob implements ShouldQueue
             return $process->execute($commands)->getOutput();
         } catch (\Exception $exception) {
             $this->mailServer->update(['is_valid' => false]);
+            dump($exception->getMessage());
             exit();
         }
     }
@@ -71,9 +72,9 @@ class CheckMailserverJob implements ShouldQueue
 
     private function getSshProcess($privateKeyFileName)
     {
-        return Ssh::create('ccmv2', $this->mailServer->private_ip)
+        return Ssh::create('ccmv2', '192.168.5.8')
             ->setTimeout(5)
             ->usePrivateKey(Storage::path($privateKeyFileName))
-            ->useMultiplexing(Storage::path('/mx01', '5m'));
+            ->useMultiplexing(Storage::path('/'.$this->mailServer->name, '5m'));
     }
 }
