@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Sellvation\CCMV2\MailServers\Livewire\Edit;
+use Sellvation\CCMV2\MailServers\Livewire\Overview;
 
 Route::prefix('admin')
     ->name('admin::')
@@ -13,8 +15,8 @@ Route::prefix('admin')
         Route::prefix('mailservers')
             ->name('mailservers::')
             ->group(function () {
-                Route::get('/', Sellvation\CCMV2\Mailservers\Livewire\Overview::class)->name('overview');
-                Route::get('/add', \Sellvation\CCMV2\Mailservers\Livewire\Edit::class)->name('add');
-                Route::get('/{mailServer}', \Sellvation\CCMV2\Mailservers\Livewire\Edit::class)->name('edit');
+                Route::get('/', Overview::class)->name('overview');
+                Route::get('/add', Edit::class)->name('add');
+                Route::get('/{mailServer}', Edit::class)->name('edit');
             });
     });
