@@ -8,7 +8,7 @@ use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 
 class UpdateCrmCardMongoCommand extends Command
 {
-    protected $signature = 'update:crm-card-mongo';
+    protected $signature = 'crm-cards:update-mongo';
 
     protected $description = 'Update CRM Cards in MongoDB';
 
