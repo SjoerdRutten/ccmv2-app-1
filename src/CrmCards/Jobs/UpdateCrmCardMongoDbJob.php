@@ -81,9 +81,13 @@ class UpdateCrmCardMongoDbJob implements ShouldQueue
             }
         }
 
-        CrmCardMongo::updateOrCreate([
-            'id' => $this->crmCard->id,
-        ], $data);
+        \Context::add('environment_id', $this->crmCard->environment_id);
+
+        if ($crmCard = CrmCardMongo::where('id', $this->crmCard->id)->first()) {
+            $crmCard->update($data);
+        } else {
+            CrmCardMongo::create($data);
+        }
     }
 
     private function makeStringArray($string)
