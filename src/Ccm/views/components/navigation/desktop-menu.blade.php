@@ -1,49 +1,40 @@
 <ul role="list" class="flex flex-1 flex-col gap-y-7">
     <li>
         <ul role="list" class="-mx-2 space-y-1" x-data="{ open: $persist(null) }">
-            <x-ccm::navigation.desktop-link route="ccm::dashboard" label="Dashboard"/>
-
-            @permission ('crm', 'overview')
-            <x-ccm::navigation.desktop-link route="crm-cards::fields::overview" label="CRM">
-                <x-ccm::navigation.desktop-link route="crm-cards::cards::overview" label="Kaarten" :sub="true"/>
-                <x-ccm::navigation.desktop-link route="crm-cards::fields::overview" label="Velden" :sub="true"/>
-                <x-ccm::navigation.desktop-link route="crm-cards::categories::overview" label="Rubrieken" :sub="true"/>
-            </x-ccm::navigation.desktop-link>
-            @endpermission
-            @permission ('cms', 'overview')
-            <x-ccm::navigation.desktop-link route="cms::forms::overview" label="CMS">
-                <x-ccm::navigation.desktop-link route="cms::sites::overview" label="Sites" :sub="true"/>
-                <x-ccm::navigation.desktop-link route="cms::layouts::overview" label="Layouts" :sub="true"/>
-                <x-ccm::navigation.desktop-link route="cms::imports::overview" label="JS/CSS" :sub="true"/>
-                <x-ccm::navigation.desktop-link route="cms::pages::overview" label="Pagina's" :sub="true"/>
-                <x-ccm::navigation.desktop-link route="cms::blocks::overview" label="Contentblokken" :sub="true"/>
-                <x-ccm::navigation.desktop-link route="cms::forms::overview" label="Formulieren" :sub="true"/>
-                <x-ccm::navigation.desktop-link route="cms::scrapers::overview" label="Scrapers" :sub="true"/>
-            </x-ccm::navigation.desktop-link>
-            @endpermission
-            @permission ('ems', 'overview')
-            <x-ccm::navigation.desktop-link route="ems::emails::overview" label="EMS">
-                <x-ccm::navigation.desktop-link route="ems::emails::overview" label="E-mails" :sub="true"/>
-                <x-ccm::navigation.desktop-link route="ems::emailcontents::overview" label="Content" :sub="true"/>
-            </x-ccm::navigation.desktop-link>
-            @endpermission
-            @permission ('gds', 'overview')
-            <x-ccm::navigation.desktop-link route="target-groups::overview" label="Doelgroep selectie">
-                <x-ccm::navigation.desktop-link route="target-groups::overview" label="Query builder" :sub="true"/>
-            </x-ccm::navigation.desktop-link>
-            @endpermission
-
-            @isadmin
-            <x-ccm::navigation.desktop-link route="admin::features" label="Beheer">
-                <x-ccm::navigation.desktop-link route="admin::customers" label="Klanten" :sub="true"/>
-                <x-ccm::navigation.desktop-link route="admin::environments" label="Omgevingen" :sub="true"/>
-                <x-ccm::navigation.desktop-link route="admin::email_domains::overview" label="E-mail domeinen"
-                                                :sub="true"/>
-                <x-ccm::navigation.desktop-link route="admin::mailservers::overview" label="Mailservers" :sub="true"/>
-                <x-ccm::navigation.desktop-link route="roles::overview" label="Rollen" :sub="true"/>
-                <x-ccm::navigation.desktop-link route="users::overview" label="Gebruikers" :sub="true"/>
-            </x-ccm::navigation.desktop-link>
-            @endisadmin
+            @foreach (\CcmMenu::getMenu() AS $item)
+                @if (Arr::get($item, 'permission') === 'admin')
+                    @isadmin
+                    <x-ccm::navigation.desktop-link :route="Arr::get($item, 'route')" :label="Arr::get($item, 'label')">
+                        @if (Arr::get($item, 'sub_items'))
+                            @foreach (Arr::get($item, 'sub_items') AS $subItem)
+                                <x-ccm::navigation.desktop-link :route="Arr::get($subItem, 'route')"
+                                                                :label="Arr::get($subItem, 'label')" :sub="true"/>
+                            @endforeach
+                        @endif
+                    </x-ccm::navigation.desktop-link>
+                    @endisadmin
+                @elseif (Arr::get($item, 'permission.group'))
+                    @permission (Arr::get($item, 'permission.group'), Arr::get($item, 'permission.item'))
+                    <x-ccm::navigation.desktop-link :route="Arr::get($item, 'route')" :label="Arr::get($item, 'label')">
+                        @if (Arr::get($item, 'sub_items'))
+                            @foreach (Arr::get($item, 'sub_items') AS $subItem)
+                                <x-ccm::navigation.desktop-link :route="Arr::get($subItem, 'route')"
+                                                                :label="Arr::get($subItem, 'label')" :sub="true"/>
+                            @endforeach
+                        @endif
+                    </x-ccm::navigation.desktop-link>
+                    @endpermission
+                @else
+                    <x-ccm::navigation.desktop-link :route="Arr::get($item, 'route')" :label="Arr::get($item, 'label')">
+                        @if (Arr::get($item, 'sub_items'))
+                            @foreach (Arr::get($item, 'sub_items') AS $subItem)
+                                <x-ccm::navigation.desktop-link :route="Arr::get($subItem, 'route')"
+                                                                :label="Arr::get($subItem, 'label')" :sub="true"/>
+                            @endforeach
+                        @endif
+                    </x-ccm::navigation.desktop-link>
+                @endif
+            @endforeach
         </ul>
     </li>
     {{--    <x-ccm::navigation.desktop-settings />--}}

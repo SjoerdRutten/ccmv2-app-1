@@ -2,6 +2,7 @@
 
 namespace Sellvation\CCMV2\Ccm;
 
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Blade;
@@ -11,6 +12,8 @@ use Livewire\Livewire;
 use Sellvation\CCMV2\Ccm\Components\acitivity_log\Table;
 use Sellvation\CCMV2\Ccm\Components\dashboard\TypesenseCollectionsCard;
 use Sellvation\CCMV2\Ccm\Components\dashboard\TypesenseMemoryCard;
+use Sellvation\CCMV2\Ccm\Facades\CcmMenu;
+use Sellvation\CCMV2\Ccm\Facades\CcmMenuFacade;
 use Sellvation\CCMV2\Ccm\Http\Middelware\CcmContextMiddleware;
 use Sellvation\CCMV2\Ccm\Livewire\Admin\Customers\Edit;
 use Sellvation\CCMV2\Ccm\Livewire\Admin\Customers\Overview;
@@ -21,7 +24,10 @@ use Sellvation\CCMV2\Ccm\Livewire\Typesense\Collection;
 
 class CcmServiceProvider extends ServiceProvider
 {
-    public function register(): void {}
+    public function register(): void
+    {
+        $this->registerFacades();
+    }
 
     public function boot(Router $router): void
     {
@@ -67,5 +73,13 @@ class CcmServiceProvider extends ServiceProvider
         Livewire::component('ccm::admin::environments.edit', \Sellvation\CCMV2\Ccm\Livewire\Admin\Environments\Edit::class);
 
         Livewire::component('ccm::typesense::collection', Collection::class);
+    }
+
+    private function registerFacades()
+    {
+        $this->app->bind('ccm-menu', CcmMenu::class);
+
+        $loader = AliasLoader::getInstance();
+        $loader->alias('CcmMenu', CcmMenuFacade::class);
     }
 }
