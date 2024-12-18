@@ -7,6 +7,7 @@ use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
+use Sellvation\CCMV2\CrmCards\Commands\UpdateCrmCardMongoCommand;
 use Sellvation\CCMV2\CrmCards\Events\CrmCardCreatingEvent;
 use Sellvation\CCMV2\CrmCards\Events\CrmCardDeletingEvent;
 use Sellvation\CCMV2\CrmCards\Events\CrmCardSavedEvent;
@@ -29,6 +30,10 @@ class CrmCardServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
         $this->loadViewsFrom(__DIR__.'/views', 'crm-cards');
+
+        $this->commands([
+            UpdateCrmCardMongoCommand::class,
+        ]);
 
         $this->registerEvents();
         $this->registerFacades();
