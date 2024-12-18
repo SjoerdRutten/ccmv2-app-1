@@ -95,7 +95,7 @@ class UserForm extends Form
     {
         $this->validate();
 
-        $data = $this->all();
+        $data = $this->except(['user', 'password', 'password_confirmation']);
 
         if ($this->user->id) {
             $this->user->update($data);
