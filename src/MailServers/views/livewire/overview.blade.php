@@ -9,7 +9,7 @@
             <x-slot:thead>
                 <x-ccm::tables.th :first="true">ID</x-ccm::tables.th>
                 <x-ccm::tables.th>Actief</x-ccm::tables.th>
-                <x-ccm::tables.th>Valide</x-ccm::tables.th>
+                <x-ccm::tables.th>Up-and-running</x-ccm::tables.th>
                 <x-ccm::tables.th>Host</x-ccm::tables.th>
                 <x-ccm::tables.th>Omschrijving</x-ccm::tables.th>
                 <x-ccm::tables.th>Queue</x-ccm::tables.th>
@@ -57,9 +57,10 @@
             </x-slot:tbody>
         </x-ccm::tables.table>
 
-        @if ($mailServers->where('is_valid', 0)->count() >= 0)
+        @if ($mailServers->where('is_valid', 0)->count() > 0)
             <div class="mt-4 p-4 bg-gray-200 rounded">
-                LET OP: Er zijn 1 of meer niet valide servers, heb je het volgende commando uitgevoerd om de ssh keys
+                LET OP: Er zijn 1 of meer servers niet beschikbaar, heb je het volgende commando uitgevoerd om de ssh
+                keys
                 toe te voegen aan de mailserver ?<br>
                 <strong class="bg-gray-100 px-2">php artisan mailserver:add-keys</strong>
             </div>
