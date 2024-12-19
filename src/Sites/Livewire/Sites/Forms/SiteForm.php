@@ -86,5 +86,6 @@ class SiteForm extends Form
 
         $this->setSite($this->site);
 
+        return $this->site;
     }
 }

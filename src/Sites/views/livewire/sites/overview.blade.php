@@ -39,6 +39,10 @@
                         <x-ccm::tables.td>{{ $site->domain }}</x-ccm::tables.td>
                         <x-ccm::tables.td :link="true">
                             <x-ccm::tables.edit-link :href="route('cms::sites::edit', $site)"/>
+                            <x-ccm::tables.delete-link
+                                    wire:confirm="Weet je zeker dat je deze site wilt verwijderen?"
+                                    wire:click="removeSite({{ $site->id }})"
+                            />
                         </x-ccm::tables.td>
                     </x-ccm::tables.tr>
                 @endforeach

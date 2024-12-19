@@ -38,6 +38,11 @@ class Overview extends Component
             ->paginate();
     }
 
+    public function removeSite(Site $site)
+    {
+        $site->delete();
+    }
+
     public function render()
     {
         return view('sites::livewire.sites.overview')

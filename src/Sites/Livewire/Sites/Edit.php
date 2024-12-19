@@ -27,7 +27,7 @@ class Edit extends Component
 
     public function save()
     {
-        $this->form->save();
+        $this->site = $this->form->save();
 
         $this->showSuccessModal(title: 'Site is opgeslagen', href: route('cms::sites::edit', $this->site->id));
     }
