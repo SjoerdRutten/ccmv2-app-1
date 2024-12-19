@@ -9,12 +9,14 @@
         <x-ccm::tabs.base>
             <x-slot:tabs>
                 <x-ccm::tabs.nav-tab :index="0">Basisinformatie</x-ccm::tabs.nav-tab>
-                <x-ccm::tabs.nav-tab :index="1">
-                    DKIM
-                    <x-slot:badge>
-                        {{ $emailDomain->emailDkims()->count() }}
-                    </x-slot:badge>
-                </x-ccm::tabs.nav-tab>
+                @if ($emailDomain->id)
+                    <x-ccm::tabs.nav-tab :index="1">
+                        DKIM
+                        <x-slot:badge>
+                            {{ $emailDomain->emailDkims()->count() }}
+                        </x-slot:badge>
+                    </x-ccm::tabs.nav-tab>
+                @endif
             </x-slot:tabs>
 
             <x-ccm::tabs.tab-content :index="0">
