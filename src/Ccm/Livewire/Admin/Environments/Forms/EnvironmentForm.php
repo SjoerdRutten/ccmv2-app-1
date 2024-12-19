@@ -28,9 +28,6 @@ class EnvironmentForm extends Form
     #[Validate]
     public ?string $description;
 
-    #[Validate]
-    public ?int $email_credits;
-
     public function rules(): array
     {
         return [
