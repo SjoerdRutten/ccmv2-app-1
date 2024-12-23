@@ -1,10 +1,10 @@
 <?php
 
-namespace Sellvation\CCMV2\MailServers\Livewire;
+namespace Sellvation\CCMV2\MailServers\Livewire\MailServers;
 
 use Livewire\Component;
 use Sellvation\CCMV2\Ccm\Livewire\Traits\HasModals;
-use Sellvation\CCMV2\MailServers\Livewire\Forms\MailServerForm;
+use Sellvation\CCMV2\MailServers\Livewire\MailServers\Forms\MailServerForm;
 use Sellvation\CCMV2\MailServers\Models\MailServer;
 
 class Edit extends Component
@@ -30,7 +30,7 @@ class Edit extends Component
 
     public function render()
     {
-        return view('mailservers::livewire.edit')
+        return view('mailservers::livewire.mail-servers.edit')
             ->with([
             ]);
     }

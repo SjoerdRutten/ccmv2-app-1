@@ -3,6 +3,7 @@
 namespace Sellvation\CCMV2\MailServers\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
@@ -32,5 +33,10 @@ class MailServer extends Model
     public function mailServerStat(): HasOne
     {
         return $this->hasOne(MailServerStat::class)->latest();
+    }
+
+    public function sendRules(): BelongsToMany
+    {
+        return $this->belongsToMany(SendRule::class);
     }
 }

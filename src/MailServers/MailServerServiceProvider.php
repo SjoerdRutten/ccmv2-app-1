@@ -7,8 +7,8 @@ use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Sellvation\CCMV2\MailServers\Commands\AddSshKeysToMailserversCommand;
 use Sellvation\CCMV2\MailServers\Commands\CheckMailServersCommand;
-use Sellvation\CCMV2\MailServers\Livewire\Edit;
-use Sellvation\CCMV2\MailServers\Livewire\Overview;
+use Sellvation\CCMV2\MailServers\Livewire\MailServers\Edit;
+use Sellvation\CCMV2\MailServers\Livewire\MailServers\Overview;
 
 class MailServerServiceProvider extends ServiceProvider
 {
@@ -33,6 +33,8 @@ class MailServerServiceProvider extends ServiceProvider
     {
         Livewire::component('mailservers::overview', Overview::class);
         Livewire::component('mailservers::edit', Edit::class);
+        Livewire::component('sendrules::overview', \Sellvation\CCMV2\MailServers\Livewire\SendRules\Overview::class);
+        Livewire::component('sendrules::edit', \Sellvation\CCMV2\MailServers\Livewire\SendRules\Edit::class);
     }
 
     private function registerEvents()

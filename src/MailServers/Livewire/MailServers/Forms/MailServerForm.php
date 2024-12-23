@@ -1,6 +1,6 @@
 <?php
 
-namespace Sellvation\CCMV2\MailServers\Livewire\Forms;
+namespace Sellvation\CCMV2\MailServers\Livewire\MailServers\Forms;
 
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
