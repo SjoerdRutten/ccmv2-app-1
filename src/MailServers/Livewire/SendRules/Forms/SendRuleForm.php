@@ -26,6 +26,9 @@ class SendRuleForm extends Form
     #[Validate]
     public array $rules = [];
 
+    #[Validate]
+    public array $mailServers = [];
+
     public function rules(): array
     {
         return [
@@ -39,19 +42,42 @@ class SendRuleForm extends Form
     {
         $this->sendRule = $sendRule;
         $this->fill($sendRule->toArray());
+
+        foreach ($this->sendRule->mailServers as $mailServer) {
+            $this->mailServers[uniqid()] = [
+                'mailServerId' => $mailServer->id,
+                'priority' => $mailServer->pivot->priority,
+            ];
+        }
+    }
+
+    public function addRule()
+    {
+        $this->rules[uniqid()] = [
+            'check' => '',
+            'value' => '',
+        ];
     }
 
     public function save()
     {
         $this->validate();
 
-        $data = $this->except(['sendRule']);
+        $data = $this->except(['sendRule', 'mailServers']);
 
         if ($this->sendRule->id) {
             $this->sendRule->update($data);
         } else {
             $this->sendRule = SendRule::create($data);
         }
+
+        $mailServers = [];
+        foreach ($this->mailServers as $mailServer) {
+            if (\Arr::get($mailServer, 'mailServerId')) {
+                $mailServers[\Arr::get($mailServer, 'mailServerId')] = ['priority' => \Arr::get($mailServer, 'priority', 100)];
+            }
+        }
+        $this->sendRule->mailServers()->sync($mailServers);
 
         return $this->sendRule;
     }
