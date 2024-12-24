@@ -5,22 +5,23 @@
                 <x-ccm::buttons.add route="admin::sendrules::add">Verzendregel toevoegen</x-ccm::buttons.add>
             </x-slot:actions>
         </x-ccm::pages.intro>
-        <x-ccm::tables.table>
+        <x-ccm::tables.table :sortable="true"
+                             x-data="{ handle: (item, position) => { $wire.reOrderRules(item, position) } }">
             <x-slot:thead>
                 <x-ccm::tables.th :first="true">ID</x-ccm::tables.th>
                 <x-ccm::tables.th>Actief</x-ccm::tables.th>
-                <x-ccm::tables.th>Priority</x-ccm::tables.th>
+                {{--                <x-ccm::tables.th>Priority</x-ccm::tables.th>--}}
                 <x-ccm::tables.th>Naam</x-ccm::tables.th>
                 <x-ccm::tables.th :link="true">Acties</x-ccm::tables.th>
             </x-slot:thead>
             <x-slot:tbody>
                 @foreach ($sendRules AS $key => $sendRule)
-                    <x-ccm::tables.tr :route="route('admin::sendrules::edit', $sendRule)">
+                    <x-ccm::tables.tr :route="route('admin::sendrules::edit', $sendRule)" :id="$sendRule->id">
                         <x-ccm::tables.td :first="true">{{ $sendRule->id }}</x-ccm::tables.td>
                         <x-ccm::tables.td>
                             <x-ccm::is-active :is-active="$sendRule->is_active"/>
                         </x-ccm::tables.td>
-                        <x-ccm::tables.td>{{ $key + 1 }}</x-ccm::tables.td>
+                        {{--                        <x-ccm::tables.td>{{ $key + 1 }}</x-ccm::tables.td>--}}
                         <x-ccm::tables.td>
                             {{ $sendRule->name }}
                         </x-ccm::tables.td>

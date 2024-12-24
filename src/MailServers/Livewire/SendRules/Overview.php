@@ -12,11 +12,26 @@ class Overview extends Component
         $sendRule->delete();
     }
 
+    public function reOrderRules($id, $position)
+    {
+        $crmFieldCategory = SendRule::find($id);
+        $crmFieldCategory->update(['priority' => $position]);
+
+        $index = 0;
+        foreach (SendRule::where('id', '<>', $id)->orderBy('priority')->get() as $sendRule) {
+            if ($index === $position) {
+                $index++;
+            }
+            $sendRule->update(['priority' => $index]);
+            $index++;
+        }
+    }
+
     public function render()
     {
         return view('mailservers::livewire.send-rules.overview')
             ->with([
-                'sendRules' => SendRule::all(),
+                'sendRules' => SendRule::orderBy('priority')->get(),
             ]);
     }
 }
