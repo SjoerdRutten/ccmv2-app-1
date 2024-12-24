@@ -38,6 +38,11 @@ class Overview extends Component
             ->get();
     }
 
+    public function remove(CrmFieldCategory $category)
+    {
+        $category->delete();
+    }
+
     public function render()
     {
         return view('crm-cards::livewire.categories.overview')
