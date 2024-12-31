@@ -42,6 +42,16 @@ class ImportCrmCardsJob implements ShouldQueue
         $this->import->update([
             'started_at' => now(),
             'finished_at' => null,
+            'number_of_rows' => 0,
+            'quantity_updated_rows' => 0,
+            'updated_rows' => [],
+            'quantity_created_rows' => 0,
+            'created_rows' => [],
+            'quantity_empty_rows' => 0,
+            'empty_rows' => [],
+            'quantity_error_rows' => 0,
+            'error_rows' => [],
+
         ]);
 
         Excel::import((new \Sellvation\CCMV2\CrmCards\Imports\CrmCardChunkedImport($this->import)), $this->import->path);

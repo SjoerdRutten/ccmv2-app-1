@@ -12,10 +12,11 @@
                 <x-ccm::tables.th>Starttijd</x-ccm::tables.th>
                 <x-ccm::tables.th>Eindtijd</x-ccm::tables.th>
                 <x-ccm::tables.th>Status</x-ccm::tables.th>
+                <x-ccm::tables.th :link="true"></x-ccm::tables.th>
             </x-slot:thead>
             <x-slot:tbody>
                 @foreach ($crmCardImports AS $crmCardImport)
-                    <x-ccm::tables.tr>
+                    <x-ccm::tables.tr :route="route('crm-cards::imports::view', $crmCardImport)">
                         <x-ccm::tables.td>{{ $crmCardImport->id }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $crmCardImport->user->name }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $crmCardImport->file_name }}</x-ccm::tables.td>
@@ -34,6 +35,9 @@
                                     @break
                             @endswitch
 
+                        </x-ccm::tables.td>
+                        <x-ccm::tables.td :link="true">
+                            <x-ccm::tables.view-link :href="route('crm-cards::imports::view', $crmCardImport)"/>
                         </x-ccm::tables.td>
                     </x-ccm::tables.tr>
                 @endforeach

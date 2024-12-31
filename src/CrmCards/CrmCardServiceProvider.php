@@ -55,6 +55,7 @@ class CrmCardServiceProvider extends ServiceProvider
         Livewire::component('crm-cards::categories::edit', \Sellvation\CCMV2\CrmCards\Livewire\Categories\Edit::class);
         Livewire::component('crm-cards::imports::index', \Sellvation\CCMV2\CrmCards\Livewire\Imports\Overview::class);
         Livewire::component('crm-cards::imports::edit', \Sellvation\CCMV2\CrmCards\Livewire\Imports\Edit::class);
+        Livewire::component('crm-cards::imports::view', \Sellvation\CCMV2\CrmCards\Livewire\Imports\View::class);
     }
 
     private function registerEvents()
