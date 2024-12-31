@@ -12,6 +12,7 @@ use Livewire\Livewire;
 use Sellvation\CCMV2\Ccm\Components\acitivity_log\Table;
 use Sellvation\CCMV2\Ccm\Components\dashboard\TypesenseCollectionsCard;
 use Sellvation\CCMV2\Ccm\Components\dashboard\TypesenseMemoryCard;
+use Sellvation\CCMV2\Ccm\Components\forms\CrmFieldsOptions;
 use Sellvation\CCMV2\Ccm\Facades\CcmMenu;
 use Sellvation\CCMV2\Ccm\Facades\CcmMenuFacade;
 use Sellvation\CCMV2\Ccm\Http\Middelware\CcmContextMiddleware;
@@ -58,6 +59,7 @@ class CcmServiceProvider extends ServiceProvider
             Blade::component('ccm::dashboard.typesense-memory-card', TypesenseMemoryCard::class);
             Blade::component('ccm::dashboard.typesense-collections-card', TypesenseCollectionsCard::class);
             Blade::component('ccm::activity_log.table', Table::class);
+            Blade::component('ccm::forms.crm-fields-options', CrmFieldsOptions::class);
         }
     }
 

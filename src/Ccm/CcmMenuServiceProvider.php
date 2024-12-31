@@ -37,6 +37,10 @@ class CcmMenuServiceProvider extends ServiceProvider
                     'label' => 'Rubrieken',
                     'route' => 'crm-cards::categories::overview',
                 ],
+                [
+                    'label' => 'Importeren',
+                    'route' => 'crm-cards::imports::overview',
+                ],
             ],
         ]);
         \CcmMenu::addCcmMenuItem([

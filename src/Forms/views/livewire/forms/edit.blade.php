@@ -62,16 +62,7 @@
                                     <x-ccm::forms.select
                                             wire:model.live="editForm.fields.{{ $key }}.crm_field_id">
                                         <option></option>
-                                        @foreach ($crmFields AS $crmField)
-                                            <option value="{{ $crmField->id }}" data-type="{{ $crmField->type }}">
-                                                {{ $crmField->name }} ({{ $crmField->type }})
-                                            </option>
-                                            @if ($crmField->type === 'MEDIA')
-                                                <option value="{{ $crmField->id }}_optin">
-                                                    {{ $crmField->name }} Opt-in
-                                                </option>
-                                            @endif
-                                        @endforeach
+                                        <x-ccm::forms.crm-fields-options/>
                                     </x-ccm::forms.select>
                                 </x-ccm::tables.td>
                                 <x-ccm::tables.td>
@@ -115,7 +106,7 @@
                 </x-slot:intro>
 
                 @foreach ($editForm->async_actions AS $key => $action)
-                    <x-ccm::layouts.block>
+                    <x-ccm::layouts.sub-block>
                         <x-ccm::forms.select wire:model.live="editForm.async_actions.{{ $key }}.action" label="Actie">
                             <option></option>
                             @foreach ($asyncActions AS $asyncAction)
@@ -132,7 +123,7 @@
                                 Actie verwijderen
                             </x-ccm::buttons.delete>
                         </x-slot:buttons>
-                    </x-ccm::layouts.block>
+                    </x-ccm::layouts.sub-block>
                 @endforeach
 
                 <x-slot:buttons>

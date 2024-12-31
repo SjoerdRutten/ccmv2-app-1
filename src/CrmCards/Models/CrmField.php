@@ -72,6 +72,25 @@ class CrmField extends Model
         );
     }
 
+    protected function fields(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $fields = [];
+                $fields[] = ['id' => $this->id, 'label' => $this->name, 'type' => $this->type];
+
+                if ($this->type === 'MEDIA') {
+                    $fields[] = ['id' => $this->id.'_optin', 'label' => $this->name.'_optin', 'type' => $this->type];
+                    $fields[] = ['id' => $this->id.'_optin_timestamp', 'label' => $this->name.'_optin_timestamp', 'type' => $this->type];
+                    $fields[] = ['id' => $this->id.'_confirmed_optin', 'label' => $this->name.'_confirmed_optin', 'type' => $this->type];
+                    $fields[] = ['id' => $this->id.'_confirmed_optin_timestamp', 'label' => $this->name.'_confirmed_optin_timestamp', 'type' => $this->type];
+                }
+
+                return $fields;
+            }
+        );
+    }
+
     public function correctAndValidate($value, $required = false): mixed
     {
         $value = $this->preCorrectValue($value);

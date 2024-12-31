@@ -2,7 +2,9 @@
 
 namespace Sellvation\CCMV2\CrmCards\Listeners;
 
+use Illuminate\Support\Str;
 use Sellvation\CCMV2\CrmCards\Events\CrmCardCreatingEvent;
+use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 
 class CrmCardCreatingListener
 {
@@ -10,7 +12,12 @@ class CrmCardCreatingListener
 
     public function handle(CrmCardCreatingEvent $event): void
     {
+        // Generate unique crm_id
+        do {
+            $crmId = $event->crmCard->environment_id.'_'.Str::random(16);
+        } while ((bool) CrmCard::where('crm_id', $crmId)->count());
+
         $event->crmCard->environment_id = $event->crmCard->environment_id ?: \Context::get('environment_id');
-        $event->crmCard->crm_id = $event->crmCard->environment_id.'_'.uniqid();
+        $event->crmCard->crm_id = $crmId;
     }
 }

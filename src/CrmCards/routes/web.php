@@ -31,5 +31,12 @@ Route::prefix('crm-cards')
                 Route::get('/new', \Sellvation\CCMV2\CrmCards\Livewire\Categories\Edit::class)->name('add');
                 Route::get('/{crmCard}', \Sellvation\CCMV2\CrmCards\Livewire\Categories\Edit::class)->name('edit');
             });
+        Route::prefix('imports')
+            ->name('imports::')
+            ->group(function () {
+                Route::get('/', \Sellvation\CCMV2\CrmCards\Livewire\Imports\Overview::class)->name('overview');
+                Route::get('/new', \Sellvation\CCMV2\CrmCards\Livewire\Imports\Edit::class)->name('add');
+                Route::get('/{crmCardImport}', \Sellvation\CCMV2\CrmCards\Livewire\Imports\Edit::class)->name('edit');
+            });
 
     });
