@@ -34,31 +34,42 @@ class ImportCrmCardsJob implements ShouldQueue
 
     public function __construct(private readonly CrmCardImport $import)
     {
-        \Context::add('environment_id', 105);
+        \Context::add('environment_id', $this->import->environment_id);
     }
 
     public function handle(): void
     {
-        $this->import->update([
-            'started_at' => now(),
-            'finished_at' => null,
-            'number_of_rows' => 0,
-            'quantity_updated_rows' => 0,
-            'updated_rows' => [],
-            'quantity_created_rows' => 0,
-            'created_rows' => [],
-            'quantity_empty_rows' => 0,
-            'empty_rows' => [],
-            'quantity_error_rows' => 0,
-            'error_rows' => [],
+        if (\File::exists($this->import->path)) {
 
-        ]);
+            $this->import->update([
+                'started_at' => now(),
+                'finished_at' => null,
+                'number_of_rows' => 0,
+                'quantity_updated_rows' => 0,
+                'updated_rows' => [],
+                'quantity_created_rows' => 0,
+                'created_rows' => [],
+                'quantity_empty_rows' => 0,
+                'empty_rows' => [],
+                'quantity_error_rows' => 0,
+                'error_rows' => [],
 
-        Excel::import((new \Sellvation\CCMV2\CrmCards\Imports\CrmCardChunkedImport($this->import)), $this->import->path);
+            ]);
 
-        $this->import->save();
+            if ($this->import->config['has_header'] === 1) {
+                $import = new \Sellvation\CCMV2\CrmCards\Imports\CrmCardChunkedWithHeadingImport($this->import);
+            } else {
+                $import = new \Sellvation\CCMV2\CrmCards\Imports\CrmCardChunkedWithoutHeadingImport($this->import);
+            }
 
-        $this->import->update(['finished_at' => now()]);
+            Excel::import($import, $this->import->path);
+
+            $this->import->save();
+
+            $this->import->update(['finished_at' => now()]);
+
+            \File::delete($this->import->path);
+        }
     }
 
     public function failed(): void

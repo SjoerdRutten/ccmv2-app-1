@@ -5,12 +5,13 @@ namespace Sellvation\CCMV2\CrmCards\Imports;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\CrmCards\Models\CrmCardMongo;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
 
-class CrmCardChunkedImport implements ToModel, WithChunkReading, WithHeadingRow
+class CrmCardChunkedImport implements ToModel, WithChunkReading, WithCustomCsvSettings, WithHeadingRow
 {
     private $action = null;
 
@@ -91,12 +92,14 @@ class CrmCardChunkedImport implements ToModel, WithChunkReading, WithHeadingRow
         });
 
         $crmCard = null;
+        $crmId = null;
 
         if (count($attachedFields) > 0) {
             foreach ($attachedFields as $field) {
                 if (! $crmCard) {
                     if ($field['crm_field_id'] === 'crm_id') {
                         $crmCard = CrmCard::where('crm_id', $rowData[$field['key']])->first();
+                        $crmId = $rowData[$field['key']];
                     } elseif (! Str::contains($field['crm_field_id'], '_')) {
                         $crmField = CrmField::find($field['crm_field_id']);
 
@@ -119,6 +122,32 @@ class CrmCardChunkedImport implements ToModel, WithChunkReading, WithHeadingRow
 
         $this->action = 'create';
 
-        return new CrmCard;
+        $crmCard = new CrmCard;
+        if ($crmId !== null) {
+            dump($crmId);
+            $crmCard->crm_id = $crmId;
+        }
+
+        return $crmCard;
+    }
+
+    public function getCsvSettings(): array
+    {
+        $config = $this->import->config;
+
+        switch ($config['enclosure']) {
+            case 'dq':
+                $config['enclosure'] = '"';
+                break;
+            case 'q':
+                $config['enclosure'] = '\'';
+                break;
+            default:
+                $config['enclosure'] = '';
+        }
+
+        $config['delimiter'] = $config['delimiter'] === '\t' ? "\t" : $config['delimiter'];
+
+        return $config;
     }
 }

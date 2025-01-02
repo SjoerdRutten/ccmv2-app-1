@@ -15,6 +15,7 @@ class CrmCardImport extends Model
     protected $fillable = [
         'path',
         'file_name',
+        'config',
         'fields',
         'number_of_rows',
         'quantity_updated_rows',
@@ -32,6 +33,7 @@ class CrmCardImport extends Model
     protected $casts = [
         'started_at' => 'datetime',
         'finished_at' => 'datetime',
+        'config' => 'json',
         'fields' => 'json',
         'updated_rows' => 'json',
         'created_rows' => 'json',

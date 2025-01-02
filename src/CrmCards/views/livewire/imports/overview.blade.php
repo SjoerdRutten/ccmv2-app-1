@@ -2,6 +2,7 @@
     <div class="px-4 sm:px-6 lg:px-8">
         <x-ccm::pages.intro title="CRM kaart imports">
             <x-slot:actions>
+                <x-ccm::buttons.add :href="route('crm-cards::imports::add')">Nieuwe import aanmaken</x-ccm::buttons.add>
             </x-slot:actions>
         </x-ccm::pages.intro>
         <x-ccm::tables.table>

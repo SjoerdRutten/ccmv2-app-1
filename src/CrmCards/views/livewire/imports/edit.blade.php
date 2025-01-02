@@ -16,8 +16,44 @@
             </x-slot:tabs>
 
             <x-ccm::tabs.tab-content :index="0">
+                @if ($fileType === 'error')
+                    <x-ccm::alerts.warning title="Ongeldig bestandstype" class="mt-4">
+                        Geen geldig bestandstype, er kunnen alleen .csv, .xls en .xlsx geupload worden
+                    </x-ccm::alerts.warning>
+                @endif
+
                 <x-ccm::forms.input-file wire:model.live="file">Bestand</x-ccm::forms.input-file>
                 <x-ccm::loading/>
+
+                @if ($fileType && ($fileType !== 'error'))
+                    <x-ccm::typography.h2>Instellingen</x-ccm::typography.h2>
+
+                    <x-ccm::forms.input value="{{ $file?->getClientOriginalName() }}" :disabled="true">
+                        Bestandsnaam
+                    </x-ccm::forms.input>
+                    <x-ccm::forms.select wire:model.live="config.has_header" label="Veldnamen op eerste regel">
+                        <option value="1">Ja</option>
+                        <option value="0">Nee</option>
+                    </x-ccm::forms.select>
+
+                    @if ($fileType === 'csv')
+                        <x-ccm::forms.select wire:model.live="config.delimiter" label="Veldwaardes gescheiden door">
+                            <option value=";">Puntkomma</option>
+                            <option value=",">Komma</option>
+                            <option value="\t">Tab</option>
+                            <option value="|">Pipe</option>
+                        </x-ccm::forms.select>
+                        <x-ccm::forms.select wire:model.live="config.enclosure" label="Tekst ingesloten door">
+                            <option value="">Geen</option>
+                            <option value="dq">Dubbele quotes</option>
+                            <option value="q">Enkele quote</option>
+                        </x-ccm::forms.select>
+                        <x-ccm::forms.input wire:model.live="config.escape_character">
+                            Insluitingsteken ontsnapt door
+                        </x-ccm::forms.input>
+                    @endif
+                @endif
+
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="1" :no-margin="true">
                 <x-ccm::tables.table>
@@ -58,13 +94,21 @@
                             </div>
                             @if ($rows[$key]['crm_field_id'] > 0)
                                 <div class="w-1/6">
-                                    <x-ccm::forms.checkbox></x-ccm::forms.checkbox>
+                                    @if (
+                                        $rows[$key]['crm_field_id'] === 'crm_id' ||
+                                        \Sellvation\CCMV2\CrmCards\Models\CrmField::find($rows[$key]['crm_field_id'])?->is_shown_on_target_group_builder
+                                    )
+                                        <x-ccm::forms.checkbox
+                                                wire:model="rows.{{ $key }}.attach_to_crm_card"></x-ccm::forms.checkbox>
+                                    @endif
                                 </div>
                                 <div class="w-1/6">
-                                    <x-ccm::forms.checkbox></x-ccm::forms.checkbox>
+                                    <x-ccm::forms.checkbox
+                                            wire:model="rows.{{ $key }}.overwrite_empty"></x-ccm::forms.checkbox>
                                 </div>
                                 <div class="w-1/6">
-                                    <x-ccm::forms.checkbox></x-ccm::forms.checkbox>
+                                    <x-ccm::forms.checkbox
+                                            wire:model="rows.{{ $key }}.overwrite_filled"></x-ccm::forms.checkbox>
                                 </div>
                             @else
                                 <div class="w-1/6">&nbsp;</div>

@@ -14,7 +14,13 @@ class Overview extends Component
     {
         return view('crm-cards::livewire.imports.overview')
             ->with([
-                'crmCardImports' => CrmCardImport::latest()->paginate(),
+                'crmCardImports' => CrmCardImport::select([
+                    'id',
+                    'user_id',
+                    'file_name',
+                    'started_at',
+                    'finished_at',
+                ])->latest()->paginate(),
             ]);
     }
 }

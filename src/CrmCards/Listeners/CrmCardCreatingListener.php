@@ -12,12 +12,15 @@ class CrmCardCreatingListener
 
     public function handle(CrmCardCreatingEvent $event): void
     {
-        // Generate unique crm_id
-        do {
-            $crmId = $event->crmCard->environment_id.'_'.Str::random(16);
-        } while ((bool) CrmCard::where('crm_id', $crmId)->count());
-
         $event->crmCard->environment_id = $event->crmCard->environment_id ?: \Context::get('environment_id');
-        $event->crmCard->crm_id = $crmId;
+
+        if (empty($event->crmCard->crm_id)) {
+            // Generate unique crm_id
+            do {
+                $crmId = $event->crmCard->environment_id.'_'.Str::random(16);
+            } while ((bool) CrmCard::where('crm_id', $crmId)->count());
+
+            $event->crmCard->crm_id = $crmId;
+        }
     }
 }
