@@ -40,6 +40,10 @@ class CcmMenuServiceProvider extends ServiceProvider
                 [
                     'label' => 'Importeren',
                     'route' => 'crm-cards::imports::overview',
+                    'permission' => [
+                        'group' => 'crm',
+                        'item' => 'import',
+                    ],
                 ],
             ],
         ]);
