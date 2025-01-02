@@ -10,13 +10,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
-use Laravel\Sanctum\HasApiTokens;
 use Sellvation\CCMV2\Environments\Models\Environment;
 use Sellvation\CCMV2\Users\Notifications\ResetPasswordNotification;
 
 class User extends Authenticatable
 {
-    use HasApiTokens;
     use HasFactory;
     use Notifiable;
     //    use TwoFactorAuthenticatable;

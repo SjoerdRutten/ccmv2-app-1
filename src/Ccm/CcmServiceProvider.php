@@ -75,6 +75,8 @@ class CcmServiceProvider extends ServiceProvider
         Livewire::component('ccm::admin::environments.edit', \Sellvation\CCMV2\Ccm\Livewire\Admin\Environments\Edit::class);
 
         Livewire::component('ccm::typesense::collection', Collection::class);
+        Livewire::component('ccm::notifications::overview', \Sellvation\CCMV2\Ccm\Livewire\Notifications\Overview::class);
+        Livewire::component('ccm::notifications::header', \Sellvation\CCMV2\Ccm\Livewire\Notifications\Header::class);
     }
 
     private function registerFacades()

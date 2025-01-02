@@ -23,28 +23,20 @@ Route::middleware([
                 Route::get('/environments/{environment}', \Sellvation\CCMV2\Ccm\Livewire\Admin\Environments\Edit::class)->name('environments::edit');
                 Route::get('/environments', \Sellvation\CCMV2\Ccm\Livewire\Admin\Environments\Overview::class)->name('environments');
             });
-    });
 
-Route::middleware([
-    'auth:sanctum',
-    'verified',
-    'web',
-])
-    ->name('ccm::')
-    ->group(function (): void {
-        Route::get('/dashboard', \Sellvation\CCMV2\Ccm\Http\Controllers\DashboardController::class)->name('dashboard');
-        Route::get('/typesense/collection/{collectionName}', \Sellvation\CCMV2\Ccm\Livewire\Typesense\Collection::class)->name('typesense.collection');
-        Route::get('/typesense/collection/{collectionName}/reindex', \Sellvation\CCMV2\Ccm\Controllers\TypesenseReindexCollectionController::class)->name('typesense.reindex');
-    });
+        Route::name('ccm::')
+            ->group(function (): void {
+                Route::get('/dashboard', \Sellvation\CCMV2\Ccm\Http\Controllers\DashboardController::class)->name('dashboard');
+                Route::get('/notifications', \Sellvation\CCMV2\Ccm\Livewire\Notifications\Overview::class)->name('notifications');
+                Route::get('/typesense/collection/{collectionName}', \Sellvation\CCMV2\Ccm\Livewire\Typesense\Collection::class)->name('typesense.collection');
+                Route::get('/typesense/collection/{collectionName}/reindex', \Sellvation\CCMV2\Ccm\Controllers\TypesenseReindexCollectionController::class)->name('typesense.reindex');
+            });
 
-Route::middleware([
-    'auth:sanctum',
-    'verified',
-    'web',
-])
-    ->prefix('ccmapi')
-    ->name('ccmapi::')
-    ->group(function (): void {
-        Route::get('/product/search', [\Sellvation\CCMV2\Ccm\Controllers\SearchProductsController::class, 'search'])->name('product.search');
-        Route::get('/product/selected', [\Sellvation\CCMV2\Ccm\Controllers\SearchProductsController::class, 'selected'])->name('product.selected');
+        Route::prefix('ccmapi')
+            ->name('ccmapi::')
+            ->group(function (): void {
+                Route::get('/product/search', [\Sellvation\CCMV2\Ccm\Controllers\SearchProductsController::class, 'search'])->name('product.search');
+                Route::get('/product/selected', [\Sellvation\CCMV2\Ccm\Controllers\SearchProductsController::class, 'selected'])->name('product.selected');
+            });
+
     });

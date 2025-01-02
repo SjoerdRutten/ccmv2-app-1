@@ -9,6 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Maatwebsite\Excel\Facades\Excel;
 use Sellvation\CCMV2\CrmCards\Models\CrmCardImport;
+use Sellvation\CCMV2\Users\Notifications\CrmCardImportReadyNotification;
 
 class ImportCrmCardsJob implements ShouldQueue
 {
@@ -69,6 +70,8 @@ class ImportCrmCardsJob implements ShouldQueue
             $this->import->update(['finished_at' => now()]);
 
             \File::delete($this->import->path);
+
+            $this->import->user->notify(new CrmCardImportReadyNotification($this->import));
         }
     }
 
