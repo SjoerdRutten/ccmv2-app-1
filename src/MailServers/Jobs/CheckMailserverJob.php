@@ -9,42 +9,41 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Sellvation\CCMV2\MailServers\Models\MailServer;
-use Spatie\Ssh\Ssh;
+use Sellvation\CCMV2\MailServers\Traits\MailserverSsh;
 
 class CheckMailserverJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use MailserverSsh;
+    use Queueable;
+    use SerializesModels;
 
     public function __construct(private readonly MailServer $mailServer) {}
 
     public function handle(): void
     {
         $privateKeyFileName = $this->createPrivateKey();
-        $process = $this->getSshProcess($privateKeyFileName);
+        $process = $this->getSshProcess($this->mailServer, $privateKeyFileName);
 
         if ($this->checkMailServerValid($process)) {
-            $this->mailServer->mailServerStats()->create([
-                'load' => (float) $this->execute($process, 'uptime | awk {\'print $11\'}'),
-                'memory_total' => $this->execute($process, ['export PATH=$PATH:/usr/sbin', 'free | head -n 2 | tail -n 1 | awk {\'print $2\'}']),
-                'memory_used' => $this->execute($process, ['export PATH=$PATH:/usr/sbin', 'free | head -n 2 | tail -n 1 | awk {\'print $3\'}']),
-                'memory_free' => $this->execute($process, ['export PATH=$PATH:/usr/sbin', 'free | head -n 2 | tail -n 1 | awk {\'print $4\'}']),
-                'queue_size' => $this->execute($process, ['export PATH=$PATH:/usr/sbin', 'qshape active | head -n 2 | tail -n 1 | awk {\'print $2\'}']),
-                'deferred_queue_size' => $this->execute($process, ['export PATH=$PATH:/usr/sbin', 'qshape deferred | head -n 2 | tail -n 1 | awk {\'print $2\'}']),
-            ]);
+            try {
+                $this->mailServer->mailServerStats()->create([
+                    'load' => (float) $this->execute($process, 'uptime | awk {\'print $11\'}'),
+                    'memory_total' => $this->execute($process, ['export PATH=$PATH:/usr/sbin', 'free | head -n 2 | tail -n 1 | awk {\'print $2\'}']),
+                    'memory_used' => $this->execute($process, ['export PATH=$PATH:/usr/sbin', 'free | head -n 2 | tail -n 1 | awk {\'print $3\'}']),
+                    'memory_free' => $this->execute($process, ['export PATH=$PATH:/usr/sbin', 'free | head -n 2 | tail -n 1 | awk {\'print $4\'}']),
+                    'queue_size' => $this->execute($process, ['export PATH=$PATH:/usr/sbin', 'qshape active | head -n 2 | tail -n 1 | awk {\'print $2\'}']),
+                    'deferred_queue_size' => $this->execute($process, ['export PATH=$PATH:/usr/sbin', 'qshape deferred | head -n 2 | tail -n 1 | awk {\'print $2\'}']),
+                ]);
+            } catch (\Exception $exception) {
+                $this->mailServer->update(['is_valid' => false]);
+            }
+
+            $this->mailServer->update(['is_valid' => true]);
         }
 
         Storage::delete($privateKeyFileName);
-    }
-
-    private function execute($process, $commands)
-    {
-        try {
-            return $process->execute($commands)->getOutput();
-        } catch (\Exception $exception) {
-            $this->mailServer->update(['is_valid' => false]);
-            dump($exception->getMessage());
-            exit();
-        }
     }
 
     private function checkMailServerValid($process): bool
@@ -58,23 +57,5 @@ class CheckMailserverJob implements ShouldQueue
         $this->mailServer->update(['is_valid' => false]);
 
         return false;
-    }
-
-    private function createPrivateKey()
-    {
-        $privateKeyFileName = uniqid();
-
-        Storage::put($privateKeyFileName, trim(config('ccm.ssh_private_key')).PHP_EOL);
-        chmod(Storage::path($privateKeyFileName), 0600);
-
-        return $privateKeyFileName;
-    }
-
-    private function getSshProcess($privateKeyFileName)
-    {
-        return Ssh::create('ccmv2', '192.168.5.8')
-            ->setTimeout(5)
-            ->usePrivateKey(Storage::path($privateKeyFileName))
-            ->useMultiplexing(Storage::path('/'.$this->mailServer->name, '5m'));
     }
 }

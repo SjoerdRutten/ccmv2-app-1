@@ -2,10 +2,12 @@
 
 namespace Sellvation\CCMV2\MailServers\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Str;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 
 class MailServer extends Model
@@ -38,5 +40,12 @@ class MailServer extends Model
     public function sendRules(): BelongsToMany
     {
         return $this->belongsToMany(SendRule::class);
+    }
+
+    protected function keyName(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => Str::replace('.', '_', $this->host)
+        );
     }
 }
