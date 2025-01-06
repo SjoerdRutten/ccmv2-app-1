@@ -1,18 +1,30 @@
 <div wire:loading.remove>
-    <div class="px-4 sm:px-6 lg:px-8">
+    <div class="px-4 sm:px-6 lg:px-8" x-data="stripo({
+    token: @entangle('stripoToken'),
+    html: @entangle('form.html'),
+    stripoHtml: @entangle('form.stripo_html'),
+    stripoCss: @entangle('form.stripo_css'),
+    })">
         <x-ccm::pages.intro title="E-mail wijzigen">
             <x-slot:actions>
                 <x-ccm::buttons.back :href="route('ems::emails::overview')">Terug</x-ccm::buttons.back>
-                <x-ccm::buttons.save wire:click="save"></x-ccm::buttons.save>
+                @if ($email->html_type === 'stripo')
+                    <x-ccm::buttons.save x-on:click="saveStripo"></x-ccm::buttons.save>
+                @else
+                    <x-ccm::buttons.save wire:click="save" id="btnSave"></x-ccm::buttons.save>
+                @endif
             </x-slot:actions>
         </x-ccm::pages.intro>
 
         <x-ccm::tabs.base>
             <x-slot:tabs>
                 <x-ccm::tabs.nav-tab :index="0">Basisinformatie</x-ccm::tabs.nav-tab>
-                <x-ccm::tabs.nav-tab :index="1">Inhoud HTML-deel</x-ccm::tabs.nav-tab>
+                @if ($this->form->html_type === 'STRIPO')
+                    <x-ccm::tabs.nav-tab :index="3">E-mail editor</x-ccm::tabs.nav-tab>
+                @else
+                    <x-ccm::tabs.nav-tab :index="1">Inhoud HTML-deel</x-ccm::tabs.nav-tab>
+                @endif
                 <x-ccm::tabs.nav-tab :index="2">Inhoud Tekst-deel</x-ccm::tabs.nav-tab>
-                <x-ccm::tabs.nav-tab :index="3">Stripo</x-ccm::tabs.nav-tab>
             </x-slot:tabs>
 
             <x-ccm::tabs.tab-content :index="0">
@@ -87,29 +99,35 @@
                             label="HTML Editor"
                             :disabled="$this->form->id > 0"
                     >
+                        <option value="HTML">HTML Editor</option>
                         <option value="STRIPO">Stripo</option>
-                        <option value="WYSIWYG EDITOR">Wysiwyg editor</option>
-                        <option value="HTML">Tekstveld</option>
+                        {{--                        <option value="WYSIWYG EDITOR">Wysiwyg editor</option>--}}
                     </x-ccm::forms.select>
                 </div>
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="1">
-                @if ($this->form->html_type === 'HTML')
-                    <x-ccm::forms.html-editor wire-name="form.html"/>
-                @elseif ($this->form->html_type === 'STRIPO')
-                    <x-ccm::forms.textarea name="text" wire:model="form.html" rows="30"></x-ccm::forms.textarea>
-                @elseif ($this->form->html_type === 'WYSIWYG EDITOR')
-                    <x-ccm::forms.textarea name="text" wire:model="form.html" rows="30"></x-ccm::forms.textarea>
-                @else
-                    Onbekend HTML_TYPE: {{ $this->form->html_type }}
-                @endif
+                <x-ccm::forms.html-editor wire-name="form.html"/>
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="2">
                 <x-ccm::forms.textarea name="text" wire:model="form.text" rows="30"></x-ccm::forms.textarea>
             </x-ccm::tabs.tab-content>
-            <x-ccm::tabs.tab-content :index="3">
-                <div id="stripoEditorContainer"></div>
+            <x-ccm::tabs.tab-content :index="3" :no-margin="true">
+                <div class="notification-zone"></div>
+                <div class="flex">
+                    <!--Plugin containers -->
+                    <div id="stripoSettingsContainer" class="w-1/4">Loading...</div>
+                    <div id="stripoPreviewContainer" class="w-3/4"></div>
+                </div>
             </x-ccm::tabs.tab-content>
         </x-ccm::tabs.base>
     </div>
 </div>
+@once
+    @push('js')
+        @if (app()->environment('local'))
+            <script defer src="/vendor/ccm/js/alpinejs-stripo.js"></script>
+        @else
+            <script defer src="/vendor/ccm/js/alpinejs-stripo.min.js"></script>
+        @endif
+    @endpush
+@endonce

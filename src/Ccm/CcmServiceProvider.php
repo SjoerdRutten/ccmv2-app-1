@@ -39,7 +39,9 @@ class CcmServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
         $this->loadJsonTranslationsFrom(__DIR__.'/resources/lang');
         $this->loadTranslationsFrom(__DIR__.'/resources/lang', 'ccm');
+
         $this->mergeConfigFrom(__DIR__.'/config/ccm.php', 'ccm');
+        $this->mergeConfigFrom(__DIR__.'/config/stripo.php', 'stripo');
 
         // Add MongoDB connection, a mergeConfigFrom doesn't work.
         Config::set('database.connections.mongodb', [

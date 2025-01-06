@@ -42,6 +42,12 @@ class EmailForm extends Form
 
     public ?string $html = null;
 
+    public ?string $css = null;
+
+    public ?string $stripo_html = null;
+
+    public ?string $stripo_css = null;
+
     public function rules(): array
     {
         return [
@@ -87,6 +93,8 @@ class EmailForm extends Form
             'reply_to',
             'subject',
             'optout_url',
+            'stripo_html',
+            'stripo_css',
             'html',
             'html_type',
             'text',
@@ -94,6 +102,8 @@ class EmailForm extends Form
 
         $this->email->fill($data);
         $this->email->save();
+
+        return $this->email;
 
     }
 
