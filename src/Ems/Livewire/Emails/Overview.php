@@ -36,6 +36,7 @@ class Overview extends Component
             ->when($this->filter['email_category_id'], function ($query, $filter) {
                 $query->where('email_category_id', $filter);
             })
+            ->latest()
             ->paginate();
     }
 

@@ -5,6 +5,7 @@ namespace Sellvation\CCMV2\Ems\Livewire\Emails;
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 use Sellvation\CCMV2\Ccm\Livewire\Traits\HasModals;
+use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\Ems\Livewire\Emails\Forms\EmailForm;
 use Sellvation\CCMV2\Ems\Models\Email;
 
@@ -15,6 +16,10 @@ class Edit extends Component
     public Email $email;
 
     public EmailForm $form;
+
+    public CrmCard $crmCard;
+
+    public string $crmId = '';
 
     public string $stripoToken;
 
@@ -31,6 +36,9 @@ class Edit extends Component
         if ($response->ok()) {
             $this->stripoToken = $response->json('token');
         }
+
+        $this->crmCard = CrmCard::first();
+        $this->crmId = $this->crmCard->crm_id;
     }
 
     public function updated($property, $value)
@@ -39,6 +47,9 @@ class Edit extends Component
             case 'form.recipient_type':
                 $this->form->recipient = null;
                 $this->form->recipient_crm_field_id = null;
+                break;
+            case 'crmId':
+                $this->crmCard = CrmCard::whereCrmId($this->crmId)->first();
                 break;
         }
     }

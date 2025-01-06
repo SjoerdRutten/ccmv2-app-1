@@ -25,6 +25,7 @@
                     <x-ccm::tabs.nav-tab :index="1">Inhoud HTML-deel</x-ccm::tabs.nav-tab>
                 @endif
                 <x-ccm::tabs.nav-tab :index="2">Inhoud Tekst-deel</x-ccm::tabs.nav-tab>
+                <x-ccm::tabs.nav-tab :index="4">Preview</x-ccm::tabs.nav-tab>
             </x-slot:tabs>
 
             <x-ccm::tabs.tab-content :index="0">
@@ -118,6 +119,14 @@
                     <div id="stripoSettingsContainer" class="w-1/4">Loading...</div>
                     <div id="stripoPreviewContainer" class="w-3/4"></div>
                 </div>
+            </x-ccm::tabs.tab-content>
+            <x-ccm::tabs.tab-content :index="4">
+                <div class="mb-4">
+                    <x-ccm::forms.input wire:model.live="crmId">Crm ID</x-ccm::forms.input>
+                </div>
+
+                <iframe src="{{ route('ems::emails::preview', ['email' => $email, 'crmCard' => $crmCard]) }}"
+                        class="w-full h-[800px]"></iframe>
             </x-ccm::tabs.tab-content>
         </x-ccm::tabs.base>
     </div>

@@ -4,6 +4,8 @@ namespace Sellvation\CCMV2\BladeData\Extensions;
 
 class CrmCard extends BladeExtension
 {
+    public bool $showEMS = false;
+
     public function getVariables(): array
     {
         return [

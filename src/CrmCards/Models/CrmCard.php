@@ -102,6 +102,11 @@ class CrmCard extends Model
         return $this->belongsTo(User::class, 'updated_by_api_id');
     }
 
+    public function getData($key)
+    {
+        return \Arr::get($this->data, $key);
+    }
+
     public function setData(array $input): array
     {
         $data = $this->data;
