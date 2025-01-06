@@ -23,6 +23,8 @@ class Edit extends Component
 
     public string $stripoToken;
 
+    public string $crc;
+
     public function mount()
     {
         $this->form->setEmail($this->email);
@@ -47,6 +49,10 @@ class Edit extends Component
             case 'form.recipient_type':
                 $this->form->recipient = null;
                 $this->form->recipient_crm_field_id = null;
+                break;
+            case 'form.html':
+                $this->email = $this->form->save();
+                $this->crc = crc32($this->email->html);
                 break;
             case 'crmId':
                 $this->crmCard = CrmCard::whereCrmId($this->crmId)->first();

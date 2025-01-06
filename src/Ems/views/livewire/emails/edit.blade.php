@@ -125,7 +125,7 @@
                     <x-ccm::forms.input wire:model.live="crmId">Crm ID</x-ccm::forms.input>
                 </div>
 
-                <iframe src="{{ route('ems::emails::preview', ['email' => $email, 'crmCard' => $crmCard]) }}"
+                <iframe src="{{ route('ems::emails::preview', ['email' => $email, 'crmCard' => $crmCard, 'crc' => $crc]) }}"
                         class="w-full h-[800px]"></iframe>
             </x-ccm::tabs.tab-content>
         </x-ccm::tabs.base>

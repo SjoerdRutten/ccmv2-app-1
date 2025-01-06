@@ -1,7 +1,7 @@
 <div
         wire:ignore
         x-data="{
-                                monacoContent: $wire.entangle('{{ $wireName }}'),
+                                monacoContent: $wire.entangle('{{ $wireName }}').live,
                                 monacoLanguage: '{{ ($type ?? 'html') === 'js' ? 'javascript' : ($type ?? 'html') }}',
                                 monacoPlaceholder: true,
                                 monacoPlaceholderText: '',
