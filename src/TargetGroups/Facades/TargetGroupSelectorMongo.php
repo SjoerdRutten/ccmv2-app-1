@@ -28,14 +28,10 @@ class TargetGroupSelectorMongo
                         $this->parseValue(Arr::get($row, 'value'), Arr::get($row, 'columnType'))
                     );
                 }
-
-                //                dd($row, $query->toMql());
             });
-
         }
 
-        foreach (Arr::where($elements, fn ($item) => ! \Str::startsWith(Arr::get($item, 'column'), 'orders')) as $row) {
-            // Blocks
+        foreach (Arr::where($elements, fn ($item) => ! \Str::startsWith(Arr::get($item, 'column'), 'orders')) as $row) {// Blocks
             if ((Arr::get($row, 'type') == 'block') && (count(Arr::get($row, 'subelements')))) {
                 if ($row['operation'] === 'AND') {
                     $query->where(function ($query) use ($row) {
@@ -47,7 +43,7 @@ class TargetGroupSelectorMongo
                     });
                 }
                 // Rules
-            } elseif ((Arr::get($row, 'type') == 'rule') && Arr::get($row, 'active') && Arr::get($row, 'value')) {
+            } elseif ((Arr::get($row, 'type') == 'rule') && Arr::get($row, 'active') && (Arr::get($row, 'value') || (Arr::get($row, 'columnType') === 'boolean'))) {
                 // Sub-target-groups
                 if (Arr::get($row, 'columnType') === 'target_group') {
                     if ($targetGroup = TargetGroup::find(Arr::get($row, 'value'))) {

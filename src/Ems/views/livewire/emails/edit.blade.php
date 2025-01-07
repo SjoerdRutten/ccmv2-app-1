@@ -107,7 +107,7 @@
                 </div>
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="1">
-                <x-ccm::forms.html-editor wire-name="form.html"/>
+                {{--                <x-ccm::forms.html-editor wire-name="form.html"/>--}}
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="2">
                 <x-ccm::forms.textarea name="text" wire:model="form.text" rows="30"></x-ccm::forms.textarea>

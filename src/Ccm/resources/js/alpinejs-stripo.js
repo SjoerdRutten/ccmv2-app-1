@@ -104,7 +104,7 @@ document.addEventListener("alpine:init", () => {
             },
             initPlugin($this) {
                 const apiRequestData = {
-                    emailId: 3881371
+                    emailId: 123
                 };
 
                 const script = document.createElement('script');
@@ -177,21 +177,6 @@ document.addEventListener("alpine:init", () => {
                 const previewContainer = document.getElementById('stripoPreviewContainer');
                 previewContainer.style.height = window.innerHeight - 55 + 'px';
             },
-            request(method, url, data, callback) {
-                var req = new XMLHttpRequest();
-                req.onreadystatechange = function () {
-                    if (req.readyState === 4 && req.status === 200) {
-                        callback(req.responseText);
-                    } else if (req.readyState === 4 && req.status !== 200) {
-                        console.error('Can not complete request. Please check you entered a valid PLUGIN_ID and SECRET_KEY values');
-                    }
-                };
-                req.open(method, url, true);
-                if (method !== 'GET') {
-                    req.setRequestHeader('content-type', 'application/json');
-                }
-                req.send(data);
-            }
         })
     );
 });
