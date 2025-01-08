@@ -180,7 +180,10 @@ class MigrateCcmV1Environment extends Command
             ->whereDate('datummutatie', '>=', $startDate)
             ->orderBy('datummutatie')
             ->chunk(500, function ($crmCards) use ($progressBar) {
-                foreach ($crmCards as $row) {
+                foreach ($crmCards as $key => $row) {
+                    if ($key === 0) {
+                        $this->output->info($row->datummutatie);
+                    }
                     $progressBar->advance();
 
                     $data = json_decode(json_encode($row), true);
