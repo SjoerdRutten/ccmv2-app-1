@@ -164,20 +164,20 @@ class MigrateCcmV1Environment extends Command
     {
         $this->info('Import CRM Cards');
 
-        $startDate = $this->ask('Wijzigingen vanaf welke datum (YYYY-MM-DD) ? ', now()->startOfDay()->toDateString());
+        $startDate = $this->ask('Wijzigingen vanaf welke datum (YYYY-MM-DD HH:mm:ii) ? ', now()->startOfDay()->toDateTimeString());
 
         $max = (int) CrmCard::max('id');
 
         $progressBar = $this->output->createProgressBar(
             \DB::connection('db02')
                 ->table('crm_'.$this->environmentId)
-                ->whereDate('datummutatie', '>=', $startDate)
+                ->where('datummutatie', '>=', $startDate)
                 ->count()
         );
 
         \DB::connection('db02')
             ->table('crm_'.$this->environmentId)
-            ->whereDate('datummutatie', '>=', $startDate)
+            ->where('datummutatie', '>=', $startDate)
             ->orderBy('datummutatie')
             ->chunk(500, function ($crmCards) use ($progressBar) {
                 foreach ($crmCards as $key => $row) {
