@@ -53,6 +53,13 @@ class CcmServiceProvider extends ServiceProvider
             __DIR__.'/resources/js' => public_path('vendor/ccm/js'),
         ], 'ccm::js');
 
+        $this->publishes([
+            __DIR__.'/config/ccm.php' => config_path('ccm.php'),
+        ], 'ccm-config');
+        $this->publishes([
+            __DIR__.'/config/stripo.php' => config_path('stripo.php'),
+        ], 'ccm-config');
+
         $router->pushMiddlewareToGroup('web', CcmContextMiddleware::class);
 
         if (! App::runningInConsole()) {

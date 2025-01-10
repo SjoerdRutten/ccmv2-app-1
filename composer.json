@@ -22,6 +22,7 @@
     "blade-ui-kit/blade-heroicons": "^2.4",
     "dompdf/dompdf": "^3.0",
     "laravel/fortify": "^1.25",
+    "laravel/passport": "^12.0",
     "laravel/scout": "^10.11",
     "livewire/livewire": "^3.4",
     "maatwebsite/excel": "^3.1",
@@ -65,7 +66,8 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Sellvation\\CCMV2\\BladeData\\BladeDataProvider",
+        "Sellvation\\CCMV2\\Api\\ApiServiceProvider",
+        "Sellvation\\CCMV2\\BladeData\\BladeDataServiceProvider",
         "Sellvation\\CCMV2\\Ccm\\CcmMenuServiceProvider",
         "Sellvation\\CCMV2\\Ccm\\CcmServiceProvider",
         "Sellvation\\CCMV2\\CcmV1\\CcmV1ServiceProvider",

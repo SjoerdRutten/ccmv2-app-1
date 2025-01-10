@@ -8,7 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use Sellvation\CCMV2\BladeData\Facades\BladeExtensions;
 use Sellvation\CCMV2\BladeData\Facades\BladeExtensionsFacade;
 
-class BladeDataProvider extends ServiceProvider
+class BladeDataServiceProvider extends ServiceProvider
 {
     public function register(): void {}
 
