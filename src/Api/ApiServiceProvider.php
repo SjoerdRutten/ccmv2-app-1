@@ -9,7 +9,13 @@ use Laravel\Passport\Passport;
 
 class ApiServiceProvider extends ServiceProvider
 {
-    public function register(): void {}
+    public function register(): void
+    {
+        Config::set('auth.guards.api', [
+            'driver' => 'passport',
+            'provider' => 'users',
+        ]);
+    }
 
     public function boot(Router $router): void
     {
@@ -22,11 +28,6 @@ class ApiServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
         $this->loadRoutesFrom(__DIR__.'/routes/api.php');
         $this->mergeConfigFrom(__DIR__.'/config/passport.php', 'passport');
-
-        Config::set('auth.guards.api', [
-            'driver' => 'passport',
-            'provider' => 'users',
-        ]);
 
         $this->publishes([
             __DIR__.'/config/passport.php' => config_path('passport.php'),
