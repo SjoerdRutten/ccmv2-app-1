@@ -20,7 +20,7 @@ document.addEventListener("alpine:init", () => {
             this.productIds = this.value.split(',')
         },
         async getSelectedProducts() {
-            var data = await fetch('/ccmapi/product/selected?' + new URLSearchParams({
+            var data = await fetch('/jsapi/product/selected?' + new URLSearchParams({
                 ids: this.productIds,
             }).toString())
                 .then(res => res.json())
@@ -35,7 +35,7 @@ document.addEventListener("alpine:init", () => {
         async searchProducts() {
             this.searchResult = []
             if (this.search.length > 2) {
-                var data = await fetch('/ccmapi/product/search?' + new URLSearchParams({
+                var data = await fetch('/jsapi/product/search?' + new URLSearchParams({
                     q: this.search,
                 }).toString())
                     .then(res => res.json())

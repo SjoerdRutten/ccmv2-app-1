@@ -32,8 +32,8 @@ Route::middleware([
                 Route::get('/typesense/collection/{collectionName}/reindex', \Sellvation\CCMV2\Ccm\Controllers\TypesenseReindexCollectionController::class)->name('typesense.reindex');
             });
 
-        Route::prefix('ccmapi')
-            ->name('ccmapi::')
+        Route::prefix('jsapi')
+            ->name('jsapi::')
             ->group(function (): void {
                 Route::get('/product/search', [\Sellvation\CCMV2\Ccm\Controllers\SearchProductsController::class, 'search'])->name('product.search');
                 Route::get('/product/selected', [\Sellvation\CCMV2\Ccm\Controllers\SearchProductsController::class, 'selected'])->name('product.selected');
