@@ -6,7 +6,7 @@ use Sellvation\CCMV2\Api\Http\Controllers\CrmCardController;
 
 Route::prefix('ccmapi')
     ->middleware([
-        'web',
+        'api',
         CheckClientCredentials::class,
     ])
     ->group(function (): void {
