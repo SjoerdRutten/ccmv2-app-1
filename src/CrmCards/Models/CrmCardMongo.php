@@ -2,6 +2,7 @@
 
 namespace Sellvation\CCMV2\CrmCards\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Relations\HasMany;
 use Sellvation\CCMV2\Orders\Models\OrderMongo;
@@ -20,6 +21,13 @@ class CrmCardMongo extends Model
     public function orders(): HasMany
     {
         return $this->hasMany(OrderMongo::class, 'crm_card_id', 'id');
+    }
+
+    protected function crmCard(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => CrmCard::find($this->id)
+        );
     }
 
     public function getAttribute($key)
