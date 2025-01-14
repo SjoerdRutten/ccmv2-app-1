@@ -8,13 +8,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
+use Sellvation\CCMV2\Orders\Events\OrderCreatingEvent;
 use Sellvation\CCMV2\Orders\Events\OrderSavedEvent;
+use Sellvation\CCMV2\Orders\Events\OrderSavingEvent;
 
 class Order extends Model
 {
     use HasEnvironment;
 
     protected $dispatchesEvents = [
+        'creating' => OrderCreatingEvent::class,
+        'saving' => OrderSavingEvent::class,
         'saved' => OrderSavedEvent::class,
     ];
 
