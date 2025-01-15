@@ -16,7 +16,7 @@ class RemoveFieldFromCrmCardsJob implements ShouldQueue
 
     public function __construct(private string $name, private readonly CrmFieldType $crmFieldType, private int $start, private int $limit)
     {
-        $this->queue = 'scout';
+        $this->queue = '{scout}';
     }
 
     public function handle(): void

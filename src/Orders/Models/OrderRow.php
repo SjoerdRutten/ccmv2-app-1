@@ -3,14 +3,11 @@
 namespace Sellvation\CCMV2\Orders\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Scout\Searchable;
 use Sellvation\CCMV2\Orders\Events\OrderRowCreatedEvent;
 use Sellvation\CCMV2\Orders\Events\OrderRowCreatingEvent;
 
 class OrderRow extends Model
 {
-    use Searchable;
-
     protected $fillable = [
         'order_id',
         'product_id',
@@ -66,43 +63,5 @@ class OrderRow extends Model
         $data['is_promo'] = (int) $this->is_promo;
 
         return $data;
-    }
-
-    public function typesenseCollectionSchema()
-    {
-        return [
-            'fields' => [
-                [
-                    'name' => 'id',
-                    'type' => 'string',
-                ], [
-                    'name' => 'order_id',
-                    'type' => 'string',
-                    'reference' => 'orders_'.$this->order->environment_id.'.id',
-                ], [
-                    'name' => 'product_id',
-                    'type' => 'string',
-                    'reference' => 'products_'.$this->order->environment_id.'.id',
-                ], [
-                    'name' => 'is_promo',
-                    'type' => 'int32',
-                ], [
-                    'name' => 'amount',
-                    'type' => 'int64',
-                    'optional' => true,
-                ], [
-                    'name' => 'unit_price',
-                    'type' => 'int32',
-                ], [
-                    'name' => 'total_price',
-                    'type' => 'int32',
-                ],
-            ],
-        ];
-    }
-
-    public function shouldBeSearchable()
-    {
-        return $this->order->shouldBeSearchable();
     }
 }

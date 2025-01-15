@@ -36,7 +36,7 @@ class Order extends Model
 
     public function orderRows(): HasMany
     {
-        return $this->hasmany(OrderRow::class);
+        return $this->hasMany(OrderRow::class);
     }
 
     public function orderType(): BelongsTo

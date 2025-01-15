@@ -3,13 +3,12 @@
 namespace Sellvation\CCMV2\Orders\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Sellvation\CCMV2\Orders\Models\OrderRow;
 
-class UpdateOrderRowTotalJob implements ShouldQueue
+class UpdateOrderRowTotalJob
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
