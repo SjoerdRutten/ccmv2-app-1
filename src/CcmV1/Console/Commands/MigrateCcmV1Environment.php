@@ -164,7 +164,7 @@ class MigrateCcmV1Environment extends Command
     {
         $this->info('Import CRM Cards');
 
-        $startDate = $this->ask('Wijzigingen vanaf welke datum (YYYY-MM-DD HH:mm:ii) ? ', now()->subHours(2)->toDateTimeString());
+        $startDate = $this->ask('Wijzigingen vanaf welke datum (YYYY-MM-DD HH:mm:ii) ? ', now()->subMinutes(70)->toDateTimeString());
 
         $max = (int) CrmCard::max('id');
 
