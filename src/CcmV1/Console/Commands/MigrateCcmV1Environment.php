@@ -42,11 +42,11 @@ class MigrateCcmV1Environment extends Command
                 if ($this->confirm('Crm Card importeren ?', true)) {
                     $this->migrateCrmCards();
                 }
-                if ($this->confirm('E-mails importeren ?', true)) {
+                if ($this->confirm('E-mails importeren ?', false)) {
                     $this->migrateEmailCategories();
                     $this->migrateEmails();
                 }
-                if ($this->confirm('E-mail statistieken importeren ?', true)) {
+                if ($this->confirm('E-mail statistieken importeren ?', false)) {
                     $this->migrateEmailStats();
                 }
 
