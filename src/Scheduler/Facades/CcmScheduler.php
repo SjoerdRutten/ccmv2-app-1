@@ -131,12 +131,20 @@ class CcmScheduler
     {
         Log::info('SAVE_LOG');
 
-        $task->scheduledTaskLogs()->create([
-            'is_success' => $isSuccess,
-            'output' => file_exists($event->output) ? file_get_contents($event->output) : '',
-            'error_message' => null,
-        ]);
+        if (file_exists($event->output)) {
+            $task->scheduledTaskLogs()->create([
+                'is_success' => $isSuccess,
+                'output' => file_get_contents($event->output),
+                'error_message' => null,
+            ]);
 
-        unlink($event->output);
+            unlink($event->output);
+        } else {
+            $task->scheduledTaskLogs()->create([
+                'is_success' => $isSuccess,
+                'output' => '',
+                'error_message' => null,
+            ]);
+        }
     }
 }
