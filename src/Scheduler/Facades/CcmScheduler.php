@@ -22,8 +22,8 @@ class CcmScheduler
 
                 if ($task->type === ScheduleTaskType::EXTENSION) {
                     $event = Schedule::command($task->command, $params)
-                        ->storeOutput()
-                        ->runInBackground();
+                        ->storeOutput();
+                    //                        ->runInBackground();
 
                     $intervalType = Arr::get($task->pattern, 'type');
                     switch ($intervalType) {
@@ -78,12 +78,12 @@ class CcmScheduler
                         $event = $event->emailOutputTo($task->email_failure);
                     }
 
-                    $event->onSuccess(
+                    $event->onSuccessWithOutput(
                         function () use ($task, $event) {
                             Log::error('SUCCESS');
                             $this->saveLog($task, $event);
                         }
-                    )->onFailure(
+                    )->onFailureWithOutput(
                         function () use ($task, $event) {
                             Log::error('FAILURE');
                             $this->saveLog($task, $event, false);
