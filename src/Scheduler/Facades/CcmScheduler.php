@@ -3,8 +3,8 @@
 namespace Sellvation\CCMV2\Scheduler\Facades;
 
 use Arr;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schedule;
+use Illuminate\Support\Facades\Schema;
 use Sellvation\CCMV2\Scheduler\Enums\ScheduleIntervals;
 use Sellvation\CCMV2\Scheduler\Enums\ScheduleTaskType;
 use Sellvation\CCMV2\Scheduler\Models\ScheduledTask;
@@ -13,7 +13,7 @@ class CcmScheduler
 {
     public function registerCommands()
     {
-        if (DB::table('scheduled_tasks')->exists()) {
+        if (Schema::hasTable('scheduled_tasks')) {
             $tasks = ScheduledTask::where('is_active', 1)->get();
 
             foreach ($tasks as $task) {
