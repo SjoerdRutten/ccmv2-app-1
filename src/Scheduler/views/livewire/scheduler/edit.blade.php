@@ -140,8 +140,7 @@
                         </div>
                         <x-ccm::forms.input-time wire:model="form.pattern.time">Tijdstip</x-ccm::forms.input-time>
                     @elseif($form->pattern['type'] === \Sellvation\CCMV2\Scheduler\Enums\ScheduleIntervals::monthlyOn->name)
-                        <x-ccm::forms.select wire:model.live="form.pattern.days" label="Dag van de maand"
-                                             multiple="true">
+                        <x-ccm::forms.select wire:model.live="form.pattern.day" label="Dag van de maand">
                             @for ($i = 1; $i <= 28; $i++)
                                 <option value="{{ $i }}">
                                     {{ $i }}

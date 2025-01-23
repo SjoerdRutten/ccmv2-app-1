@@ -57,7 +57,7 @@ class CcmScheduler
                             $event->weeklyOn(Arr::get($task->pattern, 'days'), Arr::get($task->pattern, 'time'));
                             break;
                         case ScheduleIntervals::monthlyOn->name:
-                            $event->monthlyOn(Arr::get($task->pattern, 'days'), Arr::get($task->pattern, 'time'));
+                            $event->monthlyOn(Arr::get($task->pattern, 'day'), Arr::get($task->pattern, 'time'));
                             break;
                         case ScheduleIntervals::yearlyOn->name:
                             $event->yearlyOn(Arr::get($task->pattern, 'month'), Arr::get($task->pattern, 'day'), Arr::get($task->pattern, 'time'));
