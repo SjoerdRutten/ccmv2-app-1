@@ -140,13 +140,14 @@
                         </div>
                         <x-ccm::forms.input-time wire:model="form.pattern.time">Tijdstip</x-ccm::forms.input-time>
                     @elseif($form->pattern['type'] === \Sellvation\CCMV2\Scheduler\Enums\ScheduleIntervals::monthlyOn->name)
-                        <x-ccm::forms.multiple-select wire:model.live="form.pattern.days" label="Dag van de maand">
+                        <x-ccm::forms.select wire:model.live="form.pattern.days" label="Dag van de maand"
+                                             multiple="true">
                             @for ($i = 1; $i <= 28; $i++)
                                 <option value="{{ $i }}">
                                     {{ $i }}
                                 </option>
                             @endfor
-                        </x-ccm::forms.multiple-select>
+                        </x-ccm::forms.select>
                         <x-ccm::forms.input-time wire:model="form.pattern.time">Tijdstip</x-ccm::forms.input-time>
                     @elseif($form->pattern['type'] === \Sellvation\CCMV2\Scheduler\Enums\ScheduleIntervals::yearlyOn->name)
                         <div class="flex gap-4">
