@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('schedules', function (Blueprint $table) {
+        Schema::create('scheduled_tasks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('environment_id')->constrained()->cascadeOnDelete();
             $table->string('name');
@@ -31,6 +31,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('schedules');
+        Schema::dropIfExists('scheduled_tasks');
     }
 };

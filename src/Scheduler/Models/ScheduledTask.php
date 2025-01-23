@@ -3,10 +3,11 @@
 namespace Sellvation\CCMV2\Scheduler\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 use Sellvation\CCMV2\Scheduler\Enums\ScheduleTaskType;
 
-class Schedule extends Model
+class ScheduledTask extends Model
 {
     use HasEnvironment;
 
@@ -39,4 +40,9 @@ class Schedule extends Model
         'start_at' => 'datetime',
         'end_at' => 'datetime',
     ];
+
+    public function scheduledTaskLogs(): HasMany
+    {
+        return $this->hasMany(ScheduledTaskLog::class)->latest();
+    }
 }

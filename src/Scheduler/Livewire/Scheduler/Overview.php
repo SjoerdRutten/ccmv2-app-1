@@ -3,7 +3,7 @@
 namespace Sellvation\CCMV2\Scheduler\Livewire\Scheduler;
 
 use Livewire\Component;
-use Sellvation\CCMV2\Scheduler\Models\Schedule;
+use Sellvation\CCMV2\Scheduler\Models\ScheduledTask;
 
 class Overview extends Component
 {
@@ -11,7 +11,7 @@ class Overview extends Component
     {
         return view('scheduler::livewire.scheduler.overview')
             ->with([
-                'schedules' => Schedule::all(),
+                'schedules' => ScheduledTask::all(),
             ]);
     }
 }

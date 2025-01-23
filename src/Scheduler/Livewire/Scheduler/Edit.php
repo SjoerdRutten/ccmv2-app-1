@@ -5,17 +5,17 @@ namespace Sellvation\CCMV2\Scheduler\Livewire\Scheduler;
 use Livewire\Component;
 use Sellvation\CCMV2\Ccm\Livewire\Traits\HasModals;
 use Sellvation\CCMV2\Scheduler\Livewire\Scheduler\Forms\SchedulerForm;
-use Sellvation\CCMV2\Scheduler\Models\Schedule;
+use Sellvation\CCMV2\Scheduler\Models\ScheduledTask;
 
 class Edit extends Component
 {
     use HasModals;
 
-    public Schedule $schedule;
+    public ScheduledTask $schedule;
 
     public SchedulerForm $form;
 
-    public function mount(Schedule $schedule)
+    public function mount(ScheduledTask $schedule)
     {
         $this->schedule = $schedule;
         $this->form->setModel($this->schedule);
@@ -30,10 +30,10 @@ class Edit extends Component
 
     public function render()
     {
-        dd(\Artisan::all());
-
         return view('scheduler::livewire.scheduler.edit')
             ->with([
+                'commands' => \SchedulableCommands::getCommands(),
+                'command' => empty($this->form->command) ? false : new ($this->form->command),
             ]);
     }
 }

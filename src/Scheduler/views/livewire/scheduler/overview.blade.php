@@ -22,6 +22,9 @@
                         </x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $schedule->name }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $schedule->description }}</x-ccm::tables.td>
+                        <x-ccm::tables.td :link="true">
+                            <x-ccm::tables.edit-link :href="route('admin::scheduler::edit', $schedule)"/>
+                        </x-ccm::tables.td>
                     </x-ccm::tables.tr>
                 @endforeach
             </x-slot:tbody>
