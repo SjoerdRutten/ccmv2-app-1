@@ -3,6 +3,7 @@
 namespace Sellvation\CCMV2\Scheduler\Facades;
 
 use Arr;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schedule;
 use Illuminate\Support\Facades\Schema;
 use Sellvation\CCMV2\Scheduler\Enums\ScheduleIntervals;
@@ -65,31 +66,32 @@ class CcmScheduler
                     }
 
                     if ($task->without_overlapping) {
-                        $event->withoutOverlapping();
+                        $event = $event->withoutOverlapping();
                     }
                     if ($task->on_one_server) {
-                        $event->onOneServer();
+                        $event = $event->onOneServer();
                     }
                     if ($task->email_success) {
-                        $event->emailOutputTo($task->email_success);
+                        $event = $event->emailOutputTo($task->email_success);
                     }
                     if ($task->email_failure) {
-                        $event->emailOutputTo($task->email_failure);
+                        $event = $event->emailOutputTo($task->email_failure);
                     }
 
                     $event->onSuccess(
                         function () use ($task, $event) {
+                            Log::error('SUCCESS');
                             $this->saveLog($task, $event);
                         }
                     )->onFailure(
                         function () use ($task, $event) {
+                            Log::error('FAILURE');
                             $this->saveLog($task, $event, false);
                         }
                     )->after(function () use ($event) {
+                        Log::error('AFTER');
                         unlink($event->output);
                     });
-
-                    unset($event);
                 }
             }
         }
@@ -130,6 +132,8 @@ class CcmScheduler
 
     private function saveLog(ScheduledTask $task, \Illuminate\Console\Scheduling\Event $event, $isSuccess = true)
     {
+        Log::info('SAVE_LOG');
+
         $task->scheduledTaskLogs()->create([
             'is_success' => $isSuccess,
             'output' => file_get_contents($event->output),
