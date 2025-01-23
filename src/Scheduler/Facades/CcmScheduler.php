@@ -88,10 +88,7 @@ class CcmScheduler
                             Log::error('FAILURE');
                             $this->saveLog($task, $event, false);
                         }
-                    )->after(function () use ($event) {
-                        Log::error('AFTER');
-                        unlink($event->output);
-                    });
+                    )->after(function () {});
                 }
             }
         }
@@ -139,5 +136,7 @@ class CcmScheduler
             'output' => file_get_contents($event->output),
             'error_message' => null,
         ]);
+
+        unlink($event->output);
     }
 }
