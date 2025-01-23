@@ -133,7 +133,7 @@ class CcmScheduler
 
         $task->scheduledTaskLogs()->create([
             'is_success' => $isSuccess,
-            'output' => file_get_contents($event->output),
+            'output' => file_exists($event->output) ? file_get_contents($event->output) : '',
             'error_message' => null,
         ]);
 
