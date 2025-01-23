@@ -66,16 +66,16 @@ class CcmScheduler
                     }
 
                     if ($task->without_overlapping) {
-                        $event = $event->withoutOverlapping();
+                        $event->withoutOverlapping();
                     }
                     if ($task->on_one_server) {
-                        $event = $event->onOneServer();
+                        $event->onOneServer();
                     }
                     if ($task->email_success) {
-                        $event = $event->emailOutputTo($task->email_success);
+                        $event->emailOutputTo($task->email_success);
                     }
                     if ($task->email_failure) {
-                        $event = $event->emailOutputTo($task->email_failure);
+                        $event->emailOutputTo($task->email_failure);
                     }
 
                     $event->onSuccessWithOutput(
@@ -83,7 +83,7 @@ class CcmScheduler
                             Log::error('SUCCESS');
                             $this->saveLog($task, $event);
                         }
-                    )->onFailureWithOutput(
+                    )->onFailure(
                         function () use ($task, $event) {
                             Log::error('FAILURE');
                             $this->saveLog($task, $event, false);
