@@ -9,6 +9,7 @@
             <x-slot:thead>
                 <x-ccm::tables.th :first="true">ID</x-ccm::tables.th>
                 <x-ccm::tables.th>Actief</x-ccm::tables.th>
+                <x-ccm::tables.th>Laatste run</x-ccm::tables.th>
                 <x-ccm::tables.th>Naam</x-ccm::tables.th>
                 <x-ccm::tables.th>Omschrijving</x-ccm::tables.th>
                 <x-ccm::tables.th :link="true">Acties</x-ccm::tables.th>
@@ -19,6 +20,9 @@
                         <x-ccm::tables.td :first="true">{{ $schedule->id }}</x-ccm::tables.td>
                         <x-ccm::tables.td>
                             <x-ccm::is-active :is-active="$schedule->is_active"/>
+                        </x-ccm::tables.td>
+                        <x-ccm::tables.td>
+                            <x-ccm::is-active :is-active="$schedule->scheduledTaskLogs()->first()?->is_success"/>
                         </x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $schedule->name }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $schedule->description }}</x-ccm::tables.td>
