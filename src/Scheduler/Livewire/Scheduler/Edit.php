@@ -3,6 +3,7 @@
 namespace Sellvation\CCMV2\Scheduler\Livewire\Scheduler;
 
 use Livewire\Component;
+use Livewire\WithPagination;
 use Sellvation\CCMV2\Ccm\Livewire\Traits\HasModals;
 use Sellvation\CCMV2\Scheduler\Livewire\Scheduler\Forms\SchedulerForm;
 use Sellvation\CCMV2\Scheduler\Models\ScheduledTask;
@@ -10,6 +11,7 @@ use Sellvation\CCMV2\Scheduler\Models\ScheduledTask;
 class Edit extends Component
 {
     use HasModals;
+    use WithPagination;
 
     public ScheduledTask $schedule;
 
@@ -34,6 +36,7 @@ class Edit extends Component
             ->with([
                 'commands' => \SchedulableCommands::getCommands(),
                 'command' => empty($this->form->command) ? false : new ($this->form->command),
+                'logs' => $this->schedule->scheduledTaskLogs()->paginate(10),
             ]);
     }
 }

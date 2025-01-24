@@ -21,6 +21,11 @@
                 @endif
             </table>
         </div>
+        @if ($pagination ?? false)
+            <div class="px-5 py-2">
+                {{ $pagination ?? '' }}
+            </div>
+        @endif
         {{ $postTable ?? '' }}
     </div>
 </div>

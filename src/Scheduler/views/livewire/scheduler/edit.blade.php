@@ -12,6 +12,7 @@
                 <x-ccm::tabs.nav-tab :index="0">Basis informatie</x-ccm::tabs.nav-tab>
                 <x-ccm::tabs.nav-tab :index="1">Actie</x-ccm::tabs.nav-tab>
                 <x-ccm::tabs.nav-tab :index="2">Planning</x-ccm::tabs.nav-tab>
+                <x-ccm::tabs.nav-tab :index="3">Logs</x-ccm::tabs.nav-tab>
             </x-slot:tabs>
 
             <x-ccm::tabs.tab-content :index="0">
@@ -170,6 +171,35 @@
 
                 </x-ccm::forms.form>
             </x-ccm::tabs.tab-content>
+            <x-ccm::tabs.tab-content :index="3" :no-margin="true">
+                <x-ccm::tables.table>
+                    <x-slot:thead>
+                        <x-ccm::tables.th>Uitvoertijd</x-ccm::tables.th>
+                        <x-ccm::tables.th>Success</x-ccm::tables.th>
+                        <x-ccm::tables.th>Output</x-ccm::tables.th>
+                    </x-slot:thead>
+                    <x-slot:tbody>
+                        @foreach ($logs AS $log)
+                            <x-ccm::tables.tr>
+                                <x-ccm::tables.td>{{ $log->created_at }}</x-ccm::tables.td>
+                                <x-ccm::tables.td>
+                                    <x-ccm::is-active :is-active="$log->is_success"/>
+                                </x-ccm::tables.td>
+                                <x-ccm::tables.td>
+                                    {!! nl2br($log->output) !!}
+                                </x-ccm::tables.td>
+                            </x-ccm::tables.tr>
+                        @endforeach
+                    </x-slot:tbody>
+                    <x-slot:pagination>
+                        {{ $logs->links() }}
+                    </x-slot:pagination>
+                </x-ccm::tables.table>
+
+
+            </x-ccm::tabs.tab-content>
+
+
         </x-ccm::tabs.base>
     </div>
 </div>
