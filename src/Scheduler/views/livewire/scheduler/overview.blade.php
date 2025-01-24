@@ -22,7 +22,11 @@
                             <x-ccm::is-active :is-active="$schedule->is_active"/>
                         </x-ccm::tables.td>
                         <x-ccm::tables.td>
-                            <x-ccm::is-active :is-active="$schedule->scheduledTaskLogs()->first()?->is_success"/>
+                            @if ($schedule->scheduledTaskLogs()->first())
+                                <x-ccm::is-active :is-active="$schedule->scheduledTaskLogs()->first()?->is_success"/>
+                            @else
+                                Nooit uitgevoerd
+                            @endif
                         </x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $schedule->name }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $schedule->description }}</x-ccm::tables.td>
