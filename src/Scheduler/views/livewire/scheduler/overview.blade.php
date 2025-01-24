@@ -24,7 +24,10 @@
                         </x-ccm::tables.td>
                         <x-ccm::tables.td>
                             @if ($schedule->scheduledTaskLogs()->first())
-                                <x-ccm::is-active :is-active="$schedule->scheduledTaskLogs()->first()?->is_success"/>
+                                <x-ccm::is-active :is-active="$schedule->scheduledTaskLogs()->first()->is_success"/>
+                                <x-slot:sub>
+                                    {{ $schedule->scheduledTaskLogs()->first()->created_at }}
+                                </x-slot:sub>
                             @else
                                 Nooit uitgevoerd
                             @endif
