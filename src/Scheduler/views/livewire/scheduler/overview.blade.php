@@ -12,6 +12,7 @@
                 <x-ccm::tables.th>Laatste run</x-ccm::tables.th>
                 <x-ccm::tables.th>Naam</x-ccm::tables.th>
                 <x-ccm::tables.th>Omschrijving</x-ccm::tables.th>
+                <x-ccm::tables.th>Interval</x-ccm::tables.th>
                 <x-ccm::tables.th :link="true">Acties</x-ccm::tables.th>
             </x-slot:thead>
             <x-slot:tbody>
@@ -30,6 +31,7 @@
                         </x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $schedule->name }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $schedule->description }}</x-ccm::tables.td>
+                        <x-ccm::tables.td>{{ Arr::get($schedule->pattern, 'type') }}</x-ccm::tables.td>
                         <x-ccm::tables.td :link="true">
                             <x-ccm::tables.edit-link :href="route('admin::scheduler::edit', $schedule)"/>
                         </x-ccm::tables.td>
