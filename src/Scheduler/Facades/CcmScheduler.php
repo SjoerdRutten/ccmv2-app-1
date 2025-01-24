@@ -3,7 +3,6 @@
 namespace Sellvation\CCMV2\Scheduler\Facades;
 
 use Arr;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schedule;
 use Illuminate\Support\Facades\Schema;
 use Sellvation\CCMV2\Scheduler\Enums\ScheduleIntervals;
@@ -22,8 +21,8 @@ class CcmScheduler
 
                 if ($task->type === ScheduleTaskType::EXTENSION) {
                     $event = Schedule::command($task->command, $params)
-                        ->storeOutput();
-                    //                        ->runInBackground();
+                        ->storeOutput()
+                        ->runInBackground();
 
                     $intervalType = Arr::get($task->pattern, 'type');
                     switch ($intervalType) {
@@ -80,12 +79,10 @@ class CcmScheduler
 
                     $event->onSuccessWithOutput(
                         function () use ($task, $event) {
-                            Log::error('SUCCESS');
                             $this->saveLog($task, $event);
                         }
                     )->onFailure(
                         function () use ($task, $event) {
-                            Log::error('FAILURE');
                             $this->saveLog($task, $event, false);
                         }
                     )->after(function () {});
@@ -129,8 +126,6 @@ class CcmScheduler
 
     private function saveLog(ScheduledTask $task, \Illuminate\Console\Scheduling\Event $event, $isSuccess = true)
     {
-        Log::info('SAVE_LOG');
-
         if (file_exists($event->output)) {
             $task->scheduledTaskLogs()->create([
                 'is_success' => $isSuccess,
@@ -142,7 +137,7 @@ class CcmScheduler
         } else {
             $task->scheduledTaskLogs()->create([
                 'is_success' => $isSuccess,
-                'output' => '',
+                'output' => 'NO OUTPUT',
                 'error_message' => null,
             ]);
         }
