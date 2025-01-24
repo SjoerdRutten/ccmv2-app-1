@@ -13,12 +13,18 @@ return new class extends Migration
             $table->foreignId('environment_id')->constrained('environments')->cascadeOnDelete();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->string('type');
-            $table->string('queue')->nullable();
             $table->boolean('is_active')->default(false);
-            $table->string('class');
+            $table->string('event');
+            $table->string('job');
             $table->json('settings');
+            $table->dateTime('start_at')->nullable();
+            $table->dateTime('end_at')->nullable();
             $table->timestamps();
         });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('extensions');
     }
 };

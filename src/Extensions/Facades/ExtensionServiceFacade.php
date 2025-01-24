@@ -4,10 +4,10 @@ namespace Sellvation\CCMV2\Extensions\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class ExtensionFacade extends Facade
+class ExtensionServiceFacade extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return 'extension';
+        return 'extension-service';
     }
 }

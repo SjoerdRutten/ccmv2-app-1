@@ -99,6 +99,7 @@ class CcmMenuServiceProvider extends ServiceProvider
                 ['label' => 'Verzendregels', 'route' => 'admin::sendrules::overview'],
                 ['label' => 'Rollen', 'route' => 'roles::overview'],
                 ['label' => 'Gebruikers', 'route' => 'users::overview'],
+                ['label' => 'Extensies', 'route' => 'admin::extensions::overview'],
                 ['label' => 'Taakplanner', 'route' => 'admin::scheduler::overview'],
             ],
         ]);
