@@ -2,9 +2,8 @@
 
 @section('content')
     <x-ccm::cards.cards cols="4">
-        {{--        <x-ccm::dashboard.typesense-collections-card/>--}}
-        {{--        @if (Auth::user()->isAdmin)--}}
-        {{--            <x-ccm::dashboard.typesense-memory-card/>--}}
-        {{--        @endif--}}
+        @if (Auth::user()->isAdmin)
+            <x-ccm::dashboard.scheduled-tasks-logs-card/>
+        @endif
     </x-ccm::cards.cards>
 @endsection

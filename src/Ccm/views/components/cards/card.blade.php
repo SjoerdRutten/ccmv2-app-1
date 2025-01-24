@@ -36,7 +36,7 @@
         {{--            </div>--}}
         {{--        </div>--}}
     </div>
-    <dl class="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
+    <div class="divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
         {{ $slot }}
-    </dl>
+    </div>
 </li>
