@@ -3,6 +3,9 @@
         <x-ccm::pages.intro title="Taak wijzigen">
             <x-slot:actions>
                 <x-ccm::buttons.back :href="route('admin::scheduler::overview')">Terug</x-ccm::buttons.back>
+                <x-ccm::buttons.run wire:confirm="Weet je zeker dat je deze taak wilt uitvoeren?"
+                                    wire:click.prevent="run">Uitvoeren
+                </x-ccm::buttons.back>
                 <x-ccm::buttons.save wire:click="save"></x-ccm::buttons.save>
             </x-slot:actions>
         </x-ccm::pages.intro>
@@ -183,7 +186,11 @@
                             <x-ccm::tables.tr>
                                 <x-ccm::tables.td>{{ $log->created_at }}</x-ccm::tables.td>
                                 <x-ccm::tables.td>
-                                    <x-ccm::is-active :is-active="$log->is_success"/>
+                                    @if ($log->is_success < 0)
+                                        <x-heroicon-s-play-circle class="w-6 h-6 text-orange-500"/>
+                                    @else
+                                        <x-ccm::is-active :is-active="$log->is_success"/>
+                                    @endif
                                 </x-ccm::tables.td>
                                 <x-ccm::tables.td>
                                     {!! nl2br($log->output) !!}

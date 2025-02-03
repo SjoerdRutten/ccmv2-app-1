@@ -7,6 +7,13 @@ use Sellvation\CCMV2\Scheduler\Models\ScheduledTask;
 
 class Overview extends Component
 {
+    public function run(ScheduledTask $task)
+    {
+        \CcmScheduler::run($task);
+
+        $this->showSuccessModal(title: 'Taak wordt uitgevoerd');
+    }
+
     public function render()
     {
         return view('scheduler::livewire.scheduler.overview')
