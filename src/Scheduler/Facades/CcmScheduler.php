@@ -65,7 +65,7 @@ class CcmScheduler
                     }
 
                     if ($task->without_overlapping) {
-                        $event->withoutOverlapping();
+                        $event->withoutOverlapping(3600 * 8); // 8 hours
                     }
                     if ($task->on_one_server) {
                         $event->onOneServer();
