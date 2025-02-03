@@ -8,7 +8,10 @@ use Sellvation\CCMV2\CcmV1\Console\Commands\MigrateCcmV1GlobalCommand;
 
 class CcmV1ServiceProvider extends ServiceProvider
 {
-    public function register(): void {}
+    public function register(): void
+    {
+        $this->registerCommands();
+    }
 
     public function boot(): void
     {
@@ -16,5 +19,10 @@ class CcmV1ServiceProvider extends ServiceProvider
             MigrateCcmV1GlobalCommand::class,
             MigrateCcmV1Environment::class,
         ]);
+    }
+
+    private function registerCommands()
+    {
+        \SchedulableCommands::registerCommand(MigrateCcmV1Environment::class);
     }
 }
