@@ -30,6 +30,14 @@ class Edit extends Component
         $this->showSuccessModal(title: 'Taak is opgeslagen', href: route('admin::scheduler::edit', $this->schedule->id));
     }
 
+    public function run()
+    {
+        $this->schedule = $this->form->save();
+        \CcmScheduler::run($this->schedule);
+
+        $this->showSuccessModal(title: 'Taak is uitgevoerd');
+    }
+
     public function render()
     {
         return view('scheduler::livewire.scheduler.edit')

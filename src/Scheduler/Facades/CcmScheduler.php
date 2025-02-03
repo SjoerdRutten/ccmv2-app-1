@@ -3,6 +3,8 @@
 namespace Sellvation\CCMV2\Scheduler\Facades;
 
 use Arr;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
 use Illuminate\Support\Facades\Schema;
 use Sellvation\CCMV2\Scheduler\Enums\ScheduleIntervals;
@@ -91,20 +93,51 @@ class CcmScheduler
         }
     }
 
-    private function getOptions(ScheduledTask $task): array
+    public function run(ScheduledTask $task)
+    {
+        /** @var Command $command */
+        $command = new $task->command;
+
+        if (Artisan::call($command->getName(), $this->getOptions($task, true)) === 0) {
+            $isSuccess = true;
+        } else {
+            $isSuccess = false;
+        }
+
+        $task->scheduledTaskLogs()->create([
+            'is_success' => $isSuccess,
+            'output' => Artisan::output(),
+            'error_message' => null,
+        ]);
+    }
+
+    private function getOptions(ScheduledTask $task, $assoc = false): array
     {
         $options = [];
-        $options[] = '--no-interaction';
+
+        if ($assoc) {
+            $options['--no-interaction'] = true;
+        } else {
+            $options[] = '--no-interaction';
+        }
         foreach ($task->options as $option => $value) {
             if (! \Str::endsWith($option, '_value')) {
                 if ($values = \Arr::get($task->options, $option.'_value')) {
                     foreach (explode(' ', $values) as $optionValue) {
                         if (! empty($optionValue)) {
-                            $options[] = '--'.$option.'='.$optionValue;
+                            if ($assoc) {
+                                $options['--'.$option] = $optionValue;
+                            } else {
+                                $options[] = '--'.$option.'='.$optionValue;
+                            }
                         }
                     }
                 } else {
-                    $options[] = '--'.$option;
+                    if ($assoc) {
+                        $options['--'.$option] = 1;
+                    } else {
+                        $options[] = '--'.$option;
+                    }
                 }
             }
         }

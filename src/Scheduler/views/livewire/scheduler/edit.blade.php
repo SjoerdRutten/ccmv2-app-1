@@ -3,6 +3,9 @@
         <x-ccm::pages.intro title="Taak wijzigen">
             <x-slot:actions>
                 <x-ccm::buttons.back :href="route('admin::scheduler::overview')">Terug</x-ccm::buttons.back>
+                <x-ccm::buttons.run wire:confirm="Weet je zeker dat je deze taak wilt uitvoeren?"
+                                    wire:click.prevent="run">Uitvoeren
+                </x-ccm::buttons.back>
                 <x-ccm::buttons.save wire:click="save"></x-ccm::buttons.save>
             </x-slot:actions>
         </x-ccm::pages.intro>
