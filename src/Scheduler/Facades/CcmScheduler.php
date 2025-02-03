@@ -94,7 +94,7 @@ class CcmScheduler
     private function getOptions(ScheduledTask $task): array
     {
         $options = [];
-        $option[] = '-n';
+        $options[] = '--no-interaction';
         foreach ($task->options as $option => $value) {
             if (! \Str::endsWith($option, '_value')) {
                 if ($values = \Arr::get($task->options, $option.'_value')) {
