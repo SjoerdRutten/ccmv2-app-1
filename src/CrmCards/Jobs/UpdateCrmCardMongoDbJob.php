@@ -19,7 +19,7 @@ class UpdateCrmCardMongoDbJob implements ShouldQueue
 
     public function __construct(private readonly CrmCard $crmCard)
     {
-        $this->queue = '{scout}';
+        $this->queue = 'scout';
     }
 
     public function handle(): void
