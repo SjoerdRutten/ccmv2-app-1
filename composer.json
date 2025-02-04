@@ -71,7 +71,7 @@
         "Sellvation\\CCMV2\\BladeData\\BladeDataServiceProvider",
         "Sellvation\\CCMV2\\Ccm\\CcmMenuServiceProvider",
         "Sellvation\\CCMV2\\Ccm\\CcmServiceProvider",
-        "Sellvation\\CCMV2\\Ccmp\\CcmV1ServiceProvider",
+        "Sellvation\\CCMV2\\Ccmp\\CcmpServiceProvider",
         "Sellvation\\CCMV2\\CrmCards\\CrmCardServiceProvider",
         "Sellvation\\CCMV2\\CrmCards\\CrmCardBladeDirectivesServiceProvider",
         "Sellvation\\CCMV2\\Ems\\EmsServiceProvider",
