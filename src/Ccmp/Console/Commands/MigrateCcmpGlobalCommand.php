@@ -1,6 +1,6 @@
 <?php
 
-namespace Sellvation\CCMV2\CcmV1\Console\Commands;
+namespace Sellvation\CCMV2\Ccmp\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
@@ -11,7 +11,7 @@ use Sellvation\CCMV2\Users\Models\Customer;
 use Sellvation\CCMV2\Users\Models\Role;
 use Sellvation\CCMV2\Users\Models\User;
 
-class MigrateCcmV1GlobalCommand extends Command
+class MigrateCcmpGlobalCommand extends Command
 {
     protected $signature = 'ccmv1:migrate-global';
 

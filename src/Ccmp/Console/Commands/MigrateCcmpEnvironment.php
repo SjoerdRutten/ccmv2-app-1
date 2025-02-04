@@ -1,17 +1,17 @@
 <?php
 
-namespace Sellvation\CCMV2\CcmV1\Console\Commands;
+namespace Sellvation\CCMV2\Ccmp\Console\Commands;
 
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
-use Sellvation\CCMV2\CcmV1\Jobs\ProcessStatisticsRowJob;
+use Sellvation\CCMV2\Ccmp\Jobs\ProcessStatisticsRowJob;
 use Sellvation\CCMV2\CrmCards\Models\Builders\CrmFieldType;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\CrmCards\Models\CrmFieldCategory;
 use Sellvation\CCMV2\Environments\Models\Environment;
 
-class MigrateCcmV1Environment extends Command
+class MigrateCcmpEnvironment extends Command
 {
     protected $signature = 'ccmv1:migrate-environment-data';
 

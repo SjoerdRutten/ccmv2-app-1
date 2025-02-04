@@ -1,6 +1,6 @@
 <?php
 
-namespace Sellvation\CCMV2\CcmV1\Jobs;
+namespace Sellvation\CCMV2\Ccmp\Jobs;
 
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Sellvation\CCMV2\CcmV1\Jobs;
+namespace Sellvation\CCMV2\Ccmp\Jobs;
 
 use Base62\Facades\Base62;
 use Illuminate\Bus\Queueable;
