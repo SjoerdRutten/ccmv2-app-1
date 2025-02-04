@@ -23,6 +23,7 @@ class CcmpServiceProvider extends ServiceProvider
         $this->registerCommands();
         $this->registerFacades();
 
+        $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
         $this->mergeConfigFrom(__DIR__.'/config/ccmp.php', 'ccmp');
         $this->publishes([
             __DIR__.'/config/ccmp.php' => config_path('ccmp.php'),
