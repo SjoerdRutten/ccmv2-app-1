@@ -43,7 +43,7 @@ class TargetGroupSelectorMongo
                     });
                 }
                 // Rules
-            } elseif ((Arr::get($row, 'type') == 'rule') && Arr::get($row, 'active') && (Arr::get($row, 'value') || (Arr::get($row, 'columnType') === 'boolean') || (in_array(Arr::get($row, 'operator'), ['empty', 'notempty'])))) {
+            } elseif ((Arr::get($row, 'type') == 'rule') && Arr::get($row, 'active') && (Arr::get($row, 'value') || (Arr::get($row, 'columnType') === 'boolean') || (in_array(Arr::get($row, 'operator'), ['empty', 'notempty', 'between'])))) {
                 // Sub-target-groups
                 if (Arr::get($row, 'columnType') === 'target_group') {
                     if ($targetGroup = TargetGroup::find(Arr::get($row, 'value'))) {
