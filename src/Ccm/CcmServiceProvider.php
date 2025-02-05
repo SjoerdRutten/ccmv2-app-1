@@ -45,10 +45,10 @@ class CcmServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/config/stripo.php', 'stripo');
 
         // Add MongoDB connection, a mergeConfigFrom doesn't work.
-        Config::set('database.connections.mongodb', [
-            'driver' => 'mongodb',
-            'dsn' => env('MONGODB_URI', 'mongodb://localhost:27020/ccmv2'),
-        ]);
+        //        Config::set('database.connections.mongodb', [
+        //            'driver' => 'mongodb',
+        //            'dsn' => env('MONGODB_URI', 'mongodb://localhost:27020/ccmv2'),
+        //        ]);
 
         $this->publishes([
             __DIR__.'/resources/js' => public_path('vendor/ccm/js'),
