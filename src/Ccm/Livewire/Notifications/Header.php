@@ -9,7 +9,7 @@ class Header extends Component
     public function render(): string
     {
         return <<<'blade'
-            <a href="{{ route('ccm::notifications') }}" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500" wire:poll.5000ms>
+            <a href="{{ route('ccm::notifications') }}" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
                 <span class="sr-only">View notifications</span>
 
                 @if (Auth::user()->unreadNotifications()->count())
