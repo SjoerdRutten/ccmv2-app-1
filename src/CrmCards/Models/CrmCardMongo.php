@@ -45,6 +45,6 @@ class CrmCardMongo extends Model
 
     public function newEloquentBuilder($query)
     {
-        return new CrmCardMongoQueryBuilder;
+        return new CrmCardMongoQueryBuilder($query);
     }
 }
