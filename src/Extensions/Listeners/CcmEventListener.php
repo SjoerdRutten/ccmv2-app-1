@@ -10,7 +10,6 @@ class CcmEventListener
     public function handle($event): void
     {
         foreach (Extension::where('event', get_class($event))->isActive()->get() as $extension) {
-            Log::log('Event: '.get_class($event));
             dispatch(new $extension->job($extension->settings, $event));
         }
     }
