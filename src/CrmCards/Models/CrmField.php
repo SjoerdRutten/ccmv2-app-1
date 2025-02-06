@@ -161,6 +161,6 @@ class CrmField extends Model
 
     public function newEloquentBuilder($query)
     {
-        return new CrmFieldQueryBuilder($query);
+        return new CrmFieldQueryBuilder;
     }
 }

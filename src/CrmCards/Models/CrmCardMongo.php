@@ -5,6 +5,7 @@ namespace Sellvation\CCMV2\CrmCards\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Relations\HasMany;
+use Sellvation\CCMV2\CrmCards\Models\Builders\CrmCardMongoQueryBuilder;
 use Sellvation\CCMV2\Orders\Models\OrderMongo;
 
 class CrmCardMongo extends Model
@@ -40,5 +41,10 @@ class CrmCardMongo extends Model
 
             return $this->crmCard->$key;
         }
+    }
+
+    public function newEloquentBuilder($query)
+    {
+        return new CrmCardMongoQueryBuilder;
     }
 }
