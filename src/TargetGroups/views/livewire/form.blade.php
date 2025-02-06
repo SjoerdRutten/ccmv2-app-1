@@ -10,14 +10,14 @@
             <x-slot:tabs>
                 <x-ccm::tabs.nav-tab :index="0">
                     Query builder
-                    {{--                    <x-slot:badge>--}}
-                    {{--                        <livewire:target-group-selector::target-group-row-count key="TGCounter"--}}
-                    {{--                                                                                :elements="$elements"--}}
-                    {{--                                                                                wire:loading.remove--}}
-                    {{--                                                                                lazy--}}
+                    <x-slot:badge>
+                        <livewire:target-group-selector::target-group-row-count key="TGCounter"
+                                                                                :elements="$elements"
+                                                                                wire:loading.remove
+                                                                                lazy
 
-                    {{--                        />--}}
-                    {{--                    </x-slot:badge>--}}
+                        />
+                    </x-slot:badge>
                 </x-ccm::tabs.nav-tab>
                 @if ($id > 0)
                     @if (Auth::user()->hasPermissionTo('gds', 'export'))
