@@ -67,14 +67,16 @@
                 @endif
             </div>
         </div>
-        @if (Arr::get($filterTmp, 'columnType') === 'target_group')
+        @if ((Arr::get($filterTmp, 'columnType') === 'target_group') && $top)
             @foreach ($elements AS $key => $element)
                 @if (Arr::get($element, 'type') === 'block')
                     <livewire:target-group-selector::block
                             wire:model="elements.{{ $key }}"
                             wire:key="{{ hash('md5', serialize($elements)) }}"
                             :readonly="true"
-                            index="{{ $key }}"
+                            :index="$key"
+                            :top="false"
+
                     />
                 @endif
             @endforeach

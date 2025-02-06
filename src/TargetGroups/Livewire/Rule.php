@@ -36,6 +36,8 @@ class Rule extends Component
 
     public bool $readonly = false;
 
+    public bool $top = true;
+
     public $elements = [];
 
     public function mount()

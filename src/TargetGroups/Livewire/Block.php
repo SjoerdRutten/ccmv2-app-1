@@ -15,6 +15,8 @@ class Block extends Component
 
     public bool $readonly = false;
 
+    public bool $top = true;
+
     public function getRuleKey($key)
     {
         return 'element.subelements.'.$key;

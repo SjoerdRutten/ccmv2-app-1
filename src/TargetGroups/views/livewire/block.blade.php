@@ -12,6 +12,7 @@
                         wire:key="{{ hash('md5', serialize($subElement)) }}"
                         :readonly="$readonly"
                         :index="$key"
+                        :top="$top"
                 />
             @endif
         @endforeach

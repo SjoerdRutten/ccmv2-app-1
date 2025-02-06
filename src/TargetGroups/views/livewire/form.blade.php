@@ -44,7 +44,8 @@
                             <livewire:target-group-selector::block
                                     wire:model.live="elements.{{ $key }}"
                                     wire:key="BLOCK{{ $key }}"
-                                    index="{{ $key }}"
+                                    :index="$key"
+                                    :top="true"
                             />
                         @endif
                     @endforeach
