@@ -35,18 +35,21 @@ document.addEventListener("alpine:init", () => {
         async searchFields() {
             this.searchResult = []
 
-            var data = await fetch('/target-group-api/crm-field/search?' + new URLSearchParams({
-                q: this.search,
-            }).toString())
-                .then(res => res.json())
-                .then(
-                    function (data) {
-                        return data
-                    }
-                )
+            console.log(this.search)
+            if (this.search) {
+                var data = await fetch('/target-group-api/crm-field/search?' + new URLSearchParams({
+                    q: this.search,
+                }).toString())
+                    .then(res => res.json())
+                    .then(
+                        function (data) {
+                            return data
+                        }
+                    )
 
-            this.searchResult = data
-            this.filterAddedFieldsFromSearchResults()
+                this.searchResult = data
+                this.filterAddedFieldsFromSearchResults()
+            }
         },
         addField(id) {
             this.fieldIds.push(id)
