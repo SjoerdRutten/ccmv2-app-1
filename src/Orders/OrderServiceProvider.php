@@ -6,9 +6,11 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
+use Sellvation\CCMV2\Orders\Events\OrderReadyEvent;
 use Sellvation\CCMV2\Orders\Events\OrderRowCreatingEvent;
 use Sellvation\CCMV2\Orders\Facades\CustomOrderFields;
 use Sellvation\CCMV2\Orders\Facades\CustomOrderFieldsFacade;
+use Sellvation\CCMV2\Orders\Listeners\OrderReadyListener;
 use Sellvation\CCMV2\Orders\Listeners\OrderRowCreatingListener;
 use Sellvation\CCMV2\Orders\Models\Order;
 use Sellvation\CCMV2\Orders\Models\OrderRow;
@@ -43,6 +45,7 @@ class OrderServiceProvider extends ServiceProvider
         $events = $this->app->make(Dispatcher::class);
 
         $events->listen(OrderRowCreatingEvent::class, OrderRowCreatingListener::class);
+        $events->listen(OrderReadyEvent::class, OrderReadyListener::class);
     }
 
     private function registerFacades()
