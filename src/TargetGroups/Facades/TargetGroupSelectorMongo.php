@@ -5,14 +5,12 @@ namespace Sellvation\CCMV2\TargetGroups\Facades;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use MongoDB;
-use MongoDB\Laravel\Eloquent\Builder;
-use Sellvation\CCMV2\CrmCards\Models\Builders\CrmCardMongoQueryBuilder;
 use Sellvation\CCMV2\CrmCards\Models\CrmCardMongo;
 use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
 
 class TargetGroupSelectorMongo
 {
-    public function getQueryFilters(\MongoDB\Laravel\Eloquent\Builder|MongoDB\Laravel\Query\Builder|CrmCardMongoQueryBuilder $query, $elements)
+    public function getQueryFilters($query, $elements)
     {
         if ($orderElements = Arr::where($elements, fn ($item) => \Str::startsWith(Arr::get($item, 'column'), 'orders.'))) {
             $query->whereHas('orders', function ($query) use ($orderElements) {
@@ -115,7 +113,7 @@ class TargetGroupSelectorMongo
         }
     }
 
-    private function addWhere(Builder|MongoDB\Laravel\Query\Builder $query, $column, $operator, $value, $value2 = null)
+    private function addWhere($query, $column, $operator, $value, $value2 = null)
     {
         switch ($operator) {
             case 'gt':
