@@ -23,8 +23,11 @@
                         <x-ccm::tables.td
                                 class="text-wrap">{{ $targetGroup->description }}</x-ccm::tables.td>
                         <x-ccm::tables.td>
-                            <livewire:target-group-selector::target-group-row-count :elements="$targetGroup->filters"
-                                                                                    lazy/>
+                            <livewire:target-group-selector::target-group-row-count
+                                    :elements="$targetGroup->filters"
+                                    :targetGroup="$targetGroup"
+                                    lazy
+                            />
                         </x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $targetGroup->created_at->toDateTimeString() }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $targetGroup->updated_at->toDateTimeString() }}</x-ccm::tables.td>

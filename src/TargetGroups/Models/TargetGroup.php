@@ -19,12 +19,15 @@ class TargetGroup extends Model
         'name',
         'description',
         'filters',
+        'row_count',
+        'row_count_updated_at',
     ];
 
     protected function casts()
     {
         return [
             'filters' => 'json',
+            'row_count_updated_at' => 'datetime',
         ];
     }
 
@@ -36,7 +39,19 @@ class TargetGroup extends Model
     protected function numberOfResults(): Attribute
     {
         return Attribute::make(
-            get: fn () => TargetGroupSelectorFacade::count($this->filters)
+            get: function () {
+                if (! $this->row_count_updated_at ||
+                    ($this->updated_at->timestamp !== $this->row_count_updated_at->timestamp) ||
+                    ($this->row_count_updated_at->isBefore(now()->subMinutes(5)))
+                ) {
+                    $this->update([
+                        'row_count' => TargetGroupSelectorFacade::count($this->filters),
+                        'row_count_updated_at' => now(),
+                    ]);
+                }
+
+                return $this->row_count;
+            }
         );
     }
 

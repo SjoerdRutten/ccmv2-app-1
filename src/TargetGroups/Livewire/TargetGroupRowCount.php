@@ -4,6 +4,7 @@ namespace Sellvation\CCMV2\TargetGroups\Livewire;
 
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
 
 class TargetGroupRowCount extends Component
 {
@@ -11,15 +12,28 @@ class TargetGroupRowCount extends Component
 
     public int $count;
 
-    public function mount()
+    public TargetGroup $targetGroup;
+
+    public function mount(TargetGroup $targetGroup)
     {
-        $this->updateCount($this->elements);
+        $this->targetGroup = $targetGroup;
+
+        if ($this->targetGroup->id) {
+            $this->updateTargetGroupCount();
+        } else {
+            $this->updateCount($this->elements);
+        }
     }
 
     #[On('update-count')]
     public function updateCount($elements)
     {
         $this->count = \TargetGroupSelector::count($elements);
+    }
+
+    public function updateTargetGroupCount()
+    {
+        $this->count = $this->targetGroup->number_of_results;
     }
 
     public function placeholder()
