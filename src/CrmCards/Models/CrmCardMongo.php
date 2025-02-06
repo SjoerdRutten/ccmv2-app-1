@@ -2,10 +2,10 @@
 
 namespace Sellvation\CCMV2\CrmCards\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Relations\HasMany;
-use Sellvation\CCMV2\CrmCards\Models\Builders\CrmCardMongoQueryBuilder;
 use Sellvation\CCMV2\Orders\Models\OrderMongo;
 
 class CrmCardMongo extends Model
@@ -43,8 +43,8 @@ class CrmCardMongo extends Model
         }
     }
 
-    public function newEloquentBuilder($query)
+    public function scopeTokenIntersolve(Builder $query, $tokenIntersolve): void
     {
-        return new CrmCardMongoQueryBuilder($query);
+        $query->where('token_intersolve', (string) $tokenIntersolve);
     }
 }
