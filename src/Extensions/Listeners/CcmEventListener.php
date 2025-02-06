@@ -2,7 +2,6 @@
 
 namespace Sellvation\CCMV2\Extensions\Listeners;
 
-use Illuminate\Support\Facades\Log;
 use Sellvation\CCMV2\Extensions\Models\Extension;
 
 class CcmEventListener
