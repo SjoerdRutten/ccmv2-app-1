@@ -165,7 +165,7 @@ class TargetGroupSelectorMongo
     /**
      * Generate the CRM Card Query for obtaining the results
      */
-    public function getQuery($elements): \MongoDB\Laravel\Eloquent\Builder
+    public function getQuery($elements)
     {
         return $this->getQueryFilters(CrmCardMongo::query(), $elements);
     }
