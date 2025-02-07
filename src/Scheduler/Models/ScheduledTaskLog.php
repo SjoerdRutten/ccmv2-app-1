@@ -23,6 +23,6 @@ class ScheduledTaskLog extends Model
 
     public function prunable()
     {
-        return static::where('created_at', '<', now()->subWeek());
+        return static::where('created_at', '<', now()->subWeeks(5));
     }
 }
