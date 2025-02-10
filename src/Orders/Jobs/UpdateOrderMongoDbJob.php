@@ -16,7 +16,7 @@ class UpdateOrderMongoDbJob implements ShouldQueue
 
     public function __construct(private readonly Order $order)
     {
-        $this->queue = '{scout}';
+        $this->queue = 'scout';
     }
 
     public function handle(): void

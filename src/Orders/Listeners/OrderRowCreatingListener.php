@@ -11,6 +11,6 @@ class OrderRowCreatingListener
 
     public function handle(OrderRowCreatingEvent $event): void
     {
-        UpdateOrderRowTotalJob::dispatch($event->orderRow);
+        UpdateOrderRowTotalJob::dispatchSync($event->orderRow);
     }
 }

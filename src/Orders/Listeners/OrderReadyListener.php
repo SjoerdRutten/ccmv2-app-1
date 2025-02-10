@@ -12,7 +12,10 @@ class OrderReadyListener
 
     public function handle(OrderSavedEvent $event): void
     {
-        UpdateOrderTotalJob::dispatch($event->order);
-        UpdateOrderMongoDbJob::dispatch($event->order);
+        UpdateOrderTotalJob::dispatch($event->order)
+            ->chain([
+                new UpdateOrderMongoDbJob($event->order),
+            ]);
+
     }
 }
