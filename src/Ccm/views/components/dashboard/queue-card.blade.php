@@ -12,6 +12,10 @@
                         <th>Oudste taak:</th>
                         <td>{{ \Carbon\Carbon::parse($queue->oldest)->toDateTimeString() }}</td>
                     </tr>
+                    <tr>
+                        <th>Nieuwste taak:</th>
+                        <td>{{ \Carbon\Carbon::parse($queue->latest)->toDateTimeString() }}</td>
+                    </tr>
                 </table>
             </div>
         @endforeach

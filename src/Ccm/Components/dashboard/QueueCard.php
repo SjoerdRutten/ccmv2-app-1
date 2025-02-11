@@ -15,6 +15,7 @@ class QueueCard extends Component
             ->select('queue')
             ->selectRaw('count(*) as total')
             ->selectRaw('min(created_at) as oldest')
+            ->selectRaw('max(created_at) as latest')
             ->groupBy('queue')
             ->orderBy('queue')
             ->get();
