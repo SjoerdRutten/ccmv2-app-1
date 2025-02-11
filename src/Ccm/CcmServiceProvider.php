@@ -10,9 +10,8 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Sellvation\CCMV2\Ccm\Components\acitivity_log\Table;
+use Sellvation\CCMV2\Ccm\Components\dashboard\QueueCard;
 use Sellvation\CCMV2\Ccm\Components\dashboard\ScheduledTasksLogsCard;
-use Sellvation\CCMV2\Ccm\Components\dashboard\TypesenseCollectionsCard;
-use Sellvation\CCMV2\Ccm\Components\dashboard\TypesenseMemoryCard;
 use Sellvation\CCMV2\Ccm\Components\forms\CrmFieldsOptions;
 use Sellvation\CCMV2\Ccm\Facades\CcmMenu;
 use Sellvation\CCMV2\Ccm\Facades\CcmMenuFacade;
@@ -65,13 +64,16 @@ class CcmServiceProvider extends ServiceProvider
 
         if (! App::runningInConsole()) {
             $this->registerLivewireComponents();
-
-            Blade::component('ccm::dashboard.typesense-memory-card', TypesenseMemoryCard::class);
-            Blade::component('ccm::dashboard.typesense-collections-card', TypesenseCollectionsCard::class);
-            Blade::component('ccm::dashboard.scheduled-tasks-logs-card', ScheduledTasksLogsCard::class);
-            Blade::component('ccm::activity_log.table', Table::class);
-            Blade::component('ccm::forms.crm-fields-options', CrmFieldsOptions::class);
+            $this->registerBladeComponents();
         }
+    }
+
+    private function registerBladeComponents(): void
+    {
+        Blade::component('ccm::dashboard.queue-card', QueueCard::class);
+        Blade::component('ccm::dashboard.scheduled-tasks-logs-card', ScheduledTasksLogsCard::class);
+        Blade::component('ccm::activity_log.table', Table::class);
+        Blade::component('ccm::forms.crm-fields-options', CrmFieldsOptions::class);
     }
 
     private function registerLivewireComponents(): void
