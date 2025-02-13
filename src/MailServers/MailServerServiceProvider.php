@@ -4,6 +4,7 @@ namespace Sellvation\CCMV2\MailServers;
 
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Sellvation\CCMV2\MailServers\Commands\AddSshKeysToMailserversCommand;
@@ -30,11 +31,13 @@ class MailServerServiceProvider extends ServiceProvider
             AddSshKeysToMailserversCommand::class,
         ]);
 
-        foreach (Mailserver::where('is_active', 1)->get() as $mailserver) {
-            Config::set('mail.mailers.'.$mailserver->keyName, [
-                'transport' => 'sendmail',
-                'path' => '/usr/sbin/sendmail -bs -i',
-            ]);
+        if (DB::table('mailservers')->exists()) {
+            foreach (Mailserver::where('is_active', 1)->get() as $mailserver) {
+                Config::set('mail.mailers.'.$mailserver->keyName, [
+                    'transport' => 'sendmail',
+                    'path' => '/usr/sbin/sendmail -bs -i',
+                ]);
+            }
         }
     }
 
