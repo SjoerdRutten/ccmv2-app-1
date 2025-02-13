@@ -25,7 +25,6 @@ class Environment extends Model
         'timezone_id',
         'name',
         'description',
-        'email_credits',
         'notified',
         'is_active',
     ];
