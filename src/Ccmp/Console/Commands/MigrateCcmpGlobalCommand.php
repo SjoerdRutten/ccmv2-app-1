@@ -193,7 +193,6 @@ class MigrateCcmpGlobalCommand extends Command
                     'timezone_id' => $environment->tijdzones_id,
                     'name' => $environment->naam,
                     'description' => $environment->omschrijving,
-                    'notified' => $environment->notified,
                 ]);
             }
         }
