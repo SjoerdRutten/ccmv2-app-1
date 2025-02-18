@@ -2,7 +2,6 @@
 
 namespace Sellvation\CCMV2\Ems\Livewire\Emails;
 
-use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 use Sellvation\CCMV2\Ccm\Livewire\Traits\HasModals;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
@@ -29,16 +28,7 @@ class Edit extends Component
     {
         $this->form->setEmail($this->email);
 
-        $response = Http::asJson()
-            ->post('https://plugins.stripo.email/api/v1/auth', [
-                'pluginId' => config('stripo.plugin_id'),
-                'secretKey' => config('stripo.secret_key'),
-            ]);
-
-        if ($response->ok()) {
-            $this->stripoToken = $response->json('token');
-        }
-
+        $this->stripoToken = \Stripo::getToken();
         $this->crmCard = CrmCard::first();
         $this->crmId = $this->crmCard->crm_id;
     }

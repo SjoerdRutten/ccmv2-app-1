@@ -41,13 +41,6 @@ class CcmServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__.'/resources/lang', 'ccm');
 
         $this->mergeConfigFrom(__DIR__.'/config/ccm.php', 'ccm');
-        $this->mergeConfigFrom(__DIR__.'/config/stripo.php', 'stripo');
-
-        // Add MongoDB connection, a mergeConfigFrom doesn't work.
-        //        Config::set('database.connections.mongodb', [
-        //            'driver' => 'mongodb',
-        //            'dsn' => env('MONGODB_URI', 'mongodb://localhost:27020/ccmv2'),
-        //        ]);
 
         $this->publishes([
             __DIR__.'/resources/js' => public_path('vendor/ccm/js'),
@@ -55,9 +48,6 @@ class CcmServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/config/ccm.php' => config_path('ccm.php'),
-        ], 'ccm-config');
-        $this->publishes([
-            __DIR__.'/config/stripo.php' => config_path('stripo.php'),
         ], 'ccm-config');
 
         $router->pushMiddlewareToGroup('web', CcmContextMiddleware::class);

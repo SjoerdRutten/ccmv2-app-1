@@ -4,6 +4,7 @@ document.addEventListener("alpine:init", () => {
             html: obj.html,
             stripo_html: obj.stripoHtml,
             stripo_css: obj.stripoCss,
+            email_id: obj.emailId,
             wire: Livewire.getByName("ems::emails::edit"),
             notifications: {
                 autoCloseTimeout: 10000,
@@ -104,7 +105,7 @@ document.addEventListener("alpine:init", () => {
             },
             initPlugin($this) {
                 const apiRequestData = {
-                    emailId: 123
+                    emailId: $this.email_id
                 };
 
                 const script = document.createElement('script');

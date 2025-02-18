@@ -1,14 +1,15 @@
 <div wire:loading.remove>
     <div class="px-4 sm:px-6 lg:px-8" x-data="stripo({
-    token: @entangle('stripoToken'),
-    html: @entangle('form.html'),
-    stripoHtml: @entangle('form.stripo_html'),
-    stripoCss: @entangle('form.stripo_css'),
+        token: @entangle('stripoToken'),
+        html: @entangle('form.html'),
+        stripoHtml: @entangle('form.stripo_html'),
+        stripoCss: @entangle('form.stripo_css'),
+        emailId: @entangle('form.email_id'),
     })">
         <x-ccm::pages.intro title="E-mail wijzigen">
             <x-slot:actions>
                 <x-ccm::buttons.back :href="route('ems::emails::overview')">Terug</x-ccm::buttons.back>
-                @if ($email->html_type === 'stripo')
+                @if ($email->html_type === 'STRIPO')
                     <x-ccm::buttons.save x-on:click="saveStripo"></x-ccm::buttons.save>
                 @else
                     <x-ccm::buttons.save wire:click="save" id="btnSave"></x-ccm::buttons.save>
