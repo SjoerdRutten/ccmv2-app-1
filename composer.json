@@ -74,6 +74,7 @@
         "Sellvation\\CCMV2\\Ccmp\\CcmpServiceProvider",
         "Sellvation\\CCMV2\\CrmCards\\CrmCardServiceProvider",
         "Sellvation\\CCMV2\\CrmCards\\CrmCardBladeDirectivesServiceProvider",
+        "Sellvation\\CCMV2\\DataFeeds\\DataFeedServiceProvider",
         "Sellvation\\CCMV2\\Ems\\EmsServiceProvider",
         "Sellvation\\CCMV2\\Environments\\EnvironmentServiceProvider",
         "Sellvation\\CCMV2\\Extensions\\ExtensionServiceProvider",
