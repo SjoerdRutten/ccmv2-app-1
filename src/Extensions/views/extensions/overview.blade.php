@@ -9,6 +9,8 @@
             <x-slot:thead>
                 <x-ccm::tables.th :first="true">ID</x-ccm::tables.th>
                 <x-ccm::tables.th>Actief</x-ccm::tables.th>
+                <x-ccm::tables.th>Starttijd</x-ccm::tables.th>
+                <x-ccm::tables.th>Eindtijd</x-ccm::tables.th>
                 <x-ccm::tables.th>Naam</x-ccm::tables.th>
                 <x-ccm::tables.th>Omschrijving</x-ccm::tables.th>
                 <x-ccm::tables.th :link="true">Acties</x-ccm::tables.th>
@@ -18,7 +20,13 @@
                     <x-ccm::tables.tr :route="route('admin::extensions::edit', $extension)">
                         <x-ccm::tables.td :first="true">{{ $extension->id }}</x-ccm::tables.td>
                         <x-ccm::tables.td>
-                            <x-ccm::is-active :is-active="$extension->is_active"/>
+                            <x-ccm::is-active :is-active="$extension->show_active"/>
+                        </x-ccm::tables.td>
+                        <x-ccm::tables.td>
+                            {{ $extension->start_at?->toDateTimeString() }}
+                        </x-ccm::tables.td>
+                        <x-ccm::tables.td>
+                            {{ $extension->end_at?->toDateTimeString() }}
                         </x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $extension->name }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $extension->description }}</x-ccm::tables.td>

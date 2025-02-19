@@ -21,6 +21,12 @@ class ExtensionForm extends Form
     public ?string $description = null;
 
     #[Validate]
+    public ?string $start_at = null;
+
+    #[Validate]
+    public ?string $end_at = null;
+
+    #[Validate]
     public bool $is_active = true;
 
     #[Validate]
@@ -46,6 +52,14 @@ class ExtensionForm extends Form
             ],
             'is_active' => [
                 'bool',
+            ],
+            'start_at' => [
+                'nullable',
+                'date',
+            ],
+            'end_at' => [
+                'nullable',
+                'date',
             ],
             'event' => [
                 'required',
@@ -75,6 +89,9 @@ class ExtensionForm extends Form
         $this->validate();
 
         $data = $this->except(['extension']);
+
+        $data['start_at'] = empty($this->start_at) ? null : $this->start_at;
+        $data['end_at'] = empty($this->end_at) ? null : $this->end_at;
 
         if ($this->extension->id) {
             $this->extension->update($data);

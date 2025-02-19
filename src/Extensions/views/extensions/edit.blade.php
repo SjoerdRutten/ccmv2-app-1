@@ -42,6 +42,14 @@
                                            wire:model="form.is_active">
                         Actief
                     </x-ccm::forms.checkbox>
+                    <x-ccm::forms.input-datetime name="form.start_at"
+                                                 wire:model="form.start_at">
+                        Starttijd
+                    </x-ccm::forms.input-datetime>
+                    <x-ccm::forms.input-datetime name="form.end_at"
+                                                 wire:model="form.end_at">
+                        Eindtijd
+                    </x-ccm::forms.input-datetime>
                     <x-ccm::forms.select name="form.event" wire:model="form.event" :required="true" label="Event">
                         <option></option>
                         @foreach ($events AS $class => $name)
