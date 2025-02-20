@@ -12,6 +12,10 @@
 
                 @if ($dataFeed->id > 0)
                     <x-ccm::tabs.nav-tab :index="1">Velden</x-ccm::tabs.nav-tab>
+
+                    @if ($form->data_config['reference_key'])
+                        <x-ccm::tabs.nav-tab :index="2">Data</x-ccm::tabs.nav-tab>
+                    @endif
                 @endif
             </x-slot:tabs>
 
@@ -102,6 +106,62 @@
                 </div>
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="1">
+                <x-ccm::forms.select name="form.data_config.reference_key"
+                                     wire:model.live="form.data_config.reference_key"
+                                     label="Referentie key">
+                    <option></option>
+                    @foreach ($form->data_config['fields'] AS $key => $value)
+                        <option>{{ $key }}</option>
+                    @endforeach
+                </x-ccm::forms.select>
+
+
+                <x-ccm::typography.h2 class="mt-5">Veldnamen aanpassen</x-ccm::typography.h2>
+                @foreach ($form->data_config["fields"] AS $key => $value)
+                    <div class="flex gap-4 items-center hover:bg-gray-100 p-1">
+                        <x-ccm::forms.checkbox name="form.data_config.fields.{{ $key }}.visible"
+                                               wire:model="form.data_config.fields.{{ $key }}.visible"/>
+
+                        <div class="w-1/5">
+                            {{ $key }}
+                        </div>
+                        <div class="w-1/5">
+                            <x-ccm::forms.input name="form.data_config.fields.{{ $key }}.key"
+                                                wire:model="form.data_config.fields.{{ $key }}.key">
+                            </x-ccm::forms.input>
+                        </div>
+                        <div class="truncate w-1/2">
+                            {{ $originalRow[$key] }}
+                        </div>
+                    </div>
+                @endforeach
+            </x-ccm::tabs.tab-content>
+            <x-ccm::tabs.tab-content :index="2">
+                <x-ccm::forms.select name="reference" wire:model.live="reference"
+                                     label="Referentie">
+                    <option></option>
+                    @foreach ($references AS $key => $value)
+                        <option>{{ $value }}</option>
+                    @endforeach
+                </x-ccm::forms.select>
+
+                <x-ccm::tables.table>
+                    <x-slot:thead>
+                        <x-ccm::tables.th>Key</x-ccm::tables.th>
+                        <x-ccm::tables.th>Value</x-ccm::tables.th>
+                        <x-ccm::tables.th>Helper</x-ccm::tables.th>
+                    </x-slot:thead>
+                    <x-slot:tbody>
+                        @foreach ($dataRow AS $key => $value)
+                            <x-ccm::tables.tr>
+                                <x-ccm::tables.th>{{ $key }}</x-ccm::tables.th>
+                                <x-ccm::tables.td>{{ \Illuminate\Support\Str::substr($value, 0, 80) }}</x-ccm::tables.td>
+                                <x-ccm::tables.td>datafeed({{ $dataFeed->id }}, '{{ $reference }}', '{{ $key }}')
+                                </x-ccm::tables.td>
+                            </x-ccm::tables.tr>
+                        @endforeach
+                    </x-slot:tbody>
+                </x-ccm::tables.table>
             </x-ccm::tabs.tab-content>
         </x-ccm::tabs.base>
     </div>

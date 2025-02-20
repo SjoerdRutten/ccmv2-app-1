@@ -18,12 +18,13 @@ class DataFeed extends Model
         'type',
         'feed_config',
         'data_config',
-
+        'data',
     ];
 
     protected $casts = [
         'feed_config' => 'json',
         'data_config' => 'json',
+        'data' => 'array',
         'is_active' => 'boolean',
         'is_public' => 'boolean',
     ];

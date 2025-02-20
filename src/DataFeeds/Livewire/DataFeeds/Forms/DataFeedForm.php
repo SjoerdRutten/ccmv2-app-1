@@ -26,6 +26,8 @@ class DataFeedForm extends Form
 
     public ?array $feed_config = [];
 
+    public ?array $data_config = [];
+
     public function rules(): array
     {
         return [
@@ -63,6 +65,14 @@ class DataFeedForm extends Form
             'feed_config.password' => [
                 'nullable',
             ],
+            'data_config.fields' => [
+                'nullable',
+                'array',
+            ],
+            'data_config.reference_key' => [
+                'nullable',
+                'string',
+            ],
         ];
     }
 
@@ -73,6 +83,8 @@ class DataFeedForm extends Form
         $this->fill($dataFeed->toArray());
 
         $this->feed_config = $dataFeed->feed_config ?? [];
+
+        $this->getDefaultDataConfig();
     }
 
     public function save()
@@ -95,5 +107,24 @@ class DataFeedForm extends Form
         $this->dataFeed->save();
 
         return $this->dataFeed;
+    }
+
+    private function getDefaultDataConfig(): void
+    {
+        if (! $this->data_config) {
+            $this->data_config = [
+                'fields' => [],
+                'reference_key' => '',
+            ];
+
+            if ($keys = \DataFeedConnector::getOriginalKeys($this->id)) {
+                foreach ($keys as $key) {
+                    $this->data_config['fields'][$key] = [
+                        'key' => null,
+                        'visible' => true,
+                    ];
+                }
+            }
+        }
     }
 }

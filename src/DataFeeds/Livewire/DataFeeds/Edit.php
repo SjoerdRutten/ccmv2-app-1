@@ -15,10 +15,16 @@ class Edit extends Component
 
     public DataFeedForm $form;
 
+    public $reference = '';
+
     public function mount(Datafeed $dataFeed)
     {
         $this->dataFeed = $dataFeed;
         $this->form->setData($this->dataFeed);
+
+        if ($this->dataFeed->id) {
+            $this->reference = \Arr::first(\DataFeedConnector::getReferences($this->dataFeed->id));
+        }
     }
 
     public function save()
@@ -39,6 +45,9 @@ class Edit extends Component
                     'sftp' => 'SFTP',
                     'sql' => 'SQL',
                 ],
+                'references' => \DataFeedConnector::getReferences($this->dataFeed->id),
+                'originalRow' => \DataFeedConnector::getOriginalFirstRow($this->dataFeed->id),
+                'dataRow' => \DataFeedConnector::getRow($this->dataFeed->id, $this->reference),
             ]);
     }
 }
