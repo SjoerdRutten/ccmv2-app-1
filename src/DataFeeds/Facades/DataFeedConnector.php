@@ -2,6 +2,7 @@
 
 namespace Sellvation\CCMV2\DataFeeds\Facades;
 
+use Arr;
 use Sellvation\CCMV2\DataFeeds\Models\DataFeed;
 
 class DataFeedConnector
@@ -19,10 +20,13 @@ class DataFeedConnector
 
     public function getOriginalFirstRow(int $dataFeedId): ?array
     {
-        $dataFeed = $this->getDataFeed($dataFeedId);
-        $data = $this->getDataFeedData($dataFeed);
+        if ($dataFeed = $this->getDataFeed($dataFeedId)) {
+            $data = $this->getDataFeedData($dataFeed);
 
-        return \Arr::first($data);
+            return \Arr::first($data);
+        }
+
+        return [];
     }
 
     public function getFirstRow(int $dataFeedId): ?array
@@ -63,7 +67,7 @@ class DataFeedConnector
     private function mapData($dataFeed, $row)
     {
         $returnRow = [];
-        if ($row) {
+        if ($row && Arr::get($dataFeed->data_config, 'fields')) {
 
             foreach ($dataFeed->data_config['fields'] as $key => $value) {
                 if ($value['visible']) {
@@ -82,20 +86,21 @@ class DataFeedConnector
 
     public function getReferences(int $dataFeedId): ?array
     {
-        $dataFeed = $this->getDataFeed($dataFeedId);
-        $data = $this->getDataFeedData($dataFeed);
-        $referenceKey = $this->getReferenceKey($dataFeed);
+        if ($dataFeed = $this->getDataFeed($dataFeedId)) {
+            $data = $this->getDataFeedData($dataFeed);
+            $referenceKey = $this->getReferenceKey($dataFeed);
 
-        if ($referenceKey) {
+            if ($referenceKey) {
 
-            $keys = \Arr::map($data, function ($row) use ($referenceKey) {
-                return \Arr::get($row, $referenceKey);
-            });
+                $keys = \Arr::map($data, function ($row) use ($referenceKey) {
+                    return \Arr::get($row, $referenceKey);
+                });
 
-            $keys = array_unique($keys);
-            sort($keys);
+                $keys = array_unique($keys);
+                sort($keys);
 
-            return $keys;
+                return $keys;
+            }
         }
 
         return [];

@@ -31,7 +31,7 @@ class Edit extends Component
     {
         $this->dataFeed = $this->form->save();
 
-        $this->showSuccessModal(title: 'Datafeed is opgeslagen', href: route('df::edit', $this->dataFeed));
+        $this->showSuccessModal(title: 'Datafeed is opgeslagen', href: route('cms::data_feeds::edit', $this->dataFeed));
     }
 
     public function render()
@@ -45,9 +45,9 @@ class Edit extends Component
                     'sftp' => 'SFTP',
                     'sql' => 'SQL',
                 ],
-                'references' => \DataFeedConnector::getReferences($this->dataFeed->id),
-                'originalRow' => \DataFeedConnector::getOriginalFirstRow($this->dataFeed->id),
-                'dataRow' => \DataFeedConnector::getRow($this->dataFeed->id, $this->reference),
+                'references' => $this->dataFeed->id ? \DataFeedConnector::getReferences($this->dataFeed->id) : [],
+                'originalRow' => $this->dataFeed->id ? \DataFeedConnector::getOriginalFirstRow($this->dataFeed->id) : [],
+                'dataRow' => $this->dataFeed->id ? \DataFeedConnector::getRow($this->dataFeed->id, $this->reference) : [],
             ]);
     }
 }

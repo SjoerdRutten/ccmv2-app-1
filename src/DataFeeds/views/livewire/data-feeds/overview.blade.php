@@ -2,7 +2,7 @@
     <div class="px-4 sm:px-6 lg:px-8">
         <x-ccm::pages.intro title="Data feeds">
             <x-slot:actions>
-                <x-ccm::buttons.add route="df::add">Data feed toevoegen</x-ccm::buttons.add>
+                <x-ccm::buttons.add route="cms::data_feeds::add">Data feed toevoegen</x-ccm::buttons.add>
             </x-slot:actions>
             <div class="flex gap-4">
                 <x-ccm::forms.input
@@ -23,7 +23,7 @@
             </x-slot:thead>
             <x-slot:tbody>
                 @foreach ($dataFeeds AS $key => $dataFeed)
-                    <x-ccm::tables.tr :route="route('df::edit', $dataFeed)">
+                    <x-ccm::tables.tr :route="route('cms::data_feeds::edit', $dataFeed)">
                         <x-ccm::tables.td :first="true">{{ $dataFeed->id }}</x-ccm::tables.td>
                         <x-ccm::tables.td>
                             <x-ccm::is-active :is-active="$dataFeed->is_active"/>
@@ -32,9 +32,11 @@
                             {{ $dataFeed->name }}
                         </x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $dataFeed->description }}</x-ccm::tables.td>
-                        <x-ccm::tables.td>TODO</x-ccm::tables.td>
+                        <x-ccm::tables.td>
+                            {{ $dataFeed->dataFeedFetches()->latest()->first()?->created_at }}
+                        </x-ccm::tables.td>
                         <x-ccm::tables.td :link="true">
-                            <x-ccm::tables.edit-link :href="route('df::edit', $dataFeed)"/>
+                            <x-ccm::tables.edit-link :href="route('cms::data_feeds::edit', $dataFeed)"/>
                         </x-ccm::tables.td>
                     </x-ccm::tables.tr>
                 @endforeach

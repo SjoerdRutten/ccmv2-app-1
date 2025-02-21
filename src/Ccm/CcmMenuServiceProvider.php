@@ -61,6 +61,7 @@ class CcmMenuServiceProvider extends ServiceProvider
                 ['label' => 'Pagina\'s', 'route' => 'cms::pages::overview'],
                 ['label' => 'Contentblokken', 'route' => 'cms::blocks::overview'],
                 ['label' => 'Formulieren', 'route' => 'cms::forms::overview'],
+                ['label' => 'Data feeds', 'route' => 'cms::data_feeds::overview'],
                 ['label' => 'Scrapers', 'route' => 'cms::scrapers::overview'],
             ],
         ]);

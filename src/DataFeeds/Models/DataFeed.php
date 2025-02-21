@@ -29,7 +29,7 @@ class DataFeed extends Model
         'is_public' => 'boolean',
     ];
 
-    public function dataFeedFetched(): HasMany
+    public function dataFeedFetches(): HasMany
     {
         return $this->hasMany(DataFeedFetch::class);
     }

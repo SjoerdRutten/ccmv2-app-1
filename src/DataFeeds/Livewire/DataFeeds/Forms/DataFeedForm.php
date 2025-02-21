@@ -83,6 +83,7 @@ class DataFeedForm extends Form
         $this->fill($dataFeed->toArray());
 
         $this->feed_config = $dataFeed->feed_config ?? [];
+        $this->data_config = $dataFeed->data_config ?? [];
 
         $this->getDefaultDataConfig();
     }
@@ -117,7 +118,7 @@ class DataFeedForm extends Form
                 'reference_key' => '',
             ];
 
-            if ($keys = \DataFeedConnector::getOriginalKeys($this->id)) {
+            if ($this->id && ($keys = \DataFeedConnector::getOriginalKeys($this->id))) {
                 foreach ($keys as $key => $value) {
                     $this->setDataConfigField($key, $key, $value);
                 }
