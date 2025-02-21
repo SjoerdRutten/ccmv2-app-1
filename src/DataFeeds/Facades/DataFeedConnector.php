@@ -81,7 +81,11 @@ class DataFeedConnector
 
     public function getOriginalKeys(int $dataFeedId): ?array
     {
-        return $this->array_keys_recursive($this->getOriginalFirstRow($dataFeedId));
+        if ($row = $this->getOriginalFirstRow($dataFeedId)) {
+            return $this->array_keys_recursive($row);
+        }
+
+        return [];
     }
 
     public function getReferences(int $dataFeedId): ?array
@@ -106,9 +110,9 @@ class DataFeedConnector
         return [];
     }
 
-    private function getDataFeed(int $dataFeedId): DataFeed
+    private function getDataFeed(int $dataFeedId): DataFeed|bool
     {
-        return DataFeed::find($dataFeedId);
+        return DataFeed::find($dataFeedId) ?? false;
     }
 
     private function getDataFeedData(DataFeed $dataFeed): ?array

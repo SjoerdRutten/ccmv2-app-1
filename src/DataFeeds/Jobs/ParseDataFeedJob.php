@@ -24,7 +24,7 @@ class ParseDataFeedJob implements ShouldQueue
         $this->dataFeed = $this->dataFeedFetch->dataFeed;
         $feedConfig = $this->dataFeed->feed_config;
 
-        $function = 'parse'.ucfirst($feedConfig['content_type']);
+        $function = 'parse'.ucfirst(\Arr::get($feedConfig, 'content_type', 'json'));
         $this->dataFeed->data = $this->mapData($this->{$function}($feedConfig));
         $this->dataFeed->save();
     }

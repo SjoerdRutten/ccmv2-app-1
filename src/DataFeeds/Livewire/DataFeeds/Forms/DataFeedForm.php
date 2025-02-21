@@ -112,7 +112,7 @@ class DataFeedForm extends Form
 
     private function getDefaultDataConfig(): void
     {
-        if (! $this->data_config) {
+        if (! $this->data_config || ! count(\Arr::get($this->data_config, 'fields'))) {
             $this->data_config = [
                 'fields' => [],
                 'reference_key' => '',

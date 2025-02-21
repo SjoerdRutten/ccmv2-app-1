@@ -41,8 +41,8 @@ class Edit extends Component
                 'types' => [
                     'https' => 'HTTP(S)',
                     'ftps' => 'FTP(S)',
-                    'scp' => 'SCP',
-                    'sftp' => 'SFTP',
+                    //                    'scp' => 'SCP',
+                    //                    'sftp' => 'SFTP',
                     'sql' => 'SQL',
                 ],
                 'references' => $this->dataFeed->id ? \DataFeedConnector::getReferences($this->dataFeed->id) : [],

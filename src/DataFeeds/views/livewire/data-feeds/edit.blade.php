@@ -52,13 +52,43 @@
                             Wachtwoord
                         </x-ccm::forms.input>
                     @elseif ($form->type === 'ftps')
-                        FTPS
+                        <x-ccm::forms.select name="form.feed_config.encryption"
+                                             wire:model.live="form.feed_config.encryption"
+                                             label="Encryptie"
+                                             :required="true"
+                        >
+                            <option value="">Geen</option>
+                            <option value="explicit">TLS/SSL</option>
+                            {{--                            <option value="implicit">TLS/SSL Implicit</option>--}}
+                        </x-ccm::forms.select>
+                        <x-ccm::forms.input name="form.feed_config.host" wire:model="form.feed_config.host"
+                                            :required="true">
+                            Host
+                        </x-ccm::forms.input>
+                        <x-ccm::forms.input name="form.feed_config.port" wire:model="form.feed_config.port"
+                                            :required="true">
+                            Poort
+                        </x-ccm::forms.input>
+                        <x-ccm::forms.input name="form.feed_config.username" wire:model="form.feed_config.username"
+                                            :required="true">
+                            Gebruikersnaam
+                        </x-ccm::forms.input>
+                        <x-ccm::forms.input name="form.feed_config.password" wire:model="form.feed_config.password"
+                                            :required="true">
+                            Wachtwoord
+                        </x-ccm::forms.input>
+                        <x-ccm::forms.input name="form.feed_config.path" wire:model="form.feed_config.path"
+                                            :required="true">
+                            Bestandsnaam en locatie
+                        </x-ccm::forms.input>
                     @elseif ($form->type === 'scp')
                         SCP
                     @elseif ($form->type === 'sftp')
                         SFTP
                     @elseif ($form->type === 'sql')
-                        SQL
+                        <x-ccm::forms.textarea name="form.feed_config.query" wire:model="form.feed_config.query"
+                                               :required="true">Query
+                        </x-ccm::forms.textarea>
                     @endif
 
                     @if (!empty($form->type) && $form->type !== 'sql')
@@ -131,7 +161,7 @@
                             </x-ccm::forms.input>
                         </div>
                         <div class="truncate w-1/2">
-                            {{ datafeed(1, null, $value['label'] ?? $value['key']) }}
+                            {{ datafeed($dataFeed->id, null, $value['label'] ?? $value['key']) }}
                         </div>
                     </div>
                 @endforeach
