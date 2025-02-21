@@ -126,12 +126,12 @@
                             {{ $key }}
                         </div>
                         <div class="w-1/5">
-                            <x-ccm::forms.input name="form.data_config.fields.{{ $key }}.key"
-                                                wire:model="form.data_config.fields.{{ $key }}.key">
+                            <x-ccm::forms.input name="form.data_config.fields.{{ $key }}.label"
+                                                wire:model="form.data_config.fields.{{ $key }}.label">
                             </x-ccm::forms.input>
                         </div>
                         <div class="truncate w-1/2">
-                            {{ $originalRow[$key] }}
+                            {{ datafeed(1, null, $value['label'] ?? $value['key']) }}
                         </div>
                     </div>
                 @endforeach
@@ -152,11 +152,14 @@
                         <x-ccm::tables.th>Helper</x-ccm::tables.th>
                     </x-slot:thead>
                     <x-slot:tbody>
-                        @foreach ($dataRow AS $key => $value)
+                        @foreach ($form->data_config["fields"] AS $key => $value)
                             <x-ccm::tables.tr>
                                 <x-ccm::tables.th>{{ $key }}</x-ccm::tables.th>
-                                <x-ccm::tables.td>{{ \Illuminate\Support\Str::substr($value, 0, 80) }}</x-ccm::tables.td>
-                                <x-ccm::tables.td>datafeed({{ $dataFeed->id }}, '{{ $reference }}', '{{ $key }}')
+                                <x-ccm::tables.td>
+                                    {{ \Illuminate\Support\Str::substr(datafeed($dataFeed->id, $reference, $value['label'] ?? $value['key']), 0, 80) }}
+                                </x-ccm::tables.td>
+                                <x-ccm::tables.td>datafeed({{ $dataFeed->id }}, '{{ $reference }}',
+                                    '{{ $value['label'] ?? $value['key'] }}')
                                 </x-ccm::tables.td>
                             </x-ccm::tables.tr>
                         @endforeach

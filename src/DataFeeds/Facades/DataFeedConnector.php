@@ -6,12 +6,31 @@ use Sellvation\CCMV2\DataFeeds\Models\DataFeed;
 
 class DataFeedConnector
 {
+    public function getValue(int $dataFeedId, ?string $reference, string $field)
+    {
+        if ($reference) {
+            $data = $this->getRow($dataFeedId, $reference);
+        } else {
+            $data = $this->getFirstRow($dataFeedId);
+        }
+
+        return \Arr::get($data, $field);
+    }
+
     public function getOriginalFirstRow(int $dataFeedId): ?array
     {
         $dataFeed = $this->getDataFeed($dataFeedId);
         $data = $this->getDataFeedData($dataFeed);
 
         return \Arr::first($data);
+    }
+
+    public function getFirstRow(int $dataFeedId): ?array
+    {
+        $dataFeed = $this->getDataFeed($dataFeedId);
+        $data = $this->getOriginalFirstRow($dataFeedId);
+
+        return $this->mapData($dataFeed, $data);
     }
 
     public function getRow(int $dataFeedId, $reference, $referenceKey = null): ?array
@@ -33,17 +52,24 @@ class DataFeedConnector
             $row = null;
         }
 
+        if ($row) {
+            $row = $this->mapData($dataFeed, $row);
+            \Cache::add($cacheKey, $row);
+        }
+
+        return $row;
+    }
+
+    private function mapData($dataFeed, $row)
+    {
         $returnRow = [];
         if ($row) {
 
             foreach ($dataFeed->data_config['fields'] as $key => $value) {
                 if ($value['visible']) {
-                    //                dd($value, $key, $value['key'] ?? $key);
-                    $returnRow[$value['key'] ?? $key] = \Arr::get($row, $key);
+                    \Arr::set($returnRow, $value['label'] ?? $value['key'], \Arr::get($row, $value['key']));
                 }
             }
-
-            \Cache::add($cacheKey, $returnRow);
         }
 
         return $returnRow;
@@ -51,7 +77,7 @@ class DataFeedConnector
 
     public function getOriginalKeys(int $dataFeedId): ?array
     {
-        return $this->array_walk_keys($this->getOriginalFirstRow($dataFeedId));
+        return $this->array_keys_recursive($this->getOriginalFirstRow($dataFeedId));
     }
 
     public function getReferences(int $dataFeedId): ?array
@@ -100,37 +126,20 @@ class DataFeedConnector
         return \Arr::get($dataFeed->data_config, 'reference_key');
     }
 
-    //    private function array_keys_recursive($myArray, $MAXDEPTH = INF, $depth = 0, $arrayKeys = [])
-    //    {
-    //        if ($depth < $MAXDEPTH) {
-    //            $depth++;
-    //            $keys = array_keys($myArray);
-    //            foreach ($keys as $key) {
-    //                if (is_array($myArray[$key])) {
-    //                    $arrayKeys[$key] = $this->array_keys_recursive($myArray[$key], $MAXDEPTH, $depth);
-    //                } else {
-    //                    $arrayKeys[$key] = $key;
-    //                }
-    //            }
-    //        }
-    //
-    //        return $arrayKeys;
-    //    }
-
-    public function array_walk_keys($array, $parentKey = null, &$flattened_array = null)
+    private function array_keys_recursive($myArray, $MAXDEPTH = INF, $depth = 0, $arrayKeys = [])
     {
-        if (! is_array($array)) {
-            return $array;
-        }
-
-        foreach ($array as $key => $val) {
-            $flattenedKeysArray[] = $key;
-
-            if (is_array($val)) {
-                $this->array_walk_keys($val, $key, $flattenedKeysArray);
+        if ($depth < $MAXDEPTH) {
+            $depth++;
+            $keys = array_keys($myArray);
+            foreach ($keys as $key) {
+                if (is_array($myArray[$key])) {
+                    $arrayKeys[$key] = $this->array_keys_recursive($myArray[$key], $MAXDEPTH, $depth);
+                } else {
+                    $arrayKeys[$key] = $key;
+                }
             }
         }
 
-        return $flattenedKeysArray;
+        return $arrayKeys;
     }
 }

@@ -72,6 +72,13 @@ class ParseDataFeedJob implements ShouldQueue
         return array_values($data);
     }
 
+    private function parseXml(array $feedConfig)
+    {
+        $xml = json_decode(json_encode(simplexml_load_string(Storage::disk($this->dataFeedFetch->disk)->get($this->dataFeedFetch->file_name))), true);
+
+        return \Arr::first($xml);
+    }
+
     private function mapData(array $data): array
     {
         return $data;

@@ -118,13 +118,25 @@ class DataFeedForm extends Form
             ];
 
             if ($keys = \DataFeedConnector::getOriginalKeys($this->id)) {
-                foreach ($keys as $key) {
-                    $this->data_config['fields'][$key] = [
-                        'key' => null,
-                        'visible' => true,
-                    ];
+                foreach ($keys as $key => $value) {
+                    $this->setDataConfigField($key, $key, $value);
                 }
             }
+        }
+    }
+
+    private function setDataConfigField($key, $getKey, $value): void
+    {
+        if (is_array($value)) {
+            foreach ($value as $k => $v) {
+                $this->setDataConfigField($key.' > '.$k, $getKey.'.'.$k, $v);
+            }
+        } else {
+            $this->data_config['fields'][$key] = [
+                'label' => null,
+                'key' => $getKey,
+                'visible' => true,
+            ];
         }
     }
 }
