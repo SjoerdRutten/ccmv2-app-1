@@ -5,10 +5,22 @@ namespace Sellvation\CCMV2\DataFeeds\Facades;
 use Arr;
 use Sellvation\CCMV2\DataFeeds\Models\DataFeed;
 
+/**
+ * TODO: Deze connector moet eigenlijk opgeschoond worden, is nogal slordige code.
+ */
 class DataFeedConnector
 {
-    public function getValue(int $dataFeedId, ?string $reference, string $field)
+    /**
+     * @return array
+     *
+     * Get value from first referenced item in datafeed
+     */
+    public function getValue(int $dataFeedId, ?string $reference, ?string $field = null): mixed
     {
+        if (! $field) {
+            return $this->getRecords($dataFeedId, $reference);
+        }
+
         if ($reference) {
             $data = $this->getRow($dataFeedId, $reference);
         } else {
@@ -16,6 +28,32 @@ class DataFeedConnector
         }
 
         return \Arr::get($data, $field);
+    }
+
+    /**
+     * @return array|\ArrayAccess|mixed
+     *
+     * Get array from referenced items from datafeed
+     */
+    public function getRecords(int $dataFeedId, ?string $reference): array
+    {
+        $dataFeed = $this->getDataFeed($dataFeedId);
+        $data = $this->getDataFeedData($dataFeed);
+
+        if ($referenceKey = $referenceKey ?? $this->getReferenceKey($dataFeed)) {
+            $rows = \Arr::where($data, function ($row) use ($referenceKey, $reference) {
+                return (string) $row[$referenceKey] === (string) $reference;
+            });
+
+            foreach ($rows as $key => $row) {
+                $rows[$key] = $this->mapData($dataFeed, $row);
+            }
+
+            return $rows;
+        } else {
+            return [];
+        }
+
     }
 
     public function getOriginalFirstRow(int $dataFeedId): ?array
@@ -50,7 +88,7 @@ class DataFeedConnector
             }
 
             $row = \Arr::first(\Arr::where($data, function ($row) use ($referenceKey, $reference) {
-                return $row[$referenceKey] === $reference;
+                return (string) $row[$referenceKey] === (string) $reference;
             }));
         } else {
             $row = null;
