@@ -3,10 +3,13 @@
 namespace Sellvation\CCMV2\Ems;
 
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Sellvation\CCMV2\Ems\Events\EmailDkimCreatedEvent;
+use Sellvation\CCMV2\Ems\Facades\EmailCompiler;
+use Sellvation\CCMV2\Ems\Facades\EmailCompilerFacade;
 use Sellvation\CCMV2\Ems\Listeners\EmailDkimCreatedListener;
 
 class EmsServiceProvider extends ServiceProvider
@@ -19,6 +22,7 @@ class EmsServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
         $this->loadViewsFrom(__DIR__.'/views', 'ems');
 
+        $this->registerFacades();
         $this->registerEvents();
 
         if (! App::runningInConsole()) {
@@ -43,5 +47,13 @@ class EmsServiceProvider extends ServiceProvider
         $events = $this->app->make(Dispatcher::class);
 
         $events->listen(EmailDkimCreatedEvent::class, EmailDkimCreatedListener::class);
+    }
+
+    private function registerFacades()
+    {
+        $this->app->bind('email-compiler', EmailCompiler::class);
+
+        $loader = AliasLoader::getInstance();
+        $loader->alias('EmailCompiler', EmailCompilerFacade::class);
     }
 }

@@ -4,7 +4,6 @@ namespace Sellvation\CCMV2\Ems\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Blade;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 
@@ -50,36 +49,8 @@ class Email extends Model
         return $this->belongsTo(EmailCategory::class);
     }
 
-    private function getStripoHtml($data)
+    public function getCompiledHtml(CrmCard $crmCard, bool $tracking = false)
     {
-        $html = Blade::render(
-            $this->stripo_html,
-            $data,
-        );
-
-        return \Stripo::compileTemplate($html, $this->stripo_css);
-    }
-
-    public function getCompiledHtml(CrmCard $crmCard)
-    {
-        \Context::add('crmCard', $crmCard);
-
-        // Fill data for template
-        $data = [];
-        $data['email'] = $this;
-        $data['crmCard'] = $crmCard;
-        $data['crmCardData'] = $crmCard->data;
-
-        $data = \BladeExtensions::mergeData($data, 'EMS');
-
-        if ($this->html_type === 'STRIPO') {
-            return $this->getStripoHtml($data);
-        } else {
-            return Blade::render(
-                $this->html,
-                $data,
-            );
-
-        }
+        return \EmailCompiler::compile($this, $crmCard, $tracking);
     }
 }

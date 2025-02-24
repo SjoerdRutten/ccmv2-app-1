@@ -73,7 +73,7 @@ class EmailForm extends Form
     public function setEmail(Email $email): void
     {
         $this->email = $email;
-        $this->email_id = (int) config('stripo.email_id');
+        $this->email_id = \Auth::user()->current_environment_id; // (int) config('stripo.email_id');
 
         $this->fill($email->toArray());
     }
