@@ -24,8 +24,10 @@ class Edit extends Component
 
     public string $crc;
 
-    public function mount()
+    public function mount(Email $email)
     {
+        $this->email = $email;
+
         $this->form->setEmail($this->email);
 
         $this->stripoToken = \Stripo::getToken();

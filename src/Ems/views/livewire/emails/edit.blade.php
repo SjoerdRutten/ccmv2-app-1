@@ -20,13 +20,15 @@
         <x-ccm::tabs.base>
             <x-slot:tabs>
                 <x-ccm::tabs.nav-tab :index="0">Basisinformatie</x-ccm::tabs.nav-tab>
-                @if ($this->form->html_type === 'STRIPO')
-                    <x-ccm::tabs.nav-tab :index="3">E-mail editor</x-ccm::tabs.nav-tab>
-                @else
-                    <x-ccm::tabs.nav-tab :index="1">Inhoud HTML-deel</x-ccm::tabs.nav-tab>
+                @if ($email->id)
+                    @if ($this->form->html_type === 'STRIPO')
+                        <x-ccm::tabs.nav-tab :index="3">E-mail editor</x-ccm::tabs.nav-tab>
+                    @else
+                        <x-ccm::tabs.nav-tab :index="1">Inhoud HTML-deel</x-ccm::tabs.nav-tab>
+                    @endif
+                    <x-ccm::tabs.nav-tab :index="2">Inhoud Tekst-deel</x-ccm::tabs.nav-tab>
+                    <x-ccm::tabs.nav-tab :index="4">Preview</x-ccm::tabs.nav-tab>
                 @endif
-                <x-ccm::tabs.nav-tab :index="2">Inhoud Tekst-deel</x-ccm::tabs.nav-tab>
-                <x-ccm::tabs.nav-tab :index="4">Preview</x-ccm::tabs.nav-tab>
             </x-slot:tabs>
 
             <x-ccm::tabs.tab-content :index="0">
@@ -107,28 +109,30 @@
                     </x-ccm::forms.select>
                 </div>
             </x-ccm::tabs.tab-content>
-            <x-ccm::tabs.tab-content :index="1">
-                {{--                <x-ccm::forms.html-editor wire-name="form.html"/>--}}
-            </x-ccm::tabs.tab-content>
-            <x-ccm::tabs.tab-content :index="2">
-                <x-ccm::forms.textarea name="text" wire:model="form.text" rows="30"></x-ccm::forms.textarea>
-            </x-ccm::tabs.tab-content>
-            <x-ccm::tabs.tab-content :index="3" :no-margin="true">
-                <div class="notification-zone"></div>
-                <div class="flex">
-                    <!--Plugin containers -->
-                    <div id="stripoSettingsContainer" class="w-1/4">Loading...</div>
-                    <div id="stripoPreviewContainer" class="w-3/4"></div>
-                </div>
-            </x-ccm::tabs.tab-content>
-            <x-ccm::tabs.tab-content :index="4">
-                <div class="mb-4">
-                    <x-ccm::forms.input wire:model.live="crmId">Crm ID</x-ccm::forms.input>
-                </div>
+            @if ($email->id)
+                <x-ccm::tabs.tab-content :index="1">
+                    {{--                <x-ccm::forms.html-editor wire-name="form.html"/>--}}
+                </x-ccm::tabs.tab-content>
+                <x-ccm::tabs.tab-content :index="2">
+                    <x-ccm::forms.textarea name="text" wire:model="form.text" rows="30"></x-ccm::forms.textarea>
+                </x-ccm::tabs.tab-content>
+                <x-ccm::tabs.tab-content :index="3" :no-margin="true">
+                    <div class="notification-zone"></div>
+                    <div class="flex">
+                        <!--Plugin containers -->
+                        <div id="stripoSettingsContainer" class="w-1/4">Loading...</div>
+                        <div id="stripoPreviewContainer" class="w-3/4"></div>
+                    </div>
+                </x-ccm::tabs.tab-content>
+                <x-ccm::tabs.tab-content :index="4">
+                    <div class="mb-4">
+                        <x-ccm::forms.input wire:model.live="crmId">Crm ID</x-ccm::forms.input>
+                    </div>
 
-                <iframe src="{{ route('ems::emails::preview', ['email' => $email, 'crmCard' => $crmCard, 'crc' => $crc]) }}"
-                        class="w-full h-[800px]"></iframe>
-            </x-ccm::tabs.tab-content>
+                    <iframe src="{{ route('ems::emails::preview', ['email' => $email, 'crmCard' => $crmCard, 'crc' => $crc]) }}"
+                            class="w-full h-[800px]"></iframe>
+                </x-ccm::tabs.tab-content>
+            @endif
         </x-ccm::tabs.base>
     </div>
 </div>

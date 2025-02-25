@@ -18,6 +18,10 @@ class EmailCompiler
         $data['crmCard'] = $crmCard;
         $data['crmCardData'] = $crmCard->data;
 
+        $data['preHeader'] = 'TODO';        // Tekst die toegevoegd moet worden aan email
+        $data['optoutLink'] = 'TODO';       // Tracking Domein
+        $data['onlineVersion'] = 'TODO';    // Tracking Domein
+
         $data = \BladeExtensions::mergeData($data, 'EMS');
 
         if ($email->html_type === 'STRIPO') {

@@ -14,6 +14,7 @@ Route::prefix('ems')
             ->name('emails::')
             ->group(function () {
                 Route::get('/', \Sellvation\CCMV2\Ems\Livewire\Emails\Overview::class)->name('overview');
+                Route::get('/add', \Sellvation\CCMV2\Ems\Livewire\Emails\Edit::class)->name('add');
                 Route::get('/{email}', \Sellvation\CCMV2\Ems\Livewire\Emails\Edit::class)->name('edit');
                 Route::get('/preview/{email}/{crmCard}', \Sellvation\CCMV2\Ems\Http\Controllers\PreviewController::class)->name('preview');
             });
