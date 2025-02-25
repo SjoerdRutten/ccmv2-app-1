@@ -10,6 +10,6 @@ class PreviewController extends EmailController
 {
     public function __invoke(Request $request, Email $email, CrmCard $crmCard)
     {
-        return response($email->getCompiledHtml($crmCard));
+        return response($email->getCompiledHtml(crmCard: $crmCard, tracking: false, online: true));
     }
 }
