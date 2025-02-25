@@ -2,6 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::middleware([
+    'web',
+    'signed:relative',
+])
+    ->group(function () {
+        Route::get('/online_version/{email}/{crmCard}', \Sellvation\CCMV2\Ems\Http\Controllers\OnlineVersionController::class)->name('public.online_version');
+        Route::get('/opt_out/{email}/{crmCard}', \Sellvation\CCMV2\Ems\Http\Controllers\OptOutController::class)->name('public.opt_out');
+    });
+
 Route::prefix('ems')
     ->middleware([
         'auth:sanctum',

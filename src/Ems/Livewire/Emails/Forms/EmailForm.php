@@ -5,6 +5,7 @@ namespace Sellvation\CCMV2\Ems\Livewire\Emails\Forms;
 use Livewire\Attributes\Locked;
 use Livewire\Form;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
+use Sellvation\CCMV2\Ems\Enums\EmailType;
 use Sellvation\CCMV2\Ems\Models\Email;
 use Sellvation\CCMV2\Ems\Models\EmailCategory;
 
@@ -18,11 +19,15 @@ class EmailForm extends Form
 
     public string $name = '';
 
+    public ?string $type = null;
+
     public ?int $email_category_id = null;
 
     public ?int $recipient_crm_field_id = null;
 
     public ?string $description = null;
+
+    public ?string $pre_header = null;
 
     public string $sender_email = '';
 
@@ -48,6 +53,8 @@ class EmailForm extends Form
 
     public ?string $stripo_css = null;
 
+    public ?string $optout_url = null;
+
     public int $email_id;
 
     public function rules(): array
@@ -55,6 +62,12 @@ class EmailForm extends Form
         return [
             'id' => [
                 'nullable',
+            ],
+            'name' => [
+                'required',
+            ],
+            'type' => [
+                'required',
             ],
             'sender_email' => [
                 'required',
@@ -66,6 +79,11 @@ class EmailForm extends Form
             ],
             'html_type' => [
                 'required',
+            ],
+            'optout_url' => [
+                'nullable',
+                'required_if:type,'.EmailType::MARKETING->value,
+                'url',
             ],
         ];
     }
@@ -82,12 +100,12 @@ class EmailForm extends Form
     {
         $this->validate();
 
-        $data = $this->all();
-
-        $data = \Arr::only($data, [
+        $data = \Arr::only($this->all(), [
             'email_category_id',
             'name',
+            'type',
             'description',
+            'pre_header',
             'sender_email',
             'sender_name',
             'recipient_type',

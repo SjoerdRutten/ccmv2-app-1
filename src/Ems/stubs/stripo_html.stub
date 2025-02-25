@@ -15,7 +15,11 @@
     <w:WordDocument xmlns:w="urn:schemas-microsoft-com:office:word">
       <w:DontUseAdvancedTypographyReadingMail></w:DontUseAdvancedTypographyReadingMail>
     </w:WordDocument>
-    </xml><![endif]--></head><body><div dir="ltr" class="es-wrapper-color"><!--[if gte mso 9]>
+    </xml><![endif]--></head><body>
+    {{ $preHeader }}
+    {{ $optOutLink }}
+    {{ $onlineVersionLink }}
+    <div dir="ltr" class="es-wrapper-color"><!--[if gte mso 9]>
 			<v:background xmlns:v="urn:schemas-microsoft-com:vml" fill="t">
 				<v:fill type="tile" color="#f6f6f6"></v:fill>
 			</v:background>

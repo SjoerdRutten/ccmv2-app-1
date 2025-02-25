@@ -59,6 +59,18 @@ class Edit extends Component
         $this->showSuccessModal(title: 'E-mail is opgeslagen', href: route('ems::emails::edit', $this->email));
     }
 
+    public function lock()
+    {
+        $this->email->update(['is_locked' => true]);
+        $this->showSuccessModal(title: 'E-mail is vergrendeld', href: route('ems::emails::edit', $this->email));
+    }
+
+    public function unlock()
+    {
+        $this->email->update(['is_locked' => false]);
+        $this->showSuccessModal(title: 'E-mail is ontgrendeld', href: route('ems::emails::edit', $this->email));
+    }
+
     public function render()
     {
         return view('ems::livewire.emails.edit');

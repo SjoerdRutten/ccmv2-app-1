@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
+use Sellvation\CCMV2\CrmCards\Models\CrmField;
+use Sellvation\CCMV2\Ems\Enums\EmailType;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 
 class Email extends Model
@@ -17,7 +19,9 @@ class Email extends Model
         'email_category_id',
         'recipient_crm_field_id',
         'name',
+        'type',
         'description',
+        'pre_header',
         'sender_email',
         'sender_name',
         'recipient_type',
@@ -40,6 +44,7 @@ class Email extends Model
     protected function casts()
     {
         return [
+            'type' => EmailType::class,
             'is_locked' => 'bool',
             'is_template' => 'bool',
         ];
@@ -50,9 +55,14 @@ class Email extends Model
         return $this->belongsTo(EmailCategory::class);
     }
 
-    public function getCompiledHtml(CrmCard $crmCard, bool $tracking = false)
+    public function recipientCrmField(): BelongsTo
     {
-        return \EmailCompiler::compile($this, $crmCard, $tracking);
+        return $this->belongsTo(CrmField::class, 'recipient_crm_field_id');
+    }
+
+    public function getCompiledHtml(CrmCard $crmCard, bool $tracking = false, bool $online = false): string
+    {
+        return \EmailCompiler::compile($this, $crmCard, $tracking, $online);
     }
 
     protected function stripoHtml(): Attribute

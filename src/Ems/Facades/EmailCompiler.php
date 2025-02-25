@@ -3,12 +3,13 @@
 namespace Sellvation\CCMV2\Ems\Facades;
 
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\URL;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\Ems\Models\Email;
 
 class EmailCompiler
 {
-    public function compile(Email $email, CrmCard $crmCard, bool $tracking = true)
+    public function compile(Email $email, CrmCard $crmCard, bool $tracking = true, bool $online = false): string
     {
         \Context::add('crmCard', $crmCard);
 
@@ -17,10 +18,15 @@ class EmailCompiler
         $data['email'] = $email;
         $data['crmCard'] = $crmCard;
         $data['crmCardData'] = $crmCard->data;
+        $data['isOnline'] = $online;
 
-        $data['preHeader'] = 'TODO';        // Tekst die toegevoegd moet worden aan email
-        $data['optoutLink'] = 'TODO';       // Tracking Domein
-        $data['onlineVersion'] = 'TODO';    // Tracking Domein
+        $data['preHeader'] = $email->pre_header;        // Tekst die toegevoegd moet worden aan email
+
+        $optOutLink = URL::signedRoute('public.opt_out', ['email' => $email, 'crmCard' => $crmCard], null, false);
+        $onlineVersionLink = URL::signedRoute('public.online_version', ['email' => $email, 'crmCard' => $crmCard], null, false);
+
+        $data['optOutLink'] = $optOutLink;
+        $data['onlineVersionLink'] = $onlineVersionLink;
 
         $data = \BladeExtensions::mergeData($data, 'EMS');
 

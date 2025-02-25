@@ -9,10 +9,24 @@
         <x-ccm::pages.intro title="E-mail wijzigen">
             <x-slot:actions>
                 <x-ccm::buttons.back :href="route('ems::emails::overview')">Terug</x-ccm::buttons.back>
-                @if ($email->html_type === 'STRIPO')
-                    <x-ccm::buttons.save x-on:click="saveStripo"></x-ccm::buttons.save>
+                @if ($email->is_locked)
+                    <x-ccm::buttons.success wire:click="unlock"
+                                            wire:confirm="Weet je zeker dat je deze mail wilt ontgrendelen?"
+                                            icon="heroicon-c-lock-open">
+                        Ontgrendelen
+                    </x-ccm::buttons.success>
                 @else
-                    <x-ccm::buttons.save wire:click="save" id="btnSave"></x-ccm::buttons.save>
+                    <x-ccm::buttons.warning wire:click="lock"
+                                            wire:confirm="Weet je zeker dat je deze mail wilt vergrendelen?"
+                                            icon="heroicon-c-lock-closed">
+                        Vergrendelen
+                    </x-ccm::buttons.warning>
+
+                    @if ($email->html_type === 'STRIPO')
+                        <x-ccm::buttons.save x-on:click="saveStripo"></x-ccm::buttons.save>
+                    @else
+                        <x-ccm::buttons.save wire:click="save" id="btnSave"></x-ccm::buttons.save>
+                    @endif
                 @endif
             </x-slot:actions>
         </x-ccm::pages.intro>
@@ -33,12 +47,23 @@
 
             <x-ccm::tabs.tab-content :index="0">
                 <div class="w-1/2 flex flex-col gap-4">
-                    <x-ccm::forms.input name="form.name" wire:model.live="form.name">
+                    <x-ccm::forms.input name="form.name" wire:model="form.name">
                         Naam
                     </x-ccm::forms.input>
                     <x-ccm::forms.select
+                            name="form.type"
+                            wire:model.live="form.type"
+                            label="Mail type"
+                            :required="true"
+                    >
+                        <option></option>
+                        <option value="{{ \Sellvation\CCMV2\Ems\Enums\EmailType::TRANSACTIONAL }}">{{ \Sellvation\CCMV2\Ems\Enums\EmailType::TRANSACTIONAL->name() }}</option>
+                        <option value="{{ \Sellvation\CCMV2\Ems\Enums\EmailType::MARKETING }}">{{ \Sellvation\CCMV2\Ems\Enums\EmailType::MARKETING->name() }}</option>
+                        <option value="{{ \Sellvation\CCMV2\Ems\Enums\EmailType::SERVICE }}">{{ \Sellvation\CCMV2\Ems\Enums\EmailType::SERVICE->name() }}</option>
+                    </x-ccm::forms.select>
+                    <x-ccm::forms.select
                             name="form.email_category_id"
-                            wire:model.live="form.email_category_id"
+                            wire:model="form.email_category_id"
                             label="Rubriek"
                     >
                         <option></option>
@@ -48,19 +73,19 @@
                             </option>
                         @endforeach
                     </x-ccm::forms.select>
-                    <x-ccm::forms.input name="form.description" wire:model.live="form.description">
+                    <x-ccm::forms.input name="form.description" wire:model="form.description">
                         Omschrijving
                     </x-ccm::forms.input>
-                    <x-ccm::forms.input name="form.sender_email" wire:model.live="form.sender_email">
+                    <x-ccm::forms.input name="form.sender_email" wire:model="form.sender_email" :required="true">
                         Afzender e-mail
                     </x-ccm::forms.input>
-                    <x-ccm::forms.input name="form.sender_name" wire:model.live="form.sender_name">
+                    <x-ccm::forms.input name="form.sender_name" wire:model="form.sender_name">
                         Afzender naam
                     </x-ccm::forms.input>
                     <div class="flex gap-4">
                         <x-ccm::forms.select
                                 name="form.recipient_type"
-                                wire:model.live="form.recipient_type"
+                                wire:model="form.recipient_type"
                                 label="Ontvanger type"
                         >
                             <option value="CRMFIELD">CRM Veld</option>
@@ -69,7 +94,7 @@
                         @if ($this->form->recipient_type === 'CRMFIELD')
                             <x-ccm::forms.select
                                     name="form.recipient_crm_field_id"
-                                    wire:model.live="form.recipient_crm_field_id"
+                                    wire:model="form.recipient_crm_field_id"
                                     label="CRM Veld"
                                     :grow="true"
                             >
@@ -82,24 +107,28 @@
                             </x-ccm::forms.select>
                         @else
                             <x-ccm::forms.input name="form.recipient"
-                                                wire:model.live="form.recipient"
+                                                wire:model="form.recipient"
                                                 :grow="true">
                                 Ontvanger
                             </x-ccm::forms.input>
                         @endif
                     </div>
-                    <x-ccm::forms.input name="form.reply_to" wire:model.live="form.reply_to">
+                    <x-ccm::forms.input name="form.reply_to" wire:model="form.reply_to">
                         Reply to
                     </x-ccm::forms.input>
-                    <x-ccm::forms.input name="form.subject" wire:model.live="form.subject">
+                    <x-ccm::forms.input name="form.subject" wire:model="form.subject">
                         Onderwerp
                     </x-ccm::forms.input>
-                    <x-ccm::forms.input name="form.optout_url" wire:model.live="form.optout_url">
+                    <x-ccm::forms.textarea name="form.pre_header" wire:model="form.pre_header">
+                        Pre-header
+                    </x-ccm::forms.textarea>
+                    <x-ccm::forms.input name="form.optout_url" wire:model="form.optout_url"
+                                        :required="$this->form->type === \Sellvation\CCMV2\Ems\Enums\EmailType::MARKETING->value">
                         Uitschrijflink
                     </x-ccm::forms.input>
                     <x-ccm::forms.select
                             name="form.html_type"
-                            wire:model.live="form.html_type"
+                            wire:model="form.html_type"
                             label="HTML Editor"
                             :disabled="$this->form->id > 0"
                     >
@@ -118,7 +147,7 @@
                 </x-ccm::tabs.tab-content>
                 <x-ccm::tabs.tab-content :index="3" :no-margin="true">
                     <div class="notification-zone"></div>
-                    <div class="flex">
+                    <div class="flex" wire:ignore>
                         <!--Plugin containers -->
                         <div id="stripoSettingsContainer" class="w-1/4">Loading...</div>
                         <div id="stripoPreviewContainer" class="w-3/4"></div>
@@ -126,7 +155,7 @@
                 </x-ccm::tabs.tab-content>
                 <x-ccm::tabs.tab-content :index="4">
                     <div class="mb-4">
-                        <x-ccm::forms.input wire:model.live="crmId">Crm ID</x-ccm::forms.input>
+                        <x-ccm::forms.input wire:model="crmId">Crm ID</x-ccm::forms.input>
                     </div>
 
                     <iframe src="{{ route('ems::emails::preview', ['email' => $email, 'crmCard' => $crmCard, 'crc' => $crc]) }}"

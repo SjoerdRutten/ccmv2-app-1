@@ -12,6 +12,8 @@ use Illuminate\Support\Str;
 use Sellvation\CCMV2\CrmCards\Events\CrmCardCreatingEvent;
 use Sellvation\CCMV2\CrmCards\Events\CrmCardDeletingEvent;
 use Sellvation\CCMV2\CrmCards\Events\CrmCardSavedEvent;
+use Sellvation\CCMV2\Ems\Models\Email;
+use Sellvation\CCMV2\Ems\Models\EmailOptOut;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 use Sellvation\CCMV2\Orders\Models\Order;
 use Spatie\Tags\HasTags;
@@ -87,6 +89,11 @@ class CrmCard extends Model
         return $this->hasMany(CrmCardLog::class);
     }
 
+    public function emailOptOuts(): HasMany
+    {
+        return $this->hasMany(EmailOptOut::class);
+    }
+
     public function updatedByUser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'updated_by_user_id');
@@ -100,6 +107,23 @@ class CrmCard extends Model
     public function updatedByApi(): BelongsTo
     {
         return $this->belongsTo(User::class, 'updated_by_api_id');
+    }
+
+    public function optOut(Email $email, CrmField $crmField, ?string $reason = null, ?string $explanation = null): bool
+    {
+        $data = [];
+        $data['_'.$crmField->name.'_confirmed_optout'] = true;
+        $data['_'.$crmField->name.'_optout_timestamp'] = now()->timestamp;
+
+        $this->emailOptOuts()->create([
+            'email_id' => $email->id,
+            'crm_field_id' => $crmField->id,
+            'ip' => request()->ip(),
+            'reason' => $reason,
+            'explanation' => $explanation,
+        ]);
+
+        return true;
     }
 
     public function getData($key)
