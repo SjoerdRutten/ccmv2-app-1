@@ -5,7 +5,6 @@ namespace Sellvation\CCMV2\Ems\Livewire\Emails\Forms;
 use Livewire\Attributes\Locked;
 use Livewire\Form;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
-use Sellvation\CCMV2\Ems\Enums\EmailType;
 use Sellvation\CCMV2\Ems\Models\Email;
 use Sellvation\CCMV2\Ems\Models\EmailCategory;
 
@@ -82,7 +81,6 @@ class EmailForm extends Form
             ],
             'optout_url' => [
                 'nullable',
-                'required_if:type,'.EmailType::MARKETING->value,
                 'url',
             ],
         ];
@@ -91,8 +89,8 @@ class EmailForm extends Form
     public function setEmail(Email $email): void
     {
         $this->email = $email;
-        $this->email_id = \Auth::user()->current_environment_id; // (int) config('stripo.email_id');
 
+        $this->email_id = \Auth::user()->current_environment_id;
         $this->fill($email->toArray());
     }
 

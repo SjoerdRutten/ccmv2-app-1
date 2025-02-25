@@ -122,8 +122,7 @@
                     <x-ccm::forms.textarea name="form.pre_header" wire:model="form.pre_header">
                         Pre-header
                     </x-ccm::forms.textarea>
-                    <x-ccm::forms.input name="form.optout_url" wire:model="form.optout_url"
-                                        :required="$this->form->type === \Sellvation\CCMV2\Ems\Enums\EmailType::MARKETING->value">
+                    <x-ccm::forms.input name="form.optout_url" wire:model="form.optout_url">
                         Uitschrijflink
                     </x-ccm::forms.input>
                     <x-ccm::forms.select

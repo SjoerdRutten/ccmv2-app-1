@@ -25,7 +25,7 @@ class EmailCompiler
         $optOutLink = URL::signedRoute('public.opt_out', ['email' => $email, 'crmCard' => $crmCard], null, false);
         $onlineVersionLink = URL::signedRoute('public.online_version', ['email' => $email, 'crmCard' => $crmCard], null, false);
 
-        $data['optOutLink'] = $optOutLink;
+        $data['optOutLink'] = empty($email->optout_url) ? $optOutLink : $email->optout_url;
         $data['onlineVersionLink'] = $onlineVersionLink;
 
         $data = \BladeExtensions::mergeData($data, 'EMS');
