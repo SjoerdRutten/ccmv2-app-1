@@ -16,6 +16,7 @@ class EmailOptOut extends Model
         'ip',
         'reason',
         'explanation',
+        'created_at',
     ];
 
     public function email(): BelongsTo
