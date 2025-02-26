@@ -31,6 +31,7 @@ Route::prefix('ems')
             ->name('emailcontents::')
             ->group(function () {
                 Route::get('/', \Sellvation\CCMV2\Ems\Livewire\EmailContents\Overview::class)->name('overview');
+                Route::get('/add', \Sellvation\CCMV2\Ems\Livewire\EmailContents\Edit::class)->name('add');
                 Route::get('/{emailContent}', \Sellvation\CCMV2\Ems\Livewire\EmailContents\Edit::class)->name('edit');
             });
     });

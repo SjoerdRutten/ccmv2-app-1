@@ -19,7 +19,7 @@
                     @endif
 
 
-                    <x-ccm::forms.input name="form.name" wire:model.live="form.name">
+                    <x-ccm::forms.input name="form.name" wire:model.live="form.name" :required="true">
                         Naam
                     </x-ccm::forms.input>
                     <x-ccm::forms.select

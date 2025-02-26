@@ -1,6 +1,9 @@
 <div wire:loading.remove>
     <div class="px-4 sm:px-6 lg:px-8">
         <x-ccm::pages.intro title="E-mail content">
+            <x-slot:actions>
+                <x-ccm::buttons.add route="ems::emailcontents::add">Content toevoegen</x-ccm::buttons.add>
+            </x-slot:actions>
             <div class="flex gap-4">
                 <x-ccm::forms.select label="Rubriek" wire:model.live="filter.email_category_id">
                     <option></option>
@@ -36,7 +39,7 @@
                         <x-ccm::tables.td>
                             {{ $content->name }}
                             <x-slot:sub>
-                                {{ $content->emailCategory->name }}
+                                {{ $content->emailCategory?->name }}
                             </x-slot:sub>
                         </x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $content->description }}</x-ccm::tables.td>

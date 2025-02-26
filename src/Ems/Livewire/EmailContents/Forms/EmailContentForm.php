@@ -41,6 +41,9 @@ class EmailContentForm extends Form
             'id' => [
                 'nullable',
             ],
+            'name' => [
+                'required',
+            ],
         ];
     }
 
@@ -49,8 +52,8 @@ class EmailContentForm extends Form
         $this->emailContent = $emailContent;
 
         $this->fill($emailContent->toArray());
-        $this->start_at = $emailContent->start_at->toDateTimeString();
-        $this->end_at = $emailContent->end_at->toDateTimeString();
+        $this->start_at = $emailContent->start_at?->toDateTimeString();
+        $this->end_at = $emailContent->end_at?->toDateTimeString();
     }
 
     public function save()
@@ -75,6 +78,7 @@ class EmailContentForm extends Form
         $this->emailContent->fill($data);
         $this->emailContent->save();
 
+        return $this->emailContent;
     }
 
     public function categories()
