@@ -4,6 +4,7 @@ namespace Sellvation\CCMV2\Ccmp;
 
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
+use Sellvation\CCMV2\Ccmp\Console\Commands\ConvertOptinOptoutCommand;
 use Sellvation\CCMV2\Ccmp\Console\Commands\MigrateCcmpEnvironment;
 use Sellvation\CCMV2\Ccmp\Console\Commands\MigrateCcmpGlobalCommand;
 use Sellvation\CCMV2\Ccmp\Facades\CcmpSoapService;
@@ -16,11 +17,12 @@ class CcmpServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->commands([
+            ConvertOptinOptoutCommand::class,
             MigrateCcmpGlobalCommand::class,
             MigrateCcmpEnvironment::class,
         ]);
 
-        $this->registerCommands();
+        $this->registerSchedulableCommands();
         $this->registerFacades();
 
         $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
@@ -30,7 +32,7 @@ class CcmpServiceProvider extends ServiceProvider
         ], 'ccmp-config');
     }
 
-    private function registerCommands()
+    private function registerSchedulableCommands()
     {
         \SchedulableCommands::registerCommand(MigrateCcmpEnvironment::class);
     }

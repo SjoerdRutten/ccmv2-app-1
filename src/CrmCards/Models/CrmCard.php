@@ -13,6 +13,7 @@ use Sellvation\CCMV2\CrmCards\Events\CrmCardCreatingEvent;
 use Sellvation\CCMV2\CrmCards\Events\CrmCardDeletingEvent;
 use Sellvation\CCMV2\CrmCards\Events\CrmCardSavedEvent;
 use Sellvation\CCMV2\Ems\Models\Email;
+use Sellvation\CCMV2\Ems\Models\EmailOptIn;
 use Sellvation\CCMV2\Ems\Models\EmailOptOut;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 use Sellvation\CCMV2\Orders\Models\Order;
@@ -92,6 +93,11 @@ class CrmCard extends Model
     public function emailOptOuts(): HasMany
     {
         return $this->hasMany(EmailOptOut::class);
+    }
+
+    public function emailOptIns(): HasMany
+    {
+        return $this->hasMany(EmailOptIn::class);
     }
 
     public function updatedByUser(): BelongsTo

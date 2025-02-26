@@ -19,7 +19,7 @@ class ExportTargetGroupJob implements ShouldQueue
 
     public function __construct(private readonly TargetGroupExport $targetGroupExport)
     {
-        $this->queue = '{exports}';
+        $this->queue = 'exports';
     }
 
     public function handle(): void
