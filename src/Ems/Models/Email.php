@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Sellvation\CCMV2\Ccm\Models\TrackableLink;
+use Sellvation\CCMV2\Ccm\Models\TrackablePixelOpen;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
 use Sellvation\CCMV2\Ems\Enums\EmailType;
@@ -76,6 +77,11 @@ class Email extends Model
     public function trackableLinks(): MorphMany
     {
         return $this->morphMany(TrackableLink::class, 'trackable');
+    }
+
+    public function trackablePixelOpens(): MorphMany
+    {
+        return $this->morphMany(TrackablePixelOpen::class, 'trackable');
     }
 
     public function getCompiledHtml(CrmCard $crmCard, bool $tracking = false, bool $online = false): string

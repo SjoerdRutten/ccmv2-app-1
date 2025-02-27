@@ -5,6 +5,8 @@ namespace Sellvation\CCMV2\Ems\Facades;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+use PHPHtmlParser\Dom;
+use PHPHtmlParser\Dom\HtmlNode;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\Ems\Models\Email;
 use Sellvation\CCMV2\Ems\Models\EmailContent;
@@ -12,21 +14,21 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class EmailCompiler
 {
-    public function compile(Email $email, CrmCard $crmCard, bool $tracking = true, bool $online = false): string
+    public function compile(Email $email, CrmCard $crmCard, bool $tracking = true, bool $onlineVersion = false): string
     {
         \Context::add('crmCard', $crmCard);
         \Context::add('email', $email);
 
         $html = $email->html_type === Email::STRIPO ? $email->stripo_html : $email->html;
 
-        $html = $this->render($html, $email, $crmCard, $tracking, $online);
+        $html = $this->render($html, $email, $crmCard, $tracking, $onlineVersion);
 
         if ($email->html_type === Email::STRIPO) {
             $html = \Stripo::compileTemplate($html, $email->stripo_css);
         }
 
         if ($tracking) {
-            //            $html = $this->addTrackingPixel($html, $crmCard);
+            $html = $this->addTrackingPixel($email, $crmCard, $onlineVersion, $html);
             $html = $this->makeTrackingLinks($email, $crmCard, $html);
         }
 
@@ -119,26 +121,39 @@ class EmailCompiler
         return $links;
     }
 
-    private function addTrackingPixel(string $html, CrmCard $crmCard): string
+    private function addTrackingPixel(Email $email, CrmCard $crmCard, bool $onlineVersion, $html): string
     {
-        // TODO
+        $dom = new Dom;
+        $dom->load($html);
 
-        return $html;
+        $node = new HtmlNode('img');
+        $node->setAttribute('src', $this->getDomain($email).URL::signedRoute('public::tracking_pixel', ['email' => $email->id, 'crmCard' => $crmCard->id, 'onlineVersion' => $onlineVersion], null, false));
+
+        /** @var HtmlNode $body */
+        $body = $dom->find('body')[0];
+        $firstChild = $body->firstChild();
+        $body->addChild($node, $firstChild->id());
+
+        return $dom->outerHtml;
     }
 
     private function makeTrackingLinks(Email $email, CrmCard $crmCard, $html): string
     {
-        $site = $email->site;
-
-        $domain = $site ? 'https://'.$site->domain : config('app.url');
 
         $search = [];
         $replace = [];
         foreach ($email->trackableLinks as $link) {
             $search[] = $link->link;
-            $replace[] = $domain.URL::signedRoute('public::trackable_link', [$email, $link, $crmCard], null, false);
+            $replace[] = $this->getDomain($email).URL::signedRoute('public::trackable_link', [$email, $link, $crmCard], null, false);
         }
 
         return Str::replace($search, $replace, $html);
+    }
+
+    private function getDomain(Email $email)
+    {
+        $site = $email->site;
+
+        return $site ? 'https://'.$site->domain : config('app.url');
     }
 }
