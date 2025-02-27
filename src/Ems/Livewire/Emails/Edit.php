@@ -7,6 +7,7 @@ use Sellvation\CCMV2\Ccm\Livewire\Traits\HasModals;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\Ems\Livewire\Emails\Forms\EmailForm;
 use Sellvation\CCMV2\Ems\Models\Email;
+use Sellvation\CCMV2\Sites\Models\Site;
 
 class Edit extends Component
 {
@@ -73,6 +74,9 @@ class Edit extends Component
 
     public function render()
     {
-        return view('ems::livewire.emails.edit');
+        return view('ems::livewire.emails.edit')
+            ->with([
+                'sites' => Site::all(),
+            ]);
     }
 }

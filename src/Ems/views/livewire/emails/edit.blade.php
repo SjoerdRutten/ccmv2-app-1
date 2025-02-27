@@ -22,7 +22,7 @@
                         Vergrendelen
                     </x-ccm::buttons.warning>
 
-                    @if ($email->html_type === 'STRIPO')
+                    @if ($email->html_type === \Sellvation\CCMV2\Ems\Models\Email::STRIPO)
                         <x-ccm::buttons.save x-on:click="saveStripo"></x-ccm::buttons.save>
                     @else
                         <x-ccm::buttons.save wire:click="save" id="btnSave"></x-ccm::buttons.save>
@@ -34,8 +34,9 @@
         <x-ccm::tabs.base>
             <x-slot:tabs>
                 <x-ccm::tabs.nav-tab :index="0">Basisinformatie</x-ccm::tabs.nav-tab>
+                <x-ccm::tabs.nav-tab :index="5">Mail informatie</x-ccm::tabs.nav-tab>
                 @if ($email->id)
-                    @if ($this->form->html_type === 'STRIPO')
+                    @if ($this->form->html_type === \Sellvation\CCMV2\Ems\Models\Email::STRIPO)
                         <x-ccm::tabs.nav-tab :index="3">E-mail editor</x-ccm::tabs.nav-tab>
                     @else
                         <x-ccm::tabs.nav-tab :index="1">Inhoud HTML-deel</x-ccm::tabs.nav-tab>
@@ -76,6 +77,34 @@
                     <x-ccm::forms.input name="form.description" wire:model="form.description">
                         Omschrijving
                     </x-ccm::forms.input>
+                    <x-ccm::forms.select
+                            name="form.site_id"
+                            wire:model="form.site_id"
+                            label="Tracking domein"
+                            :required="true"
+                    >
+                        <option></option>
+                        @foreach ($sites AS $site)
+                            <option value="{{ $site->id }}">
+                                {{ $site->domain }}
+                            </option>
+                        @endforeach
+
+                    </x-ccm::forms.select>
+                    <x-ccm::forms.select
+                            name="form.html_type"
+                            wire:model="form.html_type"
+                            label="HTML Editor"
+                            :disabled="$this->form->id > 0"
+                    >
+                        <option></option>
+                        <option value="{{ \Sellvation\CCMV2\Ems\Models\Email::HTML }}">HTML Editor</option>
+                        <option value="{{ \Sellvation\CCMV2\Ems\Models\Email::STRIPO }}">Stripo</option>
+                    </x-ccm::forms.select>
+                </div>
+            </x-ccm::tabs.tab-content>
+            <x-ccm::tabs.tab-content :index="5">
+                <div class="w-1/2 flex flex-col gap-4">
                     <x-ccm::forms.input name="form.sender_email" wire:model="form.sender_email" :required="true">
                         Afzender e-mail
                     </x-ccm::forms.input>
@@ -125,15 +154,7 @@
                     <x-ccm::forms.input name="form.optout_url" wire:model="form.optout_url">
                         Uitschrijflink
                     </x-ccm::forms.input>
-                    <x-ccm::forms.select
-                            name="form.html_type"
-                            wire:model="form.html_type"
-                            label="HTML Editor"
-                            :disabled="$this->form->id > 0"
-                    >
-                        <option value="HTML">HTML Editor</option>
-                        <option value="STRIPO">Stripo</option>
-                    </x-ccm::forms.select>
+
                 </div>
             </x-ccm::tabs.tab-content>
             @if ($email->id)

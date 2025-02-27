@@ -14,6 +14,6 @@ class OptOutController extends Controller
         $crmCard->save();
 
         return response('OPT OUT')
-            ->withCookie(cookie('crmId', $crmCard->crm_id, 60 * 24 * 365));
+            ->withCookie($crmCard->getCookie());
     }
 }

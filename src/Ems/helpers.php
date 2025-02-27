@@ -7,7 +7,7 @@ if (! function_exists('emailContent')) {
     {
         $emailContent = \Sellvation\CCMV2\Ems\Models\EmailContent::find($emailContentId);
         if ($emailContent) {
-            return $emailContent->content;
+            return \EmailCompiler::render($emailContent->content);
         } else {
             return null;
         }

@@ -65,8 +65,8 @@ class SitePageController extends FrontendController
 
         $response = response($content);
 
-        if (\Arr::get($data, 'crmCard')) {
-            $response->withCookie(cookie('crmId', \Arr::get($data, 'crmCard')->crm_id, 60 * 24 * 365));    // Set cookie for 365 days
+        if ($crmCard = \Arr::get($data, 'crmCard')) {
+            $response->withCookie($crmCard->getCookie());    // Set cookie for 365 days
         }
 
         return $response;
@@ -79,10 +79,10 @@ class SitePageController extends FrontendController
         $sitePage->sitePageVisits()->create([
             'crm_id' => request()->cookie('crmId'),
             'browser_ua' => request()->userAgent(),
-            'browser' => '', //$agent->browser(),
-            'browser_device_type' => '', //$agent->deviceType(),
-            'browser_device' => '', //$agent->device(),
-            'browser_os' => '', //$agent->platform(),
+            'browser' => '', // $agent->browser(),
+            'browser_device_type' => '', // $agent->deviceType(),
+            'browser_device' => '', // $agent->device(),
+            'browser_os' => '', // $agent->platform(),
             'ip' => request()->ip(),
             'uri' => request()->getRequestUri(),
             'referer' => request()->headers->get('referer'),

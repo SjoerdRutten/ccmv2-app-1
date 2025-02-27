@@ -16,6 +16,8 @@ class EmailForm extends Form
     #[Locked]
     public ?int $id = null;
 
+    public ?int $site_id = null;
+
     public string $name = '';
 
     public ?string $type = null;
@@ -62,6 +64,10 @@ class EmailForm extends Form
             'id' => [
                 'nullable',
             ],
+            'site_id' => [
+                'required',
+                'exists:sites,id',
+            ],
             'name' => [
                 'required',
             ],
@@ -99,6 +105,7 @@ class EmailForm extends Form
         $this->validate();
 
         $data = \Arr::only($this->all(), [
+            'site_id',
             'email_category_id',
             'name',
             'type',

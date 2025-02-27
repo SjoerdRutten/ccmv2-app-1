@@ -12,6 +12,6 @@ class OnlineVersionController extends Controller
     public function __invoke(Request $request, Email $email, CrmCard $crmCard)
     {
         return response($email->getCompiledHtml($crmCard, true, true))
-            ->withCookie(cookie('crmId', $crmCard->crm_id, 60 * 24 * 365));
+            ->withCookie($crmCard->getCookie());
     }
 }

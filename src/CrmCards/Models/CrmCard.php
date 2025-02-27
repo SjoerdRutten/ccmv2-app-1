@@ -132,6 +132,11 @@ class CrmCard extends Model
         return true;
     }
 
+    public function getCookie()
+    {
+        return cookie('crmId', $this->crm_id, 60 * 24 * 365);
+    }
+
     public function getData($key)
     {
         return \Arr::get($this->data, $key);

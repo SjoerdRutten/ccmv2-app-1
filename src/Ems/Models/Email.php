@@ -5,17 +5,25 @@ namespace Sellvation\CCMV2\Ems\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Sellvation\CCMV2\Ccm\Models\TrackableLink;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
 use Sellvation\CCMV2\Ems\Enums\EmailType;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
+use Sellvation\CCMV2\Sites\Models\Site;
 
 class Email extends Model
 {
     use HasEnvironment;
 
+    const STRIPO = 'STRIPO';
+
+    const HTML = 'HTML';
+
     protected $fillable = [
         'id',
+        'site_id',
         'email_category_id',
         'recipient_crm_field_id',
         'name',
@@ -50,6 +58,11 @@ class Email extends Model
         ];
     }
 
+    public function site(): BelongsTo
+    {
+        return $this->belongsTo(Site::class);
+    }
+
     public function emailCategory(): BelongsTo
     {
         return $this->belongsTo(EmailCategory::class);
@@ -58,6 +71,11 @@ class Email extends Model
     public function recipientCrmField(): BelongsTo
     {
         return $this->belongsTo(CrmField::class, 'recipient_crm_field_id');
+    }
+
+    public function trackableLinks(): MorphMany
+    {
+        return $this->morphMany(TrackableLink::class, 'trackable');
     }
 
     public function getCompiledHtml(CrmCard $crmCard, bool $tracking = false, bool $online = false): string
