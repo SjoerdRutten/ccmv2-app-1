@@ -54,6 +54,7 @@
       "Sellvation\\CCMV2\\": "src/"
     },
     "files": [
+      "src/CrmCards/helpers.php",
       "src/DataFeeds/helpers.php",
       "src/Ems/helpers.php",
       "src/TargetGroups/helpers.php"
