@@ -140,10 +140,9 @@
                 <x-ccm::forms.html-editor wire-name="editForm.html_form"/>
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="3">
-                {!! \Illuminate\Support\Facades\Blade::render($editForm->html_form) !!}
+                {{--                {!! \Illuminate\Support\Facades\Blade::render($editForm->html_form) !!}--}}
             </x-ccm::tabs.tab-content>
             <x-ccm::tabs.tab-content :index="4">
-                {!! \Illuminate\Support\Facades\Blade::render($editForm->html_form) !!}
             </x-ccm::tabs.tab-content>
         </x-ccm::tabs.base>
     </div>
