@@ -173,13 +173,28 @@ class TargetGroupSelectorMongo
     /**
      * Returns the count of results of the query
      */
-    public function count($elements): int
+    public function count($elements, ?string $crmId = null): int
     {
         /** @var MongoDB\Database $mongoDB */
         $mongoDB = \DB::connection('mongodb')->getMongoDB();
         $collection = $mongoDB->selectCollection((new CrmCardMongo)->getTable());
 
-        if (is_array($elements) && Arr::get($elements, '0.subelements') && Arr::whereNotNull(Arr::get($elements, '0.subelements'))) {
+        if ($crmId) {
+            $uniqid = uniqid();
+            $elements[] = [
+                'id' => $uniqid,
+                'type' => 'rule',
+                'value' => $crmId,
+                'column' => 'crm_id',
+                'columnType' => 'text',
+                'active' => true,
+            ];
+        }
+
+        if (is_array($elements) &&
+            Arr::get($elements, '0.subelements') &&
+            Arr::whereNotNull(Arr::get($elements, '0.subelements'))
+        ) {
             return $this->getQuery($elements)->count();
         } else {
             return $collection->estimatedDocumentCount();

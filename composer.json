@@ -55,7 +55,8 @@
     },
     "files": [
       "src/DataFeeds/helpers.php",
-      "src/Ems/helpers.php"
+      "src/Ems/helpers.php",
+      "src/TargetGroups/helpers.php"
     ]
   },
   "autoload-dev": {
