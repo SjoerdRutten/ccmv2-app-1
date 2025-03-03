@@ -61,6 +61,7 @@ class SitePageController extends FrontendController
 
         if (! \Arr::has($data, 'crmCard')) {
             $data['crmCard'] = new CrmCard;
+            $data['crmCardData'] = [];
         }
 
         $content = Blade::render(
