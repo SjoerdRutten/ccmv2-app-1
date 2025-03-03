@@ -4,6 +4,7 @@ namespace Sellvation\CCMV2\Sites\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
+use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\Sites\Models\SiteBlock;
 use Sellvation\CCMV2\Sites\Models\SitePage;
 
@@ -58,6 +59,10 @@ class SitePageController extends FrontendController
             }
         }
 
+        if (! \Arr::has($data, 'crmCard')) {
+            $data['crmCard'] = new CrmCard;
+        }
+
         $content = Blade::render(
             $sitePage->siteLayout->body,
             $data,
@@ -65,7 +70,7 @@ class SitePageController extends FrontendController
 
         $response = response($content);
 
-        if ($crmCard = \Arr::get($data, 'crmCard')) {
+        if (($crmCard = \Arr::get($data, 'crmCard')) && $crmCard->id) {
             $response->withCookie($crmCard->getCookie());    // Set cookie for 365 days
         }
 
