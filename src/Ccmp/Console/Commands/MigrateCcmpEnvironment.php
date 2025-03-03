@@ -13,9 +13,9 @@ use Sellvation\CCMV2\Environments\Models\Environment;
 
 class MigrateCcmpEnvironment extends Command
 {
-    protected $signature = 'ccmv1:migrate-environment-data';
+    protected $signature = 'ccmp:migrate-environment-data';
 
-    protected $description = 'Stap 2: Migrate CCM V1 environment data, execute per environment';
+    protected $description = 'Stap 2: Migrate CCMp environment data, execute per environment';
 
     private $environmentId;
 

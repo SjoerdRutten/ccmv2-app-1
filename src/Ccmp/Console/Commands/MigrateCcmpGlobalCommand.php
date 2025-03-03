@@ -13,9 +13,9 @@ use Sellvation\CCMV2\Users\Models\User;
 
 class MigrateCcmpGlobalCommand extends Command
 {
-    protected $signature = 'ccmv1:migrate-global';
+    protected $signature = 'ccmp:migrate-global';
 
-    protected $description = 'Stap 1: Migrate CCM V1, only need to be executed once';
+    protected $description = 'Stap 1: Migrate CCMp, only need to be executed once';
 
     private Customer $customer;
 
