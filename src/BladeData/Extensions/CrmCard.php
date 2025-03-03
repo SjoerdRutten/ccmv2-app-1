@@ -32,7 +32,7 @@ class CrmCard extends BladeExtension
         \Context::add('crmId', $crmCard->crm_id);
 
         $data['crmCard'] = $crmCard;
-        $data['crmCardData'] = $crmCard->data;
+        $data['crmCardData'] = $crmCard->data ?? [];
 
         return $data;
     }
