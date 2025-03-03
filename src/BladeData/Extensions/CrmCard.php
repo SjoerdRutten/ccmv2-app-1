@@ -16,13 +16,23 @@ class CrmCard extends BladeExtension
 
     public function addData(array $data): array
     {
-        if (request()->cookie('crmId')) {
-            $crmCard = \Sellvation\CCMV2\CrmCards\Models\CrmCard::whereCrmId(request()->cookie('crmId'))->first();
-            \Context::add('crmCard', $crmCard);
-
-            $data['crmCard'] = $crmCard;
-            $data['crmCardData'] = $crmCard->data;
+        if (request()->has('crmId') && ! app()->isProduction()) {
+            $crmId = request()->get('crmId');
+        } elseif (request()->has('crm_id') && ! app()->isProduction()) {
+            $crmId = request()->get('crm_id');
+        } elseif (request()->cookie('crmId')) {
+            $crmId = request()->cookie('crmId');
+        } else {
+            $crmId = 'xxxxxxxxxxx';
         }
+
+        $crmCard = \Sellvation\CCMV2\CrmCards\Models\CrmCard::whereCrmId($crmId)->firstOrNew();
+
+        \Context::add('crmCard', $crmCard);
+        \Context::add('crmId', $crmCard->crm_id);
+
+        $data['crmCard'] = $crmCard;
+        $data['crmCardData'] = $crmCard->data;
 
         return $data;
     }

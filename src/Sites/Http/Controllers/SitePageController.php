@@ -22,8 +22,6 @@ class SitePageController extends FrontendController
             abort(404);
         }
 
-        $this->saveVisit($sitePage);
-
         // Fill data for template
         $data = [];
         $data['site'] = $this->site;
@@ -59,11 +57,6 @@ class SitePageController extends FrontendController
             }
         }
 
-        if (! \Arr::has($data, 'crmCard')) {
-            $data['crmCard'] = new CrmCard;
-            $data['crmCardData'] = [];
-        }
-
         $content = Blade::render(
             $sitePage->siteLayout->body,
             $data,
@@ -71,19 +64,18 @@ class SitePageController extends FrontendController
 
         $response = response($content);
 
-        if (($crmCard = \Arr::get($data, 'crmCard')) && $crmCard->id) {
+        if ($crmCard = \Arr::get($data, 'crmCard')) {
+            $this->saveVisit($sitePage, $crmCard);          // Save visit
             $response->withCookie($crmCard->getCookie());    // Set cookie for 365 days
         }
 
         return $response;
     }
 
-    private function saveVisit(SitePage $sitePage)
+    private function saveVisit(SitePage $sitePage, CrmCard $crmCard)
     {
-        //        $agent = new Agent;
-
         $sitePage->sitePageVisits()->create([
-            'crm_id' => request()->cookie('crmId'),
+            'crm_id' => $crmCard->crm_id,
             'browser_ua' => request()->userAgent(),
             'browser' => '', // $agent->browser(),
             'browser_device_type' => '', // $agent->deviceType(),
