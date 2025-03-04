@@ -11,6 +11,7 @@ use Sellvation\CCMV2\Ccm\Models\TrackablePixelOpen;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
 use Sellvation\CCMV2\Ems\Enums\EmailType;
+use Sellvation\CCMV2\Ems\Events\EmailSavedEvent;
 use Sellvation\CCMV2\Environments\Traits\HasEnvironment;
 use Sellvation\CCMV2\Sites\Models\Site;
 
@@ -59,6 +60,10 @@ class Email extends Model
         ];
     }
 
+    protected $dispatchesEvents = [
+        'saved' => EmailSavedEvent::class,
+    ];
+
     public function site(): BelongsTo
     {
         return $this->belongsTo(Site::class);
@@ -82,6 +87,13 @@ class Email extends Model
     public function trackablePixelOpens(): MorphMany
     {
         return $this->morphMany(TrackablePixelOpen::class, 'trackable');
+    }
+
+    protected function html(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->html_type === Email::HTML ? $this->attributes['html'] : $this->attributes['stripo_html'],
+        );
     }
 
     public function getCompiledHtml(CrmCard $crmCard, bool $tracking = false, bool $online = false): string

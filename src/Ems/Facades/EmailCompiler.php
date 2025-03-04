@@ -43,12 +43,12 @@ class EmailCompiler
         // Fill data for template
         $data['email'] = $email;
         $data['crmCard'] = $crmCard;
-        $data['crmCardData'] = $crmCard->data;
+        $data['crmCardData'] = $crmCard?->data;
         $data['isOnline'] = $online;
-        $data['preHeader'] = $email->pre_header;
+        $data['preHeader'] = $email?->pre_header;
 
         // Generate links for opt-out and the online version
-        if ($email->id && $crmCard->id) {
+        if ($email?->id && $crmCard?->id) {
             $optOutLink = URL::signedRoute('public.opt_out', ['email' => $email, 'crmCard' => $crmCard], null, false);
             $onlineVersionLink = URL::signedRoute('public.online_version', ['email' => $email, 'crmCard' => $crmCard], null, false);
 
@@ -82,9 +82,12 @@ class EmailCompiler
          * Get all the emailContent directives in the HTML and obtain the links in these
          * contents. This will be done recursively
          */
-        preg_match_all('/@emailContent(\((\d), (.*)\))?/', $html, $emailContents);
+        $results = [];
+        preg_match_all('/emailContent(\((?<emailContentId>\d),(?<parameters>.*)\))?/', $html, $results);
 
-        foreach ($emailContents[2] as $emailContentId) {
+        foreach ($results['emailContentId'] as $key => $emailContentId) {
+            $parameter = empty($results[$key]['parameters']) ? [] : $results[$key]['parameters'];
+
             if ($emailContent = EmailContent::find($emailContentId)) {
                 $links = $this->getLinksFromHtml($emailContent->content, $links);
             }
@@ -109,8 +112,8 @@ class EmailCompiler
                 if (! $found) {
                     $links[] = [
                         'link' => $href,
-                        'html' => $node->html(),
-                        'text' => $node->text(),
+                        'html' => Str::squish(trim($node->html())),
+                        'text' => Str::squish(trim($node->text())),
                         'count' => 1,
                     ];
                 }
