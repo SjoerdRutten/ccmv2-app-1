@@ -57,6 +57,7 @@
       "src/CrmCards/helpers.php",
       "src/DataFeeds/helpers.php",
       "src/Ems/helpers.php",
+      "src/Sites/helpers.php",
       "src/TargetGroups/helpers.php"
     ]
   },

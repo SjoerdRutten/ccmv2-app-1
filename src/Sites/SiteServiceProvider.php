@@ -73,11 +73,11 @@ class SiteServiceProvider extends ServiceProvider
                         'web',
                     ])
                     ->name('frontend::')
-                    ->group(function () use ($router) {
+                    ->group(function () use ($router, $site) {
                         $router->get('assets/favicon.ico', FaviconController::class)->name('assets.favicon');
                         $router->get('assets/{siteImport}/{name}', SiteImportController::class)->name('assets.siteImport');
-                        $router->get('/{sitePage:slug}', SitePageController::class);
-                        $router->get('/', SitePageController::class);
+                        $router->get('/{sitePage:slug}', SitePageController::class)->name('sitePage.'.$site->id);
+                        $router->get('/', SitePageController::class)->name('homePage.'.$site->id);
                     });
             }
         } catch (\Exception $e) {
