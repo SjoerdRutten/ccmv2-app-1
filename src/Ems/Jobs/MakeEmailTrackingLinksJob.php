@@ -27,6 +27,10 @@ class MakeEmailTrackingLinksJob implements ShouldQueue
             $linkIds[] = $trackableLink->id;
         }
 
-        $this->email->trackableLinks()->whereNotIn('id', $linkIds)->delete();
+        $this->email
+            ->trackableLinks()
+            ->whereNotIn('id', $linkIds)
+            ->whereDoesntHave('trackableLinkClicks')
+            ->delete();
     }
 }
