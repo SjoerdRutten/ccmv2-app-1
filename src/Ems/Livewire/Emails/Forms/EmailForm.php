@@ -18,6 +18,8 @@ class EmailForm extends Form
 
     public ?int $site_id = null;
 
+    public ?string $utm_code = null;
+
     public string $name = '';
 
     public ?string $type = null;
@@ -68,6 +70,10 @@ class EmailForm extends Form
                 'required',
                 'exists:sites,id',
             ],
+            'utm_code' => [
+                'nullable',
+                'string',
+            ],
             'name' => [
                 'required',
             ],
@@ -106,6 +112,7 @@ class EmailForm extends Form
 
         $data = \Arr::only($this->all(), [
             'site_id',
+            'utm_code',
             'email_category_id',
             'name',
             'type',

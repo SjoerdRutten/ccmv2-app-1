@@ -43,6 +43,7 @@
                     @endif
                     <x-ccm::tabs.nav-tab :index="2">Inhoud Tekst-deel</x-ccm::tabs.nav-tab>
                     <x-ccm::tabs.nav-tab :index="4">Preview</x-ccm::tabs.nav-tab>
+                    <x-ccm::tabs.nav-tab :index="6">Links</x-ccm::tabs.nav-tab>
                 @endif
             </x-slot:tabs>
 
@@ -89,8 +90,12 @@
                                 {{ $site->domain }}
                             </option>
                         @endforeach
-
                     </x-ccm::forms.select>
+                    <x-ccm::forms.input
+                            name="form.utm_code"
+                            wire:model="form.utm_code"
+                    >Toevoegen aan tracking links (zonder ?)
+                    </x-ccm::forms.input>
                     <x-ccm::forms.select
                             name="form.html_type"
                             wire:model="form.html_type"
@@ -158,6 +163,27 @@
                 </div>
             </x-ccm::tabs.tab-content>
             @if ($email->id)
+                <x-ccm::tabs.tab-content :index="6" :no-margin="true">
+                    <x-ccm::tables.table>
+                        <x-slot:thead>
+                            <x-ccm::tables.th>Link</x-ccm::tables.th>
+                            <x-ccm::tables.th>Omschrijving</x-ccm::tables.th>
+                            <x-ccm::tables.th>Aantal links</x-ccm::tables.th>
+                            <x-ccm::tables.th>Aantal clicks</x-ccm::tables.th>
+                        </x-slot:thead>
+                        <x-slot:tbody>
+                            @foreach ($email->trackableLinks AS $link)
+                                <x-ccm::tables.tr>
+                                    <x-ccm::tables.td :first="true"
+                                                      class="truncate">{{ $link->link }}</x-ccm::tables.td>
+                                    <x-ccm::tables.td>{{ $link->text }}</x-ccm::tables.td>
+                                    <x-ccm::tables.td>{{ $link->count }}</x-ccm::tables.td>
+                                    <x-ccm::tables.td>{{ $link->trackableLinkClicks()->count() }}</x-ccm::tables.td>
+                                </x-ccm::tables.tr>
+                            @endforeach
+                        </x-slot:tbody>
+                    </x-ccm::tables.table>
+                </x-ccm::tabs.tab-content>
                 <x-ccm::tabs.tab-content :index="1">
                     <x-ccm::forms.html-editor wire-name="form.html"/>
                 </x-ccm::tabs.tab-content>
