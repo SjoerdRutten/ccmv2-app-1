@@ -35,13 +35,12 @@ class EmailCompiler
         return $html;
     }
 
-    public function render($html, ?Email $email = null, ?CrmCard $crmCard = null, bool $tracking = true, bool $online = false): string
+    public function render($html, ?Email $email = null, ?CrmCard $crmCard = null, bool $tracking = true, bool $online = false, array $data = []): string
     {
         $crmCard = $crmCard ?? \Context::get('crmCard');
         $email = $email ?? \Context::get('email');
 
         // Fill data for template
-        $data = [];
         $data['email'] = $email;
         $data['crmCard'] = $crmCard;
         $data['crmCardData'] = $crmCard->data;

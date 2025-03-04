@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Sellvation\CCMV2\Sites\Models\Site;
+use Sellvation\CCMV2\Sites\Models\SiteBlock;
 use Sellvation\CCMV2\Sites\Models\SitePage;
 
 if (! function_exists('webpageLink')) {
@@ -17,5 +18,16 @@ if (! function_exists('webpageLink')) {
         } else {
             return route('frontend::homePage.'.$site->id, $parameters);
         }
+    }
+}
+
+if (! function_exists('siteBlock')) {
+    function siteBlock(int $siteBlockId): ?string
+    {
+        if ($siteBlock = SiteBlock::find($siteBlockId)) {
+            return \EmailCompiler::render($siteBlock->body);
+        }
+
+        return null;
     }
 }
