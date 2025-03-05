@@ -21,6 +21,8 @@ class Edit extends Component
 
     public string $crmId = '';
 
+    public string $testEmailAddress = '';
+
     public string $stripoToken;
 
     public string $crc;
@@ -70,6 +72,12 @@ class Edit extends Component
     {
         $this->email->update(['is_locked' => false]);
         $this->showSuccessModal(title: 'E-mail is ontgrendeld', href: route('ems::emails::edit', $this->email));
+    }
+
+    public function sendTestEmail()
+    {
+        $this->email->sendEmail($this->crmCard, $this->testEmailAddress);
+        $this->showSuccessModal('Test e-mail is verzonden');
     }
 
     public function render()

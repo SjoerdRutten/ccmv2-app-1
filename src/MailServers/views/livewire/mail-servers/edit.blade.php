@@ -26,6 +26,18 @@
                     >
                         Private IP
                     </x-ccm::forms.input>
+                    <x-ccm::forms.input name="form.username"
+                                        wire:model="form.username"
+                                        :required="true"
+                    >
+                        Gebruikersnaam
+                    </x-ccm::forms.input>
+                    <x-ccm::forms.input name="form.password"
+                                        wire:model="form.password"
+                                        :required="true"
+                    >
+                        Wachtwoord
+                    </x-ccm::forms.input>
                     <x-ccm::forms.input name="form.description"
                                         wire:model="form.description"
                     >

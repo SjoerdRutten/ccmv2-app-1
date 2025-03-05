@@ -32,9 +32,17 @@ class MailServerServiceProvider extends ServiceProvider
 
         try {
             foreach (Mailserver::where('is_active', 1)->get() as $mailserver) {
-                Config::set('mail.mailers.'.$mailserver->keyName, [
-                    'transport' => 'sendmail',
-                    'path' => '/usr/sbin/sendmail -bs -i',
+                Config::set('mail.mailers.'.$mailserver->key_name, [
+                    'transport' => 'smtp',
+                    'host' => 'mx19.ccmprofessional.com',
+                    'port' => $mailserver->port,
+                    'encryption' => null, // $mailserver->encryption,
+                    'username' => $mailserver->username,
+                    'password' => $mailserver->password,
+                    'timeout' => null,
+                    'verify_peer' => false,
+                    'auth_mode' => null,
+                    'local_domain' => parse_url(config('app.url'), PHP_URL_HOST),
                 ]);
             }
         } catch (\Exception $e) {

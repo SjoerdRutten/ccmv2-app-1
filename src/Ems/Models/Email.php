@@ -2,9 +2,11 @@
 
 namespace Sellvation\CCMV2\Ems\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Sellvation\CCMV2\Ccm\Models\TrackableLink;
 use Sellvation\CCMV2\Ccm\Models\TrackablePixelOpen;
@@ -89,6 +91,11 @@ class Email extends Model
         return $this->morphMany(TrackablePixelOpen::class, 'trackable');
     }
 
+    public function emailQueues(): HasMany
+    {
+        return $this->hasMany(EmailQueue::class);
+    }
+
     protected function html(): Attribute
     {
         return Attribute::make(
@@ -99,6 +106,11 @@ class Email extends Model
     public function getCompiledHtml(CrmCard $crmCard, bool $tracking = false, bool $online = false): string
     {
         return \EmailCompiler::compile($this, $crmCard, $tracking, $online);
+    }
+
+    public function getCompiledText(CrmCard $crmCard): string
+    {
+        return \EmailCompiler::compileText($this, $crmCard);
     }
 
     protected function stripoHtml(): Attribute
@@ -113,5 +125,21 @@ class Email extends Model
         return Attribute::make(
             get: fn ($value) => empty($value) ? file_get_contents(__DIR__.'/../stubs/stripo_css.stub') : $value,
         );
+    }
+
+    public function sendEmail(CrmCard $crmCard, ?string $emailAddress = null, ?Carbon $startSendingAt = null)
+    {
+        $this->emailQueues()
+            ->create([
+                'crm_card_id' => $crmCard->id,
+                'start_sending_at' => $startSendingAt,
+                'from_name' => $this->sender_name,
+                'from_email' => $this->sender_email,
+                'to_email' => $emailAddress, // TODO: emailadres uit email-crmcard halen
+                'reply_to' => $this->reply_to,
+                'subject' => $this->subject,
+                'html_content' => $this->getCompiledHtml($crmCard, true, false),
+                'text_content' => $this->getCompiledText($crmCard),
+            ]);
     }
 }

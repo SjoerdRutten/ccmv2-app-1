@@ -35,6 +35,14 @@ class EmailCompiler
         return $html;
     }
 
+    public function compileText(Email $email, CrmCard $crmCard): string
+    {
+        \Context::add('crmCard', $crmCard);
+        \Context::add('email', $email);
+
+        return $this->render($email->text, $email, $crmCard, false, false);
+    }
+
     public function render($html, ?Email $email = null, ?CrmCard $crmCard = null, bool $tracking = true, bool $online = false, array $data = []): string
     {
         $crmCard = $crmCard ?? \Context::get('crmCard');

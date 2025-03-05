@@ -8,10 +8,14 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Sellvation\CCMV2\Ems\Events\EmailDkimCreatedEvent;
+use Sellvation\CCMV2\Ems\Events\EmailQueueCreatedEvent;
+use Sellvation\CCMV2\Ems\Events\EmailQueueCreatingEvent;
 use Sellvation\CCMV2\Ems\Events\EmailSavedEvent;
 use Sellvation\CCMV2\Ems\Facades\EmailCompiler;
 use Sellvation\CCMV2\Ems\Facades\EmailCompilerFacade;
 use Sellvation\CCMV2\Ems\Listeners\EmailDkimCreatedListener;
+use Sellvation\CCMV2\Ems\Listeners\EmailQueueCreatedListener;
+use Sellvation\CCMV2\Ems\Listeners\EmailQueueCreatingListener;
 use Sellvation\CCMV2\Ems\Listeners\EmailSavedListener;
 
 class EmsServiceProvider extends ServiceProvider
@@ -50,6 +54,8 @@ class EmsServiceProvider extends ServiceProvider
 
         $events->listen(EmailDkimCreatedEvent::class, EmailDkimCreatedListener::class);
         $events->listen(EmailSavedEvent::class, EmailSavedListener::class);
+        $events->listen(EmailQueueCreatedEvent::class, EmailQueueCreatedListener::class);
+        $events->listen(EmailQueueCreatingEvent::class, EmailQueueCreatingListener::class);
     }
 
     private function registerFacades()

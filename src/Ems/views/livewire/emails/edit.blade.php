@@ -199,8 +199,18 @@
                     </div>
                 </x-ccm::tabs.tab-content>
                 <x-ccm::tabs.tab-content :index="4">
-                    <div class="mb-4">
-                        <x-ccm::forms.input wire:model="crmId">Crm ID</x-ccm::forms.input>
+                    <div class="mb-4 gap-2 grid grid-cols-4 items-end">
+                        <x-ccm::forms.input wire:model="crmId">
+                            Crm ID
+                        </x-ccm::forms.input>
+                        <x-ccm::forms.input type="email" wire:model="testEmailAddress">
+                            Test verzenden aan
+                        </x-ccm::forms.input>
+                        <div>
+                            <x-ccm::buttons.success wire:click="sendTestEmail">
+                                Test mail verzenden
+                            </x-ccm::buttons.success>
+                        </div>
                     </div>
 
                     <iframe src="{{ route('ems::emails::preview', ['email' => $email, 'crmCard' => $crmCard, 'crc' => $crc]) }}"
