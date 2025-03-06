@@ -13,7 +13,7 @@ use Sellvation\CCMV2\Environments\Models\Environment;
 
 class MigrateCcmpEnvironment extends Command
 {
-    protected $signature = 'ccmp:migrate-environment-data';
+    protected $signature = 'ccmp:migrate-environment-data {--startdate=}';
 
     protected $description = 'Stap 2: Migrate CCMp environment data, execute per environment';
 
@@ -164,9 +164,11 @@ class MigrateCcmpEnvironment extends Command
     {
         $this->info('Import CRM Cards');
 
-        $startDate = $this->ask('Wijzigingen vanaf welke datum (YYYY-MM-DD HH:mm:ii) ? ', now()->subMinutes(70)->toDateTimeString());
-
-        $max = (int) CrmCard::max('id');
+        if ($this->hasOption('startdate')) {
+            $startDate = Carbon::parse($this->option('startdate'))->toDateTimeString();
+        } else {
+            $startDate = $this->ask('Wijzigingen vanaf welke datum (YYYY-MM-DD HH:mm:ii) ? ', now()->subMinutes(70)->toDateTimeString());
+        }
 
         $progressBar = $this->output->createProgressBar(
             \DB::connection('db02')
