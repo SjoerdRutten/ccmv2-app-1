@@ -13,5 +13,6 @@ class EmailQueueCreatedListener
     {
         SendEmailJob::dispatch($event->emailQueue)
             ->delay($event->emailQueue->start_sending_at);
+
     }
 }

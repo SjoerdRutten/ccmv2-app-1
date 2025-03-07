@@ -4,6 +4,7 @@ namespace Sellvation\CCMV2\Ems\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Sellvation\CCMV2\Ccm\Traits\HasTrackedJobs;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\Ems\Events\EmailQueueCreatedEvent;
 use Sellvation\CCMV2\Ems\Events\EmailQueueCreatingEvent;
@@ -11,6 +12,8 @@ use Sellvation\CCMV2\MailServers\Models\MailServer;
 
 class EmailQueue extends Model
 {
+    use HasTrackedJobs;
+
     protected $fillable = [
         'email_id',
         'crm_card_id',

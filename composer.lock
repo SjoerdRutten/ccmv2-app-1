@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bfd149a3527443f3f1979c419ffe0e9a",
+    "content-hash": "63c5461ecc03177521a3ae681d25e550",
     "packages": [
         {
             "name": "amphp/amp",
@@ -4765,6 +4765,73 @@
                 "source": "https://github.com/Masterminds/html5-php/tree/2.9.0"
             },
             "time": "2024-03-31T07:05:07+00:00"
+        },
+        {
+            "name": "mateusjunges/laravel-trackable-jobs",
+            "version": "v2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mateusjunges/trackable-jobs-for-laravel.git",
+                "reference": "64ea39c2df1f5ed104e3457bee2e57c694edc1a1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mateusjunges/trackable-jobs-for-laravel/zipball/64ea39c2df1f5ed104e3457bee2e57c694edc1a1",
+                "reference": "64ea39c2df1f5ed104e3457bee2e57c694edc1a1",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^11.0|^12.0",
+                "illuminate/queue": "^11.0|^12.0",
+                "illuminate/support": "^11.0|^12.0",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.2",
+                "orchestra/testbench": "^9.0|^10.0",
+                "phpunit/phpunit": "^9.5|^10.5|^11.5.3",
+                "spatie/test-time": "^1.2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Junges\\TrackableJobs\\Providers\\TrackableJobsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Database\\Factories\\": "database/factories/",
+                    "Junges\\TrackableJobs\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mateus Junges",
+                    "email": "mateus@junges.dev",
+                    "role": "Software Engineer"
+                }
+            ],
+            "description": "This package allows you to track your jobs",
+            "support": {
+                "issues": "https://github.com/mateusjunges/trackable-jobs-for-laravel/issues",
+                "source": "https://github.com/mateusjunges/trackable-jobs-for-laravel/tree/v2.1.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/mateusjunges",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-02-22T14:38:30+00:00"
         },
         {
             "name": "mongodb/laravel-mongodb",

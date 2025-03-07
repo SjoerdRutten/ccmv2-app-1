@@ -27,6 +27,13 @@ Route::prefix('ems')
                 Route::get('/{email}', \Sellvation\CCMV2\Ems\Livewire\Emails\Edit::class)->name('edit');
                 Route::get('/preview/{email}/{crmCard}', \Sellvation\CCMV2\Ems\Http\Controllers\PreviewController::class)->name('preview');
             });
+        Route::prefix('mailings')
+            ->name('mailings::')
+            ->group(function () {
+                Route::get('/', \Sellvation\CCMV2\Ems\Livewire\Mailings\Overview::class)->name('overview');
+                Route::get('/add', \Sellvation\CCMV2\Ems\Livewire\Mailings\Edit::class)->name('add');
+                Route::get('/{emailMailing}', \Sellvation\CCMV2\Ems\Livewire\Mailings\Edit::class)->name('edit');
+            });
         Route::prefix('emailcontents')
             ->name('emailcontents::')
             ->group(function () {

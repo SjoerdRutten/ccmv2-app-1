@@ -42,6 +42,7 @@ class CcmServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__.'/resources/lang', 'ccm');
 
         $this->mergeConfigFrom(__DIR__.'/config/ccm.php', 'ccm');
+        $this->mergeConfigFrom(__DIR__.'/config/trackable-jobs.php', 'trackable-jobs');
 
         $this->publishes([
             __DIR__.'/resources/js' => public_path('vendor/ccm/js'),

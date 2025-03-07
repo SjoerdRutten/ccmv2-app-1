@@ -75,6 +75,7 @@ class CcmMenuServiceProvider extends ServiceProvider
             'sub_items' => [
                 ['label' => 'E-mails', 'route' => 'ems::emails::overview'],
                 ['label' => 'E-mail content', 'route' => 'ems::emailcontents::overview'],
+                ['label' => 'Mailings', 'route' => 'ems::mailings::overview'],
             ],
         ]);
         \CcmMenu::addCcmMenuItem([
