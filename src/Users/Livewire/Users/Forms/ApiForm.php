@@ -14,6 +14,8 @@ class ApiForm extends Form
 
     public ?string $expires_at = '';
 
+    public int $allScopes = 1;
+
     public array $scopes = [];
 
     public function setUser(User $user)
@@ -33,7 +35,7 @@ class ApiForm extends Form
                 'date',
             ],
             'scopes' => [
-                'required',
+                'required_if:allScopes,0',
                 'array',
             ],
         ];
@@ -43,7 +45,10 @@ class ApiForm extends Form
     {
         $this->validate();
 
-        $token = $this->user->createToken($this->name, $this->scopes, Carbon::parse($this->expires_at));
+        $expiresAt = empty($this->expires_at) ? null : Carbon::parse($this->expires_at);
+        $scopes = $this->allScopes ? ['*'] : $this->scopes;
+
+        $token = $this->user->createToken($this->name, $scopes, $expiresAt);
 
         return $token->plainTextToken;
     }

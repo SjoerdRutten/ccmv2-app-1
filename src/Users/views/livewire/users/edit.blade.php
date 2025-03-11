@@ -162,8 +162,8 @@
                             <x-ccm::tables.tr>
                                 <x-ccm::tables.td>{{ $token->id }}</x-ccm::tables.td>
                                 <x-ccm::tables.td>{{ $token->name }}</x-ccm::tables.td>
-                                <x-ccm::tables.td>{{ $token->expires_at?->toDateString() }}</x-ccm::tables.td>
-                                <x-ccm::tables.td>{{ $token->last_used_at?->toDateString() }}</x-ccm::tables.td>
+                                <x-ccm::tables.td>{{ $token->expires_at?->toDateTimeString() }}</x-ccm::tables.td>
+                                <x-ccm::tables.td>{{ $token->last_used_at?->toDateTimeString() }}</x-ccm::tables.td>
                                 <x-ccm::tables.td>
                                     <x-ccm::tables.delete-link
                                             wire:click="deleteToken({{ $token->id }})"
@@ -181,17 +181,25 @@
                     <x-ccm::forms.input name="apiForm.name" wire:model="apiForm.name" :required="true">
                         Naam
                     </x-ccm::forms.input>
-                    <x-ccm::forms.input-date name="apiForm.expires_at" wire:model="apiForm.expires_at">
-                        Verloopt op (yyyy-mm-dd)
-                    </x-ccm::forms.input-date>
+                    <x-ccm::forms.input-datetime name="apiForm.expires_at" wire:model="apiForm.expires_at">
+                        Verloopt op
+                    </x-ccm::forms.input-datetime>
 
                     <x-ccm::typography.h3>Scopes</x-ccm::typography.h3>
-                    @foreach ($scopes AS $scope => $description)
-                        <x-ccm::forms.checkbox name="apiForm.scopes" wire:model="apiForm.scopes" :value="$scope">
-                            {{ $scope }}<br>
-                            <small>{{ $description }}</small>
-                        </x-ccm::forms.checkbox>
-                    @endforeach
+
+                    <x-ccm::forms.select name="apiForm.allScopes" wire:model.live="apiForm.allScopes">
+                        <option value="1">Alle rechten</option>
+                        <option value="0">Specifieke rechten selecteren</option>
+                    </x-ccm::forms.select>
+
+                    @if (!$apiForm->allScopes)
+                        @foreach ($scopes AS $scope => $description)
+                            <x-ccm::forms.checkbox name="apiForm.scopes" wire:model="apiForm.scopes" :value="$scope">
+                                {{ $scope }}<br>
+                                <small>{{ $description }}</small>
+                            </x-ccm::forms.checkbox>
+                        @endforeach
+                    @endif
 
                     <x-ccm::buttons.save wire:click="createToken">Token aanmaken</x-ccm::buttons.save>
                 </div>
