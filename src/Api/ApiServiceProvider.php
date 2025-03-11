@@ -2,35 +2,41 @@
 
 namespace Sellvation\CCMV2\Api;
 
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Routing\Router;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Passport\Passport;
+use Livewire\Livewire;
+use Sellvation\CCMV2\Api\Facades\ApiScopes;
+use Sellvation\CCMV2\Api\Facades\ApiScopesFacade;
 
 class ApiServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        Config::set('auth.guards.api', [
-            'driver' => 'passport',
-            'provider' => 'users',
-        ]);
+        $this->registerFacades();
+        $this->registerLivewireComponents();
     }
 
     public function boot(Router $router): void
     {
-        Passport::hashClientSecrets();
-        Passport::tokensExpireIn(now()->addDays(15));
-        Passport::refreshTokensExpireIn(now()->addDays(30));
-        Passport::personalAccessTokensExpireIn(now()->addMonths(6));
-        Passport::setClientUuids(false);
-
         $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
         $this->loadRoutesFrom(__DIR__.'/routes/api.php');
-        $this->mergeConfigFrom(__DIR__.'/config/passport.php', 'passport');
+        $this->loadRoutesFrom(__DIR__.'/routes/web.php');
+        $this->loadViewsFrom(__DIR__.'/views', 'api-tokens');
+    }
 
-        $this->publishes([
-            __DIR__.'/config/passport.php' => config_path('passport.php'),
-        ], 'ccm-config');
+    private function registerLivewireComponents(): void
+    {
+        Livewire::component('api::overview', Overview::class);
+        Livewire::component('api::edit', Edit::class);
+    }
+
+    private function registerFacades(): void
+    {
+        $this->app->bind('api-scopes', ApiScopes::class);
+
+        $loader = AliasLoader::getInstance();
+        $loader->alias('ApiScopes', ApiScopesFacade::class);
+
     }
 }

@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
-use Laravel\Passport\HasApiTokens;
+use Laravel\Sanctum\HasApiTokens;
 use Sellvation\CCMV2\Environments\Models\Environment;
 use Sellvation\CCMV2\Users\Notifications\ResetPasswordNotification;
 
@@ -98,6 +99,12 @@ class User extends Authenticatable
         return $this->belongsTo(Customer::class);
     }
 
+    public function permissions(): MorphToMany
+    {
+        return $this->morphToMany(Permission::class, 'model', 'model_has_permissions', 'model_id', 'permission_id')
+            ->withPivot('environment_id');
+    }
+
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class);
@@ -145,6 +152,12 @@ class User extends Authenticatable
                     ->where('model_has_permissions.environment_id', $this->currentEnvironmentId)
                     ->whereGroup($group)
                     ->whereName($permission);
-            })->exists();
+            })->exists()
+            ||
+            $this->permissions()
+                ->where('model_has_permissions.environment_id', $this->currentEnvironmentId)
+                ->whereGroup($group)
+                ->whereName($permission)
+                ->exists();
     }
 }

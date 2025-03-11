@@ -20,6 +20,8 @@
                 <x-ccm::tabs.nav-tab :index="1">Adressen</x-ccm::tabs.nav-tab>
                 <x-ccm::tabs.nav-tab :index="2">Login</x-ccm::tabs.nav-tab>
                 <x-ccm::tabs.nav-tab :index="3">Rollen</x-ccm::tabs.nav-tab>
+                {{--                <x-ccm::tabs.nav-tab :index="4">Rechten</x-ccm::tabs.nav-tab>--}}
+                <x-ccm::tabs.nav-tab :index="5">API-tokens</x-ccm::tabs.nav-tab>
             </x-slot:tabs>
 
             <x-ccm::tabs.tab-content :index="0">
@@ -133,6 +135,66 @@
                         </x-ccm::forms.checkbox>
                     @endforeach
                 </x-ccm::forms.form>
+            </x-ccm::tabs.tab-content>
+            {{--            <x-ccm::tabs.tab-content :index="4">--}}
+            {{--                @foreach ($permissions AS $permission)--}}
+            {{--                    <x-ccm::forms.checkbox name="form.permissions[]"--}}
+            {{--                                           value="{{ $permission->id }}"--}}
+            {{--                                           wire:model.live="form.permissions">--}}
+            {{--                        {{ $permission->group }}.{{ $permission->name }}--}}
+            {{--                        @if ($permission->description)--}}
+            {{--                            ({{ $permission->description }})--}}
+            {{--                        @endif--}}
+            {{--                    </x-ccm::forms.checkbox>--}}
+            {{--                @endforeach--}}
+            {{--            </x-ccm::tabs.tab-content>--}}
+            <x-ccm::tabs.tab-content :index="5" :no-margin="true">
+                <x-ccm::tables.table :no-margin="true">
+                    <x-slot:thead>
+                        <x-ccm::tables.th :first="true">ID</x-ccm::tables.th>
+                        <x-ccm::tables.th>Naam</x-ccm::tables.th>
+                        <x-ccm::tables.th>Verloopt op</x-ccm::tables.th>
+                        <x-ccm::tables.th>Laatst gebruikt</x-ccm::tables.th>
+                        <x-ccm::tables.th :link="true"></x-ccm::tables.th>
+                    </x-slot:thead>
+                    <x-slot:tbody>
+                        @foreach ($user->tokens AS $token)
+                            <x-ccm::tables.tr>
+                                <x-ccm::tables.td>{{ $token->id }}</x-ccm::tables.td>
+                                <x-ccm::tables.td>{{ $token->name }}</x-ccm::tables.td>
+                                <x-ccm::tables.td>{{ $token->expires_at?->toDateString() }}</x-ccm::tables.td>
+                                <x-ccm::tables.td>{{ $token->last_used_at?->toDateString() }}</x-ccm::tables.td>
+                                <x-ccm::tables.td>
+                                    <x-ccm::tables.delete-link
+                                            wire:click="deleteToken({{ $token->id }})"
+                                            wire:confirm="Weet je zeker dat je dit token wilt verwijderen?"
+                                    ></x-ccm::tables.delete-link>
+                                </x-ccm::tables.td>
+                            </x-ccm::tables.tr>
+                        @endforeach
+                    </x-slot:tbody>
+                </x-ccm::tables.table>
+
+                <div class="flex flex-col gap-2 w-1/2 m-4">
+
+                    <x-ccm::typography.h2>Nieuwe token toevoegen</x-ccm::typography.h2>
+                    <x-ccm::forms.input name="apiForm.name" wire:model="apiForm.name" :required="true">
+                        Naam
+                    </x-ccm::forms.input>
+                    <x-ccm::forms.input-date name="apiForm.expires_at" wire:model="apiForm.expires_at">
+                        Verloopt op (yyyy-mm-dd)
+                    </x-ccm::forms.input-date>
+
+                    <x-ccm::typography.h3>Scopes</x-ccm::typography.h3>
+                    @foreach ($scopes AS $scope => $description)
+                        <x-ccm::forms.checkbox name="apiForm.scopes" wire:model="apiForm.scopes" :value="$scope">
+                            {{ $scope }}<br>
+                            <small>{{ $description }}</small>
+                        </x-ccm::forms.checkbox>
+                    @endforeach
+
+                    <x-ccm::buttons.save wire:click="createToken">Token aanmaken</x-ccm::buttons.save>
+                </div>
             </x-ccm::tabs.tab-content>
         </x-ccm::tabs.base>
     </div>

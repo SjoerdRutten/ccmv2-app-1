@@ -61,6 +61,8 @@ class UserForm extends Form
 
     public array $roles = [];
 
+    public array $permissions = [];
+
     public string $password = '';
 
     public string $password_confirmation = '';
@@ -78,6 +80,9 @@ class UserForm extends Form
                 'nullable',
                 'confirmed',
             ],
+            'permissions' => [
+                'array',
+            ],
         ];
     }
 
@@ -89,13 +94,14 @@ class UserForm extends Form
 
         $this->expiration_date = $this->user->expiration_date?->toDateString();
         $this->roles = $user->roles()->pluck('id')->toArray();
+        $this->permissions = $user->permissions()->pluck('id')->toArray();
     }
 
     public function save()
     {
         $this->validate();
 
-        $data = $this->except(['user', 'password', 'password_confirmation', 'roles']);
+        $data = $this->except(['user', 'password', 'password_confirmation', 'roles', 'permissions']);
 
         if ($this->user->id) {
             $this->user->update($data);
@@ -111,6 +117,13 @@ class UserForm extends Form
         }
 
         $this->user->roles()->sync($this->roles);
+
+        $permissions = [];
+        foreach ($this->permissions as $permission) {
+            $permissions[$permission] = ['environment_id' => \Auth::user()->currentEnvironmentId];
+        }
+
+        $this->user->permissions()->sync($permissions);
 
         return $this->user;
     }
