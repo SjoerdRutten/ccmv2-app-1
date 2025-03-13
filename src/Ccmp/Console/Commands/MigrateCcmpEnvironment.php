@@ -25,7 +25,7 @@ class MigrateCcmpEnvironment extends Command
 
     public function handle()
     {
-        Config::set('database.connections.db02.database', 'ccmp');
+        Config::set('database.connections.db01.database', 'ccmp');
 
         foreach (Environment::get() as $environment) {
 
@@ -69,7 +69,7 @@ class MigrateCcmpEnvironment extends Command
     {
         $this->info('Import crm field categories');
 
-        $rows = \DB::connection('db02')
+        $rows = \DB::connection('db01')
             ->table('rubrieken')
             ->where('omgevingen_id', $this->environmentId)
             ->get();
@@ -94,7 +94,7 @@ class MigrateCcmpEnvironment extends Command
     {
         $this->info('Import fields');
 
-        $rows = \DB::connection('db02')
+        $rows = \DB::connection('db01')
             ->table('crm_velden')
             ->select('veldtype')
             ->distinct()
@@ -111,7 +111,7 @@ class MigrateCcmpEnvironment extends Command
             $fieldTypes[$row->veldtype] = $crmField->id;
         }
 
-        $rows = \DB::connection('db02')
+        $rows = \DB::connection('db01')
             ->table('crm_velden')
             ->where('omgevingen_id', $this->environmentId)
             ->get();
@@ -148,7 +148,7 @@ class MigrateCcmpEnvironment extends Command
     private function getCrmFieldCategoryId($rubriekId): ?int
     {
         if ($rubriekId) {
-            $row = \DB::connection('db02')
+            $row = \DB::connection('db01')
                 ->table('rubrieken')
                 ->select(['id'])
                 ->where('id', $rubriekId)
@@ -171,13 +171,13 @@ class MigrateCcmpEnvironment extends Command
         }
 
         $progressBar = $this->output->createProgressBar(
-            \DB::connection('db02')
+            \DB::connection('db01')
                 ->table('crm_'.$this->environmentId)
                 ->where('datummutatie', '>=', $startDate)
                 ->count()
         );
 
-        \DB::connection('db02')
+        \DB::connection('db01')
             ->table('crm_'.$this->environmentId)
             ->where('datummutatie', '>=', $startDate)
             ->orderBy('datummutatie')
@@ -271,7 +271,7 @@ class MigrateCcmpEnvironment extends Command
     {
         $this->info('Import e-mail categories');
 
-        $rows = \DB::connection('db02')
+        $rows = \DB::connection('db01')
             ->table('rubrieken')
             ->where('omgevingen_id', $this->environmentId)
             ->get();
@@ -304,7 +304,7 @@ class MigrateCcmpEnvironment extends Command
 
         \DB::table('emails')->delete();
 
-        $rows = \DB::connection('db02')
+        $rows = \DB::connection('db01')
             ->table('emails')
             ->where('omgevingen_id', $this->environmentId)
             ->orderBy('id')
@@ -371,7 +371,7 @@ class MigrateCcmpEnvironment extends Command
 
         $bar = $this->output->createProgressBar(CrmCard::count());
 
-        \DB::connection('db02')
+        \DB::connection('db01')
             ->table('crm_statistieken_'.$this->environmentId)
             ->select([
                 'crm_id',
