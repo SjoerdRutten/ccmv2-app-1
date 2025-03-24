@@ -51,11 +51,11 @@ class CrmCardForm extends Form
             ->get();
     }
 
-    public function categories()
+    public function categories($orderBy = 'position')
     {
         return CrmFieldCategory::query()
             ->whereHas('crmFields')
-            ->orderBy('position')
+            ->orderBy($orderBy)
             ->get();
     }
 }

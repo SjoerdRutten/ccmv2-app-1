@@ -84,7 +84,7 @@ class MigrateCcmpEnvironment extends Command
                 'position' => $row->positie,
             ];
 
-            $crmFieldCategory = $this->environment->crmFieldCategories()->firstOrCreate(['id' => $row->id], $data);
+            $crmFieldCategory = $this->environment->crmFieldCategories()->updateOrCreate(['id' => $row->id], $data);
         }
 
         $this->info($this->environment->crmFieldCategories()->count().' crm field categories imported');
