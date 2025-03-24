@@ -8,7 +8,7 @@
         @foreach ($activities AS $activity)
             <x-ccm::tables.tr>
                 <x-ccm::tables.td :first="true">{{ $activity->event }}</x-ccm::tables.td>
-                <x-ccm::tables.td>{{ $activity->causer->name }}</x-ccm::tables.td>
+                <x-ccm::tables.td>{{ $activity->causer?->name }}</x-ccm::tables.td>
                 <x-ccm::tables.td>{{ $activity->created_at }}</x-ccm::tables.td>
             </x-ccm::tables.tr>
         @endforeach
