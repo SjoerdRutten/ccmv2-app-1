@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Sellvation\CCMV2\Ccm\Livewire\Traits\HasModals;
 use Sellvation\CCMV2\Disks\Livewire\DiskTypes\Forms\DiskTypeForm;
+use Sellvation\CCMV2\Disks\Models\Disk;
 use Sellvation\CCMV2\Disks\Models\DiskType;
 
 class Edit extends Component
@@ -34,7 +35,7 @@ class Edit extends Component
     {
         return view('disks::disktypes.edit')
             ->with([
-                'disks' => DiskType::all(),
+                'disks' => Disk::orderBy('name')->get(),
             ]);
     }
 }

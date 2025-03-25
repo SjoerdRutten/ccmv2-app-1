@@ -2,7 +2,7 @@
     <div class="px-4 sm:px-6 lg:px-8">
         <x-ccm::pages.intro title="Disktypes">
             <x-slot:actions>
-                <x-ccm::buttons.add route="admin::disks::add">Disktype toevoegen</x-ccm::buttons.add>
+                <x-ccm::buttons.add route="admin::disktypes::add">Disktype toevoegen</x-ccm::buttons.add>
             </x-slot:actions>
         </x-ccm::pages.intro>
         <x-ccm::tables.table>
