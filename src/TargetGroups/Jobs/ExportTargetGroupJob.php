@@ -51,21 +51,22 @@ class ExportTargetGroupJob implements ShouldQueue
                 throw new \Exception('Unknown filetype');
         }
 
-        $path = 'CRM-Cards-'.now()->toDateTimeLocalString().'.'.$this->targetGroupExport->file_type;
-
         if ($disk = Disk::whereHas('diskTypes', function ($query) {
             $query->whereName('DGS Export');
         })->first()) {
+
+            $path = 'CRM-Cards-'.now()->toDateTimeLocalString().'.'.$this->targetGroupExport->file_type;
+            $path = implode('/', [$disk->settings['path'], $path]);
+
             $this->targetGroupExport->update([
                 'disk_id' => $disk->id,
                 'path' => $path,
             ]);
 
             if ($data = Excel::raw(new CrmCardsExport($this->targetGroupExport), $exportType)) {
-
                 /** @var Filesystem $disk */
                 $fsDisk = \DiskService::disk($disk);
-                $fsDisk->path($disk->path)->put($path, $data);
+                $fsDisk->put($path, $data);
 
                 $this->targetGroupExport->update([
                     'status' => 2,

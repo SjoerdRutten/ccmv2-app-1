@@ -12,7 +12,7 @@ class CrmCardMongo extends Model
 {
     protected $connection = 'mongodb';
 
-    private CrmCard $crmCard;
+    private ?CrmCard $crmCard;
 
     public function getTable()
     {
@@ -36,10 +36,9 @@ class CrmCardMongo extends Model
         if (\Arr::exists($this->attributes, $key)) {
             return $this->attributes[$key];
         } elseif (\Arr::exists($this->attributes, 'id')) {
-            //            dd($this->attributes['id']);
             $this->crmCard = $this->crmCard ?? CrmCard::find($this->attributes['id']);
 
-            return $this->crmCard->$key;
+            return $this->crmCard?->$key;
         }
     }
 

@@ -150,6 +150,8 @@ class Form extends Component
 
     public function downloadExport(TargetGroupExport $targetGroupExport)
     {
+        return \DiskService::disk($targetGroupExport->disk)->download($targetGroupExport->path);
+
         return Storage::disk($targetGroupExport->disk)->download($targetGroupExport->path);
     }
 

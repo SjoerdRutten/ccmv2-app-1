@@ -27,7 +27,8 @@ class CrmCardsExport implements FromGenerator, ShouldAutoSize, WithHeadings, Wit
     {
         $page = 0;
         do {
-            $crmCards = TargetGroupSelectorFacade::getQuery($this->targetGroupExport->targetGroup->filters, 100, $page)->get();
+            dump($page);
+            $crmCards = TargetGroupSelectorFacade::getQuery($this->targetGroupExport->targetGroup->filters)->forPage($page, 100)->get();
 
             foreach ($crmCards as $crmCard) {
                 yield $crmCard;
@@ -74,6 +75,10 @@ class CrmCardsExport implements FromGenerator, ShouldAutoSize, WithHeadings, Wit
             $row->crm_id,
         ];
 
-        return array_merge($data, Arr::only($row->data, $this->fields));
+        if ($row->data) {
+            return array_merge($data, Arr::only($row->data, $this->fields));
+        }
+
+        return $data;
     }
 }
