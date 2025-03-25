@@ -3,6 +3,7 @@
 namespace Sellvation\CCMV2\TargetGroups\Jobs;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -62,7 +63,9 @@ class ExportTargetGroupJob implements ShouldQueue
 
             if ($data = Excel::raw(new CrmCardsExport($this->targetGroupExport), $exportType)) {
 
-                \DiskService::disk($disk)->put($path, $data);
+                /** @var Filesystem $disk */
+                $fsDisk = \DiskService::disk($disk);
+                $fsDisk->path($disk->path)->put($path, $data);
 
                 $this->targetGroupExport->update([
                     'status' => 2,
