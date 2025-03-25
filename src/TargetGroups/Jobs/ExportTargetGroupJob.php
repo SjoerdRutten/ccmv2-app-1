@@ -9,6 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Context;
 use Maatwebsite\Excel\Facades\Excel;
+use Sellvation\CCMV2\Disks\Models\Disk;
 use Sellvation\CCMV2\TargetGroups\Exports\CrmCardsExport;
 use Sellvation\CCMV2\TargetGroups\Models\TargetGroupExport;
 use Throwable;
@@ -51,21 +52,30 @@ class ExportTargetGroupJob implements ShouldQueue
 
         $path = 'CRM-Cards-'.now()->toDateTimeLocalString().'.'.$this->targetGroupExport->file_type;
 
-        $this->targetGroupExport->update([
-            'disk' => 'local',
-            'path' => $path,
-        ]);
+        if ($disk = Disk::whereHas('diskTypes', function ($query) {
+            $query->whereName('DGS Export');
+        })->first()) {
+            $this->targetGroupExport->update([
+                'disk_id' => $disk->id,
+                'path' => $path,
+            ]);
 
-        if (Excel::store(new CrmCardsExport($this->targetGroupExport), $path, 'local', $exportType)) {
-            $this->targetGroupExport->update([
-                'status' => 2,
-                'ended_at' => now(),
-            ]);
+            if ($data = Excel::raw(new CrmCardsExport($this->targetGroupExport), $exportType)) {
+
+                \DiskService::disk($disk)->put($path, $data);
+
+                $this->targetGroupExport->update([
+                    'status' => 2,
+                    'ended_at' => now(),
+                ]);
+            } else {
+                $this->targetGroupExport->update([
+                    'status' => 99,
+                    'ended_at' => now(),
+                ]);
+            }
         } else {
-            $this->targetGroupExport->update([
-                'status' => 99,
-                'ended_at' => now(),
-            ]);
+            throw new \Exception('Geen disk gevonden voor DGS Export');
         }
     }
 

@@ -185,7 +185,6 @@ class Form extends Component
     #[On('refresh-field-sets')]
     public function refreshFieldSets($id)
     {
-        $this->targetGroupFieldSetId = $id;
         $this->dispatch('$refresh');
     }
 
