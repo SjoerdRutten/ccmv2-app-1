@@ -9,8 +9,8 @@ use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Sellvation\CCMV2\Disks\Facades\DiskService;
 use Sellvation\CCMV2\Disks\Facades\DiskServiceFacade;
-use Sellvation\CCMV2\Disks\Livewire\Edit;
-use Sellvation\CCMV2\Disks\Livewire\Overview;
+use Sellvation\CCMV2\Disks\Livewire\Disks\Edit;
+use Sellvation\CCMV2\Disks\Livewire\Disks\Overview;
 
 class DiskServiceProvider extends ServiceProvider
 {
@@ -34,6 +34,8 @@ class DiskServiceProvider extends ServiceProvider
     {
         Livewire::component('disks::overview', Overview::class);
         Livewire::component('disks::edit', Edit::class);
+        Livewire::component('disktypes::overview', \Sellvation\CCMV2\Disks\Livewire\DiskTypes\Overview::class);
+        Livewire::component('disktypes::edit', \Sellvation\CCMV2\Disks\Livewire\DiskTypes\Edit::class);
     }
 
     private function registerEvents()

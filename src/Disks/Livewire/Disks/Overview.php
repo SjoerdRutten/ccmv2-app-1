@@ -1,6 +1,6 @@
 <?php
 
-namespace Sellvation\CCMV2\Disks\Livewire;
+namespace Sellvation\CCMV2\Disks\Livewire\Disks;
 
 use Livewire\Attributes\Url;
 use Livewire\Component;

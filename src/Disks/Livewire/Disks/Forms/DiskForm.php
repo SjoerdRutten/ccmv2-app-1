@@ -1,6 +1,6 @@
 <?php
 
-namespace Sellvation\CCMV2\Disks\Livewire\Forms;
+namespace Sellvation\CCMV2\Disks\Livewire\Disks\Forms;
 
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;

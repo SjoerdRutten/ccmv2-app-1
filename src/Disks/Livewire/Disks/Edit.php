@@ -1,12 +1,11 @@
 <?php
 
-namespace Sellvation\CCMV2\Disks\Livewire;
+namespace Sellvation\CCMV2\Disks\Livewire\Disks;
 
-use Illuminate\Contracts\Filesystem\Filesystem;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Sellvation\CCMV2\Ccm\Livewire\Traits\HasModals;
-use Sellvation\CCMV2\Disks\Livewire\Forms\DiskForm;
+use Sellvation\CCMV2\Disks\Livewire\Disks\Forms\DiskForm;
 use Sellvation\CCMV2\Disks\Models\Disk;
 
 class Edit extends Component
@@ -22,10 +21,6 @@ class Edit extends Component
     {
         $this->disk = $disk;
         $this->form->setModel($this->disk);
-
-        /** @var Filesystem $fileSystem */
-        $fileSystem = \DiskService::disk(1);
-        dd($fileSystem->directories());
     }
 
     public function save()

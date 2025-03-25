@@ -57,7 +57,12 @@
                                         wire:model="form.settings.password"
                                         :required="true"
                     >
-                        Username
+                        Password
+                    </x-ccm::forms.input>
+                    <x-ccm::forms.input name="form.settings.path"
+                                        wire:model="form.settings.path"
+                    >
+                        Path
                     </x-ccm::forms.input>
                 @endif
             </x-ccm::tabs.tab-content>
