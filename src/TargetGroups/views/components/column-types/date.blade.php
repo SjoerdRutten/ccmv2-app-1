@@ -12,10 +12,10 @@
 
     @if (Arr::get($filter, 'operator'))
         @if (Arr::get($filter, 'operator') === 'between')
-            <x-ccm::forms.input-date name="filterTmp.from" wire:model.blur="filterTmp.from" :disabled="$disabled"/>
-            <x-ccm::forms.input-date name="filterTmp.to" wire:model.blur="filterTmp.to" :disabled="$disabled"/>
+            <x-ccm::forms.input name="filterTmp.from" wire:model.blur="filterTmp.from" :disabled="$disabled"/>
+            <x-ccm::forms.input name="filterTmp.to" wire:model.blur="filterTmp.to" :disabled="$disabled"/>
         @else
-            <x-ccm::forms.input-date name="filterTmp.value" wire:model.blur="filterTmp.value" :disabled="$disabled"/>
+            <x-ccm::forms.input name="filterTmp.value" wire:model.blur="filterTmp.value" :disabled="$disabled"/>
         @endif
         @if (!$disabled)
             <div x-data
