@@ -24,7 +24,7 @@ class TargetGroupSelectorMongo
                         $query,
                         $column,
                         Arr::get($row, 'operator'),
-                        $this->parseValue(Arr::get($row, 'value'), Arr::get($row, 'columnType'))
+                        $this->parseValue(Arr::get($row, 'value'), Arr::get($row, 'columnType'), Arr::get($row, 'operator'))
                     );
                 }
             });
@@ -60,15 +60,15 @@ class TargetGroupSelectorMongo
                             $query,
                             Arr::get($row, 'column'),
                             Arr::get($row, 'operator'),
-                            $this->parseValue(Arr::get($row, 'from'), Arr::get($row, 'columnType')),
-                            $this->parseValue(Arr::get($row, 'to'), Arr::get($row, 'columnType'))
+                            $this->parseValue(Arr::get($row, 'from'), Arr::get($row, 'columnType'), Arr::get($row, 'operator')),
+                            $this->parseValue(Arr::get($row, 'to'), Arr::get($row, 'columnType'), Arr::get($row, 'operator'))
                         );
                     } else {
                         $query = $this->addWhere(
                             $query,
                             Arr::get($row, 'column'),
                             Arr::get($row, 'operator'),
-                            $this->parseValue(Arr::get($row, 'value'), Arr::get($row, 'columnType'))
+                            $this->parseValue(Arr::get($row, 'value'), Arr::get($row, 'columnType'), Arr::get($row, 'operator'))
                         );
                     }
                 }
@@ -78,15 +78,31 @@ class TargetGroupSelectorMongo
         return $query;
     }
 
-    private function parseValue($value, $columnType)
+    private function parseValue($value, $columnType, $operator)
     {
+        if ((in_array($operator, ['eqm', 'neqm'])) && (! is_countable($value))) {
+            $value = explode(',', $value);
+        }
+
         switch ($columnType) {
             case 'boolean':
                 return (bool) $value;
             case 'select_integer':
             case 'integer':
+                if (is_countable($value)) {
+                    return Arr::map($value, function ($item) {
+                        return (int) $item;
+                    });
+                }
+
                 return (int) $value;
             case 'float':
+                if (is_countable($value)) {
+                    return Arr::map($value, function ($item) {
+                        return (float) $item;
+                    });
+                }
+
                 return (float) $value;
             case 'price':
                 return (int) ($value * 100);
@@ -100,10 +116,6 @@ class TargetGroupSelectorMongo
                     return (int) $item;
                 });
             case 'text_array':
-                if (! is_countable($value)) {
-                    $value = explode(',', $value);
-                }
-
                 return Arr::map($value, function ($item) {
                     return (string) $item;
                 });

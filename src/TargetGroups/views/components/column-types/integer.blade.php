@@ -18,6 +18,9 @@
                                 :disabled="$disabled"/>
             <x-ccm::forms.input type="text" step="1" name="filterTmp.to" wire:model.blur="filterTmp.to"
                                 :disabled="$disabled"/>
+        @elseif ((Arr::get($filter, 'operator') === 'eqm') || (Arr::get($filter, 'operator') === 'neqm'))
+            <x-ccm::forms.multiple-select name="filterTmp.value" :grow="true"
+                                          :disabled="$disabled"></x-ccm::forms.multiple-select>
         @else
             <x-ccm::forms.input type="text"
                                 step="1"
