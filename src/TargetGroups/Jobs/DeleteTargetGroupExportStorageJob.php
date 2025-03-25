@@ -14,8 +14,8 @@ class DeleteTargetGroupExportStorageJob
 
     public function handle(): void
     {
-        if (\Storage::disk($this->targetGroupExport->disk)->exists($this->targetGroupExport->path)) {
-            \Storage::disk($this->targetGroupExport->disk)->delete($this->targetGroupExport->path);
+        if (\DiskService::disk($this->targetGroupExport->disk)->exists($this->targetGroupExport->path)) {
+            \DiskService::disk($this->targetGroupExport->disk)->delete($this->targetGroupExport->path);
         }
     }
 }
