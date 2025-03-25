@@ -15,10 +15,10 @@ class DiskForm extends Form
     public ?int $id = null;
 
     #[Validate]
-    public string $name;
+    public string $name = '';
 
     #[Validate]
-    public string $type;
+    public string $type = '';
 
     #[Validate]
     public ?string $description = null;
