@@ -13,7 +13,7 @@ use Sellvation\CCMV2\Environments\Models\Environment;
 
 class MigrateCcmpEnvironment extends Command
 {
-    protected $signature = 'ccmp:migrate-environment-data {--startdate=}';
+    protected $signature = 'ccmp:migrate-environment-data {--startdate=} {--remove}';
 
     protected $description = 'Stap 2: Migrate CCMp environment data, execute per environment';
 
@@ -35,22 +35,26 @@ class MigrateCcmpEnvironment extends Command
                 $this->environmentId = $environment->id;
                 $this->environment = $environment;
 
-                if ($this->confirm('Crm Fields importeren ?', true)) {
-                    $this->migrateCrmFieldCategories();
-                    $this->migrateCrmFields();
-                }
-                if ($this->confirm('Crm Card importeren ?', true)) {
-                    $this->migrateCrmCards();
-                }
-                if ($this->confirm('E-mails importeren ?', false)) {
-                    $this->migrateEmailCategories();
-                    $this->migrateEmails();
-                }
-                if ($this->confirm('E-mail statistieken importeren ?', false)) {
-                    $this->migrateEmailStats();
-                }
+                if ($this->option('remove')) {
+                    $this->removeCrmCards();
+                } else {
+                    if ($this->confirm('Crm Fields importeren ?', true)) {
+                        $this->migrateCrmFieldCategories();
+                        $this->migrateCrmFields();
+                    }
+                    if ($this->confirm('Crm Card importeren ?', true)) {
+                        $this->migrateCrmCards();
+                    }
+                    if ($this->confirm('E-mails importeren ?', false)) {
+                        $this->migrateEmailCategories();
+                        $this->migrateEmails();
+                    }
+                    if ($this->confirm('E-mail statistieken importeren ?', false)) {
+                        $this->migrateEmailStats();
+                    }
 
-                $this->cleanup();
+                    $this->cleanup();
+                }
             }
         }
     }
@@ -265,6 +269,30 @@ class MigrateCcmpEnvironment extends Command
             });
 
         $progressBar->finish();
+    }
+
+    private function removeCrmCards()
+    {
+        $this->info('Remove CRM Card which don\'t exists anymore at CCMP.');
+
+        $total = CrmCard::count();
+        $bar = $this->output->createProgressBar($total);
+
+        $deleted = 0;
+        foreach (CrmCard::select(['id', 'crm_id'])->cursor() as $crmCard) {
+            if (! \DB::connection('db01')
+                ->table('crm_'.$this->environmentId)
+                ->where('crmid', $crmCard->crm_id)
+                ->exists()) {
+                $crmCard->delete();
+                $deleted++;
+            }
+
+            $bar->advance();
+        }
+
+        $bar->finish();
+        $this->output->text($deleted.' of '.$total.' CRM Cards were removed.');
     }
 
     private function migrateEmailCategories()

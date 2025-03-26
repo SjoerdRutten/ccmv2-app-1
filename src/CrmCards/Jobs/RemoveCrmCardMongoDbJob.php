@@ -20,7 +20,8 @@ class RemoveCrmCardMongoDbJob
 
     public function handle(): void
     {
-        $crmCardMongo = CrmCardMongo::where('id', $this->crmCard->id)->first();
-        $crmCardMongo->delete();
+        if ($crmCardMongo = CrmCardMongo::where('id', $this->crmCard->id)->first()) {
+            $crmCardMongo->delete();
+        }
     }
 }
