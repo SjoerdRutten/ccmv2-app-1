@@ -189,6 +189,10 @@ class MigrateCcmpEnvironment extends Command
 
         $query->chunk(500, function ($crmCards) use ($progressBar) {
             foreach ($crmCards as $key => $row) {
+                if ($key === 0) {
+                    \Log::info('Import CRM Cards '.$progressBar->getProgress().'/'.$progressBar->getMaxSteps().', estimated minutes remaining:'.($progressBar->getEstimated() / 60));
+                }
+
                 $progressBar->advance();
 
                 $data = json_decode(json_encode($row), true);
