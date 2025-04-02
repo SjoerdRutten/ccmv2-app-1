@@ -16,7 +16,7 @@ trait HasSchedulableCommands
             ->classes()
             ->extending(CcmCommand::class)
             ->get() as $command) {
-            \SchedulableCommands::registerCommand($command::class);
+            \SchedulableCommands::registerCommand($command);
         }
     }
 }
