@@ -16,6 +16,8 @@ class ExtensionService
         if (is_subclass_of($listener, CcmJob::class)) {
             $this->extensionJobs[$listener] = $listener::getName();
         }
+
+        ksort($this->extensionJobs);
     }
 
     public function registerExtensionEvent(string $event)
@@ -23,6 +25,8 @@ class ExtensionService
         if (is_subclass_of($event, CcmEvent::class)) {
             $this->extensionEvents[$event] = $event::getName();
         }
+
+        ksort($this->extensionEvents);
     }
 
     public function getExtensionJobs(): array
