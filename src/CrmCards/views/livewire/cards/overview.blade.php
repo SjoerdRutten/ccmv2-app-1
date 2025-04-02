@@ -32,8 +32,6 @@
             </div>
         </x-ccm::pages.intro>
 
-        @dump($sort)
-
         <x-ccm::loading/>
         <x-ccm::tables.table wire:loading.remove>
             <x-slot:thead>
