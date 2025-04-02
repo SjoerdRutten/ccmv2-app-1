@@ -2,6 +2,7 @@
 
 namespace Sellvation\CCMV2\CrmCards\Livewire\Cards;
 
+use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Sellvation\CCMV2\Ccm\Livewire\Traits\HasModals;
@@ -18,6 +19,8 @@ class Edit extends Component
 
     public CrmCardForm $form;
 
+    public string $showLabel = 'name';
+
     #[Url]
     public array $filter = [
         'q' => '',
@@ -26,6 +29,8 @@ class Edit extends Component
 
     public function mount(CrmCard $crmCard)
     {
+        $this->showLabel = Cache::get('crm-card-show-label', 'name');
+
         $this->crmCard = $crmCard;
         $this->form->setCrmCard($this->crmCard);
     }
@@ -33,6 +38,9 @@ class Edit extends Component
     public function updated($property, $value)
     {
         switch ($property) {
+            case 'showLabel':
+                Cache::set('crm-card-show-label', $value, 3600);
+                break;
             case 'filter.category_id':
                 $this->filter['q'] = null;
                 break;

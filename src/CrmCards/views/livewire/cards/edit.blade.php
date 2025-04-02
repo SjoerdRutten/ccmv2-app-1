@@ -24,6 +24,14 @@
                         </option>
                     @endforeach
                 </x-ccm::forms.select>
+                <x-ccm::forms.select
+                        name="showLabel"
+                        wire:model.live="showLabel"
+                        label="Label tonen">
+                    <option value="label">Veld label</option>
+                    <option value="name">Veld naam</option>
+                </x-ccm::forms.select>
+
             </div>
         </x-ccm::pages.intro>
         <x-ccm::accordion.base>
@@ -83,15 +91,22 @@
                 @if (empty($filter['category_id']) || ($filter['category_id'] < 0))
                     <x-ccm::accordion.row title="Zonder categorie" key="1" :initialState="true">
                         <x-ccm::description-lists.base title="">
-                            <x-crm-cards::edit-fields :fields="$this->form->noCategoryFields()" :crmCard="$crmCard"/>
+                            <x-crm-cards::edit-fields
+                                    :fields="$this->form->noCategoryFields()"
+                                    :crmCard="$crmCard"
+                                    :showLabel="$showLabel"
+                            />
                         </x-ccm::description-lists.base>
                     </x-ccm::accordion.row>
                 @endif
                 @foreach ($categories AS $key => $category)
                     <x-ccm::accordion.row :title="$category->name" :key="$key + 2" :initialState="true">
                         <x-ccm::description-lists.base title="">
-                            <x-crm-cards::edit-fields :fields="$category->crmFields()->isVisible()->get()"
-                                                      :crmCard="$crmCard"/>
+                            <x-crm-cards::edit-fields
+                                    :fields="$category->crmFields()->isVisible()->get()"
+                                    :crmCard="$crmCard"
+                                    :showLabel="$showLabel"
+                            />
 
                         </x-ccm::description-lists.base>
                     </x-ccm::accordion.row>
@@ -100,8 +115,11 @@
             @else
                 <x-ccm::accordion.row title="Gevonden velden" key="search" :initialState="true">
                     <x-ccm::description-lists.base title="">
-                        <x-crm-cards::edit-fields :fields="$foundFields"
-                                                  :crmCard="$crmCard"/>
+                        <x-crm-cards::edit-fields
+                                :fields="$foundFields"
+                                :crmCard="$crmCard"
+                                :showLabel="$showLabel"
+                        />
 
                     </x-ccm::description-lists.base>
                 </x-ccm::accordion.row>

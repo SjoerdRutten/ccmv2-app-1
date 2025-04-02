@@ -23,11 +23,17 @@ class Overview extends Component
         'crm_field_id' => null,
     ];
 
-    public function mount() {}
+    public function mount()
+    {
+        if (\Cache::has('crm-card-filter')) {
+            $this->filter = \Cache::get('crm-card-filter');
+        }
+    }
 
     public function updated($property, $value)
     {
         if (Str::startsWith($property, 'filter')) {
+            \Cache::set('crm-card-filter', $this->filter, 3600);
             $this->resetPage();
         }
     }
