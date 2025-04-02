@@ -23,10 +23,18 @@ class Overview extends Component
         'crm_field_id' => null,
     ];
 
+    public array $sort = [
+        'column' => 'emailadres',
+        'direction' => 'asc',
+    ];
+
     public function mount()
     {
         if (\Cache::has('crm-card-filter')) {
             $this->filter = \Cache::get('crm-card-filter');
+        }
+        if (\Cache::has('crm-card-order')) {
+            $this->sort = \Cache::get('crm-card-order');
         }
     }
 
@@ -36,6 +44,18 @@ class Overview extends Component
             \Cache::set('crm-card-filter', $this->filter, 3600);
             $this->resetPage();
         }
+    }
+
+    public function setOrder($column)
+    {
+        if ($this->sort['column'] === $column) {
+            $this->sort['direction'] = $this->sort['direction'] === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sort['column'] = $column;
+            $this->sort['direction'] = 'asc';
+        }
+
+        \Cache::set('crm-card-order', $this->sort, 3600);
     }
 
     public function removeCard(CrmCard $card)
@@ -61,6 +81,10 @@ class Overview extends Component
                     $query->orWhere($crmField->name, 'like', '%'.$this->filter['q'].'%');
                 }
             }
+        }
+
+        if (! empty($this->sort['column'])) {
+            $query->orderBy($this->sort['column'], $this->sort['direction']);
         }
 
         return $query->select('id')->paginate(25);

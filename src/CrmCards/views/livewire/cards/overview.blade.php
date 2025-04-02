@@ -32,12 +32,25 @@
             </div>
         </x-ccm::pages.intro>
 
+        @dump($sort)
+
         <x-ccm::loading/>
         <x-ccm::tables.table wire:loading.remove>
             <x-slot:thead>
                 @foreach ($crmFields AS $key => $crmField)
                     <x-ccm::tables.th :first="$key === 0">
-                        {{ Str::replace('_', ' ', $crmField->name) }}
+                        <div class="flex">
+                            <a href="#" wire:click.prevent="setOrder('{{ $crmField->name }}')" class="hover:underline">
+                                {{ Str::replace('_', ' ', $crmField->name) }}
+                            </a>
+                            @if ($sort['column'] === $crmField->name)
+                                @if ($sort['direction'] === 'asc')
+                                    <x-heroicon-c-chevron-down class="w-4 h-4 inline"/>
+                                @else
+                                    <x-heroicon-c-chevron-up class="w-4 h-4 inline"/>
+                                @endif
+                            @endif
+                        </div>
                     </x-ccm::tables.th>
                 @endforeach
                 <x-ccm::tables.th></x-ccm::tables.th>
