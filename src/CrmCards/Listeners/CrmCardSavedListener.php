@@ -11,6 +11,6 @@ class CrmCardSavedListener
 
     public function handle(CrmCardSavedEvent $event): void
     {
-        UpdateCrmCardMongoDbJob::dispatchSync($event->crmCard);
+        UpdateCrmCardMongoDbJob::dispatch($event->crmCard);
     }
 }
