@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use Sellvation\CCMV2\Ccmp\Console\Commands\ConvertOptinOptoutCommand;
 use Sellvation\CCMV2\Ccmp\Console\Commands\MigrateCcmpEnvironment;
 use Sellvation\CCMV2\Ccmp\Console\Commands\MigrateCcmpGlobalCommand;
+use Sellvation\CCMV2\Ccmp\Console\Commands\RemoveCrmCardsFromMongoCommand;
 use Sellvation\CCMV2\Ccmp\Facades\CcmpSoapService;
 use Sellvation\CCMV2\Ccmp\Facades\CcmpSoapServiceFacade;
 
@@ -20,6 +21,7 @@ class CcmpServiceProvider extends ServiceProvider
             ConvertOptinOptoutCommand::class,
             MigrateCcmpGlobalCommand::class,
             MigrateCcmpEnvironment::class,
+            RemoveCrmCardsFromMongoCommand::class,
         ]);
 
         $this->registerSchedulableCommands();
