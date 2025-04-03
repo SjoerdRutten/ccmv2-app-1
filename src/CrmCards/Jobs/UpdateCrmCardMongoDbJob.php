@@ -110,7 +110,7 @@ class UpdateCrmCardMongoDbJob implements ShouldQueue
             try {
                 $timestamp = Carbon::parse($value)->toIso8601String();
 
-                return $timestamp === -62169984000 ? null : $timestamp;
+                return $timestamp < 0 ? null : $timestamp;
             } catch (\Exception $e) {
             }
         }
