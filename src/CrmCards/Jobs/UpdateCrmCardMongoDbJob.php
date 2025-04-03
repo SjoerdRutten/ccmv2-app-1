@@ -25,6 +25,7 @@ class UpdateCrmCardMongoDbJob implements ShouldQueue
     public function handle(): void
     {
         $data = $this->crmCard->toArray();
+        $data['mongo_updated_at'] = now();
 
         \Arr::forget($data, ['data']);
 
