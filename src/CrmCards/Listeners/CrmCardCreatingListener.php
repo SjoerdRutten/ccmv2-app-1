@@ -18,7 +18,7 @@ class CrmCardCreatingListener
             // Generate unique crm_id
             do {
                 $crmId = $event->crmCard->environment_id.'_'.Str::random(16);
-            } while ((bool) CrmCard::where('crm_id', $crmId)->count());
+            } while (CrmCard::where('crm_id', $crmId)->exists());
 
             $event->crmCard->crm_id = $crmId;
         }
