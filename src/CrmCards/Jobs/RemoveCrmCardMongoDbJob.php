@@ -20,9 +20,6 @@ class RemoveCrmCardMongoDbJob
 
     public function handle(): void
     {
-        $environmentId = $this->ask('Welke environment ?');
-        \Context::add('environment_id', $environmentId);
-
         if ($crmCardMongo = CrmCardMongo::where('id', $this->crmCard->id)->first()) {
             $crmCardMongo->delete();
         }

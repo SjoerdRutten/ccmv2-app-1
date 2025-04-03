@@ -14,6 +14,9 @@ class RemoveCrmCardsFromMongoCommand extends Command
 
     public function handle(): void
     {
+        $environmentId = $this->ask('Welke environment ?');
+        \Context::add('environment_id', $environmentId);
+
         $bar = $this->output->createProgressBar(CrmCardMongo::count());
 
         $count = 0;
