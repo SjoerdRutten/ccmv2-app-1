@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
 use Sellvation\CCMV2\Ccmp\Jobs\ProcessStatisticsRowJob;
+use Sellvation\CCMV2\CrmCards\Jobs\UpdateCrmCardMongoDbJob;
 use Sellvation\CCMV2\CrmCards\Models\Builders\CrmFieldType;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\CrmCards\Models\CrmFieldCategory;
@@ -28,6 +29,8 @@ class MigrateCcmpEnvironment extends Command
         Config::set('database.connections.db01.database', 'ccmp');
 
         foreach (Environment::get() as $environment) {
+
+            \Context::add('environment_id', $environment->id);
 
             if ($this->confirm($environment->name.' importeren ?', true)) {
                 $this->output->title('Import environment '.$environment->name);
@@ -180,6 +183,7 @@ class MigrateCcmpEnvironment extends Command
             }
 
             $query = \DB::connection('db01')
+                ->select('crmid')
                 ->table('crm_'.$this->environmentId)
                 ->where('datummutatie', '>=', $startDate)
                 ->orderBy('datummutatie');
@@ -195,85 +199,7 @@ class MigrateCcmpEnvironment extends Command
 
                 $progressBar->advance();
 
-                $data = json_decode(json_encode($row), true);
-                $data = \Arr::except($data, [
-                    'crmid',
-                    'systeemgebruiker',
-                    'systeemwachtwoord',
-                    'datumcreatie',
-                    'datummutatie',
-                    'bewerkt_door_gebruikers_id',
-                    'bewerkt_door_api_id',
-                    'aangemaakt_door_gebruikers_id',
-                    'eersteip',
-                    'laatsteip',
-                    'eersteipv6',
-                    'laatsteipv6',
-                    'browser_ua',
-                    'eerste_email',
-                    'laatste_email',
-                    'eerste_email_geopend',
-                    'laatste_email_geopend',
-                    'eerste_email_geklikt',
-                    'laatste_email_geklikt',
-                    'eerste_bezoek',
-                    'laatste_bezoek',
-                    'browser',
-                    'browser_devicetype',
-                    'browser_device',
-                    'browser_os',
-                    'mailclient_ua',
-                    'mailclient',
-                    'mailclient_device',
-                    'mailclient_devicetype',
-                    'mailclient_os',
-                    'latitude',
-                    'longitude',
-                ]);
-
-                \DB::beginTransaction();
-
-                try {
-                    $this->environment->crmCards()->updateOrCreate([
-                        'crm_id' => $row->crmid,
-                    ], [
-                        'crm_id' => $row->crmid,
-                        'environment_id' => $this->environment->id,
-                        'updated_by_user_id' => null,
-                        'created_by_user_id' => null,
-                        'updated_by_api_id' => null,
-                        'first_ip' => $row->eersteip,
-                        'latest_ip' => $row->laatsteip,
-                        'first_ipv6' => $row->eersteipv6,
-                        'latest_ipv6' => $row->laatsteipv6,
-                        'browser_ua' => $row->browser_ua,
-                        'first_email_send_at' => Carbon::parse($row->eerste_email)->timezone('Europe/Amsterdam'),
-                        'latest_email_send_at' => Carbon::parse($row->laatste_email)->timezone('Europe/Amsterdam'),
-                        'first_email_opened_at' => Carbon::parse($row->eerste_email_geopend)->timezone('Europe/Amsterdam'),
-                        'latest_email_opened_at' => Carbon::parse($row->laatste_email_geopend)->timezone('Europe/Amsterdam'),
-                        'first_email_clicked_at' => Carbon::parse($row->eerste_email_geklikt)->timezone('Europe/Amsterdam'),
-                        'latest_email_clicked_at' => Carbon::parse($row->laatste_email_geklikt)->timezone('Europe/Amsterdam'),
-                        'first_visit_at' => Carbon::parse($row->eerste_bezoek)->timezone('Europe/Amsterdam'),
-                        'latest_visit_at' => Carbon::parse($row->laatste_bezoek)->timezone('Europe/Amsterdam'),
-                        'browser' => $row->browser,
-                        'browser_device_type' => $row->browser_devicetype,
-                        'browser_device' => $row->browser_device,
-                        'browser_os' => $row->browser_os,
-                        'mailclient_ua' => $row->mailclient_ua,
-                        'mailclient' => $row->mailclient,
-                        'mailclient_device_type' => $row->mailclient_devicetype,
-                        'mailclient_device' => $row->mailclient_device,
-                        'mailclient_os' => $row->mailclient_os,
-                        'latitude' => $row->latitude,
-                        'longitude' => $row->longitude,
-                        'data' => $data,
-                        'created_at' => Carbon::parse($row->datumcreatie)->timezone('Europe/Amsterdam'),
-                        'updated_at' => Carbon::parse($row->datummutatie)->timezone('Europe/Amsterdam'),
-                    ]);
-                } catch (\Exception $e) {
-                    \DB::rollBack();
-                }
-                \DB::commit();
+                UpdateCrmCardMongoDbJob::dispatch($row);
             }
         });
 
