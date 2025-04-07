@@ -12,6 +12,7 @@ use Livewire\Livewire;
 use Sellvation\CCMV2\Ccm\Components\acitivity_log\Table;
 use Sellvation\CCMV2\Ccm\Components\dashboard\QueueCard;
 use Sellvation\CCMV2\Ccm\Components\dashboard\ScheduledTasksLogsCard;
+use Sellvation\CCMV2\Ccm\Components\forms\CategoryField;
 use Sellvation\CCMV2\Ccm\Components\forms\CrmFieldsOptions;
 use Sellvation\CCMV2\Ccm\Facades\CcmMenu;
 use Sellvation\CCMV2\Ccm\Facades\CcmMenuFacade;
@@ -66,6 +67,7 @@ class CcmServiceProvider extends ServiceProvider
         Blade::component('ccm::dashboard.scheduled-tasks-logs-card', ScheduledTasksLogsCard::class);
         Blade::component('ccm::activity_log.table', Table::class);
         Blade::component('ccm::forms.crm-fields-options', CrmFieldsOptions::class);
+        Blade::component('ccm::forms.categories', CategoryField::class);
     }
 
     private function registerLivewireComponents(): void

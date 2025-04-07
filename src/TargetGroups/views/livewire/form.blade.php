@@ -12,7 +12,7 @@
                     Query builder
                     <x-slot:badge>
                         <livewire:target-group-selector::target-group-row-count key="TGCounter"
-                                                                                :elements="$elements"
+                                                                                :target-group-id="$targetGroup->id"
                                                                                 wire:loading.remove
                                                                                 lazy
 
@@ -33,6 +33,7 @@
             <x-ccm::tabs.tab-content :index="0">
                 <div class="w-1/2 flex flex-col gap-4">
                     <x-ccm::forms.input name="name" wire:model="name">Naam</x-ccm::forms.input>
+                    <x-ccm::forms.categories name="category_id" wire:model="category_id"></x-ccm::forms.categories>
                     <x-ccm::forms.textarea name="description" wire:model="description">
                         Omschrijving
                     </x-ccm::forms.textarea>

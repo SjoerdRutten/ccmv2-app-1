@@ -14,9 +14,17 @@ class TargetGroupRowCount extends Component
 
     public TargetGroup $targetGroup;
 
-    public function mount(TargetGroup $targetGroup)
+    public bool $readyToLoad = false;
+
+    public function load()
     {
-        $this->targetGroup = $targetGroup;
+        $this->readyToLoad = true;
+    }
+
+    public function mount($targetGroupId)
+    {
+        $this->targetGroup = TargetGroup::find($targetGroupId);
+        $this->elements = $this->targetGroup->filters;
 
         if ($this->targetGroup->id) {
             $this->updateTargetGroupCount();

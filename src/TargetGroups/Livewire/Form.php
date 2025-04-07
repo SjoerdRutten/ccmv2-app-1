@@ -8,6 +8,7 @@ use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Sellvation\CCMV2\Ccm\Livewire\Traits\HasModals;
+use Sellvation\CCMV2\Ccm\Traits\HasCategoryField;
 use Sellvation\CCMV2\CrmCards\Jobs\AddTagToCrmCardJob;
 use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelectorFacade;
 use Sellvation\CCMV2\TargetGroups\Models\TargetGroup;
@@ -17,10 +18,13 @@ use Storage;
 
 class Form extends Component
 {
+    use HasCategoryField;
     use HasModals;
 
     #[Locked]
     public ?int $id = null;
+
+    public ?int $category_id = null;
 
     public TargetGroup $targetGroup;
 
@@ -49,6 +53,7 @@ class Form extends Component
     {
         if ($targetGroup->id) {
             $this->id = $targetGroup->id;
+            $this->category_id = $targetGroup->category_id;
             $this->name = $targetGroup->name;
             $this->description = $targetGroup->description;
             $this->elements = Arr::whereNotNull($targetGroup->filters);
@@ -94,6 +99,7 @@ class Form extends Component
         $targetGroup = TargetGroup::updateOrCreate([
             'id' => $this->id,
         ], [
+            'category_id' => $this->category_id,
             'name' => $this->name,
             'description' => $this->description,
             'filters' => array_values(Arr::whereNotNull($this->elements)),
