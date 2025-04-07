@@ -17,9 +17,14 @@ class UpdateCrmCardMongoDbJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(private readonly CrmCard $crmCard)
+    public function __construct(private CrmCard|\stdClass $crmCard)
     {
         $this->queue = 'scout';
+
+        if ($crmCard instanceof \stdClass) {
+            $this->crmCard = CrmCard::whereCrmId($crmCard->crmid)->first();
+        }
+
     }
 
     public function handle(): void
