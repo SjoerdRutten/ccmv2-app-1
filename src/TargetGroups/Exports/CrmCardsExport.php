@@ -2,6 +2,7 @@
 
 namespace Sellvation\CCMV2\TargetGroups\Exports;
 
+use Carbon\Carbon;
 use Generator;
 use Illuminate\Support\Arr;
 use Maatwebsite\Excel\Concerns\FromGenerator;
@@ -20,40 +21,37 @@ class CrmCardsExport implements FromGenerator, ShouldAutoSize, WithHeadings, Wit
     public function __construct(private readonly TargetGroupExport $targetGroupExport)
     {
         $this->fields = Arr::sort($this->targetGroupExport->targetGroupFieldset->crmFields->pluck('name')->toArray());
-        $this->startedAt = $this->targetGroupExport->started_at;
+        $this->startedAt = Carbon::parse($this->targetGroupExport->started_at);
     }
 
     public function generator(): Generator
     {
-        $page = 0;
-        do {
-            dump($page);
-            $crmCards = TargetGroupSelectorFacade::getQuery($this->targetGroupExport->targetGroup->filters)->forPage($page, 500)->cursor();
+        $progress = 0;
 
-            foreach ($crmCards as $crmCard) {
-                yield $crmCard;
-            }
+        $query = TargetGroupSelectorFacade::getQuery($this->targetGroupExport->targetGroup->filters);
 
-            $progress = ($page * 500) + count($crmCards);
-            $progress = $progress > $this->targetGroupExport->number_of_records ? $this->targetGroupExport->number_of_records : $progress;
+        foreach ($query->lazyById(500) as $crmCard) {
+            $progress++;
 
-            if ($progress % 1000 === 0) {
-                // Calculated expected endtime
+            // Elke 1000 records: update progress en expected_end_time
+            if ($progress % 1000 === 0 || $progress === $this->targetGroupExport->number_of_records) {
                 $secondsSinceStart = $this->startedAt->diffInMicroseconds(now());
-
                 $secondsPerRecord = $secondsSinceStart / $progress;
 
-                $expectedEndTime = now()->addMicroseconds(ceil($secondsPerRecord * ($this->targetGroupExport->number_of_records - $progress)));
+                $expectedEndTime = now()->addMicroseconds(
+                    ceil($secondsPerRecord * ($this->targetGroupExport->number_of_records - $progress))
+                );
 
                 $this->targetGroupExport->update([
                     'progress' => $progress,
                     'expected_end_time' => $expectedEndTime,
                 ]);
             }
-            $page++;
 
-        } while (count($crmCards) > 0);
+            yield $crmCard;
+        }
 
+        // Final update
         $this->targetGroupExport->update([
             'progress' => $progress,
         ]);
