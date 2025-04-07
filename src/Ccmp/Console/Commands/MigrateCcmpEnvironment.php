@@ -9,6 +9,7 @@ use Sellvation\CCMV2\Ccmp\Jobs\ProcessStatisticsRowJob;
 use Sellvation\CCMV2\CrmCards\Jobs\UpdateCrmCardMongoDbJob;
 use Sellvation\CCMV2\CrmCards\Models\Builders\CrmFieldType;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
+use Sellvation\CCMV2\CrmCards\Models\CrmField;
 use Sellvation\CCMV2\CrmCards\Models\CrmFieldCategory;
 use Sellvation\CCMV2\Environments\Models\Environment;
 
@@ -123,6 +124,8 @@ class MigrateCcmpEnvironment extends Command
             ->where('omgevingen_id', $this->environmentId)
             ->get();
 
+        $fieldIds = $rows->pluck('id')->toArray();
+
         foreach ($rows as $row) {
             $field = $this->environment->crmFields()->updateOrCreate([
                 'id' => $row->id,
@@ -150,6 +153,16 @@ class MigrateCcmpEnvironment extends Command
         }
 
         $this->info($this->environment->crmFields()->count().' fields imported');
+
+        $this->info(CrmField::query()
+            ->whereEnvironmentId($this->environmentId)
+            ->whereNotIn('id', $fieldIds)->count().' fields deleted');
+
+        CrmField::query()
+            ->whereEnvironmentId($this->environmentId)
+            ->whereNotIn('id', $fieldIds)
+            ->delete();
+
     }
 
     private function getCrmFieldCategoryId($rubriekId): ?int
