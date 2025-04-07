@@ -9,6 +9,7 @@ use Sellvation\CCMV2\Ccmp\Jobs\ProcessStatisticsRowJob;
 use Sellvation\CCMV2\CrmCards\Jobs\UpdateCrmCardMongoDbJob;
 use Sellvation\CCMV2\CrmCards\Models\Builders\CrmFieldType;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
+use Sellvation\CCMV2\CrmCards\Models\CrmCardMongo;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
 use Sellvation\CCMV2\CrmCards\Models\CrmFieldCategory;
 use Sellvation\CCMV2\Environments\Models\Environment;
@@ -232,6 +233,22 @@ class MigrateCcmpEnvironment extends Command
                 ->table('crm_'.$this->environmentId)
                 ->where('crmid', $crmCard->crm_id)
                 ->exists()) {
+                $crmCard->delete();
+                $deleted++;
+            }
+
+            $bar->advance();
+        }
+
+        $bar->finish();
+        $this->output->text($deleted.' of '.$total.' CRM Cards were removed.');
+
+        $total = CrmCardMongo::count();
+        $bar = $this->output->createProgressBar($total);
+
+        $deleted = 0;
+        foreach (CrmCardMongo::select(['id', 'crm_id'])->cursor() as $crmCard) {
+            if (! CrmCard::find($crmCard->id)) {
                 $crmCard->delete();
                 $deleted++;
             }
