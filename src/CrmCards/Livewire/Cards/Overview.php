@@ -88,8 +88,6 @@ class Overview extends Component
             $query->orderBy($this->sort['column'], $this->sort['direction'] === 'asc' ? 1 : -1);
         }
 
-        dump($query->toMql());
-
         return $query->select('id')->paginate(25);
     }
 
