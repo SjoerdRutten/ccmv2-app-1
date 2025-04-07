@@ -23,6 +23,7 @@ class Overview extends Component
         'crm_field_id' => null,
     ];
 
+    #[Url]
     public array $sort = [
         'column' => 'emailadres',
         'direction' => 'asc',
@@ -33,7 +34,7 @@ class Overview extends Component
         if (\Cache::has('crm-card-filter')) {
             $this->filter = \Cache::get('crm-card-filter');
         }
-        if (\Cache::has('crm-card-order')) {
+        if (\Cache::has('crm-card-order') && (! request()->has('sort'))) {
             $this->sort = \Cache::get('crm-card-order');
         }
     }
@@ -84,8 +85,10 @@ class Overview extends Component
         }
 
         if (! empty($this->sort['column'])) {
-            $query->orderBy($this->sort['column'], $this->sort['direction']);
+            $query->orderBy($this->sort['column'], $this->sort['direction'] === 'asc' ? 1 : -1);
         }
+
+        dump($query->toMql());
 
         return $query->select('id')->paginate(25);
     }

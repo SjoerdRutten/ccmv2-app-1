@@ -38,6 +38,7 @@
                 @foreach ($crmFields AS $key => $crmField)
                     <x-ccm::tables.th :first="$key === 0">
                         <div class="flex">
+                            {{ $crmField->id }}
                             <a href="#" wire:click.prevent="setOrder('{{ $crmField->name }}')" class="hover:underline">
                                 {{ Str::replace('_', ' ', $crmField->name) }}
                             </a>
