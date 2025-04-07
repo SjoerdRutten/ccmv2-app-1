@@ -19,6 +19,8 @@ class ExportTargetGroupJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $timeout = 3600;
+
     public function __construct(private readonly TargetGroupExport $targetGroupExport)
     {
         $this->queue = 'exports';
