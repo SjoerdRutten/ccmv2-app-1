@@ -28,13 +28,13 @@ class CrmCardsExport implements FromGenerator, ShouldAutoSize, WithHeadings, Wit
         $page = 0;
         do {
             dump($page);
-            $crmCards = TargetGroupSelectorFacade::getQuery($this->targetGroupExport->targetGroup->filters)->forPage($page, 100)->get();
+            $crmCards = TargetGroupSelectorFacade::getQuery($this->targetGroupExport->targetGroup->filters)->forPage($page, 500)->get();
 
             foreach ($crmCards as $crmCard) {
                 yield $crmCard;
             }
 
-            $progress = ($page * 100) + count($crmCards);
+            $progress = ($page * 500) + count($crmCards);
             $progress = $progress > $this->targetGroupExport->number_of_records ? $this->targetGroupExport->number_of_records : $progress;
 
             if ($progress % 1000 === 0) {
