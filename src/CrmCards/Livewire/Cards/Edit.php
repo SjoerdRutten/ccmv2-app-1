@@ -83,6 +83,31 @@ class Edit extends Component
         return [];
     }
 
+    public function setFieldPosition(CrmField $field, $position)
+    {
+        $field->update(['position' => $position]);
+
+        $crmFields = CrmField::query()
+            ->where('id', '<>', $field->id)
+            ->when(empty($field->crm_field_category_id), function ($query) {
+                $query->whereNull('crm_field_category_id');
+            })
+            ->when(! empty($field->crm_field_category_id), function ($query) use ($field) {
+                $query->where('crm_field_category_id', $field->crm_field_category_id);
+            })
+            ->orderBy('position')
+            ->get();
+
+        $index = 0;
+        foreach ($crmFields as $key => $crmField) {
+            if ($index === $position) {
+                $index++;
+            }
+            $crmField->update(['position' => $index]);
+            $index++;
+        }
+    }
+
     public function render()
     {
         return view('crm-cards::livewire.cards.edit')
