@@ -34,7 +34,7 @@
 
             </div>
         </x-ccm::pages.intro>
-        <x-ccm::accordion.base>
+        <x-ccm::accordion.base x-sort="$wire.setCategoryPosition($item, $position)" x-sort:group="categories">
             @if (empty($filter['q']))
 
                 <x-ccm::accordion.row title="Algemeen" key="0" :initialState="false">
@@ -100,7 +100,10 @@
                     </x-ccm::accordion.row>
                 @endif
                 @foreach ($categories AS $key => $category)
-                    <x-ccm::accordion.row :title="$category->name" :key="$key + 2" :initialState="true">
+                    <x-ccm::accordion.row :title="$category->name"
+                                          :key="$key + 2"
+                                          :initialState="true"
+                                          x-sort:item="{{ $category->id }}">
                         <x-ccm::description-lists.base title="">
                             <x-crm-cards::edit-fields
                                     :fields="$category->crmFields()->isVisible()->get()"
