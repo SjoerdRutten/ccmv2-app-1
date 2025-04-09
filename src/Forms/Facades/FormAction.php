@@ -2,8 +2,6 @@
 
 namespace Sellvation\CCMV2\Forms\Facades;
 
-use Spatie\StructureDiscoverer\Discover;
-
 class FormAction
 {
     private array $formActions = [];
@@ -14,22 +12,8 @@ class FormAction
         $this->formActions = \Arr::sort($this->formActions, fn ($row) => $row->name);
     }
 
-    public function discover()
-    {
-        foreach (Discover::in(__DIR__.'/../Actions')
-            ->classes()
-            ->extending(\Sellvation\CCMV2\Forms\Actions\FormAction::class)
-            ->get() as $action) {
-            $x = new $action;
-
-            $this->registerFormAction($x);
-        }
-    }
-
     public function getFormActions()
     {
-        $this->discover();
-
         return $this->formActions;
     }
 

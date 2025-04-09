@@ -7,6 +7,7 @@ use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
+use Sellvation\CCMV2\Ccm\Traits\HasFormActions;
 use Sellvation\CCMV2\Forms\Events\FormCreatingEvent;
 use Sellvation\CCMV2\Forms\Events\FormResponseCreatedEvent;
 use Sellvation\CCMV2\Forms\Facades\FormAction;
@@ -20,6 +21,8 @@ use Sellvation\CCMV2\Forms\Livewire\Forms\Overview;
 
 class FormServiceProvider extends ServiceProvider
 {
+    use HasFormActions;
+
     public function register(): void {}
 
     public function boot(): void
@@ -30,6 +33,7 @@ class FormServiceProvider extends ServiceProvider
 
         $this->registerEvents();
         $this->registerFacades();
+        $this->registerFormActions();
 
         if (! App::runningInConsole()) {
             $this->registerLivewireComponents();

@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
 use Sellvation\CCMV2\Ccmp\Jobs\ProcessStatisticsRowJob;
-use Sellvation\CCMV2\CrmCards\Jobs\UpdateCrmCardMongoDbJob;
+use Sellvation\CCMV2\CrmCards\Jobs\UpdateCrmCardFromCcmpJob;
 use Sellvation\CCMV2\CrmCards\Models\Builders\CrmFieldType;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\CrmCards\Models\CrmCardMongo;
@@ -213,7 +213,7 @@ class MigrateCcmpEnvironment extends Command
 
                 $progressBar->advance();
 
-                UpdateCrmCardMongoDbJob::dispatch($row);
+                UpdateCrmCardFromCcmpJob::dispatch($row->crmid);
             }
         });
 
