@@ -9,6 +9,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
+use Sellvation\CCMV2\CrmCards\Models\CrmField;
 use Sellvation\CCMV2\Environments\Models\Environment;
 
 class UpdateCrmCardFromCcmpJob implements ShouldQueue
@@ -69,6 +71,19 @@ class UpdateCrmCardFromCcmpJob implements ShouldQueue
             'latitude',
             'longitude',
         ]);
+
+        foreach ($data as $fieldName => $value) {
+            if (
+                ((($crmField = CrmField::whereName($fieldName)->first()) && ($crmField->type === 'DATETIME')) || (Str::endsWith($fieldName, '_timestamp'))) &&
+                ($value !== '0000-00-00 00:00:00')
+            ) {
+                try {
+                    $data[$fieldName] = Carbon::parse($value)->shiftTimezone('GMT')->setTimezone('Europe/Amsterdam')->toDateTimeString();
+                } catch (\Throwable $e) {
+                    $data[$fieldName] = null;
+                }
+            }
+        }
 
         \DB::beginTransaction();
 
