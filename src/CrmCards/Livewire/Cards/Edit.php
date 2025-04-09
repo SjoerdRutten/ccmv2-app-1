@@ -114,6 +114,7 @@ class Edit extends Component
 
         $categories = CrmFieldCategory::query()
             ->where('id', '<>', $category->id)
+            ->whereHas('crmFields')
             ->orderBy('position')
             ->get();
 
