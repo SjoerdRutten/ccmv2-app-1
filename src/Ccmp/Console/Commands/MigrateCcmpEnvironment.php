@@ -16,7 +16,7 @@ use Sellvation\CCMV2\Environments\Models\Environment;
 
 class MigrateCcmpEnvironment extends Command
 {
-    protected $signature = 'ccmp:migrate-environment-data {--startdate=} {--remove} {--all}';
+    protected $signature = 'ccmp:migrate-environment-data {--startdate=} {--remove} {--all} {--skip=}';
 
     protected $description = 'Stap 2: Migrate CCMp environment data, execute per environment';
 
@@ -213,7 +213,9 @@ class MigrateCcmpEnvironment extends Command
 
                 $progressBar->advance();
 
-                UpdateCrmCardFromCcmpJob::dispatch($row->crmid);
+                if ((! $this->hasOption('skip')) || ($progressBar->getProgress() >= $this->option('skip'))) {
+                    UpdateCrmCardFromCcmpJob::dispatch($row->crmid);
+                }
             }
         });
 
