@@ -17,6 +17,6 @@ class TargetGroupFieldset extends Model
 
     public function crmFields(): BelongsToMany
     {
-        return $this->belongsToMany(CrmField::class);
+        return $this->belongsToMany(CrmField::class)->withPivot('field_name');
     }
 }

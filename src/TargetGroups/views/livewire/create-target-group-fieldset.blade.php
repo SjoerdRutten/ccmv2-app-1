@@ -27,19 +27,19 @@
                         <span>
                             Velden (<span x-text="searchResult.length"></span>)
                         </span>
-                        <a href="#"
-                           class="text-xs hover:underline"
-                           x-on:click="addAllFields"
-                           x-show="searchResult.length > 0"
-                        >
-                            Alles selecteren
-                        </a>
+                        {{--                        <a href="#"--}}
+                        {{--                           class="text-xs hover:underline"--}}
+                        {{--                           x-on:click="addAllFields"--}}
+                        {{--                           x-show="searchResult.length > 0"--}}
+                        {{--                        >--}}
+                        {{--                            Alles selecteren--}}
+                        {{--                        </a>--}}
                     </div>
                     <div class="h-[200px] overflow-auto border border-gray-300 rounded py-2">
                         <template x-for="field in searchResult">
                             <div
                                     class="flex gap-1 cursor-pointer hover:bg-pink-200 px-2"
-                                    x-on:click="addField(field.id)"
+                                    x-on:click="addField(field)"
                             >
                                 <div x-text="field.name"></div>
                             </div>
@@ -48,9 +48,9 @@
                 </div>
                 <div class="w-1/2">
                     <div class="flex justify-between">
-                                    <span>
-                                        Geselecteerd (<span x-text="selectedFields.length"></span>)
-                                    </span>
+                        <span>
+                            Geselecteerd (<span x-text="selectedFields.length"></span>)
+                        </span>
                         <a href="#"
                            class="text-xs hover:underline"
                            x-on:click="removeAll"

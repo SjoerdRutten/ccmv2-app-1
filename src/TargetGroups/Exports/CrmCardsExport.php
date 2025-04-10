@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Concerns\FromGenerator;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\TargetGroups\Facades\TargetGroupSelectorFacade;
 use Sellvation\CCMV2\TargetGroups\Models\TargetGroupExport;
 
@@ -20,7 +21,7 @@ class CrmCardsExport implements FromGenerator, ShouldAutoSize, WithHeadings, Wit
 
     public function __construct(private readonly TargetGroupExport $targetGroupExport)
     {
-        $this->fields = Arr::sort($this->targetGroupExport->targetGroupFieldset->crmFields->pluck('name')->toArray());
+        $this->fields = array_values(Arr::sort($this->targetGroupExport->targetGroupFieldset->crmFields->pluck('pivot.field_name')->toArray()));
         $this->startedAt = Carbon::parse($this->targetGroupExport->started_at);
     }
 
@@ -48,7 +49,7 @@ class CrmCardsExport implements FromGenerator, ShouldAutoSize, WithHeadings, Wit
                 ]);
             }
 
-            yield $crmCard;
+            yield CrmCard::whereCrmId($crmCard->crm_id)->first();
         }
 
         // Final update
@@ -69,14 +70,23 @@ class CrmCardsExport implements FromGenerator, ShouldAutoSize, WithHeadings, Wit
 
     public function map(mixed $row): array
     {
-        $data = [
-            $row->crm_id,
-        ];
+        if ($row) {
+            $data = [
+                $row->crm_id,
+            ];
 
-        if ($row->data) {
-            return array_merge($data, Arr::only($row->data, $this->fields));
+            if ($row->data) {
+                $rowData = [];
+                foreach ($this->fields as $fieldName) {
+                    $rowData[$fieldName] = Arr::get($row->data, $fieldName);
+                }
+
+                return array_merge($data, $rowData);
+            }
+
+            return $data;
         }
 
-        return $data;
+        return [];
     }
 }

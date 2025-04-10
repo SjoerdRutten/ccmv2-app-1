@@ -6,34 +6,40 @@
                 <x-heroicon-s-arrows-pointing-out class="w-4 h-4 hidden group-hover:inline" x-sort:handle/>
             </h2>
             <div class="border border-gray-800 col-span-full grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded">
-                <x-ccm::description-lists.element label="Optin">
+                <x-ccm::description-lists.element
+                        :label="$showLabel === 'label' ? Str::replace('_', ' ', ($crmField->label ?: $crmField->name)).' optin' : '_'.$crmField->name.'_optin'">
                     <x-ccm::forms.checkbox :name="$crmField->name.'_optin'"
                                            wire:model.live="form.data._{{ $crmField->name }}_optin"
                                            :disabled="!!$crmCard->id"/>
                 </x-ccm::description-lists.element>
-                <x-ccm::description-lists.element label="Optin timestamp">
+                <x-ccm::description-lists.element
+                        :label="$showLabel === 'label' ? Str::replace('_', ' ', ($crmField->label ?: $crmField->name)).' optin timestamp': '_'.$crmField->name.'_optin_timestamp'">
                     <x-ccm::forms.input type="datetime-local"
                                         :name="$crmField->name.'_optin_timestamp'"
                                         wire:model.live="form.data._{{ $crmField->name }}_confirmed_optin_timestamp"
                                         :disabled="!!$crmCard->id"/>
                 </x-ccm::description-lists.element>
-                <x-ccm::description-lists.element label="Confirmed optin">
+                <x-ccm::description-lists.element
+                        :label="$showLabel === 'label' ? Str::replace('_', ' ', ($crmField->label ?: $crmField->name)).' confirmed optin': '_'.$crmField->name.'_confirmed_optin'">
                     <x-ccm::forms.checkbox :name="$crmField->name.'_confirmed_optin'"
                                            wire:model.live="form.data._{{ $crmField->name }}_confirmed_optin"
                                            :disabled="!!$crmCard->id"/>
                 </x-ccm::description-lists.element>
-                <x-ccm::description-lists.element label="Confirmed optin timestamp">
+                <x-ccm::description-lists.element
+                        :label="$showLabel === 'label' ? Str::replace('_', ' ', ($crmField->label ?: $crmField->name)).' confirmed optin timestamp': '_'.$crmField->name.'_confirmed_optin_timestamp'">
                     <x-ccm::forms.input type="datetime-local"
                                         :name="$crmField->name.'_confirmed_optin_timestamp'"
                                         wire:model.live="form.data._{{ $crmField->name }}_confirmed_optin_timestamp"
                                         :disabled="!!$crmCard->id"/>
                 </x-ccm::description-lists.element>
-                <x-ccm::description-lists.element label="Optout">
+                <x-ccm::description-lists.element
+                        :label="$showLabel === 'label' ? Str::replace('_', ' ', ($crmField->label ?: $crmField->name)).' optout': '_'.$crmField->name.'_optout'">
                     <x-ccm::forms.checkbox :name="$crmField->name.'_confirmed_optout'"
                                            wire:model.live="form.data._{{ $crmField->name }}_confirmed_optout"
                                            :disabled="!!$crmCard->id"/>
                 </x-ccm::description-lists.element>
-                <x-ccm::description-lists.element label="Optout timestamp">
+                <x-ccm::description-lists.element
+                        :label="$showLabel === 'label' ? Str::replace('_', ' ', ($crmField->label ?: $crmField->name)).' optout timestamp': '_'.$crmField->name.'_optout_timestamp'">
                     <x-ccm::forms.input type="datetime-local"
                                         :name="$crmField->name.'_optout_timestamp'"
                                         wire:model.live="form.data._{{ $crmField->name }}_optout_timestamp"
@@ -48,39 +54,47 @@
                 <x-heroicon-s-arrows-pointing-out class="w-4 h-4 hidden group-hover:inline" x-sort:handle/>
             </h2>
             <div class="border border-gray-800 col-span-full grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded">
-                <x-ccm::description-lists.element label="E-mail" class="col-span-full">
+                <x-ccm::description-lists.element
+                        :label="$showLabel === 'label' ? Str::replace('_', ' ', ($crmField->label ?: $crmField->name)).' e-mailadres': $crmField->name"
+                        class="col-span-full">
                     <x-ccm::forms.input :name="$crmField->name"
                                         wire:model.live="form.data.{{ $crmField->name }}"
                                         :disabled="!!$crmCard->id"/>
                 </x-ccm::description-lists.element>
-                <x-ccm::description-lists.element label="Abuse">
+                <x-ccm::description-lists.element
+                        :label="$showLabel === 'label' ? Str::replace('_', ' ', ($crmField->label ?: $crmField->name)).' abuse': '_'.$crmField->name.'_abuse'">
                     <x-ccm::forms.checkbox :name="$crmField->name.'_abuse'"
                                            wire:model.live="form.data._{{ $crmField->name }}_abuse"
                                            :disabled="!!$crmCard->id"/>
                 </x-ccm::description-lists.element>
-                <x-ccm::description-lists.element label="Abuse timestamp">
+                <x-ccm::description-lists.element
+                        :label="$showLabel === 'label' ? Str::replace('_', ' ', ($crmField->label ?: $crmField->name)).' abuse timestamp': '_'.$crmField->name.'_abuse_timestamp'">
                     <x-ccm::forms.input type="datetime-local"
                                         :name="$crmField->name.'_abuse_timestamp'"
                                         wire:model.live="form.data._{{ $crmField->name }}_abuse_timestamp"
                                         :disabled="!!$crmCard->id"/>
                 </x-ccm::description-lists.element>
-                <x-ccm::description-lists.element label="Bounce reden">
+                <x-ccm::description-lists.element
+                        :label="$showLabel === 'label' ? Str::replace('_', ' ', ($crmField->label ?: $crmField->name)).' bounce reason': '_'.$crmField->name.'_bounce_reason'">
                     <x-ccm::forms.input :name="$crmField->name.'_bounce_reason'"
                                         wire:model.live="form.data._{{ $crmField->name }}_bounce_reason"
                                         :disabled="!!$crmCard->id"/>
                 </x-ccm::description-lists.element>
-                <x-ccm::description-lists.element label="Bounce score">
+                <x-ccm::description-lists.element
+                        :label="$showLabel === 'label' ? Str::replace('_', ' ', ($crmField->label ?: $crmField->name)).' bounce score': '_'.$crmField->name.'_bounce_score'">
                     <x-ccm::forms.input type="number"
                                         :name="$crmField->name.'_bounce_score'"
                                         wire:model.live="form.data._{{ $crmField->name }}_bounce_score"
                                         :disabled="!!$crmCard->id"/>
                 </x-ccm::description-lists.element>
-                <x-ccm::description-lists.element label="Bounce type">
+                <x-ccm::description-lists.element
+                        :label="$showLabel === 'label' ? Str::replace('_', ' ', ($crmField->label ?: $crmField->name)).' bounce type': '_'.$crmField->name.'_bounce_type'">
                     <x-ccm::forms.input :name="$crmField->name.'_bounce_type'"
                                         wire:model.live="form.data._{{ $crmField->name }}_bounce_type"
                                         :disabled="!!$crmCard->id"/>
                 </x-ccm::description-lists.element>
-                <x-ccm::description-lists.element label="Email type">
+                <x-ccm::description-lists.element
+                        :label="$showLabel === 'label' ? Str::replace('_', ' ', ($crmField->label ?: $crmField->name)).' email type': '_'.$crmField->name.'_email_type'">
                     <x-ccm::forms.input :name="$crmField->name.'_type'"
                                         wire:model.live="form.data._{{ $crmField->name }}_type"
                                         :disabled="!!$crmCard->id"/>

@@ -15,14 +15,15 @@ document.addEventListener("alpine:init", () => {
                 this.getSelectedFields()
                 this.value = this.fieldIds.join(',')
             }))
-
-            // console.log(this.value)
-            // this.fieldIds = this.value.split(',')
         },
         async getSelectedFields() {
-            var data = await fetch('/target-group-api/crm-field/selected?' + new URLSearchParams({
-                ids: this.fieldIds,
-            }).toString())
+            const params = new URLSearchParams();
+            this.fieldIds.forEach(
+                function (element) {
+                    params.append('fields[' + element.name + ']', element.id)
+                });
+
+            var data = await fetch('/target-group-api/crm-field/selected?' + params.toString())
                 .then(res => res.json())
                 .then(
                     function (data) {
@@ -35,29 +36,30 @@ document.addEventListener("alpine:init", () => {
         async searchFields() {
             this.searchResult = []
 
-            console.log(this.search)
-            if (this.search) {
-                var data = await fetch('/target-group-api/crm-field/search?' + new URLSearchParams({
-                    q: this.search,
-                }).toString())
-                    .then(res => res.json())
-                    .then(
-                        function (data) {
-                            return data
-                        }
-                    )
+            // console.log(this.search)
+            // if (this.search) {
+            var data = await fetch('/target-group-api/crm-field/search?' + new URLSearchParams({
+                q: this.search,
+            }).toString())
+                .then(res => res.json())
+                .then(
+                    function (data) {
+                        return data
+                    }
+                )
 
-                this.searchResult = data
-                this.filterAddedFieldsFromSearchResults()
-            }
+            this.searchResult = data
+            this.filterAddedFieldsFromSearchResults()
+            // }
         },
-        addField(id) {
-            this.fieldIds.push(id)
+        addField(element) {
+            console.log(element)
+            this.fieldIds.push(element)
             this.filterAddedFieldsFromSearchResults()
         },
         addAllFields() {
             this.searchResult.forEach(element => {
-                this.addField(element.id)
+                this.addField(element)
             })
         },
         removeField(index) {
@@ -73,7 +75,13 @@ document.addEventListener("alpine:init", () => {
 
             this.searchResult = this.searchResult.filter(
                 function (field) {
-                    return $this.fieldIds.indexOf(field.id) < 0
+                    var fields = $this.fieldIds.filter(
+                        function (row) {
+                            return (row.id === field.id) && (row.name === field.name)
+                        }
+                    );
+
+                    return fields.length === 0
                 }
             )
         }

@@ -12,14 +12,14 @@ class CreateTargetGroupFieldset extends Component
     public int $count;
 
     #[Required]
-    public string $selectedIds = '';
+    public array $selectedIds = [];
 
     #[Required]
     public string $name = '';
 
     protected array $rules = [
         'name' => 'required',
-        'selectedIds' => 'required',
+        'selectedIds' => 'array',
     ];
 
     #[Computed]
@@ -32,10 +32,12 @@ class CreateTargetGroupFieldset extends Component
     {
         $this->validate();
 
-        $ids = explode(',', $this->selectedIds);
-
         $fieldSet = TargetGroupFieldset::create(['name' => $this->name]);
-        $fieldSet->crmFields()->sync($ids);
+        $fieldSet->crmFields()->detach();
+
+        foreach ($this->selectedIds as $row) {
+            $fieldSet->crmFields()->attach($row['id'], ['field_name' => $row['name']]);
+        }
 
         $this->dispatch('refresh-field-sets', $fieldSet->id);
     }
