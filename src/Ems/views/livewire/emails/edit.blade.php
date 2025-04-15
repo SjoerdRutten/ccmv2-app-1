@@ -49,7 +49,7 @@
 
             <x-ccm::tabs.tab-content :index="0">
                 <div class="w-1/2 flex flex-col gap-4">
-                    <x-ccm::forms.input name="form.name" wire:model="form.name">
+                    <x-ccm::forms.input name="form.name" wire:model="form.name" :required="true">
                         Naam
                     </x-ccm::forms.input>
                     <x-ccm::forms.select
