@@ -11,12 +11,14 @@
                 <x-ccm::tabs.nav-tab :index="0">
                     Query builder
                     <x-slot:badge>
-                        <livewire:target-group-selector::target-group-row-count key="TGCounter"
-                                                                                :target-group-id="$targetGroup->id"
-                                                                                wire:loading.remove
-                                                                                lazy
+                        @if ($targetGroup->id)
+                            <livewire:target-group-selector::target-group-row-count key="TGCounter"
+                                                                                    :target-group-id="$targetGroup->id"
+                                                                                    wire:loading.remove
+                                                                                    lazy
 
-                        />
+                            />
+                        @endif
                     </x-slot:badge>
                 </x-ccm::tabs.nav-tab>
                 @if ($id > 0)
@@ -75,6 +77,7 @@
                 <x-ccm::tabs.tab-content :index="3" no-margin="true">
                     <div class="px-6 py-6">
                         <h2>Nieuwe export aanmaken</h2>
+
                         <div class="flex flex-col gap-4 w-1/2" x-on:hide-modal="$refresh">
                             <div class="flex items-end gap-4">
                                 @if (count($fieldSets))
@@ -90,6 +93,12 @@
                                         @endforeach
                                     </x-ccm::forms.select>
                                 @endif
+                                @if ($export['targetGroupFieldSetId'] > 0)
+                                    TODO!!
+                                    <x-ccm::buttons.edit>&nbsp;</x-ccm::buttons.edit>
+                                    <x-ccm::buttons.delete>&nbsp;</x-ccm::buttons.delete>
+                                @endif
+
                                 <livewire:target-group-selector::create-target-group-fieldset/>
                             </div>
                             @if ($export['targetGroupFieldSetId'] > 0)

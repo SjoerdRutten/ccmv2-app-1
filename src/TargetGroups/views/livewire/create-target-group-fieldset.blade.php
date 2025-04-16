@@ -1,7 +1,7 @@
 <div x-data="{ show: false }" x-on:refresh-field-sets="show = false">
     <div x-data="fieldSelect({ value: @entangle('selectedIds') })"
          class="flex items-center gap-4">
-        <x-ccm::buttons.secundary x-on:click="show = true">Nieuwe veldenset aanmaken</x-ccm::buttons.secundary>
+        <x-ccm::buttons.add x-on:click="show = true"></x-ccm::buttons.add>
         <x-ccm::layouts.modal
                 title="Velden selecteren"
                 width="2xl"

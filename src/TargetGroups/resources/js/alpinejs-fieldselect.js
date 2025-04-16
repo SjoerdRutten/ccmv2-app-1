@@ -13,7 +13,8 @@ document.addEventListener("alpine:init", () => {
             }))
             this.$watch("fieldIds", (e => {
                 this.getSelectedFields()
-                this.value = this.fieldIds.join(',')
+                // console.log(this.fieldIds)
+                this.value = this.fieldIds
             }))
         },
         async getSelectedFields() {
@@ -38,9 +39,7 @@ document.addEventListener("alpine:init", () => {
 
             // console.log(this.search)
             // if (this.search) {
-            var data = await fetch('/target-group-api/crm-field/search?' + new URLSearchParams({
-                q: this.search,
-            }).toString())
+            var data = await fetch('/target-group-api/crm-field/search?' + new URLSearchParams({q: this.search}).toString())
                 .then(res => res.json())
                 .then(
                     function (data) {
