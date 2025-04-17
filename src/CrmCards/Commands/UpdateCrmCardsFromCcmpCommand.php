@@ -4,18 +4,22 @@ namespace Sellvation\CCMV2\CrmCards\Commands;
 
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Config;
 use Sellvation\CCMV2\CrmCards\Jobs\UpdateCrmCardFromCcmpJob;
 use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\CrmCards\Models\CrmCardMongo;
 
-class UpdateCrmCardsCommand extends Command
+class UpdateCrmCardsFromCcmpCommand extends Command
 {
-    protected $signature = 'crm-cards:update-from-ccmp {--startdate} {--environment_id=}';
+    protected $signature = 'crm-cards:update-from-ccmp {--startdate=} {--environment_id=105}';
 
     protected $description = 'Update CRM Cards from CCMP';
 
     public function handle(): void
     {
+        Config::set('database.connections.db01.database', 'ccmp');
+        \DB::purge('db01');
+
         $this->info('Import CRM Cards');
 
         if ($this->hasOption('startdate')) {
