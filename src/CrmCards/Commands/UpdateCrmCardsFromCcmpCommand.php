@@ -20,6 +20,8 @@ class UpdateCrmCardsFromCcmpCommand extends Command
         Config::set('database.connections.db01.database', 'ccmp');
         \DB::purge('db01');
 
+        \Context::add('environment_id', $this->option('environment_id'));
+
         $this->info('Import CRM Cards');
 
         if ($this->hasOption('startdate')) {
