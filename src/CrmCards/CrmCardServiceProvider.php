@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Sellvation\CCMV2\CrmCards\Commands\UpdateCrmCardMongoCommand;
+use Sellvation\CCMV2\CrmCards\Commands\UpdateCrmCardsCommand;
 use Sellvation\CCMV2\CrmCards\Events\CrmCardCreatingEvent;
 use Sellvation\CCMV2\CrmCards\Events\CrmCardDeletingEvent;
 use Sellvation\CCMV2\CrmCards\Events\CrmCardSavedEvent;
@@ -33,6 +34,7 @@ class CrmCardServiceProvider extends ServiceProvider
 
         $this->commands([
             UpdateCrmCardMongoCommand::class,
+            UpdateCrmCardsCommand::class,
         ]);
 
         $this->registerEvents();
