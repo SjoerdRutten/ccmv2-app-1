@@ -27,7 +27,7 @@ class UpdateCrmCardsFromCcmpCommand extends Command
         if ($this->hasOption('startdate')) {
             $startDate = Carbon::parse($this->option('startdate'))->toDateTimeString();
         } else {
-            $startDate = $this->ask('Wijzigingen vanaf welke datum (YYYY-MM-DD HH:mm:ii) ? ', now()->subMinutes(70)->toDateTimeString());
+            $startDate = $this->ask('Wijzigingen vanaf welke datum (YYYY-MM-DD HH:mm:ii) ? ', now()->subDay()->startOfDay()->toDateTimeString());
         }
 
         $query = \DB::connection('db01')

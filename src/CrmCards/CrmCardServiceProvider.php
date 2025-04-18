@@ -79,4 +79,9 @@ class CrmCardServiceProvider extends ServiceProvider
         $loader->alias('CrmFieldCorrector', CrmFieldCorrectorFacade::class);
         $loader->alias('CrmFieldValidator', CrmFieldValidatorFacade::class);
     }
+
+    private function registerSchedulableCommands()
+    {
+        \SchedulableCommands::registerCommand(UpdateCrmCardsFromCcmpCommand::class);
+    }
 }
