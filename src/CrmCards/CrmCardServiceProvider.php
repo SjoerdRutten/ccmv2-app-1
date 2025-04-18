@@ -39,6 +39,7 @@ class CrmCardServiceProvider extends ServiceProvider
 
         $this->registerEvents();
         $this->registerFacades();
+        $this->registerSchedulableCommands();
 
         if (! App::runningInConsole()) {
             $this->registerLivewireComponents();
