@@ -24,7 +24,7 @@ class UpdateCrmCardsFromCcmpCommand extends Command
 
         $this->info('Import CRM Cards');
 
-        if ($this->hasOption('startdate')) {
+        if ($this->hasOption('startdate') && $this->option('startdate')) {
             $startDate = Carbon::parse($this->option('startdate'))->toDateTimeString();
         } else {
             $startDate = $this->ask('Wijzigingen vanaf welke datum (YYYY-MM-DD HH:mm:ii) ? ', now()->subDay()->startOfDay()->toDateTimeString());
