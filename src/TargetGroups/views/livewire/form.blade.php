@@ -12,12 +12,12 @@
                     Query builder
                     <x-slot:badge>
                         @if ($targetGroup->id)
-                            {{--                            <livewire:target-group-selector::target-group-row-count key="TGCounter"--}}
-                            {{--                                                                                    :target-group-id="$targetGroup->id"--}}
-                            {{--                                                                                    wire:loading.remove--}}
-                            {{--                                                                                    lazy--}}
+                            <livewire:target-group-selector::target-group-row-count key="TGCounter"
+                                                                                    :target-group-id="$targetGroup->id"
+                                                                                    wire:loading.remove
+                                                                                    lazy
 
-                            {{--                            />--}}
+                            />
                         @endif
                     </x-slot:badge>
                 </x-ccm::tabs.nav-tab>
