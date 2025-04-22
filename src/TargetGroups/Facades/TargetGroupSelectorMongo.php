@@ -55,7 +55,10 @@ class TargetGroupSelectorMongo
                             $query->where(
                                 function ($query) use ($targetGroup) {
                                     $this->getQueryFilters($query, $targetGroup->filters);
-                                }
+                                },
+                                null,
+                                null,
+                                'not'
                             );
 
                         }
