@@ -49,9 +49,6 @@ class TargetGroupSelectorMongo
                         if (Arr::get($row, 'operator') === 'eq') {
                             $this->getQueryFilters($query, $targetGroup->filters);
                         } else {
-                            //                            $ids = $this->getQueryFilters(CrmCardMongo::query(), $targetGroup->filters)->select('id')->pluck('id')->toArray();
-                            //                            $query->whereNotIn('_id', $ids);
-
                             $query->where(
                                 function ($query) use ($targetGroup) {
                                     $this->getQueryFilters($query, $targetGroup->filters);
@@ -138,13 +135,17 @@ class TargetGroupSelectorMongo
     {
         switch ($operator) {
             case 'gt':
-                return $query->where($column, '>', $value);
+                return $query->where($column, '>', $value)
+                    ->whereNotNull($column);
             case 'gte':
-                return $query->where($column, '>=', $value);
+                return $query->where($column, '>=', $value)
+                    ->whereNotNull($column);
             case 'lt':
-                return $query->where($column, '<', $value);
+                return $query->where($column, '<', $value)
+                    ->whereNotNull($column);
             case 'lte':
-                return $query->where($column, '<=', $value);
+                return $query->where($column, '<=', $value)
+                    ->whereNotNull($column);
             case 'eq':
                 return $query->where($column, '=', $value);
             case 'neq':
