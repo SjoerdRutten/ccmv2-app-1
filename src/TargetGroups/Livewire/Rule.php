@@ -93,6 +93,25 @@ class Rule extends Component
             $columns[] = new Column('tags', new ColumnTypeTag, '- Kenmerk');
         }
 
+        $columns[] = new Column('first_email_send_at', new ColumnTypeDate, 'Eerste email verzonden');
+        $columns[] = new Column('latest_email_send_at', new ColumnTypeDate, 'Laatste email verzonden');
+        $columns[] = new Column('first_email_opened_at', new ColumnTypeDate, 'Eerste email geopend');
+        $columns[] = new Column('latest_email_opened_at', new ColumnTypeDate, 'Laatste email geopend');
+        $columns[] = new Column('first_email_clicked_at', new ColumnTypeDate, 'Eerste email geklikt');
+        $columns[] = new Column('latest_email_clicked_at', new ColumnTypeDate, 'Laatste email geklikt');
+        $columns[] = new Column('first_visit_at', new ColumnTypeDate, 'Eerste pagina bezocht');
+        $columns[] = new Column('latest_visit_at', new ColumnTypeDate, 'Laatste pagina bezocht');
+        //        $columns[] = new Column('browser_ua', new ColumnTypeText, 'browser_ua');
+        //        $columns[] = new Column('browser', new ColumnTypeText, 'browser');
+        //        $columns[] = new Column('browser_device_type', new ColumnTypeText, 'browser_device_type');
+        //        $columns[] = new Column('browser_device', new ColumnTypeText, 'browser_device');
+        //        $columns[] = new Column('browser_os', new ColumnTypeText, 'browser_os');
+        //        $columns[] = new Column('mailclient_ua', new ColumnTypeText, 'mailclient_ua');
+        //        $columns[] = new Column('mailclient', new ColumnTypeText, 'mailclient');
+        //        $columns[] = new Column('mailclient_device_type', new ColumnTypeText, 'mailclient_device_type');
+        //        $columns[] = new Column('mailclient_device', new ColumnTypeText, 'mailclient_device');
+        //        $columns[] = new Column('mailclient_os', new ColumnTypeText, 'mailclient_os');
+
         if (Auth::user()->hasPermissionTo('gds', 'transactions')) {
             $columns[] = new Column('orders.store', new ColumnTypeIntegerArray, 'Transactie winkelnummer');
             $columns[] = new Column('orders.order_time', new ColumnTypeDate, 'Transactie transactie datum');
