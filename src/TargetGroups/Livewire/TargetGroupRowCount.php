@@ -36,12 +36,18 @@ class TargetGroupRowCount extends Component
     #[On('update-count')]
     public function updateCount($elements)
     {
-        $this->count = \TargetGroupSelector::count($elements);
+        try {
+            $this->count = \TargetGroupSelector::count($elements);
+        } catch (\Throwable $e) {
+        }
     }
 
     public function updateTargetGroupCount()
     {
-        $this->count = $this->targetGroup->number_of_results;
+        try {
+            $this->count = $this->targetGroup->number_of_results;
+        } catch (\Throwable $e) {
+        }
     }
 
     public function placeholder()

@@ -71,9 +71,9 @@ class TargetGroupSelectorMongo
                             //
                             $ids = $this->getQueryFilters(CrmCardMongo::query(), $targetGroup->filters)->select('id')->pluck('id')->toArray();
 
-                            $ids = Arr::map($ids, function ($id) {
-                                return new MongoDB\Laravel\Eloquent\Casts\ObjectId($id);
-                            });
+                            //                            $ids = Arr::map($ids, function ($id) {
+                            //                                return new MongoDB\Laravel\Eloquent\Casts\ObjectId($id);
+                            //                            });
 
                             $query->whereNotIn('_id', $ids);
                         }
@@ -239,6 +239,6 @@ class TargetGroupSelectorMongo
 
     public function getMql($elements)
     {
-        return json_encode($this->getQuery($elements)->toMql());
+        return json_encode(Arr::get($this->getQuery($elements)->toMql(), 'find.0'));
     }
 }
