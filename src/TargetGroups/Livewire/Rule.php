@@ -110,7 +110,6 @@ class Rule extends Component
 
         // CRM Card columns
         foreach (CrmField::whereEnvironmentId(Auth::user()->currentEnvironmentId)
-            ->whereIsShownOnTargetGroupBuilder(1)
             ->orderBy('name')
             ->get() as $crmField
         ) {
