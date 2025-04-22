@@ -131,7 +131,7 @@ class Rule extends Component
                     $columns[] = new Column('_'.$crmField->name.'_optin_timestamp', new ColumnTypeDate, $crmField->name.' Optin timestamp');
                     $columns[] = new Column('_'.$crmField->name.'_confirmed_optin', new ColumnTypeBoolean, $crmField->name.' Confirmed optin option');
                     $columns[] = new Column('_'.$crmField->name.'_confirmed_optin_timestamp', new ColumnTypeDate, $crmField->name.' Confirmed optin timestamp');
-                    $columns[] = new Column('_'.$crmField->name.'_confirmed_optout', new ColumnTypeBoolean, $crmField->name.' Optout');
+                    $columns[] = new Column('_'.$crmField->name.'_optout', new ColumnTypeBoolean, $crmField->name.' Optout');
                     $columns[] = new Column('_'.$crmField->name.'_optout_timestamp', new ColumnTypeDate, $crmField->name.' Optout timestamp');
 
                     $columnType = false;

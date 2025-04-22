@@ -118,7 +118,6 @@ class CrmCard extends Model
     public function optOut(Email $email, CrmField $crmField, ?string $reason = null, ?string $explanation = null): bool
     {
         $data = [];
-        $data['_'.$crmField->name.'_confirmed_optout'] = true;
         $data['_'.$crmField->name.'_optout_timestamp'] = now()->timestamp;
 
         $this->emailOptOuts()->create([
@@ -259,7 +258,7 @@ class CrmCard extends Model
                     $data['_'.$crmField->name.'_optin_timestamp'] = $this->makeTimestamp(\Arr::get($this->data, '_'.$crmField->name.'_optin_timestamp'));
                     $data['_'.$crmField->name.'_confirmed_optin'] = (bool) \Arr::get($this->data, '_'.$crmField->name.'_confirmed_optin');
                     $data['_'.$crmField->name.'_confirmed_optin_timestamp'] = $this->makeTimestamp(\Arr::get($this->data, '_'.$crmField->name.'_confirmed_optin_timestamp'));
-                    $data['_'.$crmField->name.'_confirmed_optout'] = (bool) \Arr::get($this->data, '_'.$crmField->name.'_confirmed_optout');
+                    $data['_'.$crmField->name.'_optout'] = (bool) \Arr::get($this->data, '_'.$crmField->name.'_optout');
                     $data['_'.$crmField->name.'_optout_timestamp'] = $this->makeTimestamp(\Arr::get($this->data, '_'.$crmField->name.'_optout_timestamp'));
                     break;
                 case 'TEXTBIG':

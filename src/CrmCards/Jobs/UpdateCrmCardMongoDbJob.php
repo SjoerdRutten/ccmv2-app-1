@@ -71,7 +71,7 @@ class UpdateCrmCardMongoDbJob implements ShouldQueue
                     $data['_'.$crmField->name.'_optin_timestamp'] = $this->makeTimestamp(\Arr::get($this->crmCard->data, '_'.$crmField->name.'_optin_timestamp'));
                     $data['_'.$crmField->name.'_confirmed_optin'] = (bool) \Arr::get($this->crmCard->data, '_'.$crmField->name.'_confirmed_optin');
                     $data['_'.$crmField->name.'_confirmed_optin_timestamp'] = $this->makeTimestamp(\Arr::get($this->crmCard->data, '_'.$crmField->name.'_confirmed_optin_timestamp'));
-                    $data['_'.$crmField->name.'_confirmed_optout'] = (bool) \Arr::get($this->crmCard->data, '_'.$crmField->name.'_confirmed_optout');
+                    $data['_'.$crmField->name.'_optout'] = (bool) \Arr::get($this->crmCard->data, '_'.$crmField->name.'_optout');
                     $data['_'.$crmField->name.'_optout_timestamp'] = $this->makeTimestamp(\Arr::get($this->crmCard->data, '_'.$crmField->name.'_optout_timestamp'));
                     break;
                 case 'TEXTBIG':
@@ -148,7 +148,7 @@ class UpdateCrmCardMongoDbJob implements ShouldQueue
         if (
             (\Arr::get($data, '_'.$name.'_optin')) &&
             (\Arr::get($data, '_'.$name.'_confirmed_optin')) &&
-            (! \Arr::get($data, '_'.$name.'_confirmed_optout'))
+            (! \Arr::get($data, '_'.$name.'_optout'))
         ) {
             return true;
         }

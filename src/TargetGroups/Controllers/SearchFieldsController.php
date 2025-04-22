@@ -58,7 +58,7 @@ class SearchFieldsController extends Controller
                         '_optin_timestamp',
                         '_confirmed_optin',
                         '_confirmed_optin_timestamp',
-                        '_confirmed_optout',
+                        '_optout',
                         '_optout_timestamp',
                     ];
 

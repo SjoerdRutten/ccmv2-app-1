@@ -34,8 +34,8 @@
                 </x-ccm::description-lists.element>
                 <x-ccm::description-lists.element
                         :label="$showLabel === 'label' ? Str::replace('_', ' ', ($crmField->label ?: $crmField->name)).' optout': '_'.$crmField->name.'_optout'">
-                    <x-ccm::forms.checkbox :name="$crmField->name.'_confirmed_optout'"
-                                           wire:model.live="form.data._{{ $crmField->name }}_confirmed_optout"
+                    <x-ccm::forms.checkbox :name="$crmField->name.'_optout'"
+                                           wire:model.live="form.data._{{ $crmField->name }}_optout"
                                            :disabled="!!$crmCard->id"/>
                 </x-ccm::description-lists.element>
                 <x-ccm::description-lists.element
