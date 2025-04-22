@@ -49,9 +49,33 @@ class TargetGroupSelectorMongo
                         if (Arr::get($row, 'operator') === 'eq') {
                             $this->getQueryFilters($query, $targetGroup->filters);
                         } else {
-                            $ids = $this->getQueryFilters(CrmCardMongo::query(), $targetGroup->filters)->select('id')->pluck('id')->toArray();
+                            $timestamp = now()->getTimestampMs();
 
-                            $query->whereNotIn('_id', $ids);
+                            CrmCardMongo::raw(
+                                function ($collection) use ($targetGroup, $row, $timestamp) {
+                                    $collection->updateMany(
+                                        $this->getQueryFilters(CrmCardMongo::query(), $targetGroup->filters)->toMql()['find'][0],
+                                        ['$set' => [$row['id'] => $timestamp]]
+                                    );
+                                }
+                            );
+
+                            $query->where($row['id'], '<>', $timestamp);
+
+                            //                                                        \DB::connection('mongodb')
+                            //                                                            ->table('crm_cards_105')
+                            //                                                            ->update
+                            //                                                            ->raw(
+                            //
+                            //                                                            );
+                            //
+                            //                                                        $ids = $this->getQueryFilters(CrmCardMongo::query(), $targetGroup->filters)->select('id')->pluck('id')->toArray();
+                            //
+                            //                                                        $ids = Arr::map($ids, function ($id) {
+                            //                                                            return new MongoDB\Laravel\Eloquent\Casts\ObjectId($id);
+                            //                                                        });
+                            //
+                            //                                                        $query->whereNotIn('_id', $ids);
                         }
                     }
                 } else {
