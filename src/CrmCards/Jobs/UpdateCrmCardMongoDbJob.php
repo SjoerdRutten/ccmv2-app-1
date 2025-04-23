@@ -4,6 +4,7 @@ namespace Sellvation\CCMV2\CrmCards\Jobs;
 
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -13,7 +14,7 @@ use Sellvation\CCMV2\CrmCards\Models\CrmCard;
 use Sellvation\CCMV2\CrmCards\Models\CrmCardMongo;
 use Sellvation\CCMV2\CrmCards\Models\CrmField;
 
-class UpdateCrmCardMongoDbJob implements ShouldQueue
+class UpdateCrmCardMongoDbJob implements ShouldBeUnique, ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -25,6 +26,11 @@ class UpdateCrmCardMongoDbJob implements ShouldQueue
             $this->crmCard = CrmCard::whereCrmId($crmCard->crmid)->first();
         }
 
+    }
+
+    public function uniqueId(): string
+    {
+        return $this->crmCard->id;
     }
 
     public function handle(): void
