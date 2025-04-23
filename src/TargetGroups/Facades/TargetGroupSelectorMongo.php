@@ -135,17 +135,33 @@ class TargetGroupSelectorMongo
     {
         switch ($operator) {
             case 'gt':
-                return $query->where($column, '>', $value)
-                    ->whereNotNull($column);
+                return $query->where(
+                    function ($query) use ($column, $value) {
+                        $query->where($column, '>', $value)
+                            ->whereNotNull($column);
+                    }
+                );
             case 'gte':
-                return $query->where($column, '>=', $value)
-                    ->whereNotNull($column);
+                return $query->where(
+                    function ($query) use ($column, $value) {
+                        $query->where($column, '>=', $value)
+                            ->whereNotNull($column);
+                    }
+                );
             case 'lt':
-                return $query->where($column, '<', $value)
-                    ->orWhereNull($column);
+                return $query->where(
+                    function ($query) use ($column, $value) {
+                        $query->where($column, '<', $value)
+                            ->orWhereNull($column);
+                    }
+                );
             case 'lte':
-                return $query->where($column, '<=', $value)
-                    ->orWhereNull($column);
+                return $query->where(
+                    function ($query) use ($column, $value) {
+                        $query->where($column, '<=', $value)
+                            ->orWhereNull($column);
+                    }
+                );
             case 'neq':
             case 'ne':
                 return $query->where($column, '<>', $value);
