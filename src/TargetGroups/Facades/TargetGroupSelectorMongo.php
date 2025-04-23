@@ -142,12 +142,10 @@ class TargetGroupSelectorMongo
                     ->whereNotNull($column);
             case 'lt':
                 return $query->where($column, '<', $value)
-                    ->whereNotNull($column);
+                    ->orWhereNull($column);
             case 'lte':
                 return $query->where($column, '<=', $value)
-                    ->whereNotNull($column);
-            case 'eq':
-                return $query->where($column, '=', $value);
+                    ->orWhereNull($column);
             case 'neq':
             case 'ne':
                 return $query->where($column, '<>', $value);
@@ -179,6 +177,7 @@ class TargetGroupSelectorMongo
                 return $query->whereNotIn($column, $value);
             case 'between':
                 return $query->whereBetween($column, [$value, $value2]);
+            case 'eq':
             default:
                 return $query->where($column, '=', $value);
         }
