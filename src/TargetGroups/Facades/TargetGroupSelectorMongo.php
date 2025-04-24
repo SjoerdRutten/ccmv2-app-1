@@ -179,10 +179,12 @@ class TargetGroupSelectorMongo
                 return $query->whereNot($column, 'like', '%'.$value);
             case 'empty':
                 return $query->whereNull($column)
-                    ->orWhere($column, '');
+                    ->orWhere($column, '')
+                    ->orWhere($column, 'exists', false);
             case 'notempty':
                 return $query->whereNotNull($column)
-                    ->where($column, '<>', '');
+                    ->where($column, '<>', '')
+                    ->orWhere($column, 'exists', true);
             case 'eqm':
                 $value = is_countable($value) ? $value : [$value];
 
@@ -193,6 +195,14 @@ class TargetGroupSelectorMongo
                 return $query->whereNotIn($column, $value);
             case 'between':
                 return $query->whereBetween($column, [$value, $value2]);
+            case 'eqe': // Equal or empty
+                return $query->where(
+                    function ($query) use ($column, $value) {
+                        $query->where($column, '=', $value)
+                            ->orWhereNull($column)
+                            ->orWhere($column, 'exists', false);
+                    }
+                );
             case 'eq':
             default:
                 return $query->where($column, '=', $value);
