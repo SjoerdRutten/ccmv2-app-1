@@ -14,13 +14,13 @@
             </x-slot:tabs>
             <x-ccm::tabs.tab-content :index="1">
                 @foreach ($settings AS $key => $row)
-                    @if ($key === 'content')
+                    @if (\Illuminate\Support\Str::startsWith($key, 'content'))
                         <p>
                             {{ $row }}
                         </p>
-                    @elseif ($key === 'block')
+                    @elseif (\Illuminate\Support\Str::startsWith($key, 'block'))
                         <x-extensions::block :block="$row"/>
-                    @elseif ($key === 'fields')
+                    @elseif (\Illuminate\Support\Str::startsWith($key, 'fields'))
                         <x-extensions::fields :fields="$row"/>
                     @endif
                 @endforeach
