@@ -61,7 +61,7 @@ class ExtensionServiceProvider extends ServiceProvider
             \Cache::add('extensionEvents', $extensionEvents, 300);
         }
 
-        foreach ($events as $event) {
+        foreach ($extensionEvents as $event) {
             $events->listen($event->event, CcmEventListener::class);
         }
     }
