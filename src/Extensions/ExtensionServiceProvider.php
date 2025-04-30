@@ -51,7 +51,6 @@ class ExtensionServiceProvider extends ServiceProvider
 
     private function registerEvents()
     {
-        $events = $this->app->make(Dispatcher::class);
 
         if (\Cache::has('extensionEvents')) {
             $extensionEvents = \Cache::get('extensionEvents');
@@ -63,6 +62,8 @@ class ExtensionServiceProvider extends ServiceProvider
 
             \Cache::add('extensionEvents', $extensionEvents, 300);
         }
+
+        $events = $this->app->make(Dispatcher::class);
 
         foreach ($extensionEvents as $event) {
             $events->listen($event, CcmEventListener::class);
