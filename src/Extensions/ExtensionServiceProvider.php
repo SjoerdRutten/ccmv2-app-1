@@ -5,7 +5,6 @@ namespace Sellvation\CCMV2\Extensions;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Sellvation\CCMV2\Extensions\Facades\ExtensionService;
@@ -54,10 +53,8 @@ class ExtensionServiceProvider extends ServiceProvider
     {
         $events = $this->app->make(Dispatcher::class);
 
-        if (Schema::hasTable('extensions')) {
-            foreach (Extension::select('event')->distinct()->get() as $event) {
-                $events->listen($event->event, CcmEventListener::class);
-            }
+        foreach (Extension::select('event')->distinct()->get() as $event) {
+            $events->listen($event->event, CcmEventListener::class);
         }
     }
 }
