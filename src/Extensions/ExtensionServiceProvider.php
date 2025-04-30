@@ -54,11 +54,11 @@ class ExtensionServiceProvider extends ServiceProvider
         $events = $this->app->make(Dispatcher::class);
 
         if (\Cache::has('extensionEvents')) {
-            $events = \Cache::get('extensionEvents');
+            $extensionEvents = \Cache::get('extensionEvents');
         } else {
-            $events = Extension::select('event')->distinct()->get();
+            $extensionEvents = Extension::select('event')->distinct()->get();
 
-            \Cache::add('extensionEvents', $events, 300);
+            \Cache::add('extensionEvents', $extensionEvents, 300);
         }
 
         foreach ($events as $event) {
