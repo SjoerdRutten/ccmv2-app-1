@@ -56,13 +56,16 @@ class ExtensionServiceProvider extends ServiceProvider
         if (\Cache::has('extensionEvents')) {
             $extensionEvents = \Cache::get('extensionEvents');
         } else {
-            $extensionEvents = Extension::select('event')->distinct()->get();
+            $extensionEvents = [];
+            foreach (Extension::select('event')->distinct()->get() as $extension) {
+                $extensionEvents[] = $extension->event;
+            }
 
             \Cache::add('extensionEvents', $extensionEvents, 300);
         }
 
         foreach ($extensionEvents as $event) {
-            $events->listen($event->event, CcmEventListener::class);
+            $events->listen($event, CcmEventListener::class);
         }
     }
 }
