@@ -51,16 +51,16 @@ class ExtensionServiceProvider extends ServiceProvider
 
     private function registerEvents()
     {
-        if (\Cache::has('extensionEvents')) {
-            $extensionEvents = \Cache::get('extensionEvents');
-        } else {
-            $extensionEvents = [];
-            foreach (Extension::select('event')->distinct()->get() as $extension) {
-                $extensionEvents[] = $extension->event;
-            }
-
-            \Cache::add('extensionEvents', $extensionEvents, 300);
+        //        if (\Cache::has('extensionEvents')) {
+        //            $extensionEvents = \Cache::get('extensionEvents');
+        //        } else {
+        $extensionEvents = [];
+        foreach (Extension::select('event')->distinct()->get() as $extension) {
+            $extensionEvents[] = $extension->event;
         }
+
+        \Cache::add('extensionEvents', $extensionEvents, 300);
+        //        }
 
         $events = $this->app->make(Dispatcher::class);
 
