@@ -96,6 +96,7 @@ class CcmMenuServiceProvider extends ServiceProvider
             'sub_items' => [
                 ['label' => 'Klanten', 'route' => 'admin::customers'],
                 ['label' => 'Omgevingen', 'route' => 'admin::environments'],
+                ['label' => 'Wachtrijen', 'route' => 'admin::queues'],
                 ['label' => 'E-mail domeinen', 'route' => 'admin::email_domains::overview'],
                 ['label' => 'Mailservers', 'route' => 'admin::mailservers::overview'],
                 ['label' => 'Verzendregels', 'route' => 'admin::sendrules::overview'],
