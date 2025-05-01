@@ -1,6 +1,6 @@
 <div wire:loading.remove>
     <div class="px-4 sm:px-6 lg:px-8">
-        <x-ccm::pages.intro :title="'Wachtrij '.$queue">
+        <x-ccm::pages.intro :title="'Wachtrij '.$queue.' ('.$size.')'">
             <x-slot:actions>
                 {{--                <x-ccm::buttons.add route="admin::environments::add">Omgeving toevoegen</x-ccm::buttons.add>--}}
             </x-slot:actions>

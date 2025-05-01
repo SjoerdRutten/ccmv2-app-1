@@ -27,6 +27,7 @@ class View extends Component
         return view('ccm::livewire.admin.queues.view')
             ->with([
                 'jobs' => $this->getJobs(),
+                'size' => \Queue::size($this->queue),
             ]);
     }
 }
