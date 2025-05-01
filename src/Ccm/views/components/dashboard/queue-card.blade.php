@@ -2,7 +2,11 @@
     <div class="flex flex-col gap-4">
         @foreach ($queues AS $queueName => $queue)
             <div class="">
-                <x-ccm::typography.h3>{{ $queueName }}</x-ccm::typography.h3>
+                <x-ccm::typography.h3>
+                    <a href="{{ route('admin::queues::view', $queueName) }}">
+                        {{ $queueName }}
+                    </a>
+                </x-ccm::typography.h3>
                 <table class="w-full">
                     <tr>
                         <th class="w-1/2">Aantal in wachtrij:</th>

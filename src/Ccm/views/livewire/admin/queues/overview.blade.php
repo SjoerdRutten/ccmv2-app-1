@@ -12,9 +12,12 @@
             </x-slot:thead>
             <x-slot:tbody>
                 @foreach ($queues AS $queueName => $queue)
-                    <x-ccm::tables.tr>
+                    <x-ccm::tables.tr :route="route('admin::queues::view', $queueName)">
                         <x-ccm::tables.td :first="true">{{ $queueName }}</x-ccm::tables.td>
                         <x-ccm::tables.td>{{ $queue['count'] }}</x-ccm::tables.td>
+                        <x-ccm::tables.td :link="true">
+                            <x-ccm::tables.view-link :href="route('admin::queues::view', $queueName)"/>
+                        </x-ccm::tables.td>
                     </x-ccm::tables.tr>
                 @endforeach
             </x-slot:tbody>

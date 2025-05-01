@@ -23,6 +23,7 @@ Route::middleware([
                 Route::get('/environments/{environment}', \Sellvation\CCMV2\Ccm\Livewire\Admin\Environments\Edit::class)->name('environments::edit');
                 Route::get('/environments', \Sellvation\CCMV2\Ccm\Livewire\Admin\Environments\Overview::class)->name('environments');
                 Route::get('/queues', \Sellvation\CCMV2\Ccm\Livewire\Admin\Queues\Overview::class)->name('queues');
+                Route::get('/queues/{queue}', \Sellvation\CCMV2\Ccm\Livewire\Admin\Queues\View::class)->name('queues::view');
             });
 
         Route::name('ccm::')
