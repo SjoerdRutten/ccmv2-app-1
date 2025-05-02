@@ -13,7 +13,7 @@ class PersonalAccessToken extends SanctumToken
         static::updating(function ($model) {
             if ($model->isDirty('last_used_at')) {
 
-                if (! $model->getOriginal('last_used_at') || $model->getOriginal('last_used_at')->isAfter(now()->subDay())) {
+                if (($model->getOriginal('last_used_at') !== null) && $model->getOriginal('last_used_at')->isAfter(now()->subDay())) {
                     $model->last_used_at = $model->getOriginal('last_used_at');
                 }
             }
