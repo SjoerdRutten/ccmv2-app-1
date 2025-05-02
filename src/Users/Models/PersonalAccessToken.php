@@ -17,6 +17,11 @@ class PersonalAccessToken extends SanctumToken
                     $model->last_used_at = $model->getOriginal('last_used_at');
                 }
             }
+
+            $dirty = collect($model->getDirty())->keys();
+            if ($dirty->count() === 1 && $dirty->contains('updated_at')) {
+                return false; // Blokkeer de update
+            }
         });
     }
 }
