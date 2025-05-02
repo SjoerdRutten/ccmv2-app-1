@@ -19,7 +19,7 @@ class PersonalAccessToken extends SanctumToken
             }
 
             $dirty = collect($model->getDirty())->keys();
-            if ($dirty->count() === 1 && $dirty->contains('updated_at')) {
+            if ($dirty->count() === 0) {
                 return false; // Blokkeer de update
             }
         });
