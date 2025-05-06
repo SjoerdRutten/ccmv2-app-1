@@ -42,8 +42,7 @@
     "spatie/php-structure-discoverer": "^2.2",
     "spatie/ssh": "^1.12",
     "symfony/dom-crawler": "^7.2",
-    "symfony/http-client": "^7.1",
-    "typesense/typesense-php": "^4.9"
+    "symfony/http-client": "^7.1"
   },
   "require-dev": {
     "laravel/laravel": "^11.0",
@@ -100,7 +99,6 @@
         "Sellvation\\CCMV2\\Sites\\SiteServiceProvider",
         "Sellvation\\CCMV2\\Stripo\\StripoServiceProvider",
         "Sellvation\\CCMV2\\TargetGroups\\TargetGroupServiceProvider",
-        "Sellvation\\CCMV2\\Typesense\\TypesenseServiceProvider",
         "Sellvation\\CCMV2\\Users\\UserServiceProvider"
       ]
     }
