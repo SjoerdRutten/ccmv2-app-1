@@ -31,6 +31,7 @@
     "livewire/livewire": "^3.4",
     "maatwebsite/excel": "^3.1",
     "mateusjunges/laravel-trackable-jobs": "^2.1",
+    "matriphe/larinfo": "^4.2",
     "mongodb/laravel-mongodb": "^5.1",
     "nembie/iban-rule": "^1.0",
     "paquettg/php-html-parser": "^2.2",
