@@ -11,7 +11,7 @@ class CcmEventListener
         foreach (Extension::where('event', get_class($event))->isActive()->get() as $extension) {
             \Log::info('[CCMEVENTLISTENER] '.get_class($event).' - '.$extension->job);
 
-            dispatch(new $extension->job($extension->settings, $event));
+            dispatch(new $extension->job($extension->settings, $event))->delay(now()->addseconds(5));
         }
     }
 }
