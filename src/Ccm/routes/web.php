@@ -41,4 +41,10 @@ Route::middleware([
                 Route::get('/product/selected', [\Sellvation\CCMV2\Ccm\Controllers\SearchProductsController::class, 'selected'])->name('product.selected');
             });
 
+        Route::prefix('serverstatus')
+            ->name('serverstatus::')
+            ->group(function (): void {
+                Route::get('/', \Sellvation\CCMV2\Ccm\Http\Controllers\ServerStatusController::class)->name('serverstatus');
+            });
+
     });
