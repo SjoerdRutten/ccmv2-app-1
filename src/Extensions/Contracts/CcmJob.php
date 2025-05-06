@@ -24,9 +24,9 @@ abstract class CcmJob
         $this->queue = 'ccmv2';
     }
 
-    protected function getSetting($key)
+    protected function getSetting($key, $default = null)
     {
-        return \Arr::get($this->settings, $key);
+        return \Arr::get($this->settings, $key, $default);
     }
 
     protected function setEnvironmentId(int $environmentId)
