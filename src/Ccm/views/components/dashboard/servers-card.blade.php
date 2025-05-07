@@ -14,10 +14,10 @@
             <x-ccm::charts.radial-bar :percentage="$server->cpuPercentage"
                                       :height="60"
                                       ref="chartCpu{{ $server->id }}"/>
-            <x-ccm::charts.radial-bar :percentage="$server->diskPercentage"
+            <x-ccm::charts.radial-bar :percentage="$server->diskFreePercentage"
                                       :height="60"
                                       ref="chartDisk{{ $server->id }}"/>
-            <x-ccm::charts.radial-bar :percentage="$server->ramPercentage"
+            <x-ccm::charts.radial-bar :percentage="$server->ramFreePercentage"
                                       :height="60"
                                       ref="chartRam{{ $server->id }}"/>
         @endforeach
