@@ -1,4 +1,4 @@
-<x-ccm::cards.card title="Wachtrijen">
+<x-ccm::cards.card title="Server status">
 
     <div class="grid grid-cols-4 gap-2 w-full">
         <x-ccm::typography.h4>Server</x-ccm::typography.h4>
@@ -8,7 +8,9 @@
 
         @foreach ($servers AS $server)
             <div class="flex items-center font-bold text-md">
-                {{ $server->name }}
+                <a href="{{ route('admin::servers::edit', $server->id) }}">
+                    {{ $server->name }}
+                </a>
             </div>
 
             <x-ccm::charts.radial-bar :percentage="$server->cpuPercentage"

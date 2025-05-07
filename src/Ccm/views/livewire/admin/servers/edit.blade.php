@@ -10,6 +10,7 @@
         <x-ccm::tabs.base>
             <x-slot:tabs>
                 <x-ccm::tabs.nav-tab :index="0">Gegevens</x-ccm::tabs.nav-tab>
+                <x-ccm::tabs.nav-tab :index="1">Status</x-ccm::tabs.nav-tab>
             </x-slot:tabs>
 
             <x-ccm::tabs.tab-content :index="0">
@@ -29,6 +30,45 @@
                         IP-adres
                     </x-ccm::forms.input>
                 </x-ccm::forms.form>
+            </x-ccm::tabs.tab-content>
+            <x-ccm::tabs.tab-content :index="1">
+                <div class="flex">
+                    <x-ccm::tables.table>
+                        <x-slot:tbody>
+                            <x-ccm::tables.tr>
+                                <x-ccm::tables.th>Laatste update</x-ccm::tables.th>
+                                <x-ccm::tables.td
+                                        class="text-right">{{ $server->status?->created_at?->toDateTimeString() }}</x-ccm::tables.td>
+                            </x-ccm::tables.tr>
+                            <x-ccm::tables.tr>
+                                <x-ccm::tables.th>Schijfruimte totaal</x-ccm::tables.th>
+                                <x-ccm::tables.td
+                                        class="text-right">{{ \Illuminate\Support\Number::fileSize($server->status?->disk_total_space, 2) }}</x-ccm::tables.td>
+                            </x-ccm::tables.tr>
+                            <x-ccm::tables.tr>
+                                <x-ccm::tables.th>Schijfruimte vrij</x-ccm::tables.th>
+                                <x-ccm::tables.td
+                                        class="text-right">{{ \Illuminate\Support\Number::fileSize($server->status?->disk_free_space, 2) }}</x-ccm::tables.td>
+                            </x-ccm::tables.tr>
+                            <x-ccm::tables.tr>
+                                <x-ccm::tables.th>RAM totaal</x-ccm::tables.th>
+                                <x-ccm::tables.td
+                                        class="text-right">{{ \Illuminate\Support\Number::fileSize($server->status?->ram_total_space, 2) }}</x-ccm::tables.td>
+                            </x-ccm::tables.tr>
+                            <x-ccm::tables.tr>
+                                <x-ccm::tables.th>RAM vrij</x-ccm::tables.th>
+                                <x-ccm::tables.td
+                                        class="text-right">{{ \Illuminate\Support\Number::fileSize($server->status?->ram_free_space, 2) }}</x-ccm::tables.td>
+                            </x-ccm::tables.tr>
+                            <x-ccm::tables.tr>
+                                <x-ccm::tables.th>CPU Load</x-ccm::tables.th>
+                                <x-ccm::tables.td
+                                        class="text-right">{{ $server->cpuPercentage }}%
+                                </x-ccm::tables.td>
+                            </x-ccm::tables.tr>
+                        </x-slot:tbody>
+                    </x-ccm::tables.table>
+                </div>
             </x-ccm::tabs.tab-content>
         </x-ccm::tabs.base>
     </div>
