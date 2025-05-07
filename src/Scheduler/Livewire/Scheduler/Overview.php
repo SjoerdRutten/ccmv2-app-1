@@ -16,6 +16,7 @@ class Overview extends Component
 
     public function remove(ScheduledTask $task)
     {
+        $task->scheduledTaskLogs()->delete();
         $task->delete();
     }
 
