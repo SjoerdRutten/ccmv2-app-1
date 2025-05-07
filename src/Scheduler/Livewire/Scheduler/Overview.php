@@ -14,6 +14,11 @@ class Overview extends Component
         $this->showSuccessModal(title: 'Taak wordt uitgevoerd');
     }
 
+    public function remove(ScheduledTask $task)
+    {
+        $task->delete();
+    }
+
     public function render()
     {
         return view('scheduler::livewire.scheduler.overview')

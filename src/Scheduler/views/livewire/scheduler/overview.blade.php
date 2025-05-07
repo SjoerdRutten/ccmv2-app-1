@@ -37,6 +37,10 @@
                         <x-ccm::tables.td>{{ Arr::get($schedule->pattern, 'type') }}</x-ccm::tables.td>
                         <x-ccm::tables.td :link="true">
                             <x-ccm::tables.edit-link :href="route('admin::scheduler::edit', $schedule)"/>
+                            <x-ccm::tables.delete-link
+                                    wire:confirm="Weet je zeker dat je deze taak wilt verwijderen?"
+                                    wire:click.prevent="remove({{ $schedule->id }})"
+                            />
                             <x-ccm::tables.run-link
                                     wire:confirm="Weet je zeker dat je deze taak wilt starten?"
                                     wire:click.prevent="run({{ $schedule->id }})"
