@@ -1,6 +1,6 @@
 <?php
 
-namespace Sellvation\CCMV2\Ccm\Controllers;
+namespace Sellvation\CCMV2\Ccm\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

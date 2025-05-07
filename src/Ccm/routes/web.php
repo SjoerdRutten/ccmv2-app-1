@@ -64,7 +64,7 @@ Route::middleware([
         Route::prefix('jsapi')
             ->name('jsapi::')
             ->group(function (): void {
-                Route::get('/product/search', [\Sellvation\CCMV2\Ccm\Controllers\SearchProductsController::class, 'search'])->name('product.search');
-                Route::get('/product/selected', [\Sellvation\CCMV2\Ccm\Controllers\SearchProductsController::class, 'selected'])->name('product.selected');
+                Route::get('/product/search', [\Sellvation\CCMV2\Ccm\Http\Controllers\SearchProductsController::class, 'search'])->name('product.search');
+                Route::get('/product/selected', [\Sellvation\CCMV2\Ccm\Http\Controllers\SearchProductsController::class, 'selected'])->name('product.selected');
             });
     });
