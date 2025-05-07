@@ -102,6 +102,7 @@ class CcmMenuServiceProvider extends ServiceProvider
                 ['label' => 'Verzendregels', 'route' => 'admin::sendrules::overview'],
                 ['label' => 'Rollen', 'route' => 'roles::overview'],
                 ['label' => 'Gebruikers', 'route' => 'users::overview'],
+                ['label' => 'Servers', 'route' => 'admin::servers::overview'],
                 ['label' => 'Disks', 'route' => 'admin::disks::overview'],
                 ['label' => 'Disk types', 'route' => 'admin::disktypes::overview'],
                 ['label' => 'Extensies', 'route' => 'admin::extensions::overview'],
