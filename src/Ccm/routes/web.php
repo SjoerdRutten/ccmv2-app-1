@@ -57,8 +57,6 @@ Route::middleware([
             ->group(function (): void {
                 Route::get('/dashboard', \Sellvation\CCMV2\Ccm\Http\Controllers\DashboardController::class)->name('dashboard');
                 Route::get('/notifications', \Sellvation\CCMV2\Ccm\Livewire\Notifications\Overview::class)->name('notifications');
-                Route::get('/typesense/collection/{collectionName}', \Sellvation\CCMV2\Ccm\Livewire\Typesense\Collection::class)->name('typesense.collection');
-                Route::get('/typesense/collection/{collectionName}/reindex', \Sellvation\CCMV2\Ccm\Controllers\TypesenseReindexCollectionController::class)->name('typesense.reindex');
             });
 
         Route::prefix('jsapi')
