@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware([
@@ -16,6 +17,7 @@ Route::middleware([
 Route::middleware(['web'])
     ->prefix('serverstatus')
     ->name('serverstatus::')
+    ->withoutMiddleware([VerifyCsrfToken::class])
     ->group(function (): void {
         Route::get('/', \Sellvation\CCMV2\Ccm\Http\Controllers\ServerStatusController::class)->name('serverstatus');
         Route::post('/{server}', [\Sellvation\CCMV2\Ccm\Http\Controllers\ServerStatusController::class, 'set']);
