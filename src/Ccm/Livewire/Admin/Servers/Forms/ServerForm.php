@@ -24,7 +24,7 @@ class ServerForm extends Form
     public string $ip;
 
     #[Validate]
-    public string $status_url;
+    public ?string $status_url;
 
     public function rules(): array
     {
