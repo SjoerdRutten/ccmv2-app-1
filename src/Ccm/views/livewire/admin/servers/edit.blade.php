@@ -28,7 +28,7 @@
                     <x-ccm::forms.input name="form.ip" wire:model="form.ip" :required="true">
                         IP-adres
                     </x-ccm::forms.input>
-                    <x-ccm::forms.input name="form.status_url" wire:model="form.status_url" :required="true">
+                    <x-ccm::forms.input name="form.status_url" wire:model="form.status_url">
                         Status URL
                     </x-ccm::forms.input>
                 </x-ccm::forms.form>

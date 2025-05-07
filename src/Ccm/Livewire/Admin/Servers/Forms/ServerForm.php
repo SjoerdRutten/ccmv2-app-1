@@ -40,7 +40,6 @@ class ServerForm extends Form
                 'ipv4',
             ],
             'status_url' => [
-                'required',
                 'url',
             ],
         ];
