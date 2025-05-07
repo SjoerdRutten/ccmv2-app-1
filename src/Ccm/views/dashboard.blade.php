@@ -5,6 +5,7 @@
         @if (Auth::user()->isAdmin)
             <x-ccm::dashboard.scheduled-tasks-logs-card/>
             <x-ccm::dashboard.queue-card/>
+            <x-ccm::dashboard.servers-card/>
         @endif
     </x-ccm::cards.cards>
 @endsection

@@ -9,9 +9,11 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
+use Sellvation\CCMV2\Ccm\Commands\UpdateServerStatussesCommand;
 use Sellvation\CCMV2\Ccm\Components\acitivity_log\Table;
 use Sellvation\CCMV2\Ccm\Components\dashboard\QueueCard;
 use Sellvation\CCMV2\Ccm\Components\dashboard\ScheduledTasksLogsCard;
+use Sellvation\CCMV2\Ccm\Components\dashboard\ServersCard;
 use Sellvation\CCMV2\Ccm\Components\forms\CategoryField;
 use Sellvation\CCMV2\Ccm\Components\forms\CrmFieldsOptions;
 use Sellvation\CCMV2\Ccm\Facades\CcmMenu;
@@ -55,6 +57,12 @@ class CcmServiceProvider extends ServiceProvider
 
         $router->pushMiddlewareToGroup('web', CcmContextMiddleware::class);
 
+        $this->commands([
+            UpdateServerStatussesCommand::class,
+        ]);
+
+        \SchedulableCommands::registerCommand(UpdateServerStatussesCommand::class);
+
         if (! App::runningInConsole()) {
             $this->registerLivewireComponents();
             $this->registerBladeComponents();
@@ -64,6 +72,7 @@ class CcmServiceProvider extends ServiceProvider
     private function registerBladeComponents(): void
     {
         Blade::component('ccm::dashboard.queue-card', QueueCard::class);
+        Blade::component('ccm::dashboard.servers-card', ServersCard::class);
         Blade::component('ccm::dashboard.scheduled-tasks-logs-card', ScheduledTasksLogsCard::class);
         Blade::component('ccm::activity_log.table', Table::class);
         Blade::component('ccm::forms.crm-fields-options', CrmFieldsOptions::class);
@@ -80,6 +89,8 @@ class CcmServiceProvider extends ServiceProvider
         Livewire::component('ccm::admin::customers.edit', Edit::class);
         Livewire::component('ccm::admin::environments', \Sellvation\CCMV2\Ccm\Livewire\Admin\Environments\Overview::class);
         Livewire::component('ccm::admin::environments.edit', \Sellvation\CCMV2\Ccm\Livewire\Admin\Environments\Edit::class);
+        Livewire::component('ccm::admin::servers', \Sellvation\CCMV2\Ccm\Livewire\Admin\Servers\Overview::class);
+        Livewire::component('ccm::admin::servers.edit', \Sellvation\CCMV2\Ccm\Livewire\Admin\Servers\Edit::class);
 
         Livewire::component('ccm::typesense::collection', Collection::class);
         Livewire::component('ccm::notifications::overview', \Sellvation\CCMV2\Ccm\Livewire\Notifications\Overview::class);
